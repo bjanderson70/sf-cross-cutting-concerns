@@ -1,4 +1,5 @@
 
+![logo](https://github.com/bjanderson70/sf-cross-cutting-concerns/blob/master/imgs/logo.png)
 # sf-cross-cutting-concerns
 Cross cutting concerns for apex code. The previous [cross-cutting concerns](https://github.com/bjanderson70/Apex-Cross-Cutting-Concerns) is NO LONGER supported.
 
