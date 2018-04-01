@@ -37,8 +37,8 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Running the tests
 
-All unit tests provide a minimum of 90% code coverage. Tests can be invoked from favortite case tool.
-In Salesforce, navigate to Setup->Apex Classes and run all tests
+The unit tests have a minimum of 90% code coverage. Tests can be invoked from favortite case tool.
+In Salesforce Org, navigate to **Setup->Apex Classes** and run all tests
 
 ### Break down into end to end tests
 
