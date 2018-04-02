@@ -4,11 +4,11 @@
     <protected>false</protected>
     <values>
         <field>CachePartition__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">work</value>
     </values>
     <values>
         <field>CachingEnabled__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>Category__c</field>

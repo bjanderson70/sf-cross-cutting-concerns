@@ -168,33 +168,6 @@ public virtual without sharing class accc_ApexCacheMgr {
 	 */
 	public boolean cache(string category, string label, Object datum) {
 		return this.cache(category, label, null, datum);
-		/*
-		Boolean  result = false;
-		String identifier = accc_ApexUtilities.makeCacheIdentifier(category, label);
-
-		if ( !string.isBlank(identifier) && datum != null) {
-			string partition = this.getCachePartition(category, label);
-
-			try {
-				result = true;
-				if ( this.useCacheStrategy) {
-					// see if caching is enabled ( as we have no soql here)
-					result = this.theCacheStrategy.cacheValue(category, label, null);
-				}
-				// we cache at this point depending on the incoming criteria
-				// note, we have no soql query to compare
-				if ( result == true) {
-					this.theCache.put(partition, identifier, datum);
-				}
-
-			} catch (Exception excp) {
-				// process exception
-				accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
-			}
-		}
-
-		return result;
-		*/
 	} // end of cache
 	/**
 	 * @description get data based on category and label

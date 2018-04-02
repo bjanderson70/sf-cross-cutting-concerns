@@ -4,7 +4,7 @@
     <protected>false</protected>
     <values>
         <field>CachePartition__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">Test</value>
     </values>
     <values>
         <field>CachingEnabled__c</field>
