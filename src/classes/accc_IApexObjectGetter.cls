@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description Get an object Instance
- * @group Common Iterface Layer
+ * @group Common Interface Layer
  */
 public interface accc_IApexObjectGetter {
 	/**
