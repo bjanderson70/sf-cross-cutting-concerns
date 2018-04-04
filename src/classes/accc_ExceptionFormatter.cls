@@ -34,7 +34,7 @@
  * @description Implementation of the exception formatter.
  * @group Common Layer
  */
-public class accc_ExceptionFormatter implements accc_IDataFormat {
+public without sharing class accc_ExceptionFormatter implements accc_IDataFormat {
     /////////////////////////////////////////////////////////////////////////////////////////
     //
     // CTORS

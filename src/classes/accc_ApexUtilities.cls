@@ -514,19 +514,39 @@ public virtual without sharing class accc_ApexUtilities {
      *
      * @description get the excuting class name from an stack trace
      *
-     * @param line line from stack trace
-     * @return class name
+     * @param string stack trace
+     * @return string class name
      */
     public static String getExecutingClassName(String line) {
         String result = accc_ApexConstants.EmptyString;
         if ( line != null ) {
             final string tag = 'Class.';
-            if (line.startsWith(tag))
+            if (line.startsWith(tag)) {
                 line = line.substringAfter(tag);
+            }
             result = line.substringBefore(':').substringBeforeLast('.');
         }
         return result;
     } // end of getExecutingClassName
+
+    /**
+     *
+     * @description get the excuting lineno from an stack trace
+     *
+     * @param String stack trace
+     * @return string line number
+     */
+    public static String getExecutingLineNumber(String line) {
+        String result = accc_ApexConstants.EmptyString;
+        if ( line != null ) {
+            final string tag = 'Class.';
+            if (line.startsWith(tag)) {
+                line = line.substringAfter(tag);
+            }
+            result = line.substringBetween('line', ',');
+        }
+        return result;
+    } // end of getExecutingLineNumber
 
     /**
      *
