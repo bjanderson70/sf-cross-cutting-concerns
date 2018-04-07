@@ -37,92 +37,93 @@
  */
 @isTest
 private class accc_ApexKnownCCConcernsFallbackTest {
-	// known resources
-	static final List<String> KnownResources = new List<String> {
-		accc_ApexConstants.CacheResource
-		, accc_ApexConstants.CacheStrategy
-		, accc_ApexConstants.CacheStrategyInvocation
-		, accc_ApexConstants.ConfigurationResource
-		, accc_ApexConstants.LoggerResource
-		, accc_ApexConstants.ExceptionHandler
-		, accc_ApexConstants.ExceptionFormatter
-		, accc_ApexConstants.SendEmailChannel
-		, accc_ApexConstants.ExceptionPolicyHandler
-		, accc_ApexConstants.PreviousTransactionResultResource
-		, accc_ApexConstants.FactoryResource
-		, accc_ApexConstants.FallbackResource
-		, accc_ApexConstants.RuntimeEnvironment
+    // known resources
+    static final List<String> KnownResources = new List<String> {
+        accc_ApexConstants.CacheResource
+        , accc_ApexConstants.CacheStrategy
+        , accc_ApexConstants.CacheStrategyInvocation
+        , accc_ApexConstants.ConfigurationResource
+        , accc_ApexConstants.LoggerResource
+        , accc_ApexConstants.ExceptionHandler
+        , accc_ApexConstants.ExceptionFormatter
+        , accc_ApexConstants.LogFormatter
+        , accc_ApexConstants.SendEmailChannel
+        , accc_ApexConstants.ExceptionPolicyHandler
+        , accc_ApexConstants.PreviousTransactionResultResource
+        , accc_ApexConstants.FactoryResource
+        , accc_ApexConstants.FallbackResource
+        , accc_ApexConstants.RuntimeEnvironment
 
-	};
+    };
 
-	@isTest
-	static void testctor() {
-		// assign / act
-		accc_IFallbackResources resource = new accc_ApexKnownCCConcernsFallback();
-		// assert
-		system.assertNotEquals(null, resource);
-	}
-	@isTest
-	static void testctorBadParam() {
-		// assign
-		accc_IFallbackResources resource = null;
-		Exception expected = null;
-		try {
-			// act
-			resource = new accc_ApexKnownCCConcernsFallback('');
-		} catch (accc_ApexApplicationException excp ) {
-			expected = excp;
-		}
+    @isTest
+    static void testctor() {
+        // assign / act
+        accc_IFallbackResources resource = new accc_ApexKnownCCConcernsFallback();
+        // assert
+        system.assertNotEquals(null, resource);
+    }
+    @isTest
+    static void testctorBadParam() {
+        // assign
+        accc_IFallbackResources resource = null;
+        Exception expected = null;
+        try {
+            // act
+            resource = new accc_ApexKnownCCConcernsFallback('');
+        } catch (accc_ApexApplicationException excp ) {
+            expected = excp;
+        }
 
-		// assert
-		system.assertEquals(null, resource);
-		system.assertEquals(true, expected instanceof accc_ApexApplicationException);
-	} // end of testctorBadParam
+        // assert
+        system.assertEquals(null, resource);
+        system.assertEquals(true, expected instanceof accc_ApexApplicationException);
+    } // end of testctorBadParam
 
-	@isTest
-	static void testfallbackResource() {
-		// assign / act
-		accc_IFallbackResources resource = new accc_ApexKnownCCConcernsFallback();
-		Object result = resource.fallbackResource();
-		// assert
-		system.assertNotEquals(null, result);
-	} // end of testfallbackResource
-
-
-	@isTest
-	static void testtoString() {
-		// assign / act
-		accc_IFallbackResources resource = new accc_ApexKnownCCConcernsFallback();
-		String result = resource.toString();
-		// assert
-		system.assertEquals(true, result.length() > 1);
-	} // end of testtoString
+    @isTest
+    static void testfallbackResource() {
+        // assign / act
+        accc_IFallbackResources resource = new accc_ApexKnownCCConcernsFallback();
+        Object result = resource.fallbackResource();
+        // assert
+        system.assertNotEquals(null, result);
+    } // end of testfallbackResource
 
 
-	@isTest
-	static void testget() {
-		// assign / act
-		accc_IFallbackResources resource = new accc_ApexKnownCCConcernsFallback();
-		for ( string item : KnownResources) {
-			// we expect actual class names -- let's check
-			Type resultType = Type.forName((String) resource.get(accc_ApexConstants.CategoryInterface_s, item));
-			// assert
-			system.assertNotEquals(null, resultType);
-			resultType = Type.forName((String) resource.get(accc_ApexConstants.CategoryConcrete_s, item));
-			// assert
-			system.assertNotEquals(null, resultType);
-		}
-	} // end of testget
+    @isTest
+    static void testtoString() {
+        // assign / act
+        accc_IFallbackResources resource = new accc_ApexKnownCCConcernsFallback();
+        String result = resource.toString();
+        // assert
+        system.assertEquals(true, result.length() > 1);
+    } // end of testtoString
 
-	@isTest
-	static void testgetWithBadData() {
-		// assign / act
-		accc_IFallbackResources resource = new accc_ApexKnownCCConcernsFallback();
-		for ( string item : KnownResources) {
-			Object result = resource.get(accc_ApexConstants.CategoryInterface_s, item + '*123*bad*index*');
-			// assert
-			system.assertEquals(null, result );
-		}
-	} // end of testgetWithBadData
+
+    @isTest
+    static void testget() {
+        // assign / act
+        accc_IFallbackResources resource = new accc_ApexKnownCCConcernsFallback();
+        for ( string item : KnownResources) {
+            // we expect actual class names -- let's check
+            Type resultType = Type.forName((String) resource.get(accc_ApexConstants.CategoryInterface_s, item));
+            // assert
+            system.assertNotEquals(null, resultType);
+            resultType = Type.forName((String) resource.get(accc_ApexConstants.CategoryConcrete_s, item));
+            // assert
+            system.assertNotEquals(null, resultType);
+        }
+    } // end of testget
+
+    @isTest
+    static void testgetWithBadData() {
+        // assign / act
+        accc_IFallbackResources resource = new accc_ApexKnownCCConcernsFallback();
+        for ( string item : KnownResources) {
+            Object result = resource.get(accc_ApexConstants.CategoryInterface_s, item + '*123*bad*index*');
+            // assert
+            system.assertEquals(null, result );
+        }
+    } // end of testgetWithBadData
 
 } // end of accc_ApexKnownCCConcernsFallbackTest

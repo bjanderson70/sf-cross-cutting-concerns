@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description default logger uses the system debug, error, warn, info, etc.
- *     The default logging level is DEBUG. This is the default logger used by 'ApexRunEnvironmentSingleton'.
+ *     The default logging level is DEBUG. This is the default logger used by 'accc_ApexRunEnvironmentSingleton'.
  *     In addition to this Logger, there are three other loggers, which inherit the base behavior :
  *
  *     * ApexObjectLogger       - writes logging data to the custom object ApplicationLog__c
@@ -68,9 +68,26 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
      * @description the log formatter
      */
     @TestVisible
-    private final static accc_IDataFormat logFormatter = new accc_ApexLogFormatter();
+    private  accc_IDataFormat alogFormatter = null;
 
+    ////////////////////////////////////////////////////////////////////////////////
+    ///  Protected Properties
+    ////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * @description The log formatter
+     *
+     * @return accc_IDataFormat log formatter
+     */
+    protected  accc_IDataFormat logFormatter {
+        get {
+            if ( this.alogFormatter == null ) {
+                this.alogFormatter = (accc_IDataFormat)accc_ApexRunEnvironmentSingleton.getInstance().objectFactory().create(accc_ApexConstants.LogFormatter);
+            }
+            return this.alogFormatter;
+        }
+        private set {}
+    } // end of theLogFormatter
     ////////////////////////////////////////////////////////////////////////////////
     /// Ctors
     ////////////////////////////////////////////////////////////////////////////////
@@ -87,11 +104,12 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
      *
      * @description ctor of Apex Logger
      *
-     * @param level LoggingLevel to use for 'write'
+     * @param level LoggingLevel to use for 'write', the higher granularity the more information
      */
     public accc_ApexLogger(LoggingLevel level) {
         this.logLevel(level);
     } // end of ctor
+
 
     ////////////////////////////////////////////////////////////////////////////////
     ///  Public Methods
@@ -111,7 +129,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public void write(Object msg) {
         this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
 
-        this.write(this.logLevel(), accc_ApexLogger.logFormatter.format(msg , this.dataModel));
+        this.write(this.logLevel(), this.logFormatter.format(msg , this.dataModel));
     } // end of write
     /**
      * @description write out messages to sink based on the  log level setting
@@ -130,7 +148,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public void info(Object msg) {
         this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
 
-        this.write(LoggingLevel.INFO, accc_ApexLogger.logFormatter.format(msg , this.dataModel));
+        this.write(LoggingLevel.INFO, this.logFormatter.format(msg , this.dataModel));
 
     } // end of info
 
@@ -142,7 +160,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public void debug(Object msg) {
         this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
 
-        this.write(LoggingLevel.DEBUG, accc_ApexLogger.logFormatter.format(msg , this.dataModel));
+        this.write(LoggingLevel.DEBUG, this.logFormatter.format(msg , this.dataModel));
     } // end of debug
 
     /**
@@ -153,7 +171,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public void warn(Object msg) {
         this.dataModel  = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
 
-        this.write(LoggingLevel.WARN, accc_ApexLogger.logFormatter.format(msg, this.dataModel));
+        this.write(LoggingLevel.WARN, this.logFormatter.format(msg, this.dataModel));
     } // end of warn
 
     /**
@@ -164,7 +182,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public void error(Object msg) {
         this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
 
-        this.write(LoggingLevel.ERROR, accc_ApexLogger.logFormatter.format(msg, this.dataModel));
+        this.write(LoggingLevel.ERROR, this.logFormatter.format(msg, this.dataModel));
     } // end of error
 
     /**
@@ -175,7 +193,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public void fine(Object msg) {
         this.dataModel  = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
 
-        this.write(LoggingLevel.FINE, accc_ApexLogger.logFormatter.format(msg, this.dataModel));
+        this.write(LoggingLevel.FINE, this.logFormatter.format(msg, this.dataModel));
     } // end of fine
 
     /**
@@ -186,7 +204,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public void finer(Object msg) {
         this.dataModel  = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
 
-        this.write(LoggingLevel.FINER, accc_ApexLogger.logFormatter.format(msg, this.dataModel));
+        this.write(LoggingLevel.FINER, this.logFormatter.format(msg, this.dataModel));
     } // end of finer
 
     /**
@@ -197,7 +215,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public void finest(Object msg) {
         this.dataModel  = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
 
-        this.write(LoggingLevel.FINEST, accc_ApexLogger.logFormatter.format(msg, this.dataModel));
+        this.write(LoggingLevel.FINEST, this.logFormatter.format(msg, this.dataModel));
     } // end of finest
 
     /**
@@ -241,6 +259,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     protected virtual void write(LoggingLevel level, List<Object> messages) {
         if ( messages != null ) {
             integer sz = messages.size();
+            // do one at a time ...  revisit - TBD
             for (integer inx = 0; inx < sz; inx++) {
                 this.write(level, messages[inx], true);
             }
@@ -262,11 +281,10 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
         this.setLastMessage(level, result);
         // print out to debug log, if any
         if ( sendToLogger && !String.isBlank(result) ) {
-            // information is logged internally or controlled by sys-admin
-            // write it
+            // write it to SF Debug Log
             system.debug(level, result);
         }
-       
+
     } // end of write
     /**
      * @description write message
@@ -285,10 +303,10 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
             // iterate over the messages
             for (integer inx = 0; inx < sz; inx++) {
                 // format it
-                msgs.add((String)accc_ApexLogger.logFormatter.format( messages[inx], this.dataModel));
+                msgs.add((String)this.logFormatter.format( messages[inx], this.dataModel));
             }
             // write once
-            this.write(level, String.join(msgs, '\n'), sendToLogger);
+            this.write(level, String.join(msgs, accc_ApexConstants.NewLine), sendToLogger);
         }
     } // end of write
     /**
@@ -302,6 +320,5 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
         String msg = message != null ? message : accc_ApexConstants.EmptyString;
         this.theLastMessage = String.format('{0} : {1}', new String[] { String.valueOf(level), msg });
     } // end of setLastMessage
-
 
 } // end of accc_ApexLogger

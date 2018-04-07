@@ -33,6 +33,9 @@
  *
  * @author Bill Anderson
  * @description Common Constants
+ * 
+ * To Added New Resouce classes  :Step 5a: Ensure Fallback Resources have the Resource Name ( i.e. LogFormatter)
+ *
  */
 public class accc_ApexConstants {
 
@@ -63,6 +66,7 @@ public class accc_ApexConstants {
     public static final String FactoryResource = 'FactoryResource';
     public static final String FallbackResource = 'FallbackResource';
     public static final String LoggerResource = 'Logger';
+    public static final String LogFormatter = 'LogFormatter';
     public static final String RuntimeEnvironment = 'RuntimeEnvironment';
     public static final String SendEmailChannel = 'SendEmailChannel';
     public static final String PreviousTransactionResultResource = 'PreviousTransactionResultResource';
@@ -82,6 +86,7 @@ public class accc_ApexConstants {
         , FactoryResource
         , FallbackResource
         , LoggerResource
+        , LogFormatter
         , RuntimeEnvironment
         , SendEmailChannel
         , PreviousTransactionResultResource

@@ -161,7 +161,6 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
     protected virtual void writeExceptionToLogger(Exception excp, accc_ApexExceptionPolicyEnum policy) {
         if ( excp != null ) {
             final string mesg = this.formatExceptionMessage(excp, policy);
-
             this.getLogger().error(mesg);
         }
     } // end of writeExceptionToLogger
@@ -259,8 +258,8 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
         // send to the debug log
         if ( accc_ApexExceptionHandler.logger == null ) {
             // explicitly using the Apex Logger bec/ it writes
-            // to the system.debug and does not want to get into a loop
-            // on exception handling
+            // to the system.debug ; do not want to get into a loop
+            // on exception handling -- [Fallback resource -- TBD]
             accc_ApexExceptionHandler.logger = new accc_ApexLogger(LoggingLevel.ERROR);
         }
         return accc_ApexExceptionHandler.logger;

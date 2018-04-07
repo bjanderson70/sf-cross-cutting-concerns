@@ -33,7 +33,13 @@
  *
  * @author Bill Anderson
  * @description Provides the defined interfaces used in the runtime environment.
- *     This includes a configuraiton provider, logger, etc.
+ *     This includes a configuraiton provider, logger, etc. These are the main cross-cutting concerns.
+ *     However, if one of the resources you need does not have the method to expose the value.
+ *     then use the 'objectFactory()' method to pull it out explicitly by name. For example,
+ *     the 'logFormatter' is not an exposed method, but can be retrieved by :
+ *     
+ *           objectFactory().create(accc_ApexConstants.LogFormatter);
+ *     
  * @group Common Interface Layer
  */
 public virtual interface accc_IApexRunEnvironment {

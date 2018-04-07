@@ -42,7 +42,7 @@ global without sharing class accc_ApexLogDataModel {
     //
     /////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * Methods data we capture at log time
+     * Data we capture at log time
      *
      */
     public string className,
@@ -129,8 +129,9 @@ global without sharing class accc_ApexLogDataModel {
         this.lineNumber =  accc_Apexutilities.normalizeString(lineno);
         this.logLevel = lvl;
         this.startTime = startTime;
-
+        
         if ( !string.isBlank(this.stackTrace) ) {
+        	// we have to go one level deep
             String trace = this.stackTrace.substringAfter('\n');
             this.className = accc_ApexUtilities.getExecutingClassName(trace);
             this.methodName = accc_ApexUtilities.getExecutingMethod(trace);

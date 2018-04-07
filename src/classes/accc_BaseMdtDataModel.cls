@@ -32,7 +32,7 @@
  *
  *
  * @author Bill Anderson
- * @description Base class for MDT data model
+ * @description Base class for our custom MDT data model (DAO)
  * @group Common Layer
  */
 public abstract without sharing class accc_BaseMdtDataModel {
@@ -58,13 +58,13 @@ public abstract without sharing class accc_BaseMdtDataModel {
      * (protected is NOT ALLOW!)
      */
     public enum accc_ControlPolicySearchEnum {
-        byLabel,    		// by label
-        byName,     		// by name
+        byLabel,            // by label
+        byName,             // by name
         byCategoryAndLabel  // by category
 
     } // end of accc_ControlPolicySearchEnum
 
-    // for caching locally
+    // for caching locally, stored in section 'accc_BaseMdtDataModel'
     static final accc_ApexLocalL1Cache l1Cache = new  accc_ApexLocalL1Cache('accc_BaseMdtDataModel');
     // acts as the category
     static final String CUSTOM_MDT_CATEGORY = 'Category__c';
@@ -117,6 +117,15 @@ public abstract without sharing class accc_BaseMdtDataModel {
         return this.getInformationByLookup(accc_ApexConstants.All_s, accc_ControlPolicySearchEnum.byLabel);
     } // end of findAll
     /**
+    * @description find by category
+    *
+    * @param string the category / namespace
+    * @return the model informaiton
+    */
+    public List<BaseDataModelInformation> findByCategory(String category) {
+        return this.getInformationByLookup(category, accc_ControlPolicySearchEnum.byLabel);
+    }// end of findByCategory
+    /**
      * @description find by category and label
      *
      * @param string the category / namespace
@@ -125,14 +134,13 @@ public abstract without sharing class accc_BaseMdtDataModel {
      */
     public List<BaseDataModelInformation> findByCategoryAndLabel(String category, String labelName) {
         List<BaseDataModelInformation> result = null;
-        Boolean isNotValidLabel = string.isBlank(labelName);
-
-        if ( isNotValidLabel ) {
-            result = null;
-        } else if ( string.isBlank(category)) {
-            result = this.getInformationByLookup(labelName, accc_ControlPolicySearchEnum.byLabel);
-        } else {
-            result = this.getInformationByLookup(category, labelName, accc_ControlPolicySearchEnum.byLabel);
+        // must have a valid name
+        if ( !string.isBlank(labelName) ) {
+            if ( string.isBlank(category)) {
+                result = this.getInformationByLookup(labelName, accc_ControlPolicySearchEnum.byLabel);
+            } else {
+                result = this.getInformationByLookup(category, labelName, accc_ControlPolicySearchEnum.byLabel);
+            }
         }
         return result;
 
@@ -164,7 +172,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     //
-    // ABSTRACT METHODS -- MUST BE OVERWRITTEN BY CHILD CLASS
+    // ***** ABSTRACT METHODS -- MUST BE OVERWRITTEN BY CHILD CLASS *****
     //
     /////////////////////////////////////////////////////////////////////////////////////////
     /**
@@ -217,6 +225,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
         List<SObject> cmdt = null;
         String selector = this.makeSoqlSelect();
         string key = accc_ApexUtilities.makeLocalCacheKey(category, lookup);
+
         // check out local cache to save some time
         List<BaseDataModelInformation> result = (List<BaseDataModelInformation>)l1Cache.get(key);
 
@@ -241,8 +250,9 @@ public abstract without sharing class accc_BaseMdtDataModel {
             }
         } catch (Exception excp) {
             // process exception
-            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
+            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp, true);
         }
+
         return result;
     } // end of getInformationByLookup
 
@@ -328,7 +338,5 @@ public abstract without sharing class accc_BaseMdtDataModel {
         return Database.query(String.escapeSingleQuotes(clause));
 
     } // end of queryCustomMDT
-
-
 
 } // end of accc_BaseMdtDataModel
