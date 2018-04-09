@@ -491,7 +491,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of getTypeFromSObject
 
     /*
-     * Get executing class and method name borrowed from the wbe
+     * Get executing class and method name borrowed (with slight modifications)
      * https://salesforce.stackexchange.com/questions/153835/get-currently-executing-class-method-name
      */
     /**
@@ -500,7 +500,9 @@ public virtual without sharing class accc_ApexUtilities {
      * @return executing class name
      */
     public static String getExecutingClassName() {
-        return accc_ApexUtilities.getExecutingClassName(new DmlException().getStackTraceString().substringAfter('\n'));
+        string trace = accc_ApexUtilities.popStack(new DmlException().getStackTraceString());
+
+        return accc_ApexUtilities.getExecutingClassName(trace);
     }
     /**
      *
@@ -508,7 +510,9 @@ public virtual without sharing class accc_ApexUtilities {
      * @return method name
      */
     public static String getExecutingMethod() {
-        return accc_ApexUtilities.getExecutingMethod(new DmlException().getStackTraceString().substringAfter('\n'));
+        string trace = accc_ApexUtilities.popStack(new DmlException().getStackTraceString());
+
+        return accc_ApexUtilities.getExecutingMethod(trace);
     }
     /**
      *
@@ -578,10 +582,10 @@ public virtual without sharing class accc_ApexUtilities {
 
             // information is logged internally or controlled by sys-admin
 
-            String trace = new DmlException().getStackTraceString().substringAfter('\n'),
-            className = accc_ApexUtilities.getExecutingClassName(trace),
-            methodName = accc_ApexUtilities.getExecutingMethod(trace),
-            logMsg = '+++ [' + className + '] [' + methodName + '] ' + message;
+            String trace = accc_ApexUtilities.popStack(new DmlException().getStackTraceString()),
+                   className = accc_ApexUtilities.getExecutingClassName(trace),
+                   methodName = accc_ApexUtilities.getExecutingMethod(trace),
+                   logMsg = '+++ [' + className + '] [' + methodName + '] ' + message;
             // log it
             runtime.logger().write(logMsg);
 
@@ -930,6 +934,25 @@ public virtual without sharing class accc_ApexUtilities {
         }
         return partition;
     } // end of makeLocalCacheKey
+
+    /**
+    *
+    * @description pop the stack to get to the right level of the stack
+    *
+    * @param strack trace
+    * @return second level of the stack
+    */
+    public static string popStack(string trace) {
+        string popTrace = '';
+
+        if ( !string.isBlank(trace) ) {
+            popTrace = trace.substringAfter('\n');
+            if ( string.isBlank(popTrace) ) {
+                popTrace = trace;
+            }
+        }
+        return trace;
+    } // end of popStack
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Private Methods

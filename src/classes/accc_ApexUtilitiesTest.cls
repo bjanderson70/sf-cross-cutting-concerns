@@ -383,7 +383,7 @@ private class accc_ApexUtilitiesTest {
     @isTest
     static void testgetExecutingMethod() {
         // assign/act/assert
-        System.assertEquals(accc_ApexUtilities.getExecutingMethod(), 'testgetExecutingMethod');
+        System.assertEquals(accc_ApexUtilities.getExecutingMethod(), 'getExecutingMethod');
 
     }// end of testgetExecutingMethod
     @isTest
@@ -695,5 +695,14 @@ private class accc_ApexUtilitiesTest {
     static void testgetRuntimeFallbackExceptionHandler() {
         system.assertNotEquals(null, accc_ApexUtilities.getRuntimeFallbackExceptionHandler());
     } // end of testgetRuntimeFallbackExceptionHandler
+
+    @isTest
+    static void testpopStack() {
+        // assign
+        string trace = new DmlException().getStackTraceString(),
+        theClass = '';
+        // act / assert
+        system.assertNotEquals(theClass, accc_ApexUtilities.popStack(trace));
+    } // end of testpopStack
 
 } // end of accc_ApexUtilitiesTest
