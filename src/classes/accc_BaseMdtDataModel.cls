@@ -224,10 +224,10 @@ public abstract without sharing class accc_BaseMdtDataModel {
     protected List<BaseDataModelInformation> getInformationByLookup(String category, String lookup, accc_ControlPolicySearchEnum controlType) {
         List<SObject> cmdt = null;
         String selector = this.makeSoqlSelect();
-        string key = accc_ApexUtilities.makeLocalCacheKey(category, lookup);
+        string key = this.makeCacheKey(category, lookup);
 
         // check out local cache to save some time
-        List<BaseDataModelInformation> result = (List<BaseDataModelInformation>)l1Cache.get(key);
+        List<BaseDataModelInformation> result =  (List<BaseDataModelInformation>)l1Cache.get(key);
 
         try {
             // still no data?
@@ -236,16 +236,10 @@ public abstract without sharing class accc_BaseMdtDataModel {
                 String theQueryType = theControlType ? CUSTOM_MDT_NAME : CUSTOM_MDT_LABEL;
                 // preform query
                 cmdt = this.queryCustomMDT(selector, theQueryType, lookup, category);
-
                 // any data to process
                 if ( cmdt != null && cmdt.size() > 0) {
-                    // let child populate information
-                    result = this.populateFrom(cmdt);
-                    // if there was no issue , save to local cache
-                    if ( result != null ) {
-                        // place in local cache
-                        l1Cache.put(key, result);
-                    }
+                    // let child populate information and place in local cache
+                    result = ( List<BaseDataModelInformation>) l1Cache.put(key, this.populateFrom(cmdt));
                 }
             }
         } catch (Exception excp) {
@@ -275,6 +269,18 @@ public abstract without sharing class accc_BaseMdtDataModel {
     // PRIVATE METHODS
     //
     /////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * @description make key for the cache
+     *
+     * @param category the category (debug, production, etc.)
+     * @param lookup  how to find the value
+     *
+     * @return the key associate with the appropriate custom metadata
+     */
+    @TestVisible
+    private string makeCacheKey(string category, string lookup) {
+        return this.CustomMDTName + '.' + accc_ApexUtilities.makeLocalCacheKey(category, lookup);
+    } // end of makeCacheKey
     /**
      * @description populate our external view of the data cache structure
      *

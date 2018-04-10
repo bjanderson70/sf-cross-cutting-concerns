@@ -57,8 +57,8 @@ public without sharing class accc_CustomSettings implements accc_IConfigurationP
     //++++++++++++++++++++++++++++++++++ Data Initialization ++++++++++++++++++++++++++++++++++++
     /////////////////////////////////////////////////////////////////////////////////////////////
     //static {
-    //	// seed the data
-    //	accc_CustomSettings.getKnownResourceSettings();
+    //  // seed the data
+    //  accc_CustomSettings.getKnownResourceSettings();
     //}
     /////////////////////////////////////////////////////////////////////////////////////////////
     //++++++++++++++++++++++++++++++++++ Public methods +++++++++++++++++++++++++++++++++++++++++
@@ -198,6 +198,7 @@ public without sharing class accc_CustomSettings implements accc_IConfigurationP
      */
     public static accc_CrossCuttingUtilityDataModel.CrossCuttingUtilityInformation crossCuttingInformation() {
         accc_CrossCuttingUtilityDataModel.CrossCuttingUtilityInformation info = null;
+
         try {
             string env = accc_ApexUtilities.getEnvironment();
             accc_CrossCuttingUtilityDataModel ccudm = accc_CustomSettings.crossCuttingUtilityModel();
@@ -207,6 +208,7 @@ public without sharing class accc_CustomSettings implements accc_IConfigurationP
             // process exception
             accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
         }
+
         return info;
     } // end of crossCuttingInformation
     /**

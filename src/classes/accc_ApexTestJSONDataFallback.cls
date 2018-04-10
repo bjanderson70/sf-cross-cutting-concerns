@@ -109,7 +109,7 @@ public class accc_ApexTestJSONDataFallback  extends accc_ApexBaseFallback {
      * @param defaultValue holds json data of resources
      */
     public accc_ApexTestJSONDataFallback(String defaultValue) {
-        super(accc_ApexTestJSONDataFallback.DefaultStaticResource);
+        super(defaultValue);
     } // end of ctor
 
 } // end of accc_ApexTestJSONDataFallback

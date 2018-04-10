@@ -36,34 +36,34 @@
  *   The Configuration is broken down as follows (name/value pairs), and subject to augmentation:
  *
  *       Label (Category) --> name/value pairs:
- *       			Cache Class, Value
- *       			Exception Handling Class, Value
- *       			Fallback Resources Class, Value
- *       			Logging Class, Value
+ *                  Cache Class, Value
+ *                  Exception Handling Class, Value
+ *                  Fallback Resources Class, Value
+ *                  Logging Class, Value
  *
  *       Where Label is the category such as 'debug', 'production', etc.
  *
  *       The ASSUMPTION is that the following is true:
  *
- *       	Cache Class inherits from ICache,
- *       	Exception Handling Class inherits from IExceptionHandler,
- *       	Fallback Resources Class inherits from IFallbackResources
- *       	Logging Class inherits from ILogger
+ *          Cache Class inherits from ICache,
+ *          Exception Handling Class inherits from IExceptionHandler,
+ *          Fallback Resources Class inherits from IFallbackResources
+ *          Logging Class inherits from ILogger
  *
- *		For example,
+ *      For example,
  *
- *		'debug' --> map <string,string> :
- *										'cacheClass' : 'ApexCache',
- *										'loggerClass': 'ApexLogger'
- *											:
- *											:
- *		'production' --> map <string,string> :
- *										'cacheClass' : 'ApexSessionCache',
- *										'loggerClass': 'ApexObjectLogger'
- *											:
- *											:
+ *      'debug' --> map <string,string> :
+ *                                      'cacheClass' : 'ApexCache',
+ *                                      'loggerClass': 'ApexLogger'
+ *                                          :
+ *                                          :
+ *      'production' --> map <string,string> :
+ *                                      'cacheClass' : 'ApexSessionCache',
+ *                                      'loggerClass': 'ApexObjectLogger'
+ *                                          :
+ *                                          :
  *
- *		 		:
+ *              :
  *
  * @group Common Layer
  */
@@ -96,7 +96,7 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
     //
     /////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * @description ctor
+     * @description default ctor
      *
      **/
     public accc_CrossCuttingConfigMgr() {
@@ -122,6 +122,13 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
      * @return string category
      */
     public string category { get; private set;}
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Public Methods
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * @description create a list of instances based on a category as defined in the MDT (label)
      *
@@ -204,15 +211,10 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
         return new accc_ApexClassInstanceMgr(className, interfaceName);
     } // end of getInstanceCreator
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Public Methods
-    //
-    /////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * @description get the known classes ( looking in all categories)
-     * @return map of classes by interface by category
-     */
+      * @description get the known classes ( looking in all categories; debug, production, etc.)
+      * @return map of classes by interface by category
+      */
     public Map<String, Map<String, String> > getClasses(string category) {
         Map<String, Map<String, String> >results = new Map<String, Map<String, String> >();
 
@@ -262,6 +264,12 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
         }
         return added;
     } // end of addToMap
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Private Methods
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * @description add new instance
      *
@@ -318,9 +326,15 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
     private String getInterfaceNameFrom(string category, string className, String referenceName) {
         Boolean validCategory = !string.isBlank(category);
         String result = validCategory && string.isBlank(referenceName)  ? null : (String)accc_ApexUtilities.getRuntimeFallbackResources().get(category, referenceName) ;
-       
+
+        // this may not be applicable, but bec/ others CAN change the fallback resources, we will still check
+        // what we are wanting is the INTERFACE
         if ( result == null && validCategory && !string.isBlank(className) ) {
             result = (String)accc_ApexUtilities.getRuntimeFallbackResources().get(category, className) ;
+        }
+        // are we still NULL, use the class name
+        if ( result == null ) {
+            result =  className;
         }
         return result;
     } // end of getInterfaceNameFrom

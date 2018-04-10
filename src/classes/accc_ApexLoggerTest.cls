@@ -49,7 +49,7 @@ private class accc_ApexLoggerTest {
 
         for (Integer inx = 0; inx < messages.size(); inx++) {
             logger.debug(messages[inx]);
-            system.assertEquals(logger.lastMessage(), String.valueOf(LoggingLevel.DEBUG) + ' : ' + messages[inx]);
+            system.assertEquals(true, logger.lastMessage().contains(messages[inx]));
         }
     } // end of testMessages
 
@@ -86,19 +86,19 @@ private class accc_ApexLoggerTest {
         accc_ILogger logger = accc_ApexLoggerTest.getLogger(LoggingLevel.DEBUG);
 
         logger.info(message);
-        system.assertEquals(String.valueOf(LoggingLevel.INFO) + ' : ' + message, logger.lastMessage() );
+        system.assertEquals(true, logger.lastMessage().contains(String.valueOf(LoggingLevel.INFO)) );
         logger.warn(message);
-        system.assertEquals( String.valueOf(LoggingLevel.WARN) + ' : ' + message, logger.lastMessage() );
+        system.assertEquals( true, logger.lastMessage().contains(String.valueOf(LoggingLevel.WARN)) );
         logger.debug(message);
-        system.assertEquals( String.valueOf(LoggingLevel.DEBUG) + ' : ' + message, logger.lastMessage() );
+        system.assertEquals( true, logger.lastMessage().contains(String.valueOf(LoggingLevel.DEBUG))  );
         logger.error(message);
-        system.assertEquals( String.valueOf(LoggingLevel.ERROR) + ' : ' + message, logger.lastMessage() );
+        system.assertEquals(  true, logger.lastMessage().contains(String.valueOf(LoggingLevel.ERROR))  );
         logger.fine(message);
-        system.assertEquals( String.valueOf(LoggingLevel.FINE) + ' : ' + message, logger.lastMessage() );
+        system.assertEquals(  true, logger.lastMessage().contains(String.valueOf(LoggingLevel.FINE)) );
         logger.finer(message);
-        system.assertEquals( String.valueOf(LoggingLevel.FINER) + ' : ' + message, logger.lastMessage() );
+        system.assertEquals(  true, logger.lastMessage().contains(String.valueOf(LoggingLevel.FINER)) );
         logger.finest(message);
-        system.assertEquals( String.valueOf(LoggingLevel.FINEST) + ' : ' + message, logger.lastMessage() );
+        system.assertEquals(  true, logger.lastMessage().contains(String.valueOf(LoggingLevel.FINEST)) );
     } // end of testExplicitLogLevel
 
     /**
@@ -113,7 +113,7 @@ private class accc_ApexLoggerTest {
 
         for (Integer i = 0; i < messages.size(); i++) {
             logger.write(messages[i]);
-            system.assertEquals(logger.lastMessage(), String.valueOf(LoggingLevel.FINEST) + ' : ' + messages[i]);
+            system.assertEquals(true, logger.lastMessage().contains(String.valueOf(LoggingLevel.FINEST)));
         }
     } // end of testMessagesWithInjectionOfLogLevel
 
@@ -129,7 +129,7 @@ private class accc_ApexLoggerTest {
 
         for (Integer i = 0; i < messages.size(); i++) {
             logger.write(messages[i]);
-            system.assertNotEquals( logger.lastMessage(), String.valueOf(LoggingLevel.FINER) + ' : ' + messages[i]);
+            system.assertNotEquals( true, logger.lastMessage().contains(String.valueOf(LoggingLevel.FINER)));
         }
     } // end of negativeTestMessagesWithInjectionOfLogLevel
 

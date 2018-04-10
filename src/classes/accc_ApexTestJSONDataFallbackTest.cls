@@ -39,11 +39,17 @@ private class accc_ApexTestJSONDataFallbackTest {
 
     // ctor
     @isTest
-    static void testCtor() {
-        accc_IFallbackResources  fallback = new accc_ApexTestJSONDataFallback(null);
+    static void testCtorNullParam() {
+        boolean wasCaught = false;
+        try {
+            accc_IFallbackResources  fallback = new accc_ApexTestJSONDataFallback(null);
+        } catch (accc_ApexApplicationException caught) {
+            wasCaught = true;
 
-        System.assertNotEquals(null, fallback.fallbackResource());
-    }
+        }
+
+        System.assertEquals(true, wasCaught);
+    } // end of testCtorNullParam
 
     // default resource
     @isTest
@@ -51,7 +57,7 @@ private class accc_ApexTestJSONDataFallbackTest {
         accc_IFallbackResources  fallback = new accc_ApexTestJSONDataFallback();
 
         System.assertNotEquals(null, fallback.fallbackResource());
-    }
+    } // end of testDefaultResource
 
     // valid to string
     @isTest
@@ -59,14 +65,15 @@ private class accc_ApexTestJSONDataFallbackTest {
         accc_IFallbackResources  fallback = new accc_ApexTestJSONDataFallback();
 
         System.assertNotEquals(null, fallback.toString());
-    }
+    }// end of testToString
+
     // get a resource
     @isTest
     static void testget() {
         accc_IFallbackResources  fallback = new accc_ApexTestJSONDataFallback();
 
         System.assertEquals(accc_ApexConstants.DEFAULT_MAX_NUMBER_OF_ITEMS_IN_CHUNK,
-                               integer.valueof(fallback.get(accc_ApexConstants.MaxChunkSize_r)));
+                            integer.valueof(fallback.get(accc_ApexConstants.MaxChunkSize_r)));
     } // end of testget
 
     // valid Map
@@ -77,6 +84,6 @@ private class accc_ApexTestJSONDataFallbackTest {
         Map<String, Object> nvPair = fallback.toMap();
         System.assertNotEquals(null, nvPair);
         System.assertNotEquals(0, nvPair.size());
-    }
+    } // end of testToSMap
 
 } // end of accc_ApexTestJSONDataFallbackTest

@@ -46,118 +46,120 @@
  * @group Common Layer
  */
 public without sharing class accc_ApexLocalL1Cache {
-	/*---------------------------------------------------------------------------------------
-	* DATA MEMBERS
-	*---------------------------------------------------------------------------------------
-	*/
+    /*---------------------------------------------------------------------------------------
+    * DATA MEMBERS
+    *---------------------------------------------------------------------------------------
+    */
 
-	// holds our local l1 cache
-	static Map<String, Map<String, Object> > catCache = new Map<String, Map<String, Object> > ();
+    // holds our local l1 cache
+    static Map<String, Map<String, Object> > catCache = new Map<String, Map<String, Object> > ();
 
-	/*---------------------------------------------------------------------------------------
-	* CTORS
-	*---------------------------------------------------------------------------------------
-	*/
+    /*---------------------------------------------------------------------------------------
+    * CTORS
+    *---------------------------------------------------------------------------------------
+    */
 
-	/**
-	* @description default ctor
-	*/
-	public accc_ApexLocalL1Cache() {
-		this(accc_ApexConstants.All_s);
-	} // end of ctor
-	/**
-	 * @description ctor
-	 * @param string data category
-	 */
-	public accc_ApexLocalL1Cache(string inputCategory) {
-		string categoryName = string.isBlank(inputCategory) ? accc_ApexConstants.All_s : inputCategory;
-		// which section of the local L1 are we using
-		Map<String, Object> l1Cache = accc_ApexLocalL1Cache.catCache.get(categoryName);
-		if ( l1Cache == null ) {
-			accc_ApexLocalL1Cache.catCache.put(categoryName, new  Map<String, Object>());
-		}
-		this.category = categoryName;
+    /**
+    * @description default ctor
+    */
+    public accc_ApexLocalL1Cache() {
+        this(accc_ApexConstants.All_s);
+    } // end of ctor
+    /**
+     * @description ctor
+     * @param string data category
+     */
+    public accc_ApexLocalL1Cache(string inputCategory) {
+        string categoryName = string.isBlank(inputCategory) ? accc_ApexConstants.All_s : inputCategory;
+        // which section of the local L1 are we using
+        Map<String, Object> l1Cache = accc_ApexLocalL1Cache.catCache.get(categoryName);
+        if ( l1Cache == null ) {
+            accc_ApexLocalL1Cache.catCache.put(categoryName, new  Map<String, Object>());
+        }
+        this.category = categoryName;
 
-	} // end of ctor
+    } // end of ctor
 
-	/*---------------------------------------------------------------------------------------
-	* PUBLIC PROPERTIES
-	*---------------------------------------------------------------------------------------
-	*/
+    /*---------------------------------------------------------------------------------------
+    * PUBLIC PROPERTIES
+    *---------------------------------------------------------------------------------------
+    */
 
-	/**
-	 * description the category name
-	 *
-	 * @param string data category
-	 * @return string category
-	 */
-	public string category { get; private set;}
+    /**
+     * description the category name
+     *
+     * @param string data category
+     * @return string category
+     */
+    public string category { get; private set;}
 
-	/*---------------------------------------------------------------------------------------
-	* PUBLIC METHODS
-	*---------------------------------------------------------------------------------------
-	*/
-	/**
-	* @description get data from the store
-	*
-	* @param string the key to the store
-	* @return Object data stored
-	*/
-	public Object get(String key) {
-		Object result = null;
-		if (  !string.isBlank(key)) {
-			Map<String, Object> cacheLookup = accc_ApexLocalL1Cache.catCache.get(this.category);
-			if ( cacheLookup != null && cacheLookup.size() > 0) {
-				result = cacheLookup.get(key);
-			}
-		}
-		return result;
-	} // end of get
-	/**
-	 * @description store the data by key
-	 *
-	 * @param string key to lookup in the category
-	 * @param Object value to store
-	 */
-	public void put(String key, Object value) {
+    /*---------------------------------------------------------------------------------------
+    * PUBLIC METHODS
+    *---------------------------------------------------------------------------------------
+    */
+    /**
+    * @description get data from the store
+    *
+    * @param string the key to the store
+    * @return Object data stored
+    */
+    public Object get(String key) {
+        Object result = null;
+        if (  !string.isBlank(key)) {
+            Map<String, Object> cacheLookup = accc_ApexLocalL1Cache.catCache.get(this.category);
+            if ( cacheLookup != null && cacheLookup.size() > 0) {
+                result = cacheLookup.get(key);
+            }
+        }
+        return result;
+    } // end of get
+    /**
+     * @description store the data by key
+     *
+     * @param string key to lookup in the category
+     * @param Object value to store
+     * @return Object return the added value
+     */
+    public Object put(String key, Object value) {
 
-		if (  !string.isBlank(key) && value != null) {
-			Map<String, Object> cacheLookup = accc_ApexLocalL1Cache.catCache.get(this.category);
-			if ( cacheLookup != null ) {
-				cacheLookup.put(key, value);
-			}
-		}
+        if (  !string.isBlank(key) && value != null) {
+            Map<String, Object> cacheLookup = accc_ApexLocalL1Cache.catCache.get(this.category);
+            if ( cacheLookup != null ) {
+                cacheLookup.put(key, value);
+            }
+        }
+        return value;
 
-	} // end of put
-	/**
-	 * @description reset the key/value pair for the constructed category
-	 */
-	public void reset() {
-		Map<String, Object> cacheLookup = accc_ApexLocalL1Cache.catCache.get(this.category);
-		if ( cacheLookup != null ) {
-			for ( string key : cacheLookup.keyset() ) {
-				cacheLookup.remove(key);
-			}
-		}
-	} // end of reset
+    } // end of put
+    /**
+     * @description reset the key/value pair for the constructed category
+     */
+    public void reset() {
+        Map<String, Object> cacheLookup = accc_ApexLocalL1Cache.catCache.get(this.category);
+        if ( cacheLookup != null ) {
+            for ( string key : cacheLookup.keyset() ) {
+                cacheLookup.remove(key);
+            }
+        }
+    } // end of reset
 
-	/**
-	 * @description size of the local lookup (only 1-dimension, not depth / entry)
-	 *    If there are additional categories, i.e., 'Fallback',
-	 *
-	 *    	Fallback --> name/value, name2/value2, name3/value3 ...
-	 *    		:
-	 *    	All --> name/value, name2/value2, name3/value3 ...
-	 *    	
-	 *    	size will be 2
-	 */
-	public integer size() {
-		integer sz = 0;
-		Map<String, Object> cacheLookup = catCache.get(this.category);
-		if ( cacheLookup != null ) {
-			sz = cacheLookup.size();
-		}
-		return sz;
-	} // end of size
+    /**
+     * @description size of the local lookup (only 1-dimension, not depth / entry)
+     *    If there are additional categories, i.e., 'Fallback',
+     *
+     *    	Fallback --> name/value, name2/value2, name3/value3 ...
+     *    		:
+     *    	All --> name/value, name2/value2, name3/value3 ...
+     *
+     *    	size will be 2
+     */
+    public integer size() {
+        integer sz = 0;
+        Map<String, Object> cacheLookup = catCache.get(this.category);
+        if ( cacheLookup != null ) {
+            sz = cacheLookup.size();
+        }
+        return sz;
+    } // end of size
 
 } // end of accc_ApexLocalL1Cache

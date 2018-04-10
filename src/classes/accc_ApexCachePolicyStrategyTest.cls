@@ -46,6 +46,15 @@ private class accc_ApexCachePolicyStrategyTest {
 		// assert
 		System.assertEquals(false, result);
 	} // end of testcacheValueNullParams
+	@isTest
+	static void testcacheValueAllNullParams() {
+
+		accc_ApexCachePolicyStrategy aps = new accc_ApexCachePolicyStrategy();
+		boolean result = aps.cacheValue(null, null,null);
+
+		// assert
+		System.assertEquals(false, result);
+	} // end of testcacheValueAllNullParams
 
 	@isTest
 	static void testcacheValueOneNull() {

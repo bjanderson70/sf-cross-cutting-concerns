@@ -38,113 +38,161 @@
 private class accc_CrossCuttingConfigMgrTest {
 
 
-	// known configuration categories
-	static final List<String> CATEGORIES = new List<String> {
-		accc_ApexConstants.DEBUG_CATEGORY,
-		accc_ApexConstants.PRODUCTION_CATEGORY,
-		accc_ApexConstants.TEST_CATEGORY
-	};
-	// Known field names in custom mdt that holds the classes to be instantiated
-	static final List<String> CLASSES = new List<String> {
-		accc_ApexConstants.CacheResource,
-		accc_ApexConstants.ExceptionHandler,
-		accc_ApexConstants.FallbackResource,
-		accc_ApexConstants.LoggerResource
-	};
+    // known configuration categories
+    static final List<String> CATEGORIES = new List<String> {
+        accc_ApexConstants.DEBUG_CATEGORY,
+        accc_ApexConstants.PRODUCTION_CATEGORY,
+        accc_ApexConstants.TEST_CATEGORY
+    };
+    // Known field names in custom mdt that holds the classes to be instantiated
+    static final List<String> CLASSES = new List<String> {
+        accc_ApexConstants.CacheResource,
+        accc_ApexConstants.ExceptionHandler,
+        accc_ApexConstants.FallbackResource,
+        accc_ApexConstants.LoggerResource
+    };
 
-	@isTest
-	static void testgetClasses() {
-		// assign
-		accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
-		// act
-		Map<String, Map<String, String> > maps = cccm.getClasses();
-		// assert
-		system.assertNotEquals(false, maps.size() > 0);
-		system.assertEquals(true, maps.keySet().containsAll(CATEGORIES));
+    @isTest
+    static void testgetClasses() {
+        // assign
+        accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
+        // act
+        Map<String, Map<String, String> > maps = cccm.getClasses(accc_ApexConstants.All_s);
+        // assert
+        system.assertNotEquals(false, maps.size() > 0);
+        system.assertEquals(true, maps.keySet().containsAll(CATEGORIES));
 
-		for (String key : maps.keyset()) {
-			Map<String, String> items = maps.get(key);
-			Set<String> sets = new Set<String>(items.keyset());
+        for (String key : maps.keyset()) {
+            Map<String, String> items = maps.get(key);
+            Set<String> sets = new Set<String>(items.keyset());
 
-			system.assertEquals(true, sets.containsAll(CLASSES));
-		}
+            system.assertEquals(true, sets.containsAll(CLASSES));
+        }
 
-	} // end of testgetClasses
+    } // end of testgetClasses
 
-	@isTest
-	static void testgetInstanceCreators() {
-		// assign
-		accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
-		// act
-		List<accc_ApexClassInstanceMgr> insts = cccm.getInstanceCreators(accc_ApexConstants.TEST_CATEGORY);
-		// assert
-		system.assertEquals(true, insts.size() > 0);
-
-
-	} // end of testgetInstanceCreators
-
-	@isTest
-	static void testgetInstanceCreatorsBadParam() {
-		// assign
-		final string myCat = 'Not Found Category';
-		accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
-		// act
-		List<accc_ApexClassInstanceMgr> insts = cccm.getInstanceCreators(myCat);
-		// assert
-		system.assertEquals(true, insts.size() == 0);
-		system.assertEquals(true, cccm.category == myCat);
-
-	} // end of testgetInstanceCreatorsBadParam
-
-	@isTest
-	static void testCtorAndgetInstanceCreatorsBadParam() {
-		// assign
-		final string myCat = 'Not Found Category';
-		accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr(myCat);
-		// act
-		List<accc_ApexClassInstanceMgr> insts = cccm.getInstanceCreators();
-		// assert
-		system.assertEquals(true, insts.size() == 0);
-		system.assertEquals(true, cccm.category == myCat);
-
-	} // end of testCtorAndgetInstanceCreatorsBadParam
-
-	@isTest
-	static void testgetInstanceCreator() {
-		// assign
-		accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
-		// act
-		accc_ApexClassInstanceMgr inst = cccm.getInstanceCreator('ApexClass', 'accc_ICache');
-		// assert
-		system.assertEquals(true, inst != null );
-		system.assertEquals(true, inst.className == 'ApexClass' );
-		system.assertEquals(true, inst.classInterfaceType == 'accc_ICache' );
+    @isTest
+    static void testgetInstanceCreators() {
+        // assign
+        accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
+        // act
+        List<accc_ApexClassInstanceMgr> insts = cccm.getInstanceCreators(accc_ApexConstants.TEST_CATEGORY);
+        // assert
+        system.assertEquals(true, insts.size() > 0);
 
 
-	} // end of testgetInstanceCreator
+    } // end of testgetInstanceCreators
 
-	@isTest
-	static void testgetInstanceCreatorWithOneParam() {
-		// assign
-		accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
-		// act
-		accc_ApexClassInstanceMgr inst = cccm.getInstanceCreator('ApexClass');
-		// assert
-		system.assertEquals(true, inst != null );
-		system.assertEquals(true, inst.className == 'ApexClass' );
-		system.assertEquals(true, inst.classInterfaceType == inst.className );
+    @isTest
+    static void testgetInstanceCreatorWithBadParam() {
+        // assign
+        accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
+        // act
+        accc_ApexClassInstanceMgr inst = cccm.getInstanceCreator(null, null);
+        // assert
+        system.assertEquals(true, inst == null);
 
-	} // end of testgetInstanceCreatorWithOneParam
+    } // end of testgetInstanceCreatorWithBadParam
 
-	@isTest
-	static void testaddToMap() {
-		// assign
-		accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
-		// act
-		boolean result = cccm.addToMap(accc_ApexConstants.TEST_CATEGORY, null, null);
-		// assert
-		system.assertEquals(false, result );
+    @isTest
+    static void testgetInstanceCreatorsBadParam() {
+        // assign
+        final string myCat = 'Not Found Category';
+        accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
+        // act
+        List<accc_ApexClassInstanceMgr> insts = cccm.getInstanceCreators(myCat);
+        // assert
+        system.assertEquals(true, insts.size() == 0);
+        system.assertEquals(true, cccm.category == myCat);
 
-	} // end of testaddToMap
+    } // end of testgetInstanceCreatorsBadParam
+
+    @isTest
+    static void testaddToInstanceList() {
+        // assign
+        final string myCat = 'Not Found Category';
+        boolean result;
+        accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
+        Map<String, String> items = new Map<String, String> ();
+        List<accc_ApexClassInstanceMgr> instances = new List<accc_ApexClassInstanceMgr>();
+        // act
+        result = cccm.addToInstanceList(accc_ApexConstants.LoggerResource, items, instances);
+        // assert
+        system.assertEquals(true, result);
+
+    } // end of testaddToInstanceList
+
+    @isTest
+    static void testgetInterfaceNameFrom() {
+        // assign
+        String classname = 'accc_ApexLogger';
+        
+        accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
+        // act
+        String result = cccm.getInterfaceNameFrom(accc_ApexConstants.CategoryConcrete_s,
+                        classname,
+                        null);
+        // assert
+        system.assertEquals(classname, result);
+
+        result = cccm.getInterfaceNameFrom(accc_ApexConstants.CategoryInterface_s,
+                        classname,
+                        null);
+        // assert
+        system.assertEquals(classname, result);
+
+    } // end of testgetInterfaceNameFrom
+
+
+    @isTest
+    static void testCtorAndgetInstanceCreatorsBadParam() {
+        // assign
+        final string myCat = 'Not Found Category';
+        accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr(myCat);
+        // act
+        List<accc_ApexClassInstanceMgr> insts = cccm.getInstanceCreators();
+        // assert
+        system.assertEquals(true, insts.size() == 0);
+        system.assertEquals(true, cccm.category == myCat);
+
+    } // end of testCtorAndgetInstanceCreatorsBadParam
+
+    @isTest
+    static void testgetInstanceCreator() {
+        // assign
+        accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
+        // act
+        accc_ApexClassInstanceMgr inst = cccm.getInstanceCreator('ApexClass', 'accc_ICache');
+        // assert
+        system.assertEquals(true, inst != null );
+        system.assertEquals(true, inst.className == 'ApexClass' );
+        system.assertEquals(true, inst.classInterfaceType == 'accc_ICache' );
+
+
+    } // end of testgetInstanceCreator
+
+    @isTest
+    static void testgetInstanceCreatorWithOneParam() {
+        // assign
+        accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
+        // act
+        accc_ApexClassInstanceMgr inst = cccm.getInstanceCreator('ApexClass');
+        // assert
+        system.assertEquals(true, inst != null );
+        system.assertEquals(true, inst.className == 'ApexClass' );
+        system.assertEquals(true, inst.classInterfaceType == inst.className );
+
+    } // end of testgetInstanceCreatorWithOneParam
+
+    @isTest
+    static void testaddToMap() {
+        // assign
+        accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
+        // act
+        boolean result = cccm.addToMap(accc_ApexConstants.TEST_CATEGORY, null, null);
+        // assert
+        system.assertEquals(false, result );
+
+    } // end of testaddToMap
 
 }

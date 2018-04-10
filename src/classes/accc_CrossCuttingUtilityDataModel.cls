@@ -119,6 +119,7 @@ public without sharing class accc_CrossCuttingUtilityDataModel extends accc_Base
 				result.triggersAreEnable = cmdt.triggersEnable__c;
 				result.useCachingStrategy = cmdt.UseCachingStrategy__c;
 				results.add(result);
+				system.debug('+++++++++++++++++++++result='+result);
 			}
 		}
 

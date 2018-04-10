@@ -38,63 +38,83 @@
 @isTest
 private class accc_ApexBaseFallbackTest {
 
-	private static string json = '{ "name" : "Account"}';
+    private static string json = '{ "name" : "Account"}';
 
-	@isTest
-	static void testctorBadParam() {
-		// assign
-		accc_IFallbackResources resource = null;
-		Exception expected = null;
-		try {
-			// act
-			resource = new accc_ApexBaseFallback();
-		} catch (accc_ApexApplicationException excp ) {
-			expected = excp;
-		}
+    @isTest
+    static void testctorBadParam() {
+        // assign
+        accc_IFallbackResources resource = null;
+        Exception expected = null;
+        try {
+            // act
+            resource = new accc_ApexBaseFallback();
+        } catch (accc_ApexApplicationException excp ) {
+            expected = excp;
+        }
 
-		// assert
-		system.assertEquals(null, resource);
-		system.assertEquals(true, expected instanceof accc_ApexApplicationException);
-	} // end of testctorBadParam
+        // assert
+        system.assertEquals(null, resource);
+        system.assertEquals(true, expected instanceof accc_ApexApplicationException);
+    } // end of testctorBadParam
 
-	@isTest
-	static void testfallbackResource() {
-		// assign / act
-		accc_IFallbackResources resource = new accc_ApexBaseFallback(json);
-		Object result = resource.fallbackResource();
-		// assert
-		system.assertNotEquals(null, result);
-	} // end of testfallbackResource
+    @isTest
+    static void testfallbackResource() {
+        // assign
+        accc_IFallbackResources resource = new accc_ApexBaseFallback(json);
+        // act
+        Object result = resource.fallbackResource();
+        // assert
+        system.assertNotEquals(null, result);
+    } // end of testfallbackResource
 
-	@isTest
-	static void testtoString() {
-		// assign / act
-		accc_IFallbackResources resource = new accc_ApexBaseFallback(json);
-		String result = resource.toString();
-		// assert
-		system.assertEquals(true, result.length() > 1);
-	} // end of testtoString
+    @isTest
+    static void testtoString() {
+        // assign
+        accc_IFallbackResources resource = new accc_ApexBaseFallback(json);
+        // act
+        String result = resource.toString();
+        // assert
+        system.assertEquals(true, result.length() > 1);
+    } // end of testtoString
 
 
-	@isTest
-	static void testget() {
-		// assign / act
-		accc_IFallbackResources resource = new accc_ApexBaseFallback(json);
+    @isTest
+    static void testget() {
+        // assign
+        accc_IFallbackResources resource = new accc_ApexBaseFallback(json);
+        // act
+        // we expect actual class names -- let's check
+        Type resultType = Type.forName((String) resource.get('name'));
+        // assert
+        system.assertNotEquals(null, resultType);
 
-		// we expect actual class names -- let's check
-		Type resultType = Type.forName((String) resource.get('name'));
-		// assert
-		system.assertNotEquals(null, resultType);
+    } // end of testget
+    @isTest
+    static void testgetWithBadData() {
+        // assign
+        accc_IFallbackResources resource = new accc_ApexBaseFallback(json);
+        // act
+        Object result = resource.get(accc_ApexConstants.CategoryInterface_s, '*123*bad*index*');
+        // assert
+        system.assertEquals(null, result );
 
-	} // end of testget
-	@isTest
-	static void testgetWithBadData() {
-		// assign / act
-		accc_IFallbackResources resource = new accc_ApexBaseFallback(json);
+    } // end of testgetWithBadData
 
-		Object result = resource.get(accc_ApexConstants.CategoryInterface_s, '*123*bad*index*');
-		// assert
-		system.assertEquals(null, result );
+    @isTest
+    static void testhandleException() {
+        // assign
+        final String mesg = 'testing';
+        accc_ApexBaseFallback resource = new accc_ApexBaseFallback(json);
+        accc_ApexApplicationException excp = new accc_ApexApplicationException(mesg);
+        // here we KNOW the runtime handler will return 'accc_ApexExceptionHandler' from 'accc_ApexUtilities'
+        accc_ApexExceptionHandler handler = (accc_ApexExceptionHandler)accc_ApexUtilities.getRuntimeFallbackExceptionHandler();
+        // grab the logger used in the handler, and check the last messsage sent
+        accc_ILogger logger = handler.systemDebugLogger();
 
-	} // end of testgetWithBadData
+        // act
+        resource.handleException(excp);
+
+        // assert
+        system.assertEquals(true, handler.systemDebugLogger().lastMessage().contains(mesg) );
+    } // end of testhandleException
 } // end of accc_ApexBaseFallbackTest

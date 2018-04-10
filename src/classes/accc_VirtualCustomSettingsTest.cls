@@ -37,7 +37,7 @@
 @isTest
 private class accc_VirtualCustomSettingsTest {
 
-	static final string TestNameForEnvClass = 'TestEnvironmentSingleton';
+	static final string TestNameForEnvClass = 'accc_TestEnvironmentSingleton';
 	static final integer MyMaxChunkSize = 10;
 
 	// test the virtual/override of the class
