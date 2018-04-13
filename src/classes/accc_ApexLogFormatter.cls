@@ -67,11 +67,11 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
         //
         if ( message != null && dataModel != null ) {
             LoggingLevel theLogLevel = dataModel.logLevel;
-            // here we will provide very FINE grain information
+            // here we will provide very FINEST grain information
             // if running a test
             //
             if ( Test.isRunningTest() ) {
-                theLogLevel = LoggingLevel.ERROR;
+                theLogLevel = LoggingLevel.FINEST;
             }
             //
             // Depending on the Logging Level show varying degree of information
@@ -79,7 +79,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
             if ( theLogLevel == LoggingLevel.ERROR ||
                     theLogLevel == LoggingLevel.INTERNAL ||
                     theLogLevel == LoggingLevel.FINEST) {
-                message = this.finer(message, dataModel, theLogLevel);
+                message = this.finest(message, dataModel, theLogLevel);
             } else if ( theLogLevel == LoggingLevel.FINER) {
                 message = this.finer(message, dataModel, theLogLevel);
             } else if ( theLogLevel == LoggingLevel.FINE ) {
@@ -108,13 +108,14 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @return formatted data
      */
     private string finest(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
-        return String.format('[{0}] [{1}] [{2}] [{3}] {4}\n [Start Time (ms)] {5} [Stack Trace] {6}', new String[] {
+        return String.format('[{0}] [{1}] [{2}] [{3}] {4}\n [Start Time (ms)] {5} - {6} [Stack Trace] {7}', new String[] {
                                  theLogLevel.name()
                                  , dataModel.className
                                  , dataModel.methodName
                                  , dataModel.lineNumber
                                  , message
                                  , string.valueOf(dataModel.startTime)
+                                 , DateTime.newInstance(dataModel.startTime).formatLong()
                                  , dataModel.stackTrace
                              });
     } // end of finest

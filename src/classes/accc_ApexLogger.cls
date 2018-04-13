@@ -261,7 +261,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
             integer sz = messages.size();
             // do one at a time ...  revisit - TBD
             for (integer inx = 0; inx < sz; inx++) {
-                this.write(level, messages[inx], true);
+                this.write(level, this.logFormatter.format(messages[inx], this.dataModel), true);
             }
         }
     } // end of write
@@ -318,7 +318,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     @TestVisible
     protected virtual void setLastMessage(LoggingLevel level, String message) {
         String msg = message != null ? message : accc_ApexConstants.EmptyString;
-        this.theLastMessage = String.format('{0} : {1}', new String[] { String.valueOf(level), msg });
+        this.theLastMessage = String.format('{0} : {1}', new String[] { level.name(), msg });
     } // end of setLastMessage
 
 } // end of accc_ApexLogger

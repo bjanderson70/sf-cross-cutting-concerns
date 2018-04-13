@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Our CrossCutting Utility Data</description>
+    <fields>
+        <fullName>LogLevelForCCC__c</fullName>
+        <defaultValue>&apos;None&apos;</defaultValue>
+        <description>The loglevel used when printing out in testmode. This will override users setting</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>The loglevel used when printing out in test mode</inlineHelpText>
+        <label>LogLevel For TestRunning</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Debug</fullName>
+                    <default>true</default>
+                    <label>Debug</label>
+                </value>
+                <value>
+                    <fullName>Fine</fullName>
+                    <default>false</default>
+                    <label>Fine</label>
+                </value>
+                <value>
+                    <fullName>Finer</fullName>
+                    <default>false</default>
+                    <label>Finer</label>
+                </value>
+                <value>
+                    <fullName>Finest</fullName>
+                    <default>false</default>
+                    <label>Finest</label>
+                </value>
+                <value>
+                    <fullName>None</fullName>
+                    <default>false</default>
+                    <label>None</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ShowCCDebugInfo__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show the Cross Cutting Debug Information in the logs</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Show the Cross Cutting Debug Information in the logs</inlineHelpText>
+        <label>Show CC Debug Info</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>UseCachingStrategy__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Use the caching strategy. This value is checked in the default ctor of &apos;accc_ApexCacheMgr&apos;</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Use the caching strategy. This value is checked in the default ctor of &apos;accc_ApexCacheMgr&apos;</inlineHelpText>
+        <label>Use Caching Strategy</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>environmentClass__c</fullName>
+        <description>test environment class</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>test environment class</inlineHelpText>
+        <label>environmentClass</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>maxNumberOfItemsInChunks__c</fullName>
+        <description>number of items in a chunk</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>number of items in a chunk</inlineHelpText>
+        <label>maxNumberOfItemsInChunks</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>softAssert__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>use soft assertion</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>use soft assertion</inlineHelpText>
+        <label>softAssert</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>triggersEnable__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>are the triggers enable</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>are the triggers enable</inlineHelpText>
+        <label>triggersEnable</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>CrossCuttingUtilityData</label>
+    <pluralLabel>CrossCuttingUtilityDatas</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

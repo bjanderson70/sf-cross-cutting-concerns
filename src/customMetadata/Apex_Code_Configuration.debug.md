@@ -39,8 +39,12 @@
         <value xsi:type="xsd:string">accc_ApexTestJSONDataFallback</value>
     </values>
     <values>
+        <field>LogFormatter__c</field>
+        <value xsi:type="xsd:string">accc_ApexLogFormatter</value>
+    </values>
+    <values>
         <field>Logger__c</field>
-        <value xsi:type="xsd:string">accc_ApexPublishEventLogger</value>
+        <value xsi:type="xsd:string">accc_ApexLogger</value>
     </values>
     <values>
         <field>PreviousTransactionResultResource__c</field>

@@ -3,12 +3,20 @@
     <label>production</label>
     <protected>false</protected>
     <values>
+        <field>LogLevelForCCC__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>ShowCCDebugInfo__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
         <field>UseCachingStrategy__c</field>
         <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>environmentClass__c</field>
-        <value xsi:type="xsd:string">TestEnvironmentSingleton</value>
+        <value xsi:type="xsd:string">accc_ApexRunEnvironmentSingleton</value>
     </values>
     <values>
         <field>maxNumberOfItemsInChunks__c</field>

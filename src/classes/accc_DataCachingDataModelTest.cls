@@ -75,14 +75,12 @@ private class accc_DataCachingDataModelTest {
 	static void testgetTestInformationByLookup() {
 		// act/assign
 		accc_DataCachingDataModel ctor = new accc_DataCachingDataModel();
-		accc_BaseMdtDataModel octor = (accc_BaseMdtDataModel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.DataCachingConfiguration_r);
-
+		 
 		accc_BaseMdtDataModel.BaseDataModelInformation result = ctor.getTestInformationByLookup();
-		accc_BaseMdtDataModel.BaseDataModelInformation result2 = octor.getTestInformationByLookup();
-
+ 
 		// assert
 		System.assertEquals(accc_DataCachingDataModel.TestLabel2018, result.Label);
-		System.assertEquals(accc_DataCachingDataModel.TestLabel2018, result2.Label);
+
 	} // end of testgetTestInformationByLookup
 
 	@isTest

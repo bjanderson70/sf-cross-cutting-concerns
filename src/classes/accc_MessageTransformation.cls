@@ -36,160 +36,162 @@
  */
 public without sharing class accc_MessageTransformation {
 
-	/**
-	 * @description translate a ApplicationLog to a Log__e
-	 *
-	 * @param appLog Application Log
-	 * @return Log__e
-	 */
-	public static Log__e translate(ApplicationLog__c datum) {
-		Log__e result = null;
+    /**
+     * @description translate a ApplicationLog to a Log__e
+     *
+     * @param appLog Application Log
+     * @return Log__e
+     */
+    public static Log__e translate(ApplicationLog__c datum) {
+        Log__e result = null;
 
-		if ( datum != null ) {
-			result = new Log__e(LogCode__c = string.valueOf(datum.LogCode__c),
-			                    Message__c = accc_MessageTransformation.mergeApplicationLogData(datum),
-			                    Username__c = UserInfo.getUserId());
-		}
-		return result;
+        if ( datum != null ) {
+            result = new Log__e(LogCode__c = string.valueOf(datum.LogCode__c),
+                                Message__c = accc_MessageTransformation.mergeApplicationLogData(datum),
+                                Username__c = UserInfo.getUserId());
+        }
+        return result;
 
-	} // end of translate
-	/**
-	 * @description translate a log record into an ApplicationLog__c
-	 *
-	 * @param LoggingLevel logging level
-	 * @param Object the message
-	 * @return ApplicationLog__c
-	 */
-	public static ApplicationLog__c translate(LoggingLevel level, Object message) {
-		ApplicationLog__c result = null;
+    } // end of translate
+    /**
+     * @description translate a log record into an ApplicationLog__c
+     *
+     * @param LoggingLevel logging level
+     * @param Object the message
+     * @return ApplicationLog__c
+     */
+    public static ApplicationLog__c translate(LoggingLevel level, Object message) {
+        ApplicationLog__c result = null;
 
-		if ( message != null ) {
-			result = new ApplicationLog__c(LogCode__c = string.valueOf(level),
-			                               DebugLevel__c = level.name(),
-			                               Message__c =  string.valueOf(message),
-			                               Source__c = 'ApplicationLog__c',
-			                               Username__c = UserInfo.getUserId());
-		}
-		return result;
-	} // end of translate
+        if ( message != null ) {
+            result = new ApplicationLog__c(LogCode__c = string.valueOf(level),
+                                           DebugLevel__c = level.name(),
+                                           Message__c =  string.valueOf(message),
+                                           Source__c = 'ApplicationLog__c',
+                                           OwnerId = UserInfo.getUserId(),
+                                           Username__c = UserInfo.getUserId());
+        }
+        return result;
+    } // end of translate
 
-	/**
-	 * @description translate a log record into an ApplicationLog__c
-	 *
-	 * @param LoggingLevel logging level
-	 * @param List<Object> the messages
-	 * @return List<ApplicationLog__c>
-	 */
-	public static List<ApplicationLog__c> translate(LoggingLevel level, List<Object> messages) {
-		List<ApplicationLog__c> result = null;
-		ApplicationLog__c item = null;
+    /**
+     * @description translate a log record into an ApplicationLog__c
+     *
+     * @param LoggingLevel logging level
+     * @param List<Object> the messages
+     * @return List<ApplicationLog__c>
+     */
+    public static List<ApplicationLog__c> translate(LoggingLevel level, List<Object> messages) {
+        List<ApplicationLog__c> result = null;
+        ApplicationLog__c item = null;
 
-		if ( messages != null && messages.size() > 0) {
-			result = new List<ApplicationLog__c> ();
-			for ( integer inx = 0; inx < messages.size(); inx++) {
-				item = accc_MessageTransformation.translate(level, messages[inx]);
-				if ( item != null ) {
-					result.add(item);
-				}
-			}
-		}
-		return result;
-	} // end of translate
+        if ( messages != null && messages.size() > 0) {
+            result = new List<ApplicationLog__c> ();
+            for ( integer inx = 0; inx < messages.size(); inx++) {
+                item = accc_MessageTransformation.translate(level, messages[inx]);
+                if ( item != null ) {
+                    result.add(item);
+                }
+            }
+        }
+        return result;
+    } // end of translate
 
-	/**
-	 * @description translate a ApplicationLog to a Log__e
-	 *
-	 * @param appLog Application Log
-	 * @return Log__e
-	 */
-	public static List<Log__e> translate(List<ApplicationLog__c> listDatum) {
-		List<Log__e> result = null;
+    /**
+     * @description translate a ApplicationLog to a Log__e
+     *
+     * @param appLog Application Log
+     * @return Log__e
+     */
+    public static List<Log__e> translate(List<ApplicationLog__c> listDatum) {
+        List<Log__e> result = null;
 
-		if ( listDatum != null && listDatum.size() > 0) {
-			Log__e elog;
-			result = new List<Log__e>();
-			for (ApplicationLog__c datum : listDatum) {
-				elog = accc_MessageTransformation.translate(datum);
-				if ( elog != null) {
-					result.add(elog);
-				}
-			}
-		}
-		return result;
+        if ( listDatum != null && listDatum.size() > 0) {
+            Log__e elog;
+            result = new List<Log__e>();
+            for (ApplicationLog__c datum : listDatum) {
+                elog = accc_MessageTransformation.translate(datum);
+                if ( elog != null) {
+                    result.add(elog);
+                }
+            }
+        }
+        return result;
 
-	} // end of translate
+    } // end of translate
 
-	/**
-	 * @description translate a Log__e to a ApplicationLog__c
-	 *
-	 * @param eLog Log__e
-	 * @return ApplicationLog__c
-	 */
-	public static ApplicationLog__c translate(Log__e datum) {
-		ApplicationLog__c result = null;
+    /**
+     * @description translate a Log__e to a ApplicationLog__c
+     *
+     * @param eLog Log__e
+     * @return ApplicationLog__c
+     */
+    public static ApplicationLog__c translate(Log__e datum) {
+        ApplicationLog__c result = null;
 
-		if ( datum != null ) {
-			result = new ApplicationLog__c(LogCode__c = string.valueOf(datum.LogCode__c),
-			                               Message__c =  string.valueOf(datum.Message__c),
-			                               Source__c = 'Log Platform Event',
-			                               Username__c = UserInfo.getUserId());
-		}
-		return result;
+        if ( datum != null ) {
+            result = new ApplicationLog__c(LogCode__c = string.valueOf(datum.LogCode__c),
+                                           Message__c =  string.valueOf(datum.Message__c),
+                                           Source__c = 'Log Platform Event',
+                                           OwnerId = UserInfo.getUserId(),
+                                           Username__c = UserInfo.getUserId());
+        }
+        return result;
 
-	} // end of translate
-	/**
-	 * @description translate a Log__e to a ApplicationLog__c
-	 *
-	 * @param List<Log__e> list of log events
-	 * @return List<ApplicationLog__c> list of applicationLog
-	 */
-	public static List<ApplicationLog__c> translate(List<Log__e> listDatum) {
-		List<ApplicationLog__c> result = null;
+    } // end of translate
+    /**
+     * @description translate a Log__e to a ApplicationLog__c
+     *
+     * @param List<Log__e> list of log events
+     * @return List<ApplicationLog__c> list of applicationLog
+     */
+    public static List<ApplicationLog__c> translate(List<Log__e> listDatum) {
+        List<ApplicationLog__c> result = null;
 
-		if ( listDatum != null && listDatum.size() > 0 ) {
-			ApplicationLog__c appLog;
-			result = new List<ApplicationLog__c>();
-			for (Log__e datum : listDatum ) {
-				appLog = accc_MessageTransformation.translate(datum);
-				if ( appLog != null) {
-					result.add(appLog);
-				}
-			}
-		}
-		return result;
+        if ( listDatum != null && listDatum.size() > 0 ) {
+            ApplicationLog__c appLog;
+            result = new List<ApplicationLog__c>();
+            for (Log__e datum : listDatum ) {
+                appLog = accc_MessageTransformation.translate(datum);
+                if ( appLog != null) {
+                    result.add(appLog);
+                }
+            }
+        }
+        return result;
 
-	} // end of translate
-	/**
-	 * @description  merge all fields into a single string for consumption
-	 *
-	 * @param ApplicationLog__c the application log
-	 * @return string, merge data of ApplicationLog
-	 */
-	public static string mergeApplicationLogData(ApplicationLog__c datum) {
-		String result = '';
-		String placeholder = 'User Role Id: {0}\n,Debug Level: {1},\nMessage: {2},\nException: {3},\nIntegration Payload: {4},\nProfile Id: {5},\nReference Id: {6},\nReference Info: {7},\nSource: {8},\nSource Function: {9},\nStack Trace: {10}\nStatistics: {11}\n';
+    } // end of translate
+    /**
+     * @description  merge all fields into a single string for consumption
+     *
+     * @param ApplicationLog__c the application log
+     * @return string, merge data of ApplicationLog
+     */
+    public static string mergeApplicationLogData(ApplicationLog__c datum) {
+        String result = '';
+        String placeholder = 'User Role Id: {0}\n,Debug Level: {1},\nMessage: {2},\nException: {3},\nIntegration Payload: {4},\nProfile Id: {5},\nReference Id: {6},\nReference Info: {7},\nSource: {8},\nSource Function: {9},\nStack Trace: {10}\nStatistics: {11}\n';
 
-		if ( datum != null ) {
-			List<String> fillers = new List<String> {
-				datum.UserRoleId__c
-				, datum.DebugLevel__c
-				, datum.Message__c
-				, datum.Exception__c
-				, datum.IntegrationPayload__c
-				, datum.InvocationType__c
-				, datum.profileId__c
-				, datum.ReferenceId__c
-				, datum.ReferenceInfo__c
-				, datum.Source__c
-				, datum.SourceFunction__c
-				, datum.StackTrace__c
-				, datum.Statistics__c
-			};
+        if ( datum != null ) {
+            List<String> fillers = new List<String> {
+                datum.UserRoleId__c
+                , datum.DebugLevel__c
+                , datum.Message__c
+                , datum.Exception__c
+                , datum.IntegrationPayload__c
+                , datum.InvocationType__c
+                , datum.profileId__c
+                , datum.ReferenceId__c
+                , datum.ReferenceInfo__c
+                , datum.Source__c
+                , datum.SourceFunction__c
+                , datum.StackTrace__c
+                , datum.Statistics__c
+            };
 
-			result = String.format(placeholder, fillers);
-		}
-		return result;
+            result = String.format(placeholder, fillers);
+        }
+        return result;
 
-	} // end of mergeApplicationLogData
+    } // end of mergeApplicationLogData
 
 } // end of accc_MessageTransformation

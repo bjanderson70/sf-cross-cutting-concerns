@@ -191,7 +191,6 @@ public abstract without sharing class accc_BaseMdtDataModel {
      * @description get the data object for testing from the child
      * @return the data object for testing
      */
-    @TestVisible
     protected abstract BaseDataModelInformation getTestInformationByLookup();
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -279,7 +278,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
      */
     @TestVisible
     private string makeCacheKey(string category, string lookup) {
-        return this.CustomMDTName + '.' + accc_ApexUtilities.makeLocalCacheKey(category, lookup);
+        return accc_ApexUtilities.makeLocalCacheKey(this.CustomMDTName , accc_ApexUtilities.makeLocalCacheKey(category, lookup));
     } // end of makeCacheKey
     /**
      * @description populate our external view of the data cache structure

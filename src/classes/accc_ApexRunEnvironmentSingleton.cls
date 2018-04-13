@@ -74,7 +74,7 @@ public without sharing class accc_ApexRunEnvironmentSingleton extends accc_ApexB
 
     /**
      * @description get the singleton instance of the test environment
-     * @return ITestEnvironment
+     * @return accc_IApexRunEnvironment
      */
     public static accc_IApexRunEnvironment getInstance() {
         return accc_ApexRunEnvironmentSingleton.classInstance;

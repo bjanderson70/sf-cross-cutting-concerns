@@ -132,7 +132,7 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
     /**
      * @description create a list of instances based on a category as defined in the MDT (label)
      *
-     * The label is defined to be 'debug', 'production' and 'testConfig'. Additional ones
+     * The label is defined to be 'debug', 'production' and 'test'. Additional ones
      * can be added as needed in the managed custom MDT.
      *
      * @return List<accc_ApexClassInstanceMgr> list of creators for the classes based on category
@@ -143,10 +143,10 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
     /**
      * @description create a list of instances based on a category as defined in the MDT (label)
      *
-     * The label is defined to be 'debug', 'production' and 'testConfig'. Additional ones
+     * The label is defined to be 'debug', 'production' and 'test'. Additional ones
      * can be added as needed in the managed custom MDT.
      *
-     * @param userCategory string name,ie, 'debug', 'production' and 'testConfig', etc.
+     * @param userCategory string name,ie, 'debug', 'production' and 'test', etc.
      * @return List<accc_ApexClassInstanceMgr> list of creators for the classes based on category
      */
     public List<accc_ApexClassInstanceMgr> getInstanceCreators(string userCategory) {

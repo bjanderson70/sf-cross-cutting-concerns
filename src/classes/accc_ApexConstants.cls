@@ -30,7 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
  *
- *
  * @author Bill Anderson
  * @description Common Constants
  * 
@@ -43,7 +42,7 @@ public class accc_ApexConstants {
     // use by the custom MDT for configuration categories
     static public final string DEBUG_CATEGORY = 'debug';
     static public final string PRODUCTION_CATEGORY = 'production';
-    static public final string TEST_CATEGORY = 'testConfig';
+    static public final string TEST_CATEGORY = 'test';
     /************************************************************************************
      *
      * Object Factory Identifiers

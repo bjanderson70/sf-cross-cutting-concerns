@@ -506,7 +506,7 @@ public virtual without sharing class accc_ApexUtilities {
     }
     /**
      *
-     * @description get the eecuting method name
+     * @description get the executing method name
      * @return method name
      */
     public static String getExecutingMethod() {
@@ -516,7 +516,7 @@ public virtual without sharing class accc_ApexUtilities {
     }
     /**
      *
-     * @description get the excuting class name from an stack trace
+     * @description get the executing class name from an stack trace
      *
      * @param string stack trace
      * @return string class name
@@ -535,7 +535,7 @@ public virtual without sharing class accc_ApexUtilities {
 
     /**
      *
-     * @description get the excuting lineno from an stack trace
+     * @description get the executing lineno from an stack trace
      *
      * @param String stack trace
      * @return string line number
@@ -554,7 +554,7 @@ public virtual without sharing class accc_ApexUtilities {
 
     /**
      *
-     * @description get the excuting method name from an stack trace
+     * @description get the executing method name from an stack trace
      *
      * @param line from the stack trace
      * @return method name
@@ -751,7 +751,7 @@ public virtual without sharing class accc_ApexUtilities {
     /**
     *
      * @description the environment
-     * @return either 'production', 'debug' (in sandbox) or 'testConfig'
+     * @return either 'production', 'debug' (in sandbox) or 'test'
      */
     public static string getEnvironment() {
         string environment = accc_ApexConstants.PRODUCTION_CATEGORY;
@@ -951,7 +951,7 @@ public virtual without sharing class accc_ApexUtilities {
                 popTrace = trace;
             }
         }
-        return trace;
+        return popTrace;
     } // end of popStack
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //

@@ -10,6 +10,8 @@
     <testClassName>accc_ApexClassInstanceMgrTest</testClassName>
     <testClassName>accc_ApexExceptionHandlerTest</testClassName>
     <testClassName>accc_ApexExceptionPolicyStrategyTest</testClassName>
+    <testClassName>accc_ApexKnownCCConcernsFallbackTest</testClassName>
+    <testClassName>accc_ApexLocalL1CacheTest</testClassName>
     <testClassName>accc_ApexLoggerTest</testClassName>
     <testClassName>accc_ApexMailMessageSenderTest</testClassName>
     <testClassName>accc_ApexMessageSendResponseTest</testClassName>
@@ -23,6 +25,7 @@
     <testClassName>accc_ApexUtilitiesTest</testClassName>
     <testClassName>accc_ApplicationLogTest</testClassName>
     <testClassName>accc_BaseMdtDataModelTest</testClassName>
+    <testClassName>accc_ConfigurationTestProviderTest</testClassName>
     <testClassName>accc_CrossCuttingConfigDataModelTest</testClassName>
     <testClassName>accc_CrossCuttingConfigMgrTest</testClassName>
     <testClassName>accc_CrossCuttingUtilityDataModelTest</testClassName>

@@ -39,8 +39,12 @@
         <value xsi:type="xsd:string">accc_ApexKnownCCConcernsFallback</value>
     </values>
     <values>
+        <field>LogFormatter__c</field>
+        <value xsi:type="xsd:string">accc_ApexLogFormatter</value>
+    </values>
+    <values>
         <field>Logger__c</field>
-        <value xsi:type="xsd:string">accc_ApexObjectLogger</value>
+        <value xsi:type="xsd:string">accc_ApexNoOpLogger</value>
     </values>
     <values>
         <field>PreviousTransactionResultResource__c</field>

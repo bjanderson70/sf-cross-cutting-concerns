@@ -383,7 +383,7 @@ private class accc_ApexUtilitiesTest {
     @isTest
     static void testgetExecutingMethod() {
         // assign/act/assert
-        System.assertEquals(accc_ApexUtilities.getExecutingMethod(), 'getExecutingMethod');
+        System.assertEquals(accc_ApexUtilities.getExecutingMethod(), 'testgetExecutingMethod');
 
     }// end of testgetExecutingMethod
     @isTest

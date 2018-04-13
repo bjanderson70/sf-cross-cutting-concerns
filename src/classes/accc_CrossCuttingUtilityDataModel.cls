@@ -38,116 +38,118 @@
  */
 public without sharing class accc_CrossCuttingUtilityDataModel extends accc_BaseMdtDataModel {
 
-	/////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Data Members
-	//
-	/////////////////////////////////////////////////////////////////////////////////////////
-	@TestVisible
-	static private final string TestLabel2018 = 'testLabel';
-	@TestVisible
-	static private final string TestName2018 = 'testName';
-	// name of the custom mdt
-	@TestVisible
-	static private final string MDT_Name = 'CrossCuttingUtilityData__mdt';
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Members
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
+    @TestVisible
+    static private final string TestLabel2018 = 'test';
+    @TestVisible
+    static private final string TestName2018 = 'test';
+    // name of the custom mdt
+    @TestVisible
+    static private final string MDT_Name = 'CrossCuttingUtilityData__mdt';
 
-	@TestVisible
-	static private final List<String> FieldList = new List<String> {
-		'environmentClass__c'
-		, 'maxNumberOfItemsInChunks__c'
-		, 'softAssert__c'
-		, 'triggersEnable__c'
-		, 'UseCachingStrategy__c'
-	};
-	/////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Ctors
-	//
-	/////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * @description data cache information - view representation , allows for changes
-	 * in the implementation (data representation) w/o affecting the consumption
-	 *
-	 */
+    @TestVisible
+    static private final List<String> FieldList = new List<String> {
+        'environmentClass__c'
+        , 'maxNumberOfItemsInChunks__c'
+        , 'softAssert__c'
+        , 'triggersEnable__c'
+        , 'UseCachingStrategy__c'
+        , 'LogLevelForCCC__c'
+        , 'ShowCCDebugInfo__c'
+    };
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Ctors
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * @description data cache information - view representation , allows for changes
+     * in the implementation (data representation) w/o affecting the consumption
+     *
+     */
 
-	public class CrossCuttingUtilityInformation extends accc_BaseMdtDataModel.BaseDataModelInformation {
+    public class CrossCuttingUtilityInformation extends accc_BaseMdtDataModel.BaseDataModelInformation {
 
-		public boolean assertTypeIsSoft;
-		public String environmentClass;
-		public integer maxNumberOfItemsInChunks;
-		public boolean triggersAreEnable;
-		public boolean useCachingStrategy;
+        public boolean assertTypeIsSoft;
+        public String environmentClass;
+        public integer maxNumberOfItemsInChunks;
+        public boolean triggersAreEnable;
+        public boolean useCachingStrategy;
+        public String loglevel;
+        public boolean showCrossCuttingConcernsInfo;
 
-	}
+    }// end of CrossCuttingUtilityInformation
 
-	/**
-	*
-	 * @description ctor
-	 *
-	 */
-	public accc_CrossCuttingUtilityDataModel() {
-		super(MDT_Name);
+    /**
+     * @description ctor
+     *
+     */
+    public accc_CrossCuttingUtilityDataModel() {
+        super(MDT_Name);
 
-	} // end of ctor
-	/////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Protected Methods
-	//
-	/////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	*
-	 * @description populate our external view of the data cache structure
-	 *
-	 * @param cacheMDT the data cache Metadata
-	 * @param the map of data
-	 * @return our view of the data ( allows us to change internally)
-	 */
-	@TestVisible
-	protected override List<accc_BaseMdtDataModel.BaseDataModelInformation> populateFromDataObjectChild(List<SObject> data) {
-		List<CrossCuttingUtilityInformation> results = new List<CrossCuttingUtilityInformation> ();
-		List<CrossCuttingUtilityData__mdt> cmdts = (List<CrossCuttingUtilityData__mdt>) data;
+    } // end of ctor
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Protected Methods
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * @description populate our external view of the data cache structure
+     *
+     * @param cacheMDT the data cache Metadata
+     * @param the map of data
+     * @return our view of the data ( allows us to change internally)
+     */
+    @TestVisible
+    protected override List<accc_BaseMdtDataModel.BaseDataModelInformation> populateFromDataObjectChild(List<SObject> data) {
+        List<CrossCuttingUtilityInformation> results = new List<CrossCuttingUtilityInformation> ();
+        List<CrossCuttingUtilityData__mdt> cmdts = (List<CrossCuttingUtilityData__mdt>) data;
 
-		if (cmdts != null && cmdts.size() > 0) {
-			for (CrossCuttingUtilityData__mdt cmdt : cmdts) {
-				CrossCuttingUtilityInformation result = new CrossCuttingUtilityInformation();
-				this.setValues((accc_BaseMdtDataModel.BaseDataModelInformation)result, cmdt.Label, cmdt.NamespacePrefix, cmdt.DeveloperName);
+        if (cmdts != null && cmdts.size() > 0) {
+            for (CrossCuttingUtilityData__mdt cmdt : cmdts) {
+                CrossCuttingUtilityInformation result = new CrossCuttingUtilityInformation();
+                this.setValues((accc_BaseMdtDataModel.BaseDataModelInformation)result, cmdt.Label, cmdt.NamespacePrefix, cmdt.DeveloperName);
 
 
-				result.assertTypeIsSoft = cmdt.softAssert__c;
-				result.environmentClass = accc_Apexutilities.normalizeString(cmdt.environmentClass__c, true);
-				result.maxNumberOfItemsInChunks = (Integer)cmdt.maxNumberOfItemsInChunks__c;
-				result.triggersAreEnable = cmdt.triggersEnable__c;
-				result.useCachingStrategy = cmdt.UseCachingStrategy__c;
-				results.add(result);
-				system.debug('+++++++++++++++++++++result='+result);
-			}
-		}
+                result.assertTypeIsSoft = cmdt.softAssert__c;
+                result.environmentClass = accc_Apexutilities.normalizeString(cmdt.environmentClass__c, true);
+                result.maxNumberOfItemsInChunks = (Integer)cmdt.maxNumberOfItemsInChunks__c;
+                result.triggersAreEnable = cmdt.triggersEnable__c;
+                result.useCachingStrategy = cmdt.UseCachingStrategy__c;
+                result.showCrossCuttingConcernsInfo = cmdt.ShowCCDebugInfo__c;
+                result.loglevel = cmdt.LogLevelForCCC__c;
 
-		return results;
-	} // end of populateFromDataObjectChild
-	/**
-	*
-	 * @description allow the child to return their custom fields to select
-	 * @return collection of field names
-	 */
-	@TestVisible
-	protected override List<String> getSelectFields() {
-		return accc_CrossCuttingUtilityDataModel.FieldList;
-	} // end of getSelectFields
-	/**
-	*
-	 * @description used to get MDT data and remap to our external view for testing
-	 *
-	 * @return CacheInformation our view
-	 */
-	@TestVisible
-	protected override accc_BaseMdtDataModel.BaseDataModelInformation getTestInformationByLookup() {
+                results.add(result);
+            }
+        }
 
-		List<accc_BaseMdtDataModel.BaseDataModelInformation> results = super.getInformationByLookup(accc_ApexConstants.TEST_CATEGORY,
-		        accc_BaseMdtDataModel.accc_ControlPolicySearchEnum.byLabel);
+        return results;
+    } // end of populateFromDataObjectChild
+    /**
+     * @description allow the child to return their custom fields to select
+     * @return collection of field names
+     */
+    @TestVisible
+    protected override List<String> getSelectFields() {
+        return accc_CrossCuttingUtilityDataModel.FieldList;
+    } // end of getSelectFields
+    /**
+     * @description used to get MDT data and remap to our external view for testing
+     *
+     * @return CacheInformation our view
+     */
+    @TestVisible
+    protected override accc_BaseMdtDataModel.BaseDataModelInformation getTestInformationByLookup() {
 
-		return results != null && results.size() > 0 ? results[0] : null;
-	} // end of getTestInformationByLookup
+        List<accc_BaseMdtDataModel.BaseDataModelInformation> results = super.getInformationByLookup(accc_ApexConstants.TEST_CATEGORY,
+                accc_BaseMdtDataModel.accc_ControlPolicySearchEnum.byLabel);
+
+        return results != null && results.size() > 0 ? results[0] : null;
+    } // end of getTestInformationByLookup
 
 
 } // end of accc_CrossCuttingConfigDataModel

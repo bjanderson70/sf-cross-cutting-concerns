@@ -131,11 +131,8 @@ global without sharing class accc_ApexLogDataModel {
         this.startTime = startTime;
         
         if ( !string.isBlank(this.stackTrace) ) {
-        	// we have to go one level deep
+        	// pop the exception stack, to get the true callee
             String trace = accc_ApexUtilities.popStack(this.stackTrace);
-            //if ( string.isBlank(trace)){
-            //    trace=this.stackTrace;
-            //}
             this.className = accc_ApexUtilities.getExecutingClassName(trace);
             this.methodName = accc_ApexUtilities.getExecutingMethod(trace);
             this.lineNumber = accc_ApexUtilities.getExecutingLineNumber(trace);
