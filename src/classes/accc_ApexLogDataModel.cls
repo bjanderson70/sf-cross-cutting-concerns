@@ -57,6 +57,13 @@ global without sharing class accc_ApexLogDataModel {
     //
     /////////////////////////////////////////////////////////////////////////////////////////
     /**
+    * @description default ctor
+    *
+    */
+    public accc_ApexLogDataModel() {
+        this(null, null, null, null, LoggingLevel.DEBUG, System.currentTimeMillis());
+    } // end of ctor
+    /**
     * @description ctor
     *
     * @param trace stack trace
@@ -65,11 +72,15 @@ global without sharing class accc_ApexLogDataModel {
     public accc_ApexLogDataModel( string trace) {
         this(trace, null, null, null, LoggingLevel.DEBUG, System.currentTimeMillis());
     } // end of ctor
-    /////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Ctor
-    //
-    /////////////////////////////////////////////////////////////////////////////////////////
+    /**
+    * @description ctor
+    *
+    * @param LoggingLevel log level
+    *
+    */
+    public accc_ApexLogDataModel(  LoggingLevel lvl) {
+        this(null, null, null, null, lvl, System.currentTimeMillis());
+    } // end of ctor
     /**
     * @description ctor
     *
@@ -80,12 +91,6 @@ global without sharing class accc_ApexLogDataModel {
     public accc_ApexLogDataModel( string trace, LoggingLevel lvl) {
         this(trace, null, null, null, lvl, System.currentTimeMillis());
     } // end of ctor
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Ctor
-    //
-    /////////////////////////////////////////////////////////////////////////////////////////
     /**
     * @description ctor
     *
@@ -109,7 +114,7 @@ global without sharing class accc_ApexLogDataModel {
      *
      */
     public accc_ApexLogDataModel( string trace, string clsname, string mthname, string lineno, LoggingLevel lvl, long startTime) {
-        this.initialize(trace, clsname, mthname, lineno, lvl,startTime);
+        this.initialize(trace, clsname, mthname, lineno, lvl, startTime);
     } // end of ctor
 
     /**
@@ -129,13 +134,16 @@ global without sharing class accc_ApexLogDataModel {
         this.lineNumber =  accc_Apexutilities.normalizeString(lineno);
         this.logLevel = lvl;
         this.startTime = startTime;
-        
+ system.debug('+++++++++++++++++ before = '+this);
         if ( !string.isBlank(this.stackTrace) ) {
-        	// pop the exception stack, to get the true callee
+            // pop the exception stack, to get the true callee
             String trace = accc_ApexUtilities.popStack(this.stackTrace);
             this.className = accc_ApexUtilities.getExecutingClassName(trace);
             this.methodName = accc_ApexUtilities.getExecutingMethod(trace);
             this.lineNumber = accc_ApexUtilities.getExecutingLineNumber(trace);
         }
-    }
+        system.debug('+++++++++++++++++after  = '+this);
+      
+    }// end of initialize
+
 } // end of accc_ApexLogDataModel

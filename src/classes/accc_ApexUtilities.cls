@@ -523,12 +523,14 @@ public virtual without sharing class accc_ApexUtilities {
      */
     public static String getExecutingClassName(String line) {
         String result = accc_ApexConstants.EmptyString;
-        if ( line != null ) {
+        if ( !string.isblank(line) ) {
             final string tag = 'Class.';
             if (line.startsWith(tag)) {
                 line = line.substringAfter(tag);
+                if ( !string.isblank(line) ) {
+                    result = line.substringBefore(':').substringBeforeLast('.');
+                }
             }
-            result = line.substringBefore(':').substringBeforeLast('.');
         }
         return result;
     } // end of getExecutingClassName
@@ -542,12 +544,14 @@ public virtual without sharing class accc_ApexUtilities {
      */
     public static String getExecutingLineNumber(String line) {
         String result = accc_ApexConstants.EmptyString;
-        if ( line != null ) {
+        if ( !string.isblank(line) ) {
             final string tag = 'Class.';
             if (line.startsWith(tag)) {
                 line = line.substringAfter(tag);
+                if ( !string.isblank(line) ) {
+                    result = line.substringBetween('line', ',');
+                }
             }
-            result = line.substringBetween('line', ',');
         }
         return result;
     } // end of getExecutingLineNumber
@@ -561,8 +565,11 @@ public virtual without sharing class accc_ApexUtilities {
      */
     public static String getExecutingMethod(String line) {
         String result = accc_ApexConstants.EmptyString;
-        if ( line != null ) {
-            result = line.substringBefore(':').substringAfterLast('.');
+        if ( !string.isblank(line) ) {
+            line = line.substringBefore(':');
+            if ( !string.isblank(line) ) {
+                result = line.substringAfterLast('.');
+            }
         }
         return result;
     } // end of getExecutingMethod

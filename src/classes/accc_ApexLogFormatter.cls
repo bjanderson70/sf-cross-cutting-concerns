@@ -62,17 +62,22 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
         String message = accc_ApexUtilities.toString(information);
         accc_ApexLogDataModel dataModel = (accc_ApexLogDataModel)misc;
 
+        // need a data model (minimal information), if null then it did not
+        // come from one of the ILogger classes
+        if (  dataModel == null ) {
+            dataModel = new accc_ApexLogDataModel(LoggingLevel.INFO);
+        }
         //
         // more detail information
         //
-        if ( message != null && dataModel != null ) {
+        if ( message != null ) {
             LoggingLevel theLogLevel = dataModel.logLevel;
-            // here we will provide very FINEST grain information
-            // if running a test
-            //
-            if ( Test.isRunningTest() ) {
-                theLogLevel = LoggingLevel.FINEST;
-            }
+            //// here we will provide very FINEST grain information
+            //// if running a test
+            ////
+            //if ( Test.isRunningTest() ) {
+            //    theLogLevel = LoggingLevel.FINEST;
+            //}
             //
             // Depending on the Logging Level show varying degree of information
             //
@@ -107,6 +112,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @param theLogLevel the log level
      * @return formatted data
      */
+    @TestVisible
     private string finest(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
         return String.format('[{0}] [{1}] [{2}] [{3}] {4}\n [Start Time (ms)] {5} - {6} [Stack Trace] {7}', new String[] {
                                  theLogLevel.name()
@@ -127,6 +133,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @param theLogLevel the log level
      * @return formatted data
      */
+    @TestVisible
     private string fine(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
         return String.format('[{0}] [{1}] [{2}] [{3}] {4}', new String[] {
                                  theLogLevel.name()
@@ -144,6 +151,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @param theLogLevel the log level
      * @return formatted data
      */
+    @TestVisible
     private string finer(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
         return String.format('[{0}] [{1}] [{2}] [{3}] {4}\n[Stack Trace] {5}', new String[] {
                                  theLogLevel.name()
@@ -162,6 +170,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @param theLogLevel the log level
      * @return formatted data
      */
+    @TestVisible
     private string debug(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
         return String.format('[{0}] [{1}] [{2}] {3}', new String[] {
                                  theLogLevel.name()
@@ -178,6 +187,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @param theLogLevel the log level
      * @return formatted data
      */
+    @TestVisible
     private string other(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
         return String.format('[{0}] {1}', new String[] {
                                  theLogLevel.name()

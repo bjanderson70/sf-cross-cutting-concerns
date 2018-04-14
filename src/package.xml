@@ -1,214 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-    <types>
-        <members>*</members>
-        <name>ApexClass</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexTestSuite</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexTrigger</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>CustomMetadata</name>
-    </types>
-    <types>
-        <members>Account</members>
-        <members>Account</members>
-        <members>AccountContactRole</members>
-        <members>Activity</members>
-        <members>Apex_Code_Configuration__mdt</members>
-        <members>ApplicationLog__c</members>
-        <members>Asset</members>
-        <members>AssetRelationship</members>
-        <members>AssistantProgress</members>
-        <members>Campaign</members>
-        <members>CampaignMember</members>
-        <members>Case</members>
-        <members>CaseContactRole</members>
-        <members>CaseMilestone</members>
-        <members>ChannelProgram</members>
-        <members>ChannelProgramLevel</members>
-        <members>ChannelProgramMember</members>
-        <members>CollaborationGroup</members>
-        <members>CollaborationGroupMember</members>
-        <members>Contact</members>
-        <members>ContentVersion</members>
-        <members>Contract</members>
-        <members>ContractContactRole</members>
-        <members>ContractLineItem</members>
-        <members>CrossCuttingUtilityData__mdt</members>
-        <members>DandBCompany</members>
-        <members>DataCachingDataModel__mdt</members>
-        <members>DuplicateRecordItem</members>
-        <members>DuplicateRecordSet</members>
-        <members>EmailMessage</members>
-        <members>Entitlement</members>
-        <members>EntitlementContact</members>
-        <members>EntityMilestone</members>
-        <members>Event</members>
-        <members>ExchangeUserMapping</members>
-        <members>FAQ__kav</members>
-        <members>FeedItem</members>
-        <members>ForecastingAdjustment</members>
-        <members>ForecastingCategoryMapping</members>
-        <members>ForecastingOwnerAdjustment</members>
-        <members>ForecastingQuota</members>
-        <members>ForecastingTypeToCategory</members>
-        <members>How_To__kav</members>
-        <members>Idea</members>
-        <members>Lead</members>
-        <members>LinkedArticle</members>
-        <members>LiveAgentSession</members>
-        <members>LiveChatTranscript</members>
-        <members>LiveChatTranscriptEvent</members>
-        <members>LiveChatTranscriptSkill</members>
-        <members>LiveChatVisitor</members>
-        <members>Log__e</members>
-        <members>Macro</members>
-        <members>MacroAction</members>
-        <members>MacroInstruction</members>
-        <members>NetworkMember</members>
-        <members>Opportunity</members>
-        <members>OpportunityCompetitor</members>
-        <members>OpportunityContactRole</members>
-        <members>OpportunityLineItem</members>
-        <members>OpportunitySplit</members>
-        <members>OpportunityTeamMember</members>
-        <members>Order</members>
-        <members>OrderItem</members>
-        <members>PartnerFundAllocation</members>
-        <members>PartnerFundClaim</members>
-        <members>PartnerFundRequest</members>
-        <members>PartnerMarketingBudget</members>
-        <members>PartnerRole</members>
-        <members>PersonAccount</members>
-        <members>Pricebook2</members>
-        <members>PricebookEntry</members>
-        <members>Product2</members>
-        <members>ProfileSkill</members>
-        <members>ProfileSkillEndorsement</members>
-        <members>ProfileSkillUser</members>
-        <members>QLabs__mdt</members>
-        <members>QuickText</members>
-        <members>Quote</members>
-        <members>QuoteLineItem</members>
-        <members>RequestsForAccessSIQ</members>
-        <members>Scorecard</members>
-        <members>ScorecardAssociation</members>
-        <members>ScorecardMetric</members>
-        <members>ServiceContract</members>
-        <members>Site</members>
-        <members>SocialPersona</members>
-        <members>SocialPost</members>
-        <members>Solution</members>
-        <members>StreamActivityAccess</members>
-        <members>StreamingChannel</members>
-        <members>Task</members>
-        <members>Territory2</members>
-        <members>Territory2Model</members>
-        <members>Topic</members>
-        <members>TopicAssignment</members>
-        <members>User</members>
-        <members>UserProvisioningRequest</members>
-        <members>UserTerritory2Association</members>
-        <members>WorkBadge</members>
-        <members>WorkBadgeDefinition</members>
-        <members>WorkOrder</members>
-        <members>WorkOrderLineItem</members>
-        <members>WorkThanks</members>
-        <name>CustomObject</name>
-    </types>
-    <types>
-        <members>Account-Account Layout</members>
-        <members>Apex_Code_Configuration__mdt-Apex Code Configuration Layout</members>
-        <members>ApplicationLog__c-ApplicationLog Layout</members>
-        <members>Asset-Asset Layout</members>
-        <members>AssetRelationship-Asset Relationship Layout</members>
-        <members>Campaign-Campaign Layout</members>
-        <members>CampaignMember-Campaign Member Page Layout</members>
-        <members>Case-Case Layout</members>
-        <members>CaseClose-Close Case Layout</members>
-        <members>CaseMilestone-Case Milestone Layout</members>
-        <members>ChannelProgram-Channel Program Layout</members>
-        <members>ChannelProgramLevel-Channel Program Level Layout</members>
-        <members>ChannelProgramMember-Channel Program Member Layout</members>
-        <members>Contact-Contact Layout</members>
-        <members>ContentVersion-Content Version Layout</members>
-        <members>Contract-Contract Layout</members>
-        <members>ContractLineItem-Contract Line Item Layout</members>
-        <members>CrossCuttingUtilityData__mdt-CrossCuttingUtilityData Layout</members>
-        <members>DandBCompany-D%26B Company Layout</members>
-        <members>DataCachingDataModel__mdt-DataCaching Layout</members>
-        <members>DuplicateRecordSet-Duplicate Record Set Layout</members>
-        <members>EmailMessage-Email Message Layout</members>
-        <members>Entitlement-Entitlement Layout</members>
-        <members>Event-Event Layout</members>
-        <members>FAQ__kav-FAQ Layout</members>
-        <members>FeedItem-Feed Item Layout</members>
-        <members>Global-Global Layout</members>
-        <members>How_To__kav-How To Layout</members>
-        <members>Idea-Idea Layout</members>
-        <members>Lead-Lead Layout</members>
-        <members>LiveAgentSession-Live Agent Session Layout</members>
-        <members>LiveChatTranscript-Live Chat Transcript Layout</members>
-        <members>LiveChatTranscriptActive-Live Chat Transcript %28In Progress%29 Layout</members>
-        <members>LiveChatTranscriptEvent-Live Chat Transcript Event Layout</members>
-        <members>LiveChatTranscriptWaiting-Live Chat Transcript %28Waiting%29 Layout</members>
-        <members>LiveChatVisitor-Live Chat Visitor Layout</members>
-        <members>Macro-Macro Layout</members>
-        <members>Opportunity-Opportunity Layout</members>
-        <members>OpportunityLineItem-Opportunity Product Layout</members>
-        <members>OpportunitySplit-Opportunity Split Layout</members>
-        <members>OpportunityTeamMember-Opportunity Team Member Layout</members>
-        <members>Order-Order Layout</members>
-        <members>OrderItem-Order Product Layout</members>
-        <members>PartnerFundAllocation-Partner Fund Allocation Layout</members>
-        <members>PartnerFundClaim-Partner Fund Claim Layout</members>
-        <members>PartnerFundRequest-Partner Fund Request Layout</members>
-        <members>PartnerMarketingBudget-Partner Marketing Budget Layout</members>
-        <members>PersonAccount-Person Account Layout</members>
-        <members>Pricebook2-Price Book Layout</members>
-        <members>PricebookEntry-Price Book Entry Layout</members>
-        <members>Product2-Product Layout</members>
-        <members>ProfileSkill-Skill Layout</members>
-        <members>ProfileSkillEndorsement-Endorsement Layout</members>
-        <members>ProfileSkillUser-Skill User Layout</members>
-        <members>QLabs__mdt-QLabs Layout</members>
-        <members>QuickText-Quick Text Layout</members>
-        <members>Quote-Quote Layout</members>
-        <members>QuoteLineItem-Quote Line Item Layout</members>
-        <members>Scorecard-Scorecard Layout</members>
-        <members>ScorecardAssociation-Scorecard Association Layout</members>
-        <members>ScorecardMetric-Scorecard Metric Layout</members>
-        <members>ServiceContract-Service Contract Layout</members>
-        <members>SocialPersona-Social Persona Layout</members>
-        <members>SocialPost-Social Post Layout</members>
-        <members>Solution-Solution Layout</members>
-        <members>Task-Task Layout</members>
-        <members>User-User Layout</members>
-        <members>UserProvAccount-User Provisioning Account Layout</members>
-        <members>UserProvisioningLog-User Provisioning Log Layout</members>
-        <members>UserProvisioningRequest-User Provisioning Request Layout</members>
-        <members>WorkAccess-Access Layout</members>
-        <members>WorkBadge-Badge Layout</members>
-        <members>WorkBadgeDefinition-Badge Definition Layout</members>
-        <members>WorkOrder-Work Order Layout</members>
-        <members>WorkOrderLineItem-Work Order Line Item Layout</members>
-        <members>WorkThanks-Thanks Layout</members>
-        <name>Layout</name>
-    </types>
-    <types>
-        <members>Apex_Code_Configuration__mdt</members>
-        <members>ApplicationLog__c</members>
-        <members>DataCachingDataModel__mdt</members>
-        <members>CrossCuttingUtilityData__mdt</members>
-        <members>Log__e</members>
-        <name>CustomObject</name>
-    </types>
-    <version>41.0</version>
+	<types>
+		<members>*</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>ApexTestSuite</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>ApexTrigger</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>CustomMetadata</name>
+	</types>
+	<types>
+		<members>Apex_Code_Configuration__mdt</members>
+		<members>ApplicationLog__c</members>
+		<members>DataCachingDataModel__mdt</members>
+		<members>CrossCuttingUtilityData__mdt</members>
+		<members>Log__e</members>
+		<name>CustomObject</name>
+	</types>
+	<types>
+		<members>Account-Account Layout</members>
+		<members>Apex_Code_Configuration__mdt-Apex Code Configuration Layout</members>
+		<members>ApplicationLog__c-ApplicationLog Layout</members>
+		<members>Asset-Asset Layout</members>
+		<members>AssetRelationship-Asset Relationship Layout</members>
+		<members>Campaign-Campaign Layout</members>
+		<members>CampaignMember-Campaign Member Page Layout</members>
+		<members>Case-Case Layout</members>
+		<members>CaseClose-Close Case Layout</members>
+		<members>CaseMilestone-Case Milestone Layout</members>
+		<members>ChannelProgram-Channel Program Layout</members>
+		<members>ChannelProgramLevel-Channel Program Level Layout</members>
+		<members>ChannelProgramMember-Channel Program Member Layout</members>
+		<members>Contact-Contact Layout</members>
+		<members>ContentVersion-Content Version Layout</members>
+		<members>Contract-Contract Layout</members>
+		<members>ContractLineItem-Contract Line Item Layout</members>
+		<members>CrossCuttingUtilityData__mdt-CrossCuttingUtilityData Layout</members>
+		<members>DandBCompany-D%26B Company Layout</members>
+		<members>DataCachingDataModel__mdt-DataCaching Layout</members>
+		<members>DuplicateRecordSet-Duplicate Record Set Layout</members>
+		<members>EmailMessage-Email Message Layout</members>
+		<members>Entitlement-Entitlement Layout</members>
+		<members>Event-Event Layout</members>
+		<members>FAQ__kav-FAQ Layout</members>
+		<members>FeedItem-Feed Item Layout</members>
+		<members>Global-Global Layout</members>
+		<members>How_To__kav-How To Layout</members>
+		<members>Idea-Idea Layout</members>
+		<members>Lead-Lead Layout</members>
+		<members>LiveAgentSession-Live Agent Session Layout</members>
+		<members>LiveChatTranscript-Live Chat Transcript Layout</members>
+		<members>LiveChatTranscriptActive-Live Chat Transcript %28In Progress%29 Layout</members>
+		<members>LiveChatTranscriptEvent-Live Chat Transcript Event Layout</members>
+		<members>LiveChatTranscriptWaiting-Live Chat Transcript %28Waiting%29 Layout</members>
+		<members>LiveChatVisitor-Live Chat Visitor Layout</members>
+		<members>Macro-Macro Layout</members>
+		<members>Opportunity-Opportunity Layout</members>
+		<members>OpportunityLineItem-Opportunity Product Layout</members>
+		<members>OpportunitySplit-Opportunity Split Layout</members>
+		<members>OpportunityTeamMember-Opportunity Team Member Layout</members>
+		<members>Order-Order Layout</members>
+		<members>OrderItem-Order Product Layout</members>
+		<members>PartnerFundAllocation-Partner Fund Allocation Layout</members>
+		<members>PartnerFundClaim-Partner Fund Claim Layout</members>
+		<members>PartnerFundRequest-Partner Fund Request Layout</members>
+		<members>PartnerMarketingBudget-Partner Marketing Budget Layout</members>
+		<members>PersonAccount-Person Account Layout</members>
+		<members>Pricebook2-Price Book Layout</members>
+		<members>PricebookEntry-Price Book Entry Layout</members>
+		<members>Product2-Product Layout</members>
+		<members>ProfileSkill-Skill Layout</members>
+		<members>ProfileSkillEndorsement-Endorsement Layout</members>
+		<members>ProfileSkillUser-Skill User Layout</members>
+		<members>QLabs__mdt-QLabs Layout</members>
+		<members>QuickText-Quick Text Layout</members>
+		<members>Quote-Quote Layout</members>
+		<members>QuoteLineItem-Quote Line Item Layout</members>
+		<members>Scorecard-Scorecard Layout</members>
+		<members>ScorecardAssociation-Scorecard Association Layout</members>
+		<members>ScorecardMetric-Scorecard Metric Layout</members>
+		<members>ServiceContract-Service Contract Layout</members>
+		<members>SocialPersona-Social Persona Layout</members>
+		<members>SocialPost-Social Post Layout</members>
+		<members>Solution-Solution Layout</members>
+		<members>Task-Task Layout</members>
+		<members>User-User Layout</members>
+		<members>UserProvAccount-User Provisioning Account Layout</members>
+		<members>UserProvisioningLog-User Provisioning Log Layout</members>
+		<members>UserProvisioningRequest-User Provisioning Request Layout</members>
+		<members>WorkAccess-Access Layout</members>
+		<members>WorkBadge-Badge Layout</members>
+		<members>WorkBadgeDefinition-Badge Definition Layout</members>
+		<members>WorkOrder-Work Order Layout</members>
+		<members>WorkOrderLineItem-Work Order Line Item Layout</members>
+		<members>WorkThanks-Thanks Layout</members>
+		<name>Layout</name>
+	</types>
+	<version>41.0</version>
 </Package>

@@ -43,6 +43,48 @@ private class accc_ApexLogDataModelTest {
         // assert
         system.assertEquals('', model.stacktrace);
     } // end of testctor
+    @isTest
+    static void testdefaultctor() {
+        // assign /act
+        accc_ApexLogDataModel model = new accc_ApexLogDataModel();
+        // assert
+        system.assertEquals('', model.stacktrace);
+        system.assertEquals(LoggingLevel.DEBUG, model.logLevel);
+    } // end of testdefaultctor
+    @isTest
+    static void testctorWithLogLevel() {
+        // assign /act
+        accc_ApexLogDataModel model = new accc_ApexLogDataModel(LoggingLevel.ERROR);
+        // assert
+        system.assertEquals('', model.stacktrace);
+        system.assertEquals(LoggingLevel.ERROR, model.logLevel);
+    } // end of testctorWithLogLevel
+
+    @isTest
+    static void testctorWith3Params() {
+        // assign /act
+        Long ms = system.currentTimeMillis();
+        accc_ApexLogDataModel model = new accc_ApexLogDataModel('', LoggingLevel.ERROR, ms);
+        // assert
+        system.assertEquals('', model.stacktrace);
+        system.assertEquals(LoggingLevel.ERROR, model.logLevel);
+        system.assertEquals(ms, model.startTime);
+    } // end of testctorWith3Params
+
+    @isTest
+    static void testctorWithGarbageTrace() {
+        // assign /act
+        final String garbageTrace = 'jsj sjs jssjj ssjas udiqwri qwi qe';
+        Long ms = system.currentTimeMillis();
+        accc_ApexLogDataModel model = new accc_ApexLogDataModel(garbageTrace, LoggingLevel.ERROR, ms);
+        // assert
+        system.assertEquals(garbageTrace, model.stacktrace);
+        system.assertEquals(accc_ApexConstants.EmptyString, model.className);
+        system.assertEquals(accc_ApexConstants.EmptyString, model.methodName);
+        system.assertEquals(accc_ApexConstants.EmptyString, model.lineNumber);
+        system.assertEquals(LoggingLevel.ERROR, model.logLevel);
+        system.assertEquals(ms, model.startTime);
+    } // end of testctorWithGarbageTrace
 
     @isTest
     static void testctorValidParam() {
