@@ -79,7 +79,10 @@ private class accc_CustomSettingsTest {
             accc_ApexConstants.TriggersEnabled_r,
             accc_ApexConstants.MaxChunkSize_r,
             accc_ApexConstants.SoftAsserts_r,
-            accc_ApexConstants.EnvironmentClass_r
+            accc_ApexConstants.EnvironmentClass_r,
+            accc_ApexConstants.TraceFlagOn_r,
+            accc_ApexConstants.TraceLogLevel_r ,
+            accc_ApexConstants.ShowCCTraceInfo_r
         };
         // act
         for ( String item : knowns ) {

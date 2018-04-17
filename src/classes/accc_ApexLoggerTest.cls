@@ -38,7 +38,6 @@
 private class accc_ApexLoggerTest {
 
     /**
-    *
      * @description [Check message validity
      */
     @isTest static void testMessages() {
@@ -54,7 +53,6 @@ private class accc_ApexLoggerTest {
     } // end of testMessages
 
     /**
-    *
      * @description est log level
      */
     @isTest static void testLogLevel() {
@@ -72,12 +70,11 @@ private class accc_ApexLoggerTest {
 
         for (Integer inx = 0; inx < loglevel.size(); inx++) {
             logger.logLevel(loglevel[inx]);
-            system.assertEquals(String.valueOf(loglevel[inx]), String.valueOf(loglevel[inx]));
+            system.assertEquals(String.valueOf(loglevel[inx]), loglevel[inx].name());
         }
     } // end of testLogLevel
 
     /**
-    *
      * @description Explicit Log
      */
     @isTest static void testExplicitLogLevel() {
@@ -86,23 +83,22 @@ private class accc_ApexLoggerTest {
         accc_ILogger logger = accc_ApexLoggerTest.getLogger(LoggingLevel.DEBUG);
 
         logger.info(message);
-        system.assertEquals(true, logger.lastMessage().contains(String.valueOf(LoggingLevel.INFO)) );
+        system.assertEquals(true, logger.lastMessage().contains(LoggingLevel.INFO.name()) );
         logger.warn(message);
-        system.assertEquals( true, logger.lastMessage().contains(String.valueOf(LoggingLevel.WARN)) );
+        system.assertEquals( true, logger.lastMessage().contains(LoggingLevel.WARN.name()) );
         logger.debug(message);
-        system.assertEquals( true, logger.lastMessage().contains(String.valueOf(LoggingLevel.DEBUG))  );
+        system.assertEquals( true, logger.lastMessage().contains(LoggingLevel.DEBUG.name())  );
         logger.error(message);
-        system.assertEquals(  true, logger.lastMessage().contains(String.valueOf(LoggingLevel.ERROR))  );
+        system.assertEquals(  true, logger.lastMessage().contains(LoggingLevel.ERROR.name())  );
         logger.fine(message);
-        system.assertEquals(  true, logger.lastMessage().contains(String.valueOf(LoggingLevel.FINE)) );
+        system.assertEquals(  true, logger.lastMessage().contains(LoggingLevel.FINE.name()) );
         logger.finer(message);
-        system.assertEquals(  true, logger.lastMessage().contains(String.valueOf(LoggingLevel.FINER)) );
+        system.assertEquals(  true, logger.lastMessage().contains(LoggingLevel.FINER.name()) );
         logger.finest(message);
-        system.assertEquals(  true, logger.lastMessage().contains(String.valueOf(LoggingLevel.FINEST)) );
+        system.assertEquals(  true, logger.lastMessage().contains(LoggingLevel.FINEST.name()) );
     } // end of testExplicitLogLevel
 
     /**
-    *
      * @description test message written with proper log level
      */
     @isTest static void testMessagesWithInjectionOfLogLevel() {
@@ -113,9 +109,41 @@ private class accc_ApexLoggerTest {
 
         for (Integer i = 0; i < messages.size(); i++) {
             logger.write(messages[i]);
-            system.assertEquals(true, logger.lastMessage().contains(String.valueOf(LoggingLevel.FINEST)));
+            system.assertEquals(true, logger.lastMessage().contains(LoggingLevel.FINEST.name()));
         }
     } // end of testMessagesWithInjectionOfLogLevel
+
+    /**
+    * @description test message traced with proper log level
+    */
+    @isTest static void testTraceMessagesWithInjectionOfLogLevel() {
+        // arrange & act
+        List<String> messages = accc_ApexLoggerTest.getLogMessages();
+        LoggingLevel lvl = (LoggingLevel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.TraceLogLevel_r);
+
+        accc_ILogger logger = accc_ApexLoggerTest.getLogger(lvl);
+
+        for (Integer i = 0; i < messages.size(); i++) {
+            logger.trace(messages[i]);
+            system.assertEquals(true, logger.lastMessage().contains(lvl.name()));
+        }
+    } // end of testTraceMessagesWithInjectionOfLogLevel
+
+    /**
+    * @description test message traced with proper log level
+    */
+    @isTest static void testTraceListOfMessagesWithInjectionOfLogLevel() {
+        // arrange & act
+        List<String> messages = accc_ApexLoggerTest.getLogMessages();
+        LoggingLevel lvl = (LoggingLevel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.TraceLogLevel_r);
+
+        accc_ILogger logger = accc_ApexLoggerTest.getLogger(lvl);
+
+        for (Integer inx = 0; inx < messages.size(); inx++) {
+            logger.trace(new List<Object> {messages[inx]});
+            system.assertEquals(true, logger.lastMessage().contains(messages[inx]));
+        }
+    } // end of testTraceListOfMessagesWithInjectionOfLogLevel
 
     /**
     *
@@ -129,7 +157,7 @@ private class accc_ApexLoggerTest {
 
         for (Integer i = 0; i < messages.size(); i++) {
             logger.write(messages[i]);
-            system.assertNotEquals( true, logger.lastMessage().contains(String.valueOf(LoggingLevel.FINER)));
+            system.assertNotEquals( true, logger.lastMessage().contains(LoggingLevel.FINER.name()));
         }
     } // end of negativeTestMessagesWithInjectionOfLogLevel
 
@@ -163,8 +191,16 @@ private class accc_ApexLoggerTest {
         System.assertEquals(true, logger.lastMessage().contains(lastValue));
     }// end of testwriteWithArraySendLoggerWith3Params
 
+    @isTest
+    static void testisTracingOn() {
+        // assign
+        accc_ApexLogger logger = new accc_ApexLogger();
+        // act / asssert
+        System.assertEquals(true, logger.isTracingOn());
+    } // end of testisTracingOn
     //
     // get the logger ... can be changed to pull from the test environment (if needed)
+    //
     private static accc_ILogger getLogger(LoggingLevel loglevel) {
         return new accc_ApexLogger(logLevel);
     } // end of getLogger

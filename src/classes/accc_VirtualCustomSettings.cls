@@ -95,7 +95,7 @@ public virtual class accc_VirtualCustomSettings implements accc_IConfigurationPr
     * @description show the trace information for CC type files
     * @return boolean, true if  trace information for CC type files is shown
     */
-    public static boolean showCCTraceInfo() {
+    public virtual boolean showCCTraceInfo() {
         return accc_CustomSettings.showCCTraceInfo();
     } // end of showCCTraceInfo
     /**
