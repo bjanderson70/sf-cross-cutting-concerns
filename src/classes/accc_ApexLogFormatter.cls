@@ -72,12 +72,6 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
         //
         if ( message != null ) {
             LoggingLevel theLogLevel = dataModel.logLevel;
-            //// here we will provide very FINEST grain information
-            //// if running a test
-            ////
-            //if ( Test.isRunningTest() ) {
-            //    theLogLevel = LoggingLevel.FINEST;
-            //}
             //
             // Depending on the Logging Level show varying degree of information
             //
@@ -107,9 +101,9 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
     /**
      * @description finest format
      *
-     * @param message the message
-     * @param dataModel the log data model
-     * @param theLogLevel the log level
+     * @param String the message
+     * @param accc_ApexLogDataModel the log data model
+     * @param LoggingLevel the log level
      * @return formatted data
      */
     @TestVisible
@@ -128,9 +122,9 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
     /**
      * @description fine format
      *
-     * @param message the message
-     * @param dataModel the log data model
-     * @param theLogLevel the log level
+     * @param String the message
+     * @param accc_ApexLogDataModel the log data model
+     * @param LoggingLevel the log level
      * @return formatted data
      */
     @TestVisible
@@ -146,9 +140,9 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
     /**
      * @description finer format
      *
-     * @param message the message
-     * @param dataModel the log data model
-     * @param theLogLevel the log level
+     * @param String the message
+     * @param accc_ApexLogDataModel the log data model
+     * @param LoggingLevel the log level
      * @return formatted data
      */
     @TestVisible
@@ -165,9 +159,9 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
     /**
      * @description debug format
      *
-     * @param message the message
-     * @param dataModel the log data model
-     * @param theLogLevel the log level
+     * @param String the message
+     * @param accc_ApexLogDataModel the log data model
+     * @param LoggingLevel the log level
      * @return formatted data
      */
     @TestVisible
@@ -184,7 +178,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      *
      * @param message the message
      * @param dataModel the log data model
-     * @param theLogLevel the log level
+     * @param LoggingLevel the log level
      * @return formatted data
      */
     @TestVisible

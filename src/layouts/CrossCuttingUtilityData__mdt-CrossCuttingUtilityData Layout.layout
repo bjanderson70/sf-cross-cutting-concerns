@@ -16,7 +16,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>UseCachingStrategy__c</field>
+                <field>useCachingStrategy__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -24,7 +24,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>ShowCCDebugInfo__c</field>
+                <field>showCCInfo__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>traceFlagOn__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -45,8 +49,8 @@
                 <field>environmentClass__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>LogLevelForCCC__c</field>
+                <behavior>Required</behavior>
+                <field>logLevelForTrace__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>

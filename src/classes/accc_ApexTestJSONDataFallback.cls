@@ -87,6 +87,9 @@ public class accc_ApexTestJSONDataFallback  extends accc_ApexBaseFallback {
             '},' +
             '"' + accc_ApexConstants.UseCachingStrategy_r + '": "true",' +
             '"' + accc_ApexConstants.TriggersEnabled_r + '": "true",' +
+            '"' + accc_ApexConstants.TraceFlagOn_r + '": "true",' +
+            '"' + accc_ApexConstants.TraceLogLevel_r + '": "debug",' +
+            '"' + accc_ApexConstants.ShowCCTraceInfo_r + '": "false",' +
             '"' + accc_ApexConstants.SoftAsserts_r + '": "true",' +
             '"' + accc_ApexConstants.EnvironmentClass_r + '": "TestEnvironmentSingleton",' +
             '"' + accc_ApexConstants.MaxChunkSize_r + '": "' + integer.valueOf(accc_ApexConstants.DEFAULT_MAX_NUMBER_OF_ITEMS_IN_CHUNK) + '"' +

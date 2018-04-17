@@ -53,6 +53,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     @TestVisible
     protected accc_ApexLogDataModel dataModel = null;
 
+
     /**
      * @description Last message written
      */
@@ -69,6 +70,11 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
      */
     @TestVisible
     private  accc_IDataFormat alogFormatter = null;
+    /**
+     * is tracing on
+     */
+    @TestVisible
+    private Object tracingIsOn = null;
 
     ////////////////////////////////////////////////////////////////////////////////
     ///  Protected Properties
@@ -127,19 +133,61 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
      * @param Object msg to write
      */
     public void write(Object msg) {
-        this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
-
-        this.write(this.logLevel(), this.logFormatter.format(msg , this.dataModel));
+        if ( msg != null ) {
+            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
+            this.write(this.logLevel(), this.logFormatter.format(msg , this.dataModel));
+        }
     } // end of write
     /**
      * @description write out messages to sink based on the  log level setting
      *
-     * @param msgs Objects to write
+     * @param List<Object> Objects to write
      */
     public void write(List<Object> msgs) {
-        this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
-        this.write(this.logLevel(), msgs);
+        if ( msgs != null ) {
+            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
+            this.write(this.logLevel(), this.logFormatter.format(String.valueOf(msgs) , this.dataModel));
+        }
     } // end of write
+    /**
+    * @description trace message behaves like a write,but only if trace flag is on.
+    * In addition, if this is a cross-cutting type (i.e. 'accc_') and the show CC flag is off, then the trace
+    * for cross-cutting data is NOT display. Why? for the system debug log, will fill at @2M and you may not want
+    * to see the cross-cutting information.
+    *
+    * @param Object Object to write
+    */
+    public void trace(Object msg) {
+
+        if ( msg != null && this.isTracingOn()  ) {
+            LoggingLevel lvl = (LoggingLevel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.TraceLogLevel_r);
+            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString(), lvl);
+            
+            if ( this.isTheTraceNotCCandShowAllowed() ) {
+                this.write(lvl, this.logFormatter.format(msg, this.dataModel));
+            }
+        }
+    }// end of trace
+    /**
+    * @description trace messages behaves like a write,but only if trace flag is on.
+    * In addition, if this is a cross-cutting type (i.e. 'accc_') and the show CC flag is off, then the trace
+    * for cross-cutting data is NOT display. Why? for the system debug log, will fill at @2M and you may not want
+    * to see the cross-cutting information.
+    * 
+    * @param List<Object> Objects to write
+    */
+    public void trace(List<Object> msgs) {
+
+        if (  msgs != null && this.isTracingOn() ) {
+            LoggingLevel lvl = (LoggingLevel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.TraceLogLevel_r);
+            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString(), lvl);
+            string allstring = string.join(msgs, ',');
+
+            if ( this.isTheTraceNotCCandShowAllowed() ) {
+                this.write(lvl,  this.logFormatter.format(allstring, this.dataModel) ) ;
+            }
+        }
+    } // end of trace
     /**
      * @description info log level
      *
@@ -258,11 +306,9 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     @TestVisible
     protected virtual void write(LoggingLevel level, List<Object> messages) {
         if ( messages != null ) {
-            integer sz = messages.size();
-            // do one at a time ...  revisit - TBD
-            for (integer inx = 0; inx < sz; inx++) {
-                this.write(level, this.logFormatter.format(messages[inx], this.dataModel), true);
-            }
+            string allstring = string.join(messages, ',');
+            // bulk it ...  revisit - TBD
+            this.write(level, allstring, true);
         }
     } // end of write
     /**
@@ -321,4 +367,35 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
         this.theLastMessage = String.format('{0} : {1}', new String[] { level.name(), msg });
     } // end of setLastMessage
 
+    /**
+     * @description is the tracing on
+     * @return trus, if tracing is on
+     */
+    @TestVisible
+    protected boolean isTracingOn() {
+
+        if ( this.tracingIsOn == null) {
+            this.tracingIsOn = accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.TraceFlagOn_r);
+        }
+        return (boolean)this.tracingIsOn;
+
+    } // end of isTracingOn
+
+    /**
+     * @description If the information is cross-cutting type and the user DOES NOT want to show the
+     * cross-cutting information/trace data then return false; other true
+     * @return Boolean false, is a cross-cutting concern and the user doe snot want to see the cross-cutting information
+     */
+    @TestVisible
+    protected boolean isTheTraceNotCCandShowAllowed() {
+        boolean showCCTracing = (boolean) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.ShowCCTraceInfo_r);
+        boolean result = true;
+
+        if ( this.dataModel != null &&
+                this.dataModel.isCrossCutting &&
+                !showCCTracing ) {
+            result = false;
+        }
+        return result;
+    } // end of isTheTraceNotCCandShowAllowed
 } // end of accc_ApexLogger

@@ -1,22 +1,22 @@
 /**
  * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *   * Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *   * Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
  *     distribution.
- * 
+ *
  *   * Neither the name of Bill Anderson nor the names of its
  *     contributors may be used to endorse or promote products derived
  *     from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -38,78 +38,90 @@
  */
 public virtual interface accc_ILogger {
 
-   /**
-	 * @description  last written message
-	 */
-	String lastMessage();
-   /**
-	* @description write out message to sink based on the  log level setting
-	*
-	* @param msg Object to write
-	*/
-	void write(Object msg);
-   /**
-	* @description write out messages to sink based on the  log level setting
-	*
-	* @param msg Objects to write
-	*/
-	void write(List<Object> msg);
-   /**
-	* @description info log level
-	*
-	* @param msg Object to write
-	*/
-	void info(Object msg);
+    /**
+     * @description  last written message
+     */
+    String lastMessage();
+    /**
+    * @description trace message behaves like a write,but only if trace flag is on
+    *
+    * @param msg Object to write
+    */
+    void trace(Object msg);
+    /**
+    * @description trace messages behaves like a write,but only if trace flag is on
+    *
+    * @param msg Objects to write
+    */
+    void trace(List<Object> msg);
+    /**
+    * @description write out message to sink based on the  log level setting
+    *
+    * @param msg Object to write
+    */
+    void write(Object msg);
+    /**
+    * @description write out messages to sink based on the  log level setting
+    *
+    * @param msg Objects to write
+    */
+    void write(List<Object> msg);
+    /**
+    * @description info log level
+    *
+    * @param msg Object to write
+    */
+    void info(Object msg);
 
-   /**
-	* @description debug log level
-	*
-	* @param msg Object to write
-	*/
-	void debug(Object msg);
+    /**
+    * @description debug log level
+    *
+    * @param msg Object to write
+    */
+    void debug(Object msg);
 
-   /**
-	* @description warn log level
-	*
-	* @param msg Object to write
-	*/
-	void warn(Object msg);
+    /**
+    * @description warn log level
+    *
+    * @param msg Object to write
+    */
+    void warn(Object msg);
 
-   /**
-	* @description error log level
-	*
-	* @param msg Object to write
-	*/
-	void error(Object msg);
+    /**
+    * @description error log level
+    *
+    * @param msg Object to write
+    */
+    void error(Object msg);
 
-   /**
-	* @description fine log level
-	*
-	* @param msg Object to write
-	*/
-	void fine(Object msg);
-   /**
-	* @description finer log level
-	*
-	* @param msg Object to write
-	*/
-	void finer(Object msg);
-   /**
-	* @description finest log level
-	*
-	* @param msg Object to write
-	*/
-	void finest(Object msg);
-   /**
-	 * @description get the current logging level
-	 * @return LoggingLevel
-	 */
-	LoggingLevel logLevel();
-   /**
-	* @description set the current logging level
-	*
-	* @param level LoggingLevel
-	*/
-	void logLevel(LoggingLevel level);
+    /**
+    * @description fine log level
+    *
+    * @param msg Object to write
+    */
+    void fine(Object msg);
+    /**
+    * @description finer log level
+    *
+    * @param msg Object to write
+    */
+    void finer(Object msg);
+    /**
+    * @description finest log level
+    *
+    * @param msg Object to write
+    */
+    void finest(Object msg);
+    /**
+     * @description get the current logging level
+     * @return LoggingLevel
+     */
+    LoggingLevel logLevel();
+    /**
+    * @description set the current logging level
+    *
+    * @param level LoggingLevel
+    */
+    void logLevel(LoggingLevel level);
 
 } // end of accc_ILogger

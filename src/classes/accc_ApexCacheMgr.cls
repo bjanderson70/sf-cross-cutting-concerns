@@ -43,7 +43,7 @@
  *
  * @group Common Layer
  */
-public virtual without sharing class accc_ApexCacheMgr {
+public virtual without sharing class accc_ApexCacheMgr  {
 	/*---------------------------------------------------------------------------------------
 	 * DATA MEMBERS
 	 *---------------------------------------------------------------------------------------
@@ -99,12 +99,12 @@ public virtual without sharing class accc_ApexCacheMgr {
 	 * @param useCachingStrategy true to use the cache strategy; otherwise bypass
 	 */
 	public accc_ApexCacheMgr(boolean useCachingStrategy) {
-		accc_ApexRunEnvironmentSingleton.getInstance().logger().write('Entered useCachingStrategy='+useCachingStrategy);
+		accc_ApexRunEnvironmentSingleton.getInstance().logger().trace('Entered useCachingStrategy='+useCachingStrategy);
 		this.theCache = accc_ApexRunEnvironmentSingleton.getInstance().cache();
 		this.theCacheStrategy = accc_ApexRunEnvironmentSingleton.getInstance().cachePolicyStrategy();
 		this.theCacheStrategyInvocation = accc_ApexRunEnvironmentSingleton.getInstance().cacheStrategyInvocation();
 		this.useCacheStrategy = useCachingStrategy;
-		accc_ApexRunEnvironmentSingleton.getInstance().logger().write('Exited');
+		accc_ApexRunEnvironmentSingleton.getInstance().logger().trace('Exited');
 	} // end of ctor
 	/*---------------------------------------------------------------------------------------
 	 * PUBLIC METHODS
@@ -141,14 +141,14 @@ public virtual without sharing class accc_ApexCacheMgr {
 		Object result = null;
 		String identifier = accc_ApexUtilities.makeCacheIdentifier(category, label);
 
-		accc_ApexRunEnvironmentSingleton.getInstance().logger().write('Entered, identifier='+identifier);
+		accc_ApexRunEnvironmentSingleton.getInstance().logger().trace('Entered, identifier='+identifier);
 
 		if ( !string.isBlank(identifier)) {
 			string partition = this.getCachePartition(category, label);
 
 			result = this.theCache.get(partition, identifier);
 		}
-		accc_ApexRunEnvironmentSingleton.getInstance().logger().write('Exited');
+		accc_ApexRunEnvironmentSingleton.getInstance().logger().trace('Exited');
 		return result;
 	} // end of cache
 
@@ -186,7 +186,7 @@ public virtual without sharing class accc_ApexCacheMgr {
 		Boolean  result = false;
 
 		String identifier = accc_ApexUtilities.makeCacheIdentifier(category, label);
-		accc_ApexRunEnvironmentSingleton.getInstance().logger().write('Entered, identifier='+ identifier);
+		accc_ApexRunEnvironmentSingleton.getInstance().logger().trace('Entered, identifier='+ identifier);
 
 		if ( !string.isBlank(identifier) && datum != null) {
 			try {
@@ -208,7 +208,7 @@ public virtual without sharing class accc_ApexCacheMgr {
 				accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
 			}
 		}
-		accc_ApexRunEnvironmentSingleton.getInstance().logger().write('Exited, result='+result);
+		accc_ApexRunEnvironmentSingleton.getInstance().logger().trace('Exited, result='+result);
 
 		return result;
 	} // end of cache
@@ -235,7 +235,7 @@ public virtual without sharing class accc_ApexCacheMgr {
 		List<accc_BaseMdtDataModel.BaseDataModelInformation> result = null;
 		string key = accc_ApexUtilities.makeLocalCacheKey(category, byLabel);
 
-		accc_ApexRunEnvironmentSingleton.getInstance().logger().write('Entered key:' + key);
+		accc_ApexRunEnvironmentSingleton.getInstance().logger().trace('Entered key:' + key);
 		// check out local cache
 		item = (accc_DataCachingDataModel.CacheInformation)l1Cache.get(key);
 		// was the item in the local cache ( locality of reference?)
@@ -255,7 +255,7 @@ public virtual without sharing class accc_ApexCacheMgr {
 				l1Cache.put(key, item);
 			}
 		}
-		accc_ApexRunEnvironmentSingleton.getInstance().logger().write('Exited');
+		accc_ApexRunEnvironmentSingleton.getInstance().logger().trace('Exited');
 		return item;
 	} // end of cacheInformation
 
@@ -271,11 +271,11 @@ public virtual without sharing class accc_ApexCacheMgr {
 	private string getCachePartition(String category, String label) {
 		String partition = accc_ApexConstants.DefaultCachePartitionName_s;
 		accc_DataCachingDataModel.CacheInformation info = this.cacheInformation(category, label);
-		accc_ApexRunEnvironmentSingleton.getInstance().logger().write('Entered');
+		accc_ApexRunEnvironmentSingleton.getInstance().logger().trace('Entered');
 		if ( info != null ) {
 			partition = info.cachePartition;
 		}
-		accc_ApexRunEnvironmentSingleton.getInstance().logger().write('Exited, partition=' + partition);
+		accc_ApexRunEnvironmentSingleton.getInstance().logger().trace('Exited, partition=' + partition);
 		return partition;
 	} // end of getPartition
 

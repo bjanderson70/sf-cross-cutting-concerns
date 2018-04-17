@@ -19,8 +19,8 @@
 	<types>
 		<members>Apex_Code_Configuration__mdt</members>
 		<members>ApplicationLog__c</members>
-		<members>DataCachingDataModel__mdt</members>
 		<members>CrossCuttingUtilityData__mdt</members>
+		<members>DataCachingDataModel__mdt</members>
 		<members>Log__e</members>
 		<name>CustomObject</name>
 	</types>

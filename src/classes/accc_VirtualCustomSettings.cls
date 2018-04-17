@@ -76,7 +76,28 @@ public virtual class accc_VirtualCustomSettings implements accc_IConfigurationPr
     public virtual boolean triggersEnable() {
         return accc_CustomSettings.triggersEnable();
     } // end of triggersEnable
+    /**
+    * @description trace flag is on
+    * @return boolean, true if trace flag is on
+    */
+    public virtual boolean traceFlagOn() {
+        return accc_CustomSettings.traceFlagOn();
+    } // end of traceFlagOn
 
+    /**
+     * @description trace flag is on
+     * @return boolean, true if trace flag is on
+     */
+    public virtual LoggingLevel traceLogLevel() {
+        return accc_CustomSettings.traceLogLevel();
+    } // end of traceLogLevel
+    /**
+    * @description show the trace information for CC type files
+    * @return boolean, true if  trace information for CC type files is shown
+    */
+    public static boolean showCCTraceInfo() {
+        return accc_CustomSettings.showCCTraceInfo();
+    } // end of showCCTraceInfo
     /**
      * @description determine if we are using caching strategy
      * @return true, if using caching strategy

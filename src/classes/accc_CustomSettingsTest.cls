@@ -41,7 +41,6 @@ private class accc_CustomSettingsTest {
     static void testdefaultMaxNumberOfItemsInChunks() {
         // assign
         integer defaultSz = -1;
-
         // act
         defaultSz = accc_CustomSettings.defaultMaxNumberOfItemsInChunks();
         // assert

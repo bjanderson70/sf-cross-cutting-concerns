@@ -177,7 +177,6 @@ public without sharing class accc_CustomSettings implements accc_IConfigurationP
         return maxNumberOfItems;
     } // end of defaultMaxNumberOfItemsInChunks
     /**
-    *
      * @description triggers enable
      * @return boolean, true if triggers are enable
      */
@@ -186,12 +185,54 @@ public without sharing class accc_CustomSettings implements accc_IConfigurationP
 
         accc_CrossCuttingUtilityDataModel.CrossCuttingUtilityInformation info = accc_CustomSettings.crossCuttingInformation();
         if ( info != null ) {
-            result = (boolean)info.triggersAreEnable;
+            result = info.triggersAreEnable;
         }
 
         return result;
     } // end of triggersEnable
+    /**
+     * @description trace flag is on
+     * @return boolean, true if trace flag is on
+     */
+    public static boolean traceFlagOn() {
+        boolean result = false;
 
+        accc_CrossCuttingUtilityDataModel.CrossCuttingUtilityInformation info = accc_CustomSettings.crossCuttingInformation();
+        if ( info != null ) {
+            result = info.traceFlagOn;
+        }
+
+        return result;
+    } // end of traceFlagOn
+
+    /**
+     * @description trace flag is on
+     * @return boolean, true if trace flag is on
+     */
+    public static LoggingLevel traceLogLevel() {
+        LoggingLevel result = LoggingLevel.DEBUG;
+
+        accc_CrossCuttingUtilityDataModel.CrossCuttingUtilityInformation info = accc_CustomSettings.crossCuttingInformation();
+        if ( info != null ) {
+            result = info.loglevel;
+        }
+
+        return result;
+    } // end of traceLogLevel
+    /**
+     * @description show the trace information for CC type files
+     * @return boolean, true if  trace information for CC type files is shown
+     */
+    public static boolean showCCTraceInfo() {
+        boolean result = false;
+
+        accc_CrossCuttingUtilityDataModel.CrossCuttingUtilityInformation info = accc_CustomSettings.crossCuttingInformation();
+        if ( info != null ) {
+            result = (boolean)info.showCrossCuttingConcernsInfo;
+        }
+
+        return result;
+    } // end of showCCTraceInfo
     /**
      * @description cross cutting information
      * @return CrossCuttingUtilityInformation
@@ -257,7 +298,7 @@ public without sharing class accc_CustomSettings implements accc_IConfigurationP
      * @return Map<String, Object>, our known resources
      */
     static Map<String, Object> getKnownResourceSettings() {
-        // seed the known resources with values using what we know.
+        // seed the known resources with values using what we know; like an annoymous delegate or lambda expression.
         if ( accc_CustomSettings.knownSettings.size() == 0 ) {
             accc_CustomSettings.knownSettings.put(accc_ApexConstants.UseCachingStrategy_r,
                                                   accc_CustomSettings.useCachingStrategy());
@@ -275,6 +316,13 @@ public without sharing class accc_CustomSettings implements accc_IConfigurationP
                                                   accc_CustomSettings.cachingModel());
             accc_CustomSettings.knownSettings.put(accc_ApexConstants.CrossCuttingConfiguration_r,
                                                   accc_CustomSettings.crossCuttingConfigModel());
+            accc_CustomSettings.knownSettings.put(accc_ApexConstants.TraceFlagOn_r,
+                                                  accc_CustomSettings.traceFlagOn());
+            accc_CustomSettings.knownSettings.put(accc_ApexConstants.TraceLogLevel_r,
+                                                  accc_CustomSettings.traceLogLevel());
+            accc_CustomSettings.knownSettings.put(accc_ApexConstants.ShowCCTraceInfo_r,
+                                                  accc_CustomSettings.showCCTraceInfo());
+
         }
         return accc_CustomSettings.knownSettings;
     } // end of getKnownResourceSettings

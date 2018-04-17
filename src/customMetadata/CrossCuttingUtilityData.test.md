@@ -3,31 +3,35 @@
     <label>test</label>
     <protected>false</protected>
     <values>
-        <field>LogLevelForCCC__c</field>
-        <value xsi:nil="true"/>
-    </values>
-    <values>
-        <field>ShowCCDebugInfo__c</field>
-        <value xsi:type="xsd:boolean">false</value>
-    </values>
-    <values>
-        <field>UseCachingStrategy__c</field>
-        <value xsi:type="xsd:boolean">true</value>
-    </values>
-    <values>
         <field>environmentClass__c</field>
         <value xsi:type="xsd:string">accc_TestEnvironmentSingleton</value>
+    </values>
+    <values>
+        <field>logLevelForTrace__c</field>
+        <value xsi:type="xsd:string">Finer</value>
     </values>
     <values>
         <field>maxNumberOfItemsInChunks__c</field>
         <value xsi:type="xsd:double">100.0</value>
     </values>
     <values>
+        <field>showCCInfo__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
         <field>softAssert__c</field>
         <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
+        <field>traceFlagOn__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
         <field>triggersEnable__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>useCachingStrategy__c</field>
         <value xsi:type="xsd:boolean">true</value>
     </values>
 </CustomMetadata>

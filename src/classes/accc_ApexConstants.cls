@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description Common Constants
- * 
+ *
  * To Added New Resouce classes  :Step 5a: Ensure Fallback Resources have the Resource Name ( i.e. LogFormatter)
  *
  */
@@ -116,6 +116,7 @@ public class accc_ApexConstants {
     //  UseCachingStrategy_r        | Boolean
     //  TriggersEnabled_r           | Boolean
     //  SoftAsserts_r               | Boolean
+    //  TraceFlagOn_r               | Boolean
     //  EnvironmentClass_r          | String
     //  MaxChunkSize_r              | Integer
     //  CrossCuttingConfiguration_r | accc_CrossCuttingConfigDataModel
@@ -128,6 +129,9 @@ public class accc_ApexConstants {
     public static final String SoftAsserts_r = CategoryTest_s + accc_ApexConstants.ColonDelimiter + 'SoftAsserts';
     public static final String EnvironmentClass_r = CategorySystem_s + accc_ApexConstants.ColonDelimiter + 'EnvironmentClass';
     public static final String MaxChunkSize_r = CategorySystem_s + accc_ApexConstants.ColonDelimiter + 'MaxChunkSize';
+    public static final String TraceFlagOn_r = CategoryConfiguration_s + accc_ApexConstants.ColonDelimiter + 'TraceFlagOn';
+    public static final String TraceLogLevel_r = CategoryConfiguration_s + accc_ApexConstants.ColonDelimiter + 'TraceLogLevel';
+    public static final String ShowCCTraceInfo_r = CategoryConfiguration_s + accc_ApexConstants.ColonDelimiter + 'ShowCCTraceInfo';
 
     //
     // Custom MDT - Note, Custom MDT data schema is NOT (should NOT be) exposed to external sources. The reason for this

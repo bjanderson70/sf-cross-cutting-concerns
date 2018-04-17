@@ -98,7 +98,10 @@ public without sharing class accc_ApexKnownCCConcernsFallback extends accc_ApexB
             //
             '"' + accc_ApexConstants.UseCachingStrategy_r + '": "true",' +
             '"' + accc_ApexConstants.TriggersEnabled_r + '": "true",' +
+            '"' + accc_ApexConstants.TraceFlagOn_r + '": "false",' +
             '"' + accc_ApexConstants.SoftAsserts_r + '": "false",' +
+            '"' + accc_ApexConstants.TraceLogLevel_r + '": "debug",' +
+            '"' + accc_ApexConstants.ShowCCTraceInfo_r + '": "false",' +
             '"' + accc_ApexConstants.EnvironmentClass_r + '": "accc_ApexRunEnvironmentSingleton",' +
             '"' + accc_ApexConstants.MaxChunkSize_r + '": "' + integer.valueOf(accc_ApexConstants.DEFAULT_MAX_NUMBER_OF_ITEMS_IN_CHUNK) + '"' +
             '}';

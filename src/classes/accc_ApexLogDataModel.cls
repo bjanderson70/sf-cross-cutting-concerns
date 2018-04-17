@@ -51,6 +51,7 @@ global without sharing class accc_ApexLogDataModel {
            stackTrace;
     public LoggingLevel logLevel;
     public long startTime;
+    public boolean isCrossCutting;
     /////////////////////////////////////////////////////////////////////////////////////////
     //
     // Ctor
@@ -134,15 +135,17 @@ global without sharing class accc_ApexLogDataModel {
         this.lineNumber =  accc_Apexutilities.normalizeString(lineno);
         this.logLevel = lvl;
         this.startTime = startTime;
- system.debug('+++++++++++++++++ before = '+this);
+        this.isCrossCutting = false;
+ 
         if ( !string.isBlank(this.stackTrace) ) {
             // pop the exception stack, to get the true callee
             String trace = accc_ApexUtilities.popStack(this.stackTrace);
+
             this.className = accc_ApexUtilities.getExecutingClassName(trace);
             this.methodName = accc_ApexUtilities.getExecutingMethod(trace);
             this.lineNumber = accc_ApexUtilities.getExecutingLineNumber(trace);
+            this.isCrossCutting = this.className.startsWithIgnoreCase('accc_');
         }
-        system.debug('+++++++++++++++++after  = '+this);
       
     }// end of initialize
 
