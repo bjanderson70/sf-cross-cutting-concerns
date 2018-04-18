@@ -58,10 +58,10 @@ private class accc_BaseMdtDataModelTest {
 		@TestVisible
 		protected override List<accc_BaseMdtDataModel.BaseDataModelInformation> populateFromDataObjectChild(List<SObject> mdt) {
 			List<accc_BaseMdtDataModel.BaseDataModelInformation> results = new List<accc_BaseMdtDataModel.BaseDataModelInformation> ();
-			List<DataCachingDataModel__mdt> cacheMDTs = (List<DataCachingDataModel__mdt>) mdt;
+			List<AcccDataCachingDataModel__mdt> cacheMDTs = (List<AcccDataCachingDataModel__mdt>) mdt;
 
 			if (cacheMDTs != null && cacheMDTs.size() > 0) {
-				for (DataCachingDataModel__mdt cacheMDT : cacheMDTs) {
+				for (AcccDataCachingDataModel__mdt cacheMDT : cacheMDTs) {
 					accc_DataCachingDataModel.CacheInformation result = new accc_DataCachingDataModel.CacheInformation();
 					result.label = cacheMDT.Label;
 					result.namespacePrefix = cacheMDT.NamespacePrefix;

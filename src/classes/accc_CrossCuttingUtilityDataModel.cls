@@ -58,7 +58,7 @@ public without sharing class accc_CrossCuttingUtilityDataModel extends accc_Base
     static private final string TestName2018 = 'test';
     // name of the custom mdt
     @TestVisible
-    static private final string MDT_Name = 'CrossCuttingUtilityData__mdt';
+    static private final string MDT_Name = 'AcccCrossCuttingUtilityData__mdt';
 
     // field list of custom mdt
     @TestVisible
@@ -141,10 +141,10 @@ public without sharing class accc_CrossCuttingUtilityDataModel extends accc_Base
     @TestVisible
     protected override List<accc_BaseMdtDataModel.BaseDataModelInformation> populateFromDataObjectChild(List<SObject> data) {
         List<CrossCuttingUtilityInformation> results = new List<CrossCuttingUtilityInformation> ();
-        List<CrossCuttingUtilityData__mdt> cmdts = (List<CrossCuttingUtilityData__mdt>) data;
+        List<AcccCrossCuttingUtilityData__mdt> cmdts = (List<AcccCrossCuttingUtilityData__mdt>) data;
 
         if (cmdts != null && cmdts.size() > 0) {
-            for (CrossCuttingUtilityData__mdt cmdt : cmdts) {
+            for (AcccCrossCuttingUtilityData__mdt cmdt : cmdts) {
                 CrossCuttingUtilityInformation result = new CrossCuttingUtilityInformation();
                 this.setValues((accc_BaseMdtDataModel.BaseDataModelInformation)result, cmdt.Label, cmdt.NamespacePrefix, cmdt.DeveloperName);
 

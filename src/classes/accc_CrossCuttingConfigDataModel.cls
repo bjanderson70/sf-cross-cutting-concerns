@@ -49,7 +49,7 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
 
     // the custom mdt name
     @TestVisible
-    static private final string MDT_Name = 'Apex_Code_Configuration__mdt';
+    static private final string MDT_Name = 'accc_Apex_Code_Configuration__mdt';
     // fields supported on this custom mdt
     // Step 1a. Added field name here, ie. 'LogFormatter__c'
     @TestVisible
@@ -124,17 +124,18 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
     @TestVisible
     protected override List<accc_BaseMdtDataModel.BaseDataModelInformation> populateFromDataObjectChild(List<SObject> data) {
         List<CrossCuttingConfigInformation> results = new List<CrossCuttingConfigInformation> ();
-        List<Apex_Code_Configuration__mdt> cmdts = (List<Apex_Code_Configuration__mdt>) data;
+        List<accc_Apex_Code_Configuration__mdt> cmdts = (List<accc_Apex_Code_Configuration__mdt>) data;
+
 
         if (cmdts != null && cmdts.size() > 0) {
-            for (Apex_Code_Configuration__mdt cmdt : cmdts) {
+            for (accc_Apex_Code_Configuration__mdt cmdt : cmdts) {
                 CrossCuttingConfigInformation result = new CrossCuttingConfigInformation();
                 this.setValues((accc_BaseMdtDataModel.BaseDataModelInformation)result, cmdt.Label, cmdt.NamespacePrefix, cmdt.DeveloperName);
 
                /* To Added New Resouce classes (Step 2: Assign data member here (i.e.,'logFormatterClass') 
                 *                                       from SF Object 'LogFormatter__c') 
                 *                                       
-                *                               Step 3: Ensure you add field to 'Apex_Code_Configuration__mdt'
+                *                               Step 3: Ensure you add field to 'accc_Apex_Code_Configuration__mdt'
                 *                               Step 4: Ensure Fallback Resources have the Resource Name (see accc_ApexConstants and accc_ApexKnownCCConcernsFallback)
                 **/
 

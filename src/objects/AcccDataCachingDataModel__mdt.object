@@ -59,7 +59,7 @@
         <type>Number</type>
         <unique>false</unique>
     </fields>
-    <label>DataCaching</label>
-    <pluralLabel>DataCachings</pluralLabel>
+    <label>Accc DataCaching</label>
+    <pluralLabel>Accc DataCachings</pluralLabel>
     <visibility>Public</visibility>
 </CustomObject>

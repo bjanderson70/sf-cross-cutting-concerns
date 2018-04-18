@@ -52,7 +52,7 @@ public without sharing class accc_DataCachingDataModel extends accc_BaseMdtDataM
 	@TestVisible
 	static private final String TestClassName = 'accc_TestInvokerApexCacheStrategy';
 	@TestVisible
-	static private final string MDT_Name = 'DataCachingDataModel__mdt';
+	static private final string MDT_Name = 'AcccDataCachingDataModel__mdt';
 	@TestVisible
 	static private final List<String> FieldList = new List<String> {
 		'Category__c',
@@ -102,12 +102,12 @@ public without sharing class accc_DataCachingDataModel extends accc_BaseMdtDataM
 	 */
 	protected override List<accc_BaseMdtDataModel.BaseDataModelInformation> populateFromDataObjectChild(List<SObject> data) {
 		List<accc_BaseMdtDataModel.BaseDataModelInformation> results = null;
-		List<DataCachingDataModel__mdt> cmdts = (List<DataCachingDataModel__mdt>) data;
+		List<AcccDataCachingDataModel__mdt> cmdts = (List<AcccDataCachingDataModel__mdt>) data;
 
 		if (cmdts != null && cmdts.size() > 0) {
 			results = new List<accc_BaseMdtDataModel.BaseDataModelInformation> ();
 
-			for (DataCachingDataModel__mdt cmdt : cmdts) {
+			for (AcccDataCachingDataModel__mdt cmdt : cmdts) {
 				CacheInformation result = new CacheInformation();
 				this.setValues((accc_BaseMdtDataModel.BaseDataModelInformation)result, cmdt.Label, cmdt.NamespacePrefix, cmdt.DeveloperName);
 

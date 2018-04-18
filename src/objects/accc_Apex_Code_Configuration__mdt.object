@@ -178,7 +178,7 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Apex Code Configuration</label>
-    <pluralLabel>Apex Code Configurations</pluralLabel>
+    <label>Accc Apex Code Configuration</label>
+    <pluralLabel>Accc Apex Code Configurations</pluralLabel>
     <visibility>Public</visibility>
 </CustomObject>

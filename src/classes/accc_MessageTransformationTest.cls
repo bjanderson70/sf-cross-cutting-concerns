@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description  Test message transformation
- * @group Common Layer
+ * @group Common Test Layer
  */
 @isTest
 private class accc_MessageTransformationTest {

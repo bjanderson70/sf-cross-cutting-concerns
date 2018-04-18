@@ -118,7 +118,7 @@
         <label>Use Caching Strategy</label>
         <type>Checkbox</type>
     </fields>
-    <label>CrossCuttingUtilityData</label>
-    <pluralLabel>CrossCuttingUtilityDatas</pluralLabel>
+    <label>Accc Cross Cutting Utility Data</label>
+    <pluralLabel>Accc Cross Cutting Utility Datas</pluralLabel>
     <visibility>Public</visibility>
 </CustomObject>
