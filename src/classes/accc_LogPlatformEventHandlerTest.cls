@@ -47,8 +47,8 @@ private class accc_LogPlatformEventHandlerTest {
 		accc_IApexPlatformEventHandler evtHndlr = new accc_LogPlatformEventHandler();
 
 		evtHndlr.afterInsert(elogs);
-		List<ApplicationLog__c> logs = [select Message__c from ApplicationLog__c];
-		for (ApplicationLog__c item : logs ) {
+		List<AcccApplicationLog__c> logs = [select Message__c from AcccApplicationLog__c];
+		for (AcccApplicationLog__c item : logs ) {
 			if ( item.Message__c == '1' ||
 			        item.Message__c == '2' ||
 			        item.Message__c == '3') {

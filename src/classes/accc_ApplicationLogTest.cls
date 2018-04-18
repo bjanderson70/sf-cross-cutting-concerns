@@ -58,7 +58,7 @@ private class accc_ApplicationLogTest {
     static void accc_ApplicationLogCtorWithEntryTest() {
         // assign
         String payload = 'Test';
-        ApplicationLog__c entry = new ApplicationLog__c();
+        AcccApplicationLog__c entry = new AcccApplicationLog__c();
         entry.IntegrationPayload__c = payload;
         // act
         accc_ApplicationLog item = new accc_ApplicationLog(entry);
@@ -206,10 +206,10 @@ private class accc_ApplicationLogTest {
     @isTest
     static void testlogApplicationList() {
         // assign
-        List<ApplicationLog__c> entries = new List<ApplicationLog__c> {
-            new ApplicationLog__c(),
-            new ApplicationLog__c(),
-            new ApplicationLog__c()
+        List<AcccApplicationLog__c> entries = new List<AcccApplicationLog__c> {
+            new AcccApplicationLog__c(),
+            new AcccApplicationLog__c(),
+            new AcccApplicationLog__c()
         };
         // act
 
@@ -224,10 +224,10 @@ private class accc_ApplicationLogTest {
     @isTest
     static void testentriesLogged() {
         // assign
-        List<ApplicationLog__c> entries = new List<ApplicationLog__c> {
-            new ApplicationLog__c(Message__c = 'test'),
-            new ApplicationLog__c(Message__c = 'test1'),
-            new ApplicationLog__c(Message__c = 'test2')
+        List<AcccApplicationLog__c> entries = new List<AcccApplicationLog__c> {
+            new AcccApplicationLog__c(Message__c = 'test'),
+            new AcccApplicationLog__c(Message__c = 'test1'),
+            new AcccApplicationLog__c(Message__c = 'test2')
         };
         // act
 
@@ -243,7 +243,7 @@ private class accc_ApplicationLogTest {
     @isTest
     static void testlogApplicationEntries() {
         // assign
-        List<ApplicationLog__c> logEntries = null;
+        List<AcccApplicationLog__c> logEntries = null;
         accc_ApplicationLog item = new accc_ApplicationLog();
         // act
         Boolean result = item.logApplicationEntries(logEntries );
@@ -258,7 +258,7 @@ private class accc_ApplicationLogTest {
     @isTest
     static void accc_ApplicationLogCtorWithNullEntryTest() {
         // assign
-        ApplicationLog__c entry = null;
+        AcccApplicationLog__c entry = null;
 
         // act
         accc_ApplicationLog item = new accc_ApplicationLog(entry);
@@ -279,7 +279,7 @@ private class accc_ApplicationLogTest {
 
         // act
         accc_ApplicationLog item = new accc_ApplicationLog();
-        ApplicationLog__c entry = null;
+        AcccApplicationLog__c entry = null;
         // assert
         System.assertNotEquals(null, item);
         System.assertEquals(false, item.log(entry));

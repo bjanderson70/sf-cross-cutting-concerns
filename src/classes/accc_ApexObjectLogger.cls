@@ -33,7 +33,7 @@
  * @description default logger uses the system debug, error, warn, info, etc.
  *     The default logging level is DEBUG. This is logger is also wired into
  *     'ApexRunEnvironmentSingleton'. This logger will write information to
- *     Application Log (Application_Log__c)
+ *     Application Log (AcccApplicationLog__c)
  * @group Common Layer
  */
 global without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
@@ -143,7 +143,7 @@ global without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
     private void writeOutput(LoggingLevel level, List<Object> result) {
 
         // no check for result being null, done in public/protected methods
-        List<ApplicationLog__c> appLogs = new List<ApplicationLog__c>();
+        List<AcccApplicationLog__c> appLogs = new List<AcccApplicationLog__c>();
         integer size = result.size();
 
         // create and write the log

@@ -46,12 +46,11 @@ public without sharing class accc_LogPlatformEventHandler implements accc_IApexP
      *
      * @param List<SObject> list of new sobjects
      */
-
     public void afterInsert(List<SObject> newItems) {
 
         try {
             List<accc_Log__e> elogs = (List<accc_Log__e>)newItems;
-            List<ApplicationLog__c> theApplicationLogs = accc_MessageTransformation.translate(elogs);
+            List<AcccApplicationLog__c> theApplicationLogs = accc_MessageTransformation.translate(elogs);
             // any data to add
             if ( theApplicationLogs != null && theApplicationLogs.size() > 0) {
                 insert theApplicationLogs;
