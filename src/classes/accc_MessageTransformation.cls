@@ -37,16 +37,16 @@
 public without sharing class accc_MessageTransformation {
 
     /**
-     * @description translate a ApplicationLog to a Log__e
+     * @description translate a ApplicationLog to a accc_Log__e
      *
      * @param appLog Application Log
-     * @return Log__e
+     * @return accc_Log__e
      */
-    public static Log__e translate(ApplicationLog__c datum) {
-        Log__e result = null;
+    public static accc_Log__e translate(ApplicationLog__c datum) {
+        accc_Log__e result = null;
 
         if ( datum != null ) {
-            result = new Log__e(LogCode__c = string.valueOf(datum.LogCode__c),
+            result = new accc_Log__e(LogCode__c = string.valueOf(datum.LogCode__c),
                                 Message__c = accc_MessageTransformation.mergeApplicationLogData(datum),
                                 Username__c = UserInfo.getUserId());
         }
@@ -98,17 +98,17 @@ public without sharing class accc_MessageTransformation {
     } // end of translate
 
     /**
-     * @description translate a ApplicationLog to a Log__e
+     * @description translate a ApplicationLog to a accc_Log__e
      *
      * @param appLog Application Log
-     * @return Log__e
+     * @return accc_Log__e
      */
-    public static List<Log__e> translate(List<ApplicationLog__c> listDatum) {
-        List<Log__e> result = null;
+    public static List<accc_Log__e> translate(List<ApplicationLog__c> listDatum) {
+        List<accc_Log__e> result = null;
 
         if ( listDatum != null && listDatum.size() > 0) {
-            Log__e elog;
-            result = new List<Log__e>();
+            accc_Log__e elog;
+            result = new List<accc_Log__e>();
             for (ApplicationLog__c datum : listDatum) {
                 elog = accc_MessageTransformation.translate(datum);
                 if ( elog != null) {
@@ -121,12 +121,12 @@ public without sharing class accc_MessageTransformation {
     } // end of translate
 
     /**
-     * @description translate a Log__e to a ApplicationLog__c
+     * @description translate a accc_Log__e to a ApplicationLog__c
      *
-     * @param eLog Log__e
+     * @param eLog accc_Log__e
      * @return ApplicationLog__c
      */
-    public static ApplicationLog__c translate(Log__e datum) {
+    public static ApplicationLog__c translate(accc_Log__e datum) {
         ApplicationLog__c result = null;
 
         if ( datum != null ) {
@@ -140,18 +140,18 @@ public without sharing class accc_MessageTransformation {
 
     } // end of translate
     /**
-     * @description translate a Log__e to a ApplicationLog__c
+     * @description translate a accc_Log__e to a ApplicationLog__c
      *
-     * @param List<Log__e> list of log events
+     * @param List<accc_Log__e> list of log events
      * @return List<ApplicationLog__c> list of applicationLog
      */
-    public static List<ApplicationLog__c> translate(List<Log__e> listDatum) {
+    public static List<ApplicationLog__c> translate(List<accc_Log__e> listDatum) {
         List<ApplicationLog__c> result = null;
 
         if ( listDatum != null && listDatum.size() > 0 ) {
             ApplicationLog__c appLog;
             result = new List<ApplicationLog__c>();
-            for (Log__e datum : listDatum ) {
+            for (accc_Log__e datum : listDatum ) {
                 appLog = accc_MessageTransformation.translate(datum);
                 if ( appLog != null) {
                     result.add(appLog);

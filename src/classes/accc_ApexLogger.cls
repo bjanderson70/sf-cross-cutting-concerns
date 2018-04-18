@@ -36,7 +36,7 @@
  *     In addition to this Logger, there are three other loggers, which inherit the base behavior :
  *
  *     * ApexObjectLogger       - writes logging data to the custom object ApplicationLog__c
- *     * ApexPublishEventLogger - publishes a Log__e event (there is a sample trigger to catch and write to ApplicationLog__c)
+ *     * ApexPublishEventLogger - publishes a accc_Log__e event (there is a sample trigger to catch and write to ApplicationLog__c)
  *     * ApexNoOpLogger         - does not write anything
  *
  * @group Common Layer

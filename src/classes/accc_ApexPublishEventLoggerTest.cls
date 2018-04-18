@@ -41,7 +41,7 @@ private class accc_ApexPublishEventLoggerTest {
 
 		// Create a test event instance
 
-		Log__e logEvt = new Log__e(LogCode__c = 'debug',
+		accc_Log__e logEvt = new accc_Log__e(LogCode__c = 'debug',
 		                           Message__c = 'message',
 		                           Username__c = UserInfo.getUserId());
 

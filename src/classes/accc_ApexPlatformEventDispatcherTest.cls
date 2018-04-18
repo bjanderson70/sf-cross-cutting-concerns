@@ -54,7 +54,7 @@ private class accc_ApexPlatformEventDispatcherTest {
 	@isTest
 	static void testrunWithTriggerFire() {
 		String msg = 'testrunWithTriggerFire';
-		List<Log__e> logEvt = new List<Log__e> {new Log__e(Message__c = msg)};
+		List<accc_Log__e> logEvt = new List<accc_Log__e> {new accc_Log__e(Message__c = msg)};
 
 		Test.startTest();
 		// Publish log event

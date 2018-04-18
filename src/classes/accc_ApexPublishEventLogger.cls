@@ -141,7 +141,7 @@ public without sharing class accc_ApexPublishEventLogger  extends accc_ApexLogge
         }
         // iterate of messages
         for (Object message : messages ) {
-            logEvt = new Log__e(LogCode__c = loglvl,
+            logEvt = new accc_Log__e(LogCode__c = loglvl,
                                 Message__c = accc_ApexUtilities.toString(message, ''),
                                 Username__c = uid);
             logEvts.add(logEvt);

@@ -41,14 +41,14 @@ private class accc_MessageTransformationTest {
 	static void testtranslateToLogE() {
 		String msg = 'testtranslateToLogE';
 		ApplicationLog__c apl = new ApplicationLog__c(Message__c = msg);
-		Log__e loge = accc_MessageTransformation.translate(apl);
+		accc_Log__e loge = accc_MessageTransformation.translate(apl);
 		system.assertEquals(true, loge.Message__c.contains(msg));
 	} // end of testtranslateToLogE
 
 	@isTest
 	static void testtranslateFromObjectToApplicationLog() {
 		String msg = 'testtranslateToApplicationLog';
-		Log__e loge = new Log__e(Message__c = msg);
+		accc_Log__e loge = new accc_Log__e(Message__c = msg);
 		ApplicationLog__c apl = accc_MessageTransformation.translate(loge);
 		
 		system.assertEquals(true, apl.Message__c.contains(msg));
@@ -67,7 +67,7 @@ private class accc_MessageTransformationTest {
 	static void testtranslateToListLogE() {
 		String msg = 'testtranslateToListLogE';
 		List<ApplicationLog__c> apl = new List<ApplicationLog__c> { new ApplicationLog__c(Message__c = msg)};
-		List<Log__e> loge = accc_MessageTransformation.translate(apl);
+		List<accc_Log__e> loge = accc_MessageTransformation.translate(apl);
 		system.assertEquals(true, loge[0].Message__c.contains(msg));
 	} // end of testtranslateToListLogE
 
@@ -86,7 +86,7 @@ private class accc_MessageTransformationTest {
 	@isTest
 	static void testtranslateToListApplicationLog() {
 		String msg = 'testtranslateToListApplicationLog';
-		List<Log__e> loge = new List<Log__e> {new Log__e(Message__c = msg)};
+		List<accc_Log__e> loge = new List<accc_Log__e> {new accc_Log__e(Message__c = msg)};
 		List<ApplicationLog__c> apl = accc_MessageTransformation.translate(loge);
 		system.assertEquals(true, apl[0].Message__c.contains(msg));
 	} // end of testtranslateToListApplicationLog
@@ -94,7 +94,7 @@ private class accc_MessageTransformationTest {
 	@isTest
 	static void testtranslateToListApplicationLogWithNull() {
 
-		List<Log__e> loge = null;
+		List<accc_Log__e> loge = null;
 		List<ApplicationLog__c> apl = accc_MessageTransformation.translate(loge);
 		system.assertEquals(true, apl == null);
 	} // end of testtranslateToListApplicationLogWithNull
@@ -103,7 +103,7 @@ private class accc_MessageTransformationTest {
 	static void testtranslateToListLogEWithNull() {
 
 		List<ApplicationLog__c> apl = null;
-		List<Log__e> loge = accc_MessageTransformation.translate(apl);
+		List<accc_Log__e> loge = accc_MessageTransformation.translate(apl);
 		system.assertEquals(true, loge == null);
 	} // end of testtranslateToListLogEWithNull
 

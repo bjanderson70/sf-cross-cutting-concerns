@@ -33,7 +33,7 @@
  * @author Bill Anderson
  * @description Handles Platform Events for Logging.
  *    This handler is associated with 'accc_ApexPublishEventLogger'. If this logger is
- *    wired into 'ApexRunEnvironmentSingleton', a trigger fires (after insert Log__e).
+ *    wired into 'ApexRunEnvironmentSingleton', a trigger fires (after insert accc_Log__e).
  *    The trigger, 'accc_LogPlatformEventTrigger', fires and instantiates this class.
  *    The dispatcher calls 'run' and run invokes 'afterInsert'
  *
@@ -50,7 +50,7 @@ public without sharing class accc_LogPlatformEventHandler implements accc_IApexP
     public void afterInsert(List<SObject> newItems) {
 
         try {
-            List<Log__e> elogs = (List<Log__e>)newItems;
+            List<accc_Log__e> elogs = (List<accc_Log__e>)newItems;
             List<ApplicationLog__c> theApplicationLogs = accc_MessageTransformation.translate(elogs);
             // any data to add
             if ( theApplicationLogs != null && theApplicationLogs.size() > 0) {

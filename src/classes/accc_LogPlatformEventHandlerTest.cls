@@ -39,10 +39,10 @@ private class accc_LogPlatformEventHandlerTest {
 	@isTest
 	static void testafterInsert() {
 		integer inx = 0;
-		List<Log__e> elogs = new List<Log__e> {
-			new Log__e(Message__c = '1'),
-			new Log__e(Message__c = '2'),
-			new Log__e(Message__c = '3')
+		List<accc_Log__e> elogs = new List<accc_Log__e> {
+			new accc_Log__e(Message__c = '1'),
+			new accc_Log__e(Message__c = '2'),
+			new accc_Log__e(Message__c = '3')
 		};
 		accc_IApexPlatformEventHandler evtHndlr = new accc_LogPlatformEventHandler();
 
