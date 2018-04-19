@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description The policy enumerations based on architecture layer
- * @group Common Layer
+ * @group Exception Handling
  */
 global enum accc_ApexExceptionPolicyEnum {
 	Top,      // Common Level

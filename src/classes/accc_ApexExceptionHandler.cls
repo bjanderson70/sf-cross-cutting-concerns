@@ -32,7 +32,7 @@
  * @author Bill Anderson
  * @description Implementation of the exception handler. This could be logging the exception thru various channels and/or returning
  * a more secure exception.
- * @group Common Layer
+ * @group Exception Handling
  */
 public virtual without sharing class accc_ApexExceptionHandler implements accc_IApexExceptionHandler {
 

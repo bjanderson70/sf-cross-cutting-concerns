@@ -41,7 +41,7 @@
  * Instead of using all the different cache mechanisms, this class manages most
  * of those aspect for you. Whether to cache or not, simply call the following:
  *
- * @group Common Layer
+ * @group Cache Aspects
  */
 public virtual without sharing class accc_ApexCacheMgr  {
 	/*---------------------------------------------------------------------------------------

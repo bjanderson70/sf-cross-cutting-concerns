@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description The data captured when you 'write' to the logger
- * @group Common Layer
+ * @group Log Aspects
  */
 global without sharing class accc_ApexLogDataModel {
 

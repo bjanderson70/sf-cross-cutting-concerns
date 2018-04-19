@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description Defines how to invoke the cache strategy
- * @group Common Layer
+ * @group Cache Aspects
  */
 public virtual without sharing class accc_ApexCacheStrategyInvocation implements accc_IApexCacheStrategyInvocation {
 

@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description Defines how platform event interface
- * @group Common Layer
+ * @group Common Interface Layer
  */
 public virtual interface accc_IApexPlatformEventHandler {
 	/**

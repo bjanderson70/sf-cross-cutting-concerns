@@ -40,7 +40,7 @@
  *                                Step 4b: Do not forget about 'accc_ApexTestJSONDataFallback'
  *
  *
- * @group Common Layer
+ * @group Fallback Resources
  */
 public without sharing class accc_ApexKnownCCConcernsFallback extends accc_ApexBaseFallback {
 

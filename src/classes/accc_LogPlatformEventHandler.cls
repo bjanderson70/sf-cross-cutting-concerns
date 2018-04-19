@@ -37,7 +37,7 @@
  *    The trigger, 'accc_LogPlatformEventTrigger', fires and instantiates this class.
  *    The dispatcher calls 'run' and run invokes 'afterInsert'
  *
- * @group Common Layer
+ * @group Log Aspects
  */
 public without sharing class accc_LogPlatformEventHandler implements accc_IApexPlatformEventHandler {
 

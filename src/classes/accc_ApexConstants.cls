@@ -32,7 +32,8 @@
  *
  * @author Bill Anderson
  * @description Common Constants
- *
+ * @group Miscellaneous
+ * 
  * To Added New Resouce classes  :Step 5a: Ensure Fallback Resources have the Resource Name ( i.e. LogFormatter)
  *
  */

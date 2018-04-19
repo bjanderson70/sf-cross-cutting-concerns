@@ -45,7 +45,7 @@
  * !!!!!!!! Note, those partitions MUST first be setup prior to access. Otherwise, caching does not work!
  *
  * https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_cache_partition_setup.htm
- * @group Common Layer
+ * @group Cache Aspects
  */
 public virtual without sharing class accc_ApexCache implements accc_ICache {
 

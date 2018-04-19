@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description Implementation of the exception formatter.
- * @group Common Layer
+ * @group Exception Handling
  */
 public without sharing class accc_ExceptionFormatter implements accc_IDataFormat {
     /////////////////////////////////////////////////////////////////////////////////////////

@@ -31,7 +31,7 @@
  *
  * @author Bill Anderson
  * @description use as a wrapper around the application log
- * @group Common Layer
+ * @group Log Aspects
  */
 public without sharing class accc_ApplicationLog {
 

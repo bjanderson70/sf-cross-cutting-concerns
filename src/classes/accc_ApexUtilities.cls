@@ -31,7 +31,7 @@
  *
  * @author Bill anderson
  * @description common utilities to separate mundane task. This may be refactor to segragate category (strings, objects, etc.)
- * @group Common Layer
+ * @group Miscellaneous
  */
 public virtual without sharing class accc_ApexUtilities {
 

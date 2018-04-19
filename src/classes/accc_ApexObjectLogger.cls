@@ -34,7 +34,7 @@
  *     The default logging level is DEBUG. This is logger is also wired into
  *     'ApexRunEnvironmentSingleton'. This logger will write information to
  *     Application Log (AcccApplicationLog__c)
- * @group Common Layer
+ * @group Log Aspects
  */
 global without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
 

@@ -33,7 +33,7 @@
  * @author Bill Anderson
  * @description base class for fallback resources
  *
- * @group Common Layer
+ * @group Fallback Resources
  */
 public virtual without sharing class accc_ApexBaseFallback implements accc_IFallbackResources {
 

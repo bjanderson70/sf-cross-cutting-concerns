@@ -31,7 +31,9 @@
  *
  * @author Bill Anderson
  * @description Use for common test for accc_ApexUtilities
+ * @group Common Test Layer
  */
+@isTest
 public without sharing class accc_ApexTestUtilities extends accc_ApexUtilities {
     ////////////////////////////////////////////////////////////////////////////////
     /// Data Members

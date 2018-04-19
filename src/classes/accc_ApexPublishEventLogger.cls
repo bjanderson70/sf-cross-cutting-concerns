@@ -31,7 +31,7 @@
  *
  * @author Bill Anderson
  * @description publishes a log event
- * @group Common Layer
+ * @group Log Aspects
  */
 public without sharing class accc_ApexPublishEventLogger  extends accc_ApexLogger {
     ///////////////////////////////////////////////////////////////////////////////////////////////

@@ -43,7 +43,7 @@
  *    	Fallback --> name/value, name2/value2, name3/value3 ...
  *    		:
  *    	All --> name/value, name2/value2, name3/value3 ...
- * @group Common Layer
+ * @group Cache Aspects
  */
 public without sharing class accc_ApexLocalL1Cache {
     /*---------------------------------------------------------------------------------------

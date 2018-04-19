@@ -39,7 +39,7 @@
  *     * ApexPublishEventLogger - publishes a accc_Log__e event (there is a sample trigger to catch and write to ApplicationLog__c)
  *     * ApexNoOpLogger         - does not write anything
  *
- * @group Common Layer
+ * @group Log Aspects
  */
 global virtual without sharing class accc_ApexLogger implements accc_ILogger {
 

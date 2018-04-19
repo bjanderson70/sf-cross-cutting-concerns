@@ -33,7 +33,7 @@
  * @author Bill Anderson
  * @description What to do with exceptions. We want to ensure that we are not sharing secure information.
  *     It is assumed that all UI exceptions must be translated to a more secure text.
- * @group Common Layer
+ * @group Exception Handling
  */
 global without sharing class accc_ApexExceptionPolicyStrategy implements accc_IApexExceptionPolicyStrategy {
 

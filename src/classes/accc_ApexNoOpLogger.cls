@@ -35,7 +35,7 @@
  * this no op logger will save time of writes. However, in the event additional information is needed
  * consider the other 3 loggers (ApexObjectLogger, ApexPublishEventLogger and accc_ApexLogger). The
  * loggers can be changed via the custom metadata type 'Apex Code Configurations'.
- * @group Common Layer
+ * @group Log Aspects
  */
 global without sharing class accc_ApexNoOpLogger extends accc_ApexLogger {
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description How to handle caching. Based on the policy (DataCaching__mdt) and soql query
- * @group Common Layer
+ * @group Cache Aspects
  */
 public virtual without sharing class accc_ApexCachePolicyStrategy implements accc_IApexCachePolicyStrategy {
 	/*---------------------------------------------------------------------------------------

@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description Implementation of the log formatter.
- * @group Common Layer
+ * @group Log Aspects
  */
 public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
 

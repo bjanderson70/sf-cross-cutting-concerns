@@ -32,6 +32,6 @@
  * @author Bill Anderson
  * @date 06/14/2016
  * @description Apex Application Exception
- * @group Common Layer
+ * @group Exception Handling
  */
 public without sharing class accc_ApexApplicationException extends Exception {}
