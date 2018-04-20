@@ -135,10 +135,6 @@ public without sharing class accc_ApexPublishEventLogger  extends accc_ApexLogge
         SObject logEvt = null;
         List<SObject> logEvts = new List<SObject>();
 
-        // for timings
-        if (Test.isRunningTest() ) {
-            theStopWatch.start();
-        }
         // iterate of messages
         for (Object message : messages ) {
             logEvt = new accc_Log__e(LogCode__c = loglvl,
@@ -166,10 +162,7 @@ public without sharing class accc_ApexPublishEventLogger  extends accc_ApexLogge
 
         // set the results
         result.databaseResult(savedResults);
-        // internally, we track timings
-        if (Test.isRunningTest() ) {
-            theLogger.write('accc_ApexPublishEventLogger: Log time :' + theStopWatch.toString());
-        }
+       
     } // end of processEvent
 
 } // end of accc_ApexPublishEventLogger
