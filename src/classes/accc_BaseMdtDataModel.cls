@@ -243,7 +243,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
             }
         } catch (Exception excp) {
             // process exception
-            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp, true);
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
         }
 
         return result;

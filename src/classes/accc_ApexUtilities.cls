@@ -48,13 +48,6 @@ public virtual without sharing class accc_ApexUtilities {
     private static Id lastProfileId = null;
     @TestVisible
     private static final Boolean isSandboxBool = [SELECT IsSandbox FROM Organization LIMIT 1].IsSandbox;
-    @TestVisible
-    private static accc_IApexRunEnvironment runtimeEnvironment =  null;
-    @TestVisible
-    private static accc_IFallbackResources runtimeFallback =  null;
-    @TestVisible
-    private static accc_IApexExceptionHandler runtimeFallbackHandler =  null;
-
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Public Methods
@@ -114,8 +107,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of getSobjectName
 
     /**
-     *
-     * @description form the provder name for entity access
+     *  @description form the provder name for entity access
      *
      * @param namespace String
      * @param section String
@@ -129,8 +121,7 @@ public virtual without sharing class accc_ApexUtilities {
         return ns + accc_ApexConstants.ColonDelimiter + sct;
     } // end of formProviderNameAccess
     /**
-     *
-     * @description get namespace  ( w/ delimiter of ':')
+     *  @description get namespace  ( w/ delimiter of ':')
      *
      * @param value String
      * @return String namespace
@@ -140,8 +131,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of getNamespace
 
     /**
-     *
-     * @description get namespace
+     *  @description get namespace
      *
      * @param value String
      * @param delimiter String
@@ -153,8 +143,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of getNamespace
 
     /**
-     *
-     * @description get section ( w/ delimiter of ':')
+     *  @description get section ( w/ delimiter of ':')
      *
      * @param value String
      * @return String
@@ -163,7 +152,6 @@ public virtual without sharing class accc_ApexUtilities {
         return accc_ApexUtilities.getSection(value, accc_ApexConstants.ColonDelimiter, 1);
     } // end of getSection
     /**
-     *
      * @description get section
      *
      * @param value String
@@ -182,7 +170,6 @@ public virtual without sharing class accc_ApexUtilities {
         return result;
     } // end of getSection
     /**
-     *
      * @description Unique Guid
      * @return String unique
      */
@@ -192,7 +179,6 @@ public virtual without sharing class accc_ApexUtilities {
         return  EncodingUtil.ConvertTohex(crytoBlob);
     } // end of newGuid
     /**
-     *
      * @description get the string of the value
      *
      * @param obj object you want the string value
@@ -204,7 +190,6 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of toString
 
     /**
-     *
      * @description get the string of the value
      *
      * @param obj object you want the string value
@@ -220,7 +205,6 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of toString
 
     /**
-     *
      * @description convert a maps of ids to a list of ids
      *
      * @param mapOfIds Map<Id,SObject>
@@ -234,8 +218,7 @@ public virtual without sharing class accc_ApexUtilities {
         return idList;
     } // end of convertMapOfIdsToListOfIds
     /**
-     *
-     * @description convert a maps of values to a list of values
+     *  @description convert a maps of values to a list of values
      *
      * @param mapOfIds Map<Id,SObject>
      * @return List<SObject>
@@ -249,23 +232,19 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of convertMapOfValuesToListOfValues
 
     /**
-     *
      * @description convert a list of values to a map of values
      *
      * @param listOfValues List<SObject>
      * @return Map<Id, SObject>
      */
     public static Map<Id, SObject> convertListToMapOfValues(List<SObject> listOfValues) {
-        Map<Id, SObject> mapValues = null;
+        Map<Id, SObject> mapValues = new Map<Id, SObject> ();
         if ( listOfValues != null && listOfValues.size() > 0 ) {
-            mapValues = new Map<Id, SObject> (listOfValues);
-        } else {
-            mapValues = new Map<Id, SObject> ();
+            mapValues.putAll(listOfValues);
         }
         return mapValues;
     } // end of convertListToMapOfValues
     /**
-     *
      * @description  get ids from a list of records
      *
      * @param sObjects  container of the records
@@ -274,14 +253,14 @@ public virtual without sharing class accc_ApexUtilities {
     public static List<Id> getRecordIds(List<SObject> sObjects) {
         List<Id> ids = new List<Id>();
         if ( sObjects  != null && sObjects.size() > 0 ) {
-            for (SObject sObj : sObjects) {
-                ids.add(sObj.Id);
+            for (SObject myId : sObjects) {
+                ids.add(myId.id);
             }
         }
+
         return ids;
     } // end of getRecordIds
     /**
-     *
      * @description safe field extaction from sobject
      *
      * @param sobj SObject
@@ -295,13 +274,12 @@ public virtual without sharing class accc_ApexUtilities {
             result = (String)theSObject.get(fieldName);
         } catch (Exception excp) {
             // process exception
-            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
         }
         return result;
     }// end of getFieldFromSObjectSafe
 
     /**
-     *
      * @description Get the user's profile name
      * @return profile string name
      */
@@ -335,8 +313,7 @@ public virtual without sharing class accc_ApexUtilities {
 
     } // end of makeCacheIdentifier
     /**
-     *
-     * @description iterate over field names getting value from the SOBject
+     *  @description iterate over field names getting value from the SOBject
      *
      * @param sobj SObject
      * @param fieldName fields (comma separate, perhaps)
@@ -362,8 +339,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of iterateOverFieldNamesInSObject
 
     /**
-     *
-     * @description Does the Sobject contain a field
+     *  @description Does the Sobject contain a field
      *
      * @param theSObject the object to check the field on
      * @return True, if the field exists
@@ -388,8 +364,7 @@ public virtual without sharing class accc_ApexUtilities {
 
     } // end of containsFieldInSObject
     /**
-     *
-     * @description get the fields information based on a sobject name (i.e. account, contact, etc.)
+     *  @description get the fields information based on a sobject name (i.e. account, contact, etc.)
      *
      * @param objName sobject name
      * @return map of field information
@@ -406,8 +381,7 @@ public virtual without sharing class accc_ApexUtilities {
         return results;
     } // end of getSObjectFieldsInformation
     /**
-     *
-     * @description get a record index by name
+     *  @description get a record index by name
      *
      * @param rec SObject
      * @param index , string name
@@ -448,8 +422,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of generateRandomNumberString
 
     /**
-     *
-     * @description  get the Type from the SObject
+     *  @description  get the Type from the SObject
      *
      * @param theSObject type we want
      * @return System Type
@@ -470,8 +443,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of getTypeFromSObject
 
     /**
-     *
-     * @description  get the Type from the SObject collection
+     *  @description  get the Type from the SObject collection
      *
      * @param theSObject type we want
      * @return System Type
@@ -495,8 +467,7 @@ public virtual without sharing class accc_ApexUtilities {
      * https://salesforce.stackexchange.com/questions/153835/get-currently-executing-class-method-name
      */
     /**
-     *
-     * @description get executing class name
+     *  @description get executing class name
      * @return executing class name
      */
     public static String getExecutingClassName() {
@@ -505,8 +476,7 @@ public virtual without sharing class accc_ApexUtilities {
         return accc_ApexUtilities.getExecutingClassName(trace);
     }
     /**
-     *
-     * @description get the executing method name
+     *  @description get the executing method name
      * @return method name
      */
     public static String getExecutingMethod() {
@@ -515,8 +485,7 @@ public virtual without sharing class accc_ApexUtilities {
         return accc_ApexUtilities.getExecutingMethod(trace);
     }
     /**
-     *
-     * @description get the executing class name from an stack trace
+     *  @description get the executing class name from an stack trace
      *
      * @param string stack trace
      * @return string class name
@@ -536,8 +505,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of getExecutingClassName
 
     /**
-     *
-     * @description get the executing lineno from an stack trace
+     *  @description get the executing lineno from an stack trace
      *
      * @param String stack trace
      * @return string line number
@@ -557,8 +525,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of getExecutingLineNumber
 
     /**
-     *
-     * @description get the executing method name from an stack trace
+     *  @description get the executing method name from an stack trace
      *
      * @param line from the stack trace
      * @return method name
@@ -582,7 +549,7 @@ public virtual without sharing class accc_ApexUtilities {
     */
     public static void log(String message) {
         if ( message != null ) {
-            accc_IApexRunEnvironment runtime = accc_ApexUtilities.getRuntimeEnvironment();
+            accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
 
             // used to test information sent from a test
             accc_ApexUtilities.logForTesting(message);
@@ -600,14 +567,13 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of log
 
     /**
-     *
-     * @description convience routine to log exceptions via ApplicationLog
+     *  @description convience routine to log exceptions via ApplicationLog
      *
      * @param excp Exception
      */
     public static void log(Exception excp) {
         if (excp != null) {
-            accc_IApexRunEnvironment runtime = accc_ApexUtilities.getRuntimeEnvironment();
+            accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
             // handle execptions
             runtime.exceptionHandler().process(excp);
             // used to test information sent from a test
@@ -626,8 +592,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of logForTesting
 
     /**
-     *
-     * @description convert string of numbers to telephone #
+     *  @description convert string of numbers to telephone #
      *
      * @param stringOfNums string of numbers '1111111111' or '(111) 111-1111'
      * @return converted to telephone (111) 111-1111
@@ -645,8 +610,7 @@ public virtual without sharing class accc_ApexUtilities {
 
     } // end of formatNumberIntoUSTelephone
     /**
-     *
-     * @description convert string of numbers to telephone #
+     *  @description convert string of numbers to telephone #
      *
      * @param stringOfNums string of numbers '1111111111'
      * @return converted to telephone (111) 111-1111
@@ -667,8 +631,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of convertStringOfNumbersIntoUSTelephone
 
     /**
-     *
-     * @description  Is this incoming number a valid telephone number
+     *  @description  Is this incoming number a valid telephone number
      *
      * @param phoneNumber what is considered a telephone
      * @return true if valid us or international #
@@ -698,8 +661,7 @@ public virtual without sharing class accc_ApexUtilities {
 
     } // end of isStringOfNumbersValidTelephoneWithRegex
     /**
-     *
-     * @description split a string on whitespace, comma or semi-colon
+     *  @description split a string on whitespace, comma or semi-colon
      *
      * @param input string to split
      * @return collection of split strings or empty collection
@@ -721,8 +683,7 @@ public virtual without sharing class accc_ApexUtilities {
 
 
     /**
-     *
-     * @description get a list of ids in a string format delimited by 'delimiter'
+     *  @description get a list of ids in a string format delimited by 'delimiter'
      *
      * @param sList collection of SObject
      * @param delimiter string value, ie. comma, space, etc.
@@ -738,8 +699,7 @@ public virtual without sharing class accc_ApexUtilities {
         return result;
     } // end of returnDelimiterSeparatedString
     /**
-     *
-     * @description get a list of ids in a string format delimited by 'delimiter'
+     *  @description get a list of ids in a string format delimited by 'delimiter'
      *
      * @param sList collection of SObject
      * @param delimiter string value, ie. comma, space, etc.
@@ -755,25 +715,9 @@ public virtual without sharing class accc_ApexUtilities {
         }
         return result;
     } // end of returnDelimiterSeparatedString
+  
     /**
-    *
-     * @description the environment
-     * @return either 'production', 'debug' (in sandbox) or 'test'
-     */
-    public static string getEnvironment() {
-        string environment = accc_ApexConstants.PRODUCTION_CATEGORY;
-
-        if ( Test.isRunningTest()  ) {
-            environment = accc_ApexConstants.TEST_CATEGORY;
-        } else if (accc_ApexUtilities.isSandbox() ) {
-            environment = accc_ApexConstants.DEBUG_CATEGORY;
-        }
-
-        return environment;
-    } // end of getEnvironment
-    /**
-     *
-     * @description convert string to integer
+     *  @description convert string to integer
      *
      * @param value string to convert
      * @param defaultValue default value in the event the value string is bad
@@ -787,7 +731,7 @@ public virtual without sharing class accc_ApexUtilities {
                 val = Integer.valueOf(value);
             } catch (Exception excp) {
                 // process exception
-                accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
+                accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
             }
         }
         return val;
@@ -804,8 +748,7 @@ public virtual without sharing class accc_ApexUtilities {
         return accc_ApexUtilities.getTypeByName(accc_ApexConstants.EmptyString, name);
     } // end of getTypeByName
     /**
-     *
-     * @description get the type by namespace and name
+     *  @description get the type by namespace and name
      *
      * @param String, the namespace of the type
      * @param String the name of the type
@@ -826,63 +769,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of getTypeByName
 
     /**
-     * @description get the runtime environment based on sandbox or test running.
-     * If there is a need for more control, then perhaps a custom setting/type [tbd]
-     * @return accc_IApexRunEnvironment how runtime environment
-     */
-    public static accc_IApexRunEnvironment getRuntimeEnvironment() {
-        if ( accc_ApexUtilities.runtimeEnvironment == null ) {
-
-            if ( Test.isRunningTest() ) {
-                accc_ApexUtilities.runtimeEnvironment = accc_TestEnvironmentSingleton.getInstance();
-            } else {
-                accc_ApexUtilities.runtimeEnvironment = accc_ApexRunEnvironmentSingleton.getInstance();
-            }
-        }
-
-        return accc_ApexUtilities.runtimeEnvironment;
-    }  // end of getRuntimeEnvironment
-    /**
-     * @description get the runtime fallback based on sandbox or test running.
-     * The reason we DO NOT use the runtime environment is chicken-egg. As
-     * ConfigMgr is used by the runtime at creation of the object factory. And,
-     * ConfgMgr uses fallback resources in the event it cannot find a resource; otherwise,
-     * we get a stack overflow. [TBD - Need to re-evaluate]
-     *
-     * @return accc_IFallbackResources how runtime environment fallback resources
-     */
-    public static accc_IFallbackResources getRuntimeFallbackResources() {
-        if ( accc_ApexUtilities.runtimeFallback == null ) {
-
-            if ( Test.isRunningTest() ) {
-                accc_ApexUtilities.runtimeFallback = new accc_ApexTestJSONDataFallback();
-            } else {
-                accc_ApexUtilities.runtimeFallback = new accc_ApexKnownCCConcernsFallback();
-            }
-        }
-
-        return accc_ApexUtilities.runtimeFallback;
-    }  // end of getRuntimeFallbackResources
-    //
-    /**
-    * @description get the runtime fallback excp handler based on sandbox or test running.
-    * The reason we DO NOT use the runtime environment is chicken-egg. As
-    * ConfigMgr is used by the runtime at creation of the object factory. And,
-    * ConfgMgr uses fallback excp handler in the event it cannot find a resource; otherwise,
-    * we get a stack overflow. [TBD - Need to re-evaluate]
-    *
-    * @return accc_IApexExceptionHandler  runtime environment fallback exception handler
-    */
-    public static accc_IApexExceptionHandler getRuntimeFallbackExceptionHandler() {
-        if ( accc_ApexUtilities.runtimeFallbackHandler == null ) {
-            accc_ApexUtilities.runtimeFallbackHandler = new accc_ApexExceptionHandler();
-        }
-
-        return accc_ApexUtilities.runtimeFallbackHandler;
-    }  // end of getRuntimeFallbackExceptionHandler
-    /**
-     *
-     * @description normalize the data
+     *  @description normalize the data
      *
      * @param datum string to inspect
      * @return string, normalize string
@@ -962,13 +849,12 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of popStack
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //
-    // Private Methods
+    // Private Static Methods
     //
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     *
-     * @description write data to the test list
+     *  @description write data to the test list
      *
      * @param string the message to write to the list
      */
@@ -984,8 +870,7 @@ public virtual without sharing class accc_ApexUtilities {
         }
     } // end of writeDataForTesting
     /**
-     *
-     * @description check for a string in the test log
+     *  @description check for a string in the test log
      *
      * @param item string to look for
      * @return true, if found
@@ -1004,8 +889,7 @@ public virtual without sharing class accc_ApexUtilities {
     } // end of containsInTestLog
 
     /**
-     *
-     * @description split a string based on expression ( ie. whitespace \s)
+     *  @description split a string based on expression ( ie. whitespace \s)
      *
      * @param input string to split
      * @param expression expressions (i.e., \s | , | ;)

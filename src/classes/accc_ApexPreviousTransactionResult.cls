@@ -119,7 +119,7 @@ public without sharing class accc_ApexPreviousTransactionResult implements accc_
 
             // log errors, if any
             if ( excps.size() > 0 ) {
-                accc_ILogger logger = accc_ApexUtilities.getRuntimeEnvironment().logger() ;
+                accc_ILogger logger = accc_ApexEnvironment.getRuntimeEnvironment().logger() ;
 
                 logger.write(excps);
             }

@@ -41,7 +41,7 @@ private class accc_DataCachingDataModelTest {
 	@isTest
 	static void testCtor() {
 		// act/assign
-		accc_BaseMdtDataModel octor = (accc_BaseMdtDataModel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.DataCachingConfiguration_r);
+		accc_BaseMdtDataModel octor = (accc_BaseMdtDataModel) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.DataCachingConfiguration_r);
 		accc_DataCachingDataModel ctor = new accc_DataCachingDataModel();
 		// assert
 		System.assertNotEquals(ctor, null);
@@ -61,7 +61,7 @@ private class accc_DataCachingDataModelTest {
 	static void testfindByLabel() {
 		// act/assign
 		accc_DataCachingDataModel ctor = new accc_DataCachingDataModel();
-		accc_BaseMdtDataModel octor = (accc_BaseMdtDataModel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.DataCachingConfiguration_r);
+		accc_BaseMdtDataModel octor = (accc_BaseMdtDataModel) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.DataCachingConfiguration_r);
 
 		List<accc_BaseMdtDataModel.BaseDataModelInformation> result = ctor.findByLabel(accc_DataCachingDataModel.TestLabel2018);
 		List<accc_BaseMdtDataModel.BaseDataModelInformation> result2 = octor.findByLabel(accc_DataCachingDataModel.TestLabel2018);

@@ -180,7 +180,7 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
             }
         } catch (Exception excp) {
             // process exception
-            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp, true);
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
         }
         return instances;
 
@@ -260,7 +260,7 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
             added = true;
         } catch (Exception excp) {
             // process exception
-            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp, true);
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
         }
         return added;
     } // end of addToMap
@@ -297,9 +297,12 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
         if ( classValue != null ) {
             String theInterface =  this.getInterfaceNameFrom(accc_ApexConstants.CategoryInterface_s, classValue, referenceName);
 
-            haveAddedInstance = true;
-            // now create the 'creator' for this type
-            instances.add(new accc_ApexClassInstanceMgr(classValue, theInterface, referenceName));
+            haveAddedInstance = !String.isBlank(theInterface);
+            // now add a valid interface
+            if (haveAddedInstance ) {
+                // now create the 'creator' for this type
+                instances.add(new accc_ApexClassInstanceMgr(classValue, theInterface, referenceName));
+            }
         }
         return haveAddedInstance;
     } // end of addToInstanceList
@@ -312,7 +315,7 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
      */
     @TestVisible
     private Type getFallbackType(string category, string resource) {
-        return accc_ApexUtilities.getTypeByName((String)accc_ApexUtilities.getRuntimeFallbackResources().get(category, resource));
+        return accc_ApexUtilities.getTypeByName((String)accc_ApexEnvironment.getRuntimeFallbackResources().get(category, resource));
     } // end of getFallbackType
     /**
      * @description get the interface name
@@ -325,12 +328,12 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
     @TestVisible
     private String getInterfaceNameFrom(string category, string className, String referenceName) {
         Boolean validCategory = !string.isBlank(category);
-        String result = validCategory && string.isBlank(referenceName)  ? null : (String)accc_ApexUtilities.getRuntimeFallbackResources().get(category, referenceName) ;
+        String result = validCategory && string.isBlank(referenceName)  ? null : (String)accc_ApexEnvironment.getRuntimeFallbackResources().get(category, referenceName) ;
 
         // this may not be applicable, but bec/ others CAN change the fallback resources, we will still check
         // what we are wanting is the INTERFACE
         if ( result == null && validCategory && !string.isBlank(className) ) {
-            result = (String)accc_ApexUtilities.getRuntimeFallbackResources().get(category, className) ;
+            result = (String)accc_ApexEnvironment.getRuntimeFallbackResources().get(category, className) ;
         }
         // are we still NULL, use the class name
         if ( result == null ) {

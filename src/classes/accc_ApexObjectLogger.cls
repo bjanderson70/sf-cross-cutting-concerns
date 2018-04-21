@@ -31,14 +31,13 @@
  *
  * @author Bill Anderson
  * @description default logger uses the system debug, error, warn, info, etc.
- *     The default logging level is DEBUG. This is logger is also wired into
- *     'ApexRunEnvironmentSingleton'. This logger will write information to
+ *     The default logging level is DEBUG. This logger will write information to
  *     Application Log (AcccApplicationLog__c)
  * @group Log Aspects
  */
 global without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
 
-    // pass information to the logger
+    // pass information to the logger -- will only use one; if needed, instantiate when used
     private final static accc_ApplicationLog theAppLog = new accc_ApplicationLog();
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //

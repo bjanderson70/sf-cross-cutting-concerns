@@ -50,7 +50,7 @@ private class accc_ApexCachePolicyStrategyTest {
 	static void testcacheValueAllNullParams() {
 
 		accc_ApexCachePolicyStrategy aps = new accc_ApexCachePolicyStrategy();
-		boolean result = aps.cacheValue(null, null,null);
+		boolean result = aps.cacheValue(null, null, null);
 
 		// assert
 		System.assertEquals(false, result);
@@ -60,7 +60,7 @@ private class accc_ApexCachePolicyStrategyTest {
 	static void testcacheValueOneNull() {
 
 		accc_ApexCachePolicyStrategy aps = new accc_ApexCachePolicyStrategy();
-		boolean result = aps.cacheValue(accc_DataCachingDataModel.TestName2018,null);
+		boolean result = aps.cacheValue(accc_DataCachingDataModel.TestName2018, null);
 
 		// assert
 		System.assertEquals(false, result);
@@ -82,7 +82,7 @@ private class accc_ApexCachePolicyStrategyTest {
 	static void testcacheValueWithCategory() {
 
 		accc_ApexCachePolicyStrategy aps = new accc_ApexCachePolicyStrategy();
-		boolean result = aps.cacheValue(accc_DataCachingDataModel.TestCategory,accc_DataCachingDataModel.TestLabel2018, 'select id from ACCOUNT');
+		boolean result = aps.cacheValue(accc_DataCachingDataModel.TestCategory, accc_DataCachingDataModel.TestLabel2018, 'select id from ACCOUNT');
 
 		// assert
 		System.assertEquals(true, result);
@@ -157,16 +157,17 @@ private class accc_ApexCachePolicyStrategyTest {
 
 		// assert
 		System.assertEquals(false, result);
-	 
+
 	} // end of testcheckRegexBadSelect
 	@isTest
 	static void testcheckRegexValid() {
 
 		accc_ApexCachePolicyStrategy aps = new accc_ApexCachePolicyStrategy();
 		Boolean result = aps.checkRegex('\\bselect\\b', 'select id from Contact');
- 
+
 		// assert
-	 
+
 		System.assertEquals(true, result);
 	} // end of testcheckRegexValid
-}
+
+} // end of accc_ApexCachePolicyStrategyTest

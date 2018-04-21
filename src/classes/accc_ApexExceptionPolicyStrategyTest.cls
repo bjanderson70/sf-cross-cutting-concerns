@@ -40,7 +40,7 @@ private class accc_ApexExceptionPolicyStrategyTest {
     // test exception
     private class TestStrategyException extends Exception {}
     // our strategy
-    private final static accc_IApexExceptionPolicyStrategy policyStrategy = (accc_IApexExceptionPolicyStrategy) accc_ApexRunEnvironmentSingleton.getInstance().objectFactory().create(accc_ApexConstants.ExceptionPolicyHandler);
+    private final static accc_IApexExceptionPolicyStrategy policyStrategy = (accc_IApexExceptionPolicyStrategy)  accc_ApexEnvironment.getRuntimeEnvironment().objectFactory().create(accc_ApexConstants.ExceptionPolicyHandler);
 
     /**
      * @description Test to make sure the SAME exception IS returned

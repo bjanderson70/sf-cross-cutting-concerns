@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description default logger uses the system debug, error, warn, info, etc.
- *     The default logging level is DEBUG. This is the default logger used by 'accc_ApexRunEnvironmentSingleton'.
+ *     The default logging level is DEBUG. This is the default logger used by 'accc_ApexEnvironment.getRuntimeEnvironment()'.
  *     In addition to this Logger, there are three other loggers, which inherit the base behavior :
  *
  *     * ApexObjectLogger       - writes logging data to the custom object ApplicationLog__c
@@ -88,7 +88,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     protected  accc_IDataFormat logFormatter {
         get {
             if ( this.alogFormatter == null ) {
-                this.alogFormatter = (accc_IDataFormat)accc_ApexRunEnvironmentSingleton.getInstance().objectFactory().create(accc_ApexConstants.LogFormatter);
+                this.alogFormatter = (accc_IDataFormat)accc_ApexEnvironment.getRuntimeEnvironment().objectFactory().create(accc_ApexConstants.LogFormatter);
             }
             return this.alogFormatter;
         }
@@ -160,7 +160,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public void trace(Object msg) {
 
         if ( msg != null && this.isTracingOn()  ) {
-            LoggingLevel lvl = (LoggingLevel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.TraceLogLevel_r);
+            LoggingLevel lvl = (LoggingLevel) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
             this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString(), lvl);
             
             if ( this.isTheTraceNotCCandShowAllowed() ) {
@@ -179,7 +179,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public void trace(List<Object> msgs) {
 
         if (  msgs != null && this.isTracingOn() ) {
-            LoggingLevel lvl = (LoggingLevel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.TraceLogLevel_r);
+            LoggingLevel lvl = (LoggingLevel) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
             this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString(), lvl);
             string allstring = string.join(msgs, ',');
 
@@ -375,7 +375,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     protected boolean isTracingOn() {
 
         if ( this.tracingIsOn == null) {
-            this.tracingIsOn = accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.TraceFlagOn_r);
+            this.tracingIsOn = accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceFlagOn_r);
         }
         return (boolean)this.tracingIsOn;
 
@@ -388,7 +388,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
      */
     @TestVisible
     protected boolean isTheTraceNotCCandShowAllowed() {
-        boolean showCCTracing = (boolean) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.ShowCCTraceInfo_r);
+        boolean showCCTracing = (boolean) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.ShowCCTraceInfo_r);
         boolean result = true;
 
         if ( this.dataModel != null &&

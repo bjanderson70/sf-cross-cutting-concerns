@@ -52,7 +52,7 @@ private class accc_ApexExceptionHandlerTest {
         accc_ApexExceptionHandler excpHandler = new accc_ApexExceptionHandler();
 
         excpHandler.process(excp);
-        String msg = accc_ApexRunEnvironmentSingleton.getInstance().logger().lastMessage();
+        String msg =  accc_ApexEnvironment.getRuntimeEnvironment().logger().lastMessage();
         Integer result = msg.indexOf(EXPECTED_EXCP_STRING);
         // assert
         system.assertNotEquals(result, -1);
@@ -69,7 +69,7 @@ private class accc_ApexExceptionHandlerTest {
         accc_ApexExceptionHandler excpHandler = new accc_ApexExceptionHandler();
 
         excpHandler.process(excp, accc_ApexExceptionPolicyEnum.Top, false);
-        String msg = accc_ApexRunEnvironmentSingleton.getInstance().logger().lastMessage();
+        String msg =  accc_ApexEnvironment.getRuntimeEnvironment().logger().lastMessage();
         // assert
         system.assertEquals(msg, null);
 

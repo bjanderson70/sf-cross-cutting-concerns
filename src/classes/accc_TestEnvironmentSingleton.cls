@@ -62,7 +62,6 @@ public without sharing class accc_TestEnvironmentSingleton extends  accc_ApexBas
      * @description private ctor of the singleton -- one instance (DO NOT DELETE CTOR)
      */
     private accc_TestEnvironmentSingleton() {
-
     } // end of default ctor
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -82,11 +81,10 @@ public without sharing class accc_TestEnvironmentSingleton extends  accc_ApexBas
      * @return a factory to create objects
      */
     public override  accc_IApexFactory objectFactory() {
-        if ( this.theFactory == null ) {
+         if ( this.theFactory == null ) {
             // default test factory, subject to change
             super.objectFactory(  new  accc_ApexTestObjectFactory());
         }
-
         return this.theFactory;
     } // end of objectFactory
 

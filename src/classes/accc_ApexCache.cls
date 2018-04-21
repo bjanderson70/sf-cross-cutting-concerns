@@ -373,7 +373,7 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
             }
         } catch (Cache.Org.OrgCacheException excp) {
             // if there is no data by the key, the parition may not have been created
-            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
         }
         return result;
 

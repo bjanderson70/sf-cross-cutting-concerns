@@ -109,7 +109,7 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
         this.process(excp, policy);
         // get the rethrow exception, if any
         try {
-            accc_IApexExceptionPolicyStrategy policyStrategy = (accc_IApexExceptionPolicyStrategy)accc_ApexRunEnvironmentSingleton.getInstance().objectFactory().create(accc_ApexConstants.ExceptionPolicyHandler);
+            accc_IApexExceptionPolicyStrategy policyStrategy = (accc_IApexExceptionPolicyStrategy) accc_ApexEnvironment.getRuntimeEnvironment().objectFactory().create(accc_ApexConstants.ExceptionPolicyHandler);
             // what to do with an exception, translate it or returned null [meaning no need to rethrow]
             returned = policyStrategy.rethrow( excp, policy);
         } catch (Exception iexcp) {
@@ -217,7 +217,7 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
         accc_ILogger logger =  null;
         try {
             if ( this.handlingLoggingWithCare == false ) {
-                logger = accc_ApexRunEnvironmentSingleton.getInstance().logger();
+                logger =  accc_ApexEnvironment.getRuntimeEnvironment().logger();
             } else {
                 logger = this.systemDebugLogger();
             }
@@ -238,7 +238,7 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
 
         try {
             if ( this.handlingLoggingWithCare == false ) {
-                formatter = (accc_IDataFormat)accc_ApexRunEnvironmentSingleton.getInstance().objectFactory().create(accc_ApexConstants.ExceptionFormatter);
+                formatter = (accc_IDataFormat) accc_ApexEnvironment.getRuntimeEnvironment().objectFactory().create(accc_ApexConstants.ExceptionFormatter);
             } else {
                 formatter = new accc_ExceptionFormatter();
             }

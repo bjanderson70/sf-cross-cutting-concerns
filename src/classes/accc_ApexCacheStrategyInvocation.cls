@@ -130,7 +130,7 @@ public virtual without sharing class accc_ApexCacheStrategyInvocation implements
 			                               invocationInformation);
 		} catch (Exception excp) {
 			// process exception
-			accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
+			accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
 
 		}
 		return result;
@@ -151,7 +151,7 @@ public virtual without sharing class accc_ApexCacheStrategyInvocation implements
 	protected virtual boolean invokeCustomImpl(String soqlQuery, accc_DataCachingDataModel.CacheInformation invocationInformation) {
 		boolean status = false;
 		// get from the factory
-		accc_IApexCacheStrategyInvocation invoke = accc_ApexRunEnvironmentSingleton.getInstance().cacheStrategyInvocation();
+		accc_IApexCacheStrategyInvocation invoke =  accc_ApexEnvironment.getRuntimeEnvironment().cacheStrategyInvocation();
 		if ( invoke != null ) {
 			// as this is the base class for others, we DO NOT call ourselves , in the event
 			// someone reference this class as the cache strategy

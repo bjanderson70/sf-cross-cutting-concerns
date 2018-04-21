@@ -101,12 +101,12 @@ private class accc_ApplicationLogTest {
         // set payload
         item.setIntegrationPayload('Payload');
         // assert
-        System.assertNotEquals(item, null);
-        System.assertEquals(item.entry().Exception__c, null);
-        System.assertEquals(item.entry().LogCode__c, null);
-        System.assertEquals(item.entry().Source__c, 'classname');
-        System.assertEquals(item.entry().SourceFunction__c, 'methodName');
-        System.assertEquals(item.entry().IntegrationPayload__c, 'Payload');
+        System.assertNotEquals(null, item);
+        System.assertEquals(null, item.entry().Exception__c);
+        System.assertEquals(null, item.entry().LogCode__c);
+        System.assertEquals('classname', item.entry().Source__c );
+        System.assertEquals('methodName', item.entry().SourceFunction__c);
+        System.assertEquals('Payload', item.entry().IntegrationPayload__c);
 
     } // end of accc_ApplicationLogCtorWithClassnameMethodNameTest
 

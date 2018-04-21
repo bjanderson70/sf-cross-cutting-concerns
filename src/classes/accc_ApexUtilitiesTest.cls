@@ -109,7 +109,7 @@ private class accc_ApexUtilitiesTest {
      */
     @isTest static void testtoStringNull() {
         //assign
-        String expected = '';
+        String expected =  accc_ApexConstants.EmptyString;
         // act
         String result = accc_ApexUtilities.toString(null, expected);
         // assert
@@ -120,7 +120,7 @@ private class accc_ApexUtilitiesTest {
      */
     @isTest static void testgetClassNameNull() {
         //assign
-        String expected = '';
+        String expected =  accc_ApexConstants.EmptyString;
         String result = accc_ApexUtilities.getClassName(null);
         // assert
         System.assertEquals(expected, result);
@@ -309,14 +309,12 @@ private class accc_ApexUtilitiesTest {
         // act
         accc_ApexUtilities.log(result);
         // assert
-        // Temporarily removed due to failure in production environment
-        // System.assertEquals(true, accc_ApexUtilities.containsInTestLog(msg));
+        System.assertEquals(true, accc_ApexUtilities.containsInTestLog(msg));
     } // end of testcontainsExceptionInApplicationLog
 
     @isTest
     static void testcontainsFieldInSObjectWithNull() {
-        // assign
-        // act
+        // assign / act
         Boolean result = accc_ApexUtilities.containsFieldInSObject(null, null);
         // assert
         System.assertEquals(false, result);
@@ -541,36 +539,7 @@ private class accc_ApexUtilitiesTest {
         }
     } // end of testAllTelephoneNumbers
 
-    @isTest
-    static void testgetEnvironment() {
-        // assign
-        Set<String> envs = new Set<String> {
-            accc_ApexConstants.PRODUCTION_CATEGORY
-            , accc_ApexConstants.TEST_CATEGORY
-            , accc_ApexConstants.DEBUG_CATEGORY
-        };
-        // act
-        String env = accc_ApexUtilities.getEnvironment();
-        // assert
-        system.assertEquals(true, envs.contains(env));
 
-    } // end of testgetEnvironment
-
-    @isTest
-    static void testgetRuntimeEnvironment() {
-        // assign/ act
-        accc_IApexRunEnvironment runtime = accc_ApexUtilities.getRuntimeEnvironment() ;
-        String rType = null,
-               expected = String.valueOf(runtime).split(':')[0];
-
-        if ( Test.isRunningTest() || accc_ApexUtilities.isSandbox() ) {
-            rType = String.valueOf(accc_TestEnvironmentSingleton.class).split(':')[0];
-        } else {
-            rType = String.valueOf(accc_ApexBaseRuntimeEnvironment.class).split(':')[0];
-        }
-        // assert
-        system.assertEquals(expected, rType);
-    }
     @isTest
     static void testconvertStringToInt() {
         String val = '100';
@@ -680,7 +649,7 @@ private class accc_ApexUtilitiesTest {
         final String label = 'label',
                      category = 'category';
         List<String> expected = new List<String> {
-            category + '.' + label,
+            category +  accc_ApexConstants.Period + label,
             category,
             label
         };
@@ -692,15 +661,10 @@ private class accc_ApexUtilitiesTest {
     } // end of testmakeCacheIdentifier
 
     @isTest
-    static void testgetRuntimeFallbackExceptionHandler() {
-        system.assertNotEquals(null, accc_ApexUtilities.getRuntimeFallbackExceptionHandler());
-    } // end of testgetRuntimeFallbackExceptionHandler
-
-    @isTest
     static void testpopStack() {
         // assign
         string trace = new DmlException().getStackTraceString(),
-        theClass = '';
+        theClass =  accc_ApexConstants.EmptyString;
         // act / assert
         system.assertNotEquals(theClass, accc_ApexUtilities.popStack(trace));
     } // end of testpopStack

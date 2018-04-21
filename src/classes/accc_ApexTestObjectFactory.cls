@@ -35,7 +35,7 @@
  * This shows you a way to change behavior of the runtime environment by inheriting from
  * 'accc_ApexObjectFactory' should there be a need. However, you have the ability to change behavior
  * via the custom metadata, Apex Code Configurations.
- * @group Common Layer
+ * @group Common Test Layer
  */
 public without sharing class accc_ApexTestObjectFactory extends accc_ApexObjectFactory {
 
@@ -58,15 +58,13 @@ public without sharing class accc_ApexTestObjectFactory extends accc_ApexObjectF
      * @description Initialize what the factory knows how to create
      */
     private void initialize() {
-
         // The base class has already initialized these resources; however,
-        // here we override them
- 
-        this.addToCollection(accc_ApexConstants.ConfigurationResource, accc_ConfigurationTestProvider.class);
+        // here we override the particular known resources
+
         this.addToCollection(accc_ApexTestUtilities.FallbackTestResource, accc_ApexTestJSONDataFallback.class);
         // want information going to 'debug log ', i.e system.debug
         this.addToCollection(accc_ApexConstants.LoggerResource, accc_ApexLogger.class);
-        
+
     } // end of initialize
 
 } // end of accc_ApexTestObjectFactory

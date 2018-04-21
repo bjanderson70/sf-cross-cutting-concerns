@@ -140,7 +140,7 @@ global without sharing class accc_ApexMailMessageSender extends accc_ApexBaseMes
         } catch (Exception excp) {
             this.sendException = new accc_ApexApplicationException ('ApexMailmessagePayloadSender: Error sending email', excp);
             // process exception
-            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
         }
 
         return new accc_ApexMessageSendResponse(result, this.sendException);

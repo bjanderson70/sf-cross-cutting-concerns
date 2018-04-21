@@ -62,12 +62,6 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     ////////////////////////////////////////////////////////////////////////////////
     /// Ctors / Class Initialization
     ////////////////////////////////////////////////////////////////////////////////
-    //static {
-    //    // initially all resources are null
-    //    for ( String key : accc_ApexConstants.CC_AllResourceNames) {
-    //        accc_ApexBaseRuntimeEnvironment.ccResources.put(key, null);
-    //    }
-    //}
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Public Methods
@@ -94,7 +88,7 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
     public virtual accc_IConfigurationProvider provider() {
         accc_IConfigurationProvider result = (accc_IConfigurationProvider)accc_ApexBaseRuntimeEnvironment.ccResources.get(accc_ApexConstants.ConfigurationResource);
         if ( result == null ) {
-            result = (accc_IConfigurationProvider) accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.ConfigurationResource,
+            result = (accc_IConfigurationProvider)accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.ConfigurationResource,
                      this.objectFactory().create(accc_ApexConstants.ConfigurationResource));
         }
 

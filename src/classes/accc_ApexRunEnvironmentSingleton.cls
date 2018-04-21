@@ -31,7 +31,7 @@
  *
  *
  * @author Bill Anderson
- * @description FCreates singleton for accc_ApexBaseRuntimeEnvironment
+ * @description Creates singleton for accc_ApexBaseRuntimeEnvironment
  * @group Common Layer
  */
 public without sharing class accc_ApexRunEnvironmentSingleton extends accc_ApexBaseRuntimeEnvironment {
@@ -45,7 +45,7 @@ public without sharing class accc_ApexRunEnvironmentSingleton extends accc_ApexB
      * @description  our run environment
      */
     @TestVisible
-    private static accc_ApexRunEnvironmentSingleton classInstance = null;
+    private static final accc_ApexRunEnvironmentSingleton classInstance = null;
 
     ////////////////////////////////////////////////////////////////////////////////
     /// Static Initializer

@@ -68,7 +68,7 @@ private class accc_ApexCacheMgrTest {
 	@isTest
 	static void testctorNoParam() {
 		// assign
-		Boolean expected =  (Boolean)accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.UseCachingStrategy_r);
+		Boolean expected =  (Boolean) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.UseCachingStrategy_r);
 		// act
 		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
 		// assert

@@ -285,7 +285,7 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
         // this is static data, grab it ONCE
         if (  accc_ApexObjectFactory.theObjectCollection.size() == 0 ) {
             // what environment we are working in ('debug','production',etc)
-            String environment = accc_ApexUtilities.getEnvironment();
+            String environment = accc_ApexEnvironment.getEnvironment();
             // don't use singleton, 'accc_ApexRunEnvironmentSingleton' chicken-egg issue
             accc_CrossCuttingConfigMgr configMgr =  new accc_CrossCuttingConfigMgr(environment);
             // if we have the cc configuration manager, let us get all the creators
@@ -294,7 +294,9 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
             for (accc_ApexClassInstanceMgr classInstance : items) {
                 this.addToCollection(classInstance);
             }
+
         }
+
     } // end of initializeBase
 
 } // end of accc_ApexObjectFactory

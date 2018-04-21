@@ -57,7 +57,7 @@ public without sharing class accc_LogPlatformEventHandler implements accc_IApexP
             }
         } catch (Exception excp) {
             // process exception, handle w/ care
-            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp, true);
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
         }
 
     } // end of afterInsert

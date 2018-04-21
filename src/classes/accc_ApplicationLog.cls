@@ -230,7 +230,7 @@ public without sharing class accc_ApplicationLog {
      * @param string payload
      */
     public void setIntegrationPayload(String payload) {
-        //this.entry.IntegrationPayload__c = payload;
+        this.entry.IntegrationPayload__c = payload;
     } // end of setIntegrationPayload
     /**
      * @description set the resource information
@@ -239,8 +239,8 @@ public without sharing class accc_ApplicationLog {
      * @param referenceInfo reference information
      */
     public void setReference(String referenceId, String referenceInfo) {
-        //this.entry.ReferenceId__c = referenceId;
-        //this.entry.ReferenceInfo__c = referenceInfo;
+        this.entry.ReferenceId__c = referenceId;
+        this.entry.ReferenceInfo__c = referenceInfo;
     } // end of setReference
 
     /**
@@ -250,7 +250,7 @@ public without sharing class accc_ApplicationLog {
      * @param message string message
      */
     public void setMesssage(String message) {
-      //  this.entry.Message__c = message;
+        //  this.entry.Message__c = message;
     } // end of setMessage
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -361,7 +361,7 @@ public without sharing class accc_ApplicationLog {
         this.itemsLogged = 0;
         // ensure string correctness
         this.ensureStringCorrectness(logEntries);
-        accc_IApexRunEnvironment runtime = accc_ApexUtilities.getRuntimeEnvironment();
+        accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
 
         if ( (Limits.getDMLRows() < Limits.getLimitDMLRows()) &&
                 (Limits.getDMLStatements() < Limits.getLimitDMLStatements()) ) {
@@ -403,8 +403,8 @@ public without sharing class accc_ApplicationLog {
      */
     @TestVisible
     private void setSourceInfo(String className, String methodName) {
-        //this.entry.Source__c = className == null ? accc_ApexConstants.EmptyString : className;
-        //this.entry.SourceFunction__c = methodName == null ? accc_ApexConstants.EmptyString : methodName;
+        this.entry.Source__c = className == null ? accc_ApexConstants.EmptyString : className;
+        this.entry.SourceFunction__c = methodName == null ? accc_ApexConstants.EmptyString : methodName;
     } // end of setSourceInfo
     /**
      *
@@ -415,11 +415,11 @@ public without sharing class accc_ApplicationLog {
     @TestVisible
     private void setExceptionInfo(Exception excp) {
         if (excp != null) {
-            //this.entry.Exception__c = String.valueof(excp.getTypeName());
-            //this.entry.LogCode__c = LoggingLevel.ERROR.name();
-            //this.entry.Message__c = excp.getMessage();
-            //this.entry.StackTrace__c = excp.getStackTraceString();
-            //this.setLogLevel(this.entry, LoggingLevel.ERROR);
+            this.entry.Exception__c = String.valueof(excp.getTypeName());
+            this.entry.LogCode__c = LoggingLevel.ERROR.name();
+            this.entry.Message__c = excp.getMessage();
+            this.entry.StackTrace__c = excp.getStackTraceString();
+            this.setLogLevel(this.entry, LoggingLevel.ERROR);
         }
     } // end of setExceptionInfo
     /**
@@ -428,11 +428,11 @@ public without sharing class accc_ApplicationLog {
      */
     @TestVisible
     private void setInvocationInfo() {
-        //this.entry.InvocationType__c = 'Is Batch? ' + System.isBatch()
-        //                               + ', Is Scheduled? ' + System.isScheduled()
-        //                               + ', Is Future? ' + System.isFuture()
-        //                               + ', Is Queueable? ' + System.isQueueable()
-        //                               + ', Is Page? ' + System.currentPageReference();
+        this.entry.InvocationType__c = 'Is Batch? ' + System.isBatch()
+                                       + ', Is Scheduled? ' + System.isScheduled()
+                                       + ', Is Future? ' + System.isFuture()
+                                       + ', Is Queueable? ' + System.isQueueable()
+                                       + ', Is Page? ' + System.currentPageReference();
     } // end of setInvocationInfo
 
     /**
@@ -452,16 +452,16 @@ public without sharing class accc_ApplicationLog {
             , String.valueof(Limits.getQueries())
         };
 
-       // this.entry.Statistics__c = string.format(formatted, data);
+        this.entry.Statistics__c = string.format(formatted, data);
     } // end of setLimitsInfo
     /**
      *
      * @description  set user and profile information
      */
     private void setUserInfo() {
-        //this.entry.Username__c = UserInfo.getUserName();
-        //this.entry.profileId__c = UserInfo.getProfileId();
-        //this.entry.UserRoleId__c = UserInfo.getUserRoleId();
+        this.entry.Username__c = UserInfo.getUserName();
+        this.entry.profileId__c = UserInfo.getProfileId();
+        this.entry.UserRoleId__c = UserInfo.getUserRoleId();
     } // end of setUserInfo
 
     /**
@@ -476,7 +476,7 @@ public without sharing class accc_ApplicationLog {
     private void handleExceptionResults(AcccApplicationLog__c item, LoggingLevel level, Exception excp) {
 
         this.setLogLevel(item, level);
-        accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp, true);
+        accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
 
     } // end of handleExceptionResults
     /**
@@ -501,7 +501,7 @@ public without sharing class accc_ApplicationLog {
     @TestVisible
     private void setLogLevel(AcccApplicationLog__c entry, LoggingLevel level) {
         if ( entry != null ) {
-           // entry.DebugLevel__c = level.name();
+            entry.DebugLevel__c = level.name();
         }
     } // end of setLogLevel
 
@@ -530,15 +530,15 @@ public without sharing class accc_ApplicationLog {
         // before saving to the database
         if ( entry != null ) {
 
-            //entry.InvocationType__c = this.correctString(entry.InvocationType__c);
-            //entry.LogCode__c = this.correctString(entry.LogCode__c);
-            //entry.ReferenceId__c = this.correctString(entry.ReferenceId__c);
-            //entry.ReferenceInfo__c = this.correctString(entry.ReferenceInfo__c);
-            //entry.SourceFunction__c = this.correctString(entry.SourceFunction__c);
-            //entry.Source__c = this.correctString(entry.Source__c);
-            //entry.UserRoleId__c = this.correctString(entry.UserRoleId__c);
-            //entry.Username__c = this.correctString(entry.Username__c);
-            //entry.profileId__c = this.correctString(entry.profileId__c);
+            entry.InvocationType__c = this.correctString(entry.InvocationType__c);
+            entry.LogCode__c = this.correctString(entry.LogCode__c);
+            entry.ReferenceId__c = this.correctString(entry.ReferenceId__c);
+            entry.ReferenceInfo__c = this.correctString(entry.ReferenceInfo__c);
+            entry.SourceFunction__c = this.correctString(entry.SourceFunction__c);
+            entry.Source__c = this.correctString(entry.Source__c);
+            entry.UserRoleId__c = this.correctString(entry.UserRoleId__c);
+            entry.Username__c = this.correctString(entry.Username__c);
+            entry.profileId__c = this.correctString(entry.profileId__c);
         }
     } // end of ensureStringCorrectness
     /**

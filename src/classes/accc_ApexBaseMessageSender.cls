@@ -69,9 +69,9 @@ public without sharing abstract class accc_ApexBaseMessageSender implements accc
     /// Protected Methods
     ////////////////////////////////////////////////////////////////////////////////
 
-   /**
-     * @description  reset state -- set exception back to null
-     */
+    /**
+      * @description  reset state -- set exception back to null
+      */
     @TestVisible
     protected void reset() {
         this.sendException = null;
@@ -157,7 +157,7 @@ public without sharing abstract class accc_ApexBaseMessageSender implements accc
                 }
             }
         } catch (Exception excp) {
-            this.handleException(messagePayload,excp, errorMesg, ignoreException);
+            this.handleException(messagePayload, excp, errorMesg, ignoreException);
         }
 
         return results;
@@ -173,13 +173,13 @@ public without sharing abstract class accc_ApexBaseMessageSender implements accc
      * @return boolean true if ignore exception
      */
     @TestVisible
-    private boolean handleException(accc_ApexMessagePayload messagePayload,Exception excp, String eMesg, boolean ignoreException) {
+    private boolean handleException(accc_ApexMessagePayload messagePayload, Exception excp, String eMesg, boolean ignoreException) {
         if ( !ignoreException && excp != null) {
             String errorMesg = string.IsBlank(eMesg) ? 'Exception occurred in accc_ApexBaseMessageSender' : eMesg;
             this.sendException = new accc_ApexApplicationException(errorMesg, excp);
             messagePayload.payloadException = this.sendException;
             // process exception
-            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
         }
         return !ignoreException && excp != null;
     } // end of handleException

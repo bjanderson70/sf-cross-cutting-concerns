@@ -34,135 +34,122 @@
  * @group Log Aspects
  */
 public without sharing class accc_ApexPublishEventLogger  extends accc_ApexLogger {
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Data Members
-    ///////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+  //
+  // Data Members
+  ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    private static accc_StopWatch theStopWatch = null;
-    private static accc_ILogger theLogger = null;
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+  //
+  // Protected methods
+  ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    // static intialization
-    static {
-        // Only for testing
-        if (Test.isRunningTest() ) {
-            theStopWatch = new accc_StopWatch();
-            theLogger = new accc_ApexLogger(LoggingLevel.ERROR);
-        }
+  /**
+   * @description write message
+   *
+   * @param level log-level
+   * @param message the message
+   */
+  @TestVisible
+  protected override void write(LoggingLevel level, Object message) {
+    // any work
+    if ( message == null) {
+      return;
+    }
+    // write information
+    this.write(level, new List<Object> {message});
+  } // end of write
+
+  /**
+  * @description write messages
+  *
+  * @param LoggingLevel log-level
+  * @param List of the messages
+  */
+  @TestVisible
+  protected override void write(LoggingLevel level, List<Object> messages) {
+    // any work
+    if ( messages == null || messages.size() == 0) {
+      return;
+    }
+    // toString returns a '' value if null
+    String result = accc_ApexUtilities.toString(messages);
+    // remember last value
+    this.setLastMessage(level, result);
+    // publish the event
+    if ( !this.publishLogEvent(level, messages) ) {
+      // let parent handle it
+      super.write(level, messages);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // Protected methods
-    ///////////////////////////////////////////////////////////////////////////////////////////////
+  } // end of write
+  /**
+   * @description publish the log event
+   *
+   * @param LoggingLevel log level
+   * @param Object the log message
+   *
+   * @return boolean returns true if published
+   */
+  @TestVisible
+  private boolean publishLogEvent(LoggingLevel level, Object message) {
+    // any work
+    if ( message == null ) {
+      return false;
+    }
+    // publish events
+    return this.publishLogEvent(level, new List<Object> {message});
 
-    /**
-     * @description write message
-     *
-     * @param level log-level
-     * @param message the message
-     */
-    @TestVisible
-    protected override void write(LoggingLevel level, Object message) {
-        // any work
-        if ( message == null) {
-            return;
-        }
-        // write information
-        this.write(level, new List<Object> {message});
-    } // end of write
-
-    /**
-    * @description write messages
+  } // end of publishLogEvent
+  /**
+    * @description publish the log events
     *
-    * @param LoggingLevel log-level
-    * @param List of the messages
+    * @param LoggingLevel log level
+    * @param List<Object> the list of messages
+    *
+    * @return boolean returns true if published
     */
-    @TestVisible
-    protected override void write(LoggingLevel level, List<Object> messages) {
-        // any work
-        if ( messages == null || messages.size() == 0) {
-            return;
-        }
-        // toString returns a '' value if null
-        String result = accc_ApexUtilities.toString(messages);
-        // remember last value
-        this.setLastMessage(level, result);
-        // publish the event
-        if ( !this.publishLogEvent(level, messages) ) {
-            // let parent handle it
-            super.write(level, messages);
-        }
+  @TestVisible
+  private boolean publishLogEvent(LoggingLevel level, List<Object> messages) {
+    // any work
+    if ( messages == null || messages.size() == 0) {
+      return false;
+    }
 
-    } // end of write
-    /**
-     * @description publish the log event
-     *
-     * @param LoggingLevel log level
-     * @param Object the log message
-     *
-     * @return boolean returns true if published
-     */
-    @TestVisible
-    private boolean publishLogEvent(LoggingLevel level, Object message) {
-        // any work
-        if ( message == null ) {
-            return false;
-        }
-        // publish events
-        return this.publishLogEvent(level, new List<Object> {message});
+    accc_IPreviousTransactionResult result = accc_ApexEnvironment.getRuntimeEnvironment().transactionResult();
+    String uid = UserInfo.getUserId(),
+           loglvl = level.name();
+    SObject logEvt = null;
+    List<SObject> logEvts = new List<SObject>();
 
-    } // end of publishLogEvent
-    /**
-      * @description publish the log events
-      *
-      * @param LoggingLevel log level
-      * @param List<Object> the list of messages
-      *
-      * @return boolean returns true if published
-      */
-    @TestVisible
-    private boolean publishLogEvent(LoggingLevel level, List<Object> messages) {
-        // any work
-        if ( messages == null || messages.size() == 0) {
-            return false;
-        }
+    // iterate of messages
+    for (Object message : messages ) {
+      logEvt = new accc_Log__e(LogCode__c = loglvl,
+                               Message__c = accc_ApexUtilities.toString(message),
+                               Username__c = uid);
+      logEvts.add(logEvt);
+    }
+    this.processEvent(result, logEvts);
+    // process errors, if any; if we did not have errors, 'processErrors' returns false
+    return result.processErrors(true) == false;
 
-        accc_IApexRunEnvironment runtime = accc_ApexUtilities.getRuntimeEnvironment();
-        accc_IPreviousTransactionResult result = runtime.transactionResult();
-        String uid = UserInfo.getUserId(),
-               loglvl = string.valueOf(level);
-        SObject logEvt = null;
-        List<SObject> logEvts = new List<SObject>();
+  } // end of publishLogEvent
+  /**
+   * @description process the log event
+   *
+   * @param accc_IPreviousTransactionResult transaction processor
+   * @param List<logEvt> list to publish
+   */
+  @TestVisible
+  private void processEvent(accc_IPreviousTransactionResult result,
+                            List<SObject> logEvts) {
 
-        // iterate of messages
-        for (Object message : messages ) {
-            logEvt = new accc_Log__e(LogCode__c = loglvl,
-                                Message__c = accc_ApexUtilities.toString(message, ''),
-                                Username__c = uid);
-            logEvts.add(logEvt);
-        }
-        this.processEvent(result, logEvts);
-        // process errors, if any; if we did not have errors, 'processErrors' returns false
-        return result.processErrors(true) == false;
+    // Call method to publish events
+    List<Database.SaveResult> savedResults =  EventBus.publish(logEvts);
 
-    } // end of publishLogEvent
-    /**
-     * @description process the log event
-     *
-     * @param accc_IPreviousTransactionResult transaction processor
-     * @param List<logEvt> list to publish
-     */
-    @TestVisible
-    private void processEvent(accc_IPreviousTransactionResult result,
-                              List<SObject> logEvts) {
+    // set the results
+    result.databaseResult(savedResults);
 
-        // Call method to publish events
-        List<Database.SaveResult> savedResults =  EventBus.publish(logEvts);
-
-        // set the results
-        result.databaseResult(savedResults);
-       
-    } // end of processEvent
+  } // end of processEvent
 
 } // end of accc_ApexPublishEventLogger

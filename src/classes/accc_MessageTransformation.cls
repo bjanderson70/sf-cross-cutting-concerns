@@ -46,9 +46,9 @@ public without sharing class accc_MessageTransformation {
         accc_Log__e result = null;
 
         if ( datum != null ) {
-            result = new accc_Log__e(LogCode__c = string.valueOf(datum.LogCode__c),
-                                Message__c = accc_MessageTransformation.mergeApplicationLogData(datum),
-                                Username__c = UserInfo.getUserId());
+            result = new accc_Log__e(LogCode__c = accc_ApexUtilities.toString(datum.LogCode__c),
+                                     Message__c = accc_MessageTransformation.mergeApplicationLogData(datum),
+                                     Username__c = UserInfo.getUserId());
         }
         return result;
 
@@ -64,12 +64,15 @@ public without sharing class accc_MessageTransformation {
         AcccApplicationLog__c result = null;
 
         if ( message != null ) {
-            result = new AcccApplicationLog__c(LogCode__c = string.valueOf(level),
-                                           DebugLevel__c = level.name(),
-                                           Message__c =  string.valueOf(message),
-                                           Source__c = 'AcccApplicationLog__c',
-                                           OwnerId = UserInfo.getUserId(),
-                                           Username__c = UserInfo.getUserId());
+            Id userId = UserInfo.getUserId();
+            String lvlName = level.name();
+
+            result = new AcccApplicationLog__c(LogCode__c = lvlName,
+                                               DebugLevel__c = lvlName,
+                                               Message__c =  accc_ApexUtilities.toString(message),
+                                               Source__c = 'AcccApplicationLog__c',
+                                               OwnerId = userId,
+                                               Username__c = userId);
         }
         return result;
     } // end of translate
@@ -130,11 +133,12 @@ public without sharing class accc_MessageTransformation {
         AcccApplicationLog__c result = null;
 
         if ( datum != null ) {
-            result = new AcccApplicationLog__c(LogCode__c = string.valueOf(datum.LogCode__c),
-                                           Message__c =  string.valueOf(datum.Message__c),
-                                           Source__c = 'Log Platform Event',
-                                           OwnerId = UserInfo.getUserId(),
-                                           Username__c = UserInfo.getUserId());
+            Id userId = UserInfo.getUserId();
+            result = new AcccApplicationLog__c(LogCode__c =  accc_ApexUtilities.toString(datum.LogCode__c),
+                                               Message__c =   accc_ApexUtilities.toString(datum.Message__c),
+                                               Source__c = 'Log Platform Event',
+                                               OwnerId = userId,
+                                               Username__c = userId);
         }
         return result;
 

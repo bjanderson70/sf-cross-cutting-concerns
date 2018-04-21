@@ -29,7 +29,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *
  * @author Bill Anderson
  * @description Manager to create class instances. Lazy create
  * @group Common Layer
@@ -68,7 +67,6 @@ public virtual without sharing class accc_ApexClassInstanceMgr implements accc_I
     * CTORS
     *---------------------------------------------------------------------------------------
     **/
-
     /**
     * @description ctor
     * @param String the class name
@@ -162,7 +160,7 @@ public virtual without sharing class accc_ApexClassInstanceMgr implements accc_I
             }
         } catch (Exception excp) {
             // process exception
-            accc_ApexRunEnvironmentSingleton.getInstance().exceptionHandler().process(excp);
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
         }
         return result;
 

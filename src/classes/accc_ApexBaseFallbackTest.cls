@@ -106,7 +106,7 @@ private class accc_ApexBaseFallbackTest {
         accc_ApexBaseFallback resource = new accc_ApexBaseFallback(json);
         accc_ApexApplicationException excp = new accc_ApexApplicationException(mesg);
         // here we KNOW the runtime handler will return 'accc_ApexExceptionHandler' from 'accc_ApexUtilities'
-        accc_ApexExceptionHandler handler = (accc_ApexExceptionHandler)accc_ApexUtilities.getRuntimeFallbackExceptionHandler();
+        accc_ApexExceptionHandler handler = (accc_ApexExceptionHandler)accc_ApexEnvironment.getRuntimeFallbackExceptionHandler();
         // grab the logger used in the handler, and check the last messsage sent
         accc_ILogger logger = handler.systemDebugLogger();
 

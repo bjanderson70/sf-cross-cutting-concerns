@@ -181,7 +181,7 @@ public virtual without sharing class accc_ApexBaseFallback implements accc_IFall
      */
     @TestVisible
     private void handleException(Exception excp) {
-        accc_IApexExceptionHandler handler = accc_ApexUtilities.getRuntimeFallbackExceptionHandler();
+        accc_IApexExceptionHandler handler = accc_ApexEnvironment.getRuntimeFallbackExceptionHandler();
         handler.process(excp, true);
     } // end of handleException
 

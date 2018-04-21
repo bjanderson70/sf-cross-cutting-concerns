@@ -33,7 +33,7 @@
  * @author Bill Anderson
  * @description Common Constants
  * @group Miscellaneous
- * 
+ *
  * To Added New Resouce classes  :Step 5a: Ensure Fallback Resources have the Resource Name ( i.e. LogFormatter)
  *
  */
@@ -41,9 +41,16 @@ public class accc_ApexConstants {
 
 
     // use by the custom MDT for configuration categories
-    static public final string DEBUG_CATEGORY = 'debug';
-    static public final string PRODUCTION_CATEGORY = 'production';
-    static public final string TEST_CATEGORY = 'test';
+    public static final string DEBUG_CATEGORY = 'debug';
+    public static final string PRODUCTION_CATEGORY = 'production';
+    public static final string TEST_CATEGORY = 'test';
+    // support category set
+    public static final Set<String> SUPPORTED_CATEGORY_SET = new Set<String> {
+        DEBUG_CATEGORY
+        , PRODUCTION_CATEGORY
+        , TEST_CATEGORY
+    };
+
     /************************************************************************************
      *
      * Object Factory Identifiers

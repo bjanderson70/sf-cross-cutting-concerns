@@ -31,29 +31,46 @@
  *
  *
  * @author Bill Anderson
- * @description Test the COnfiguration Provider
+ * @description Test environment class
  * @group Common Test Layer
  */
 @isTest
-private class accc_IConfigurationProviderTest {
+private class accc_ApexEnvironmentTest {
 
-    private static final accc_IConfigurationProvider resource = new accc_ConfigurationTestProvider();
 
-    /**
-     * @description test the loader of the configuraiton provider
-     */
-    @isTest static void testLoad() {
-        // Implement test code
-        system.assert( resource.load() == true,'accc_IConfigurationProviderTest:testLoad() FAILED');
-    } // end of testLoad
+	@isTest
+	static void testgetEnvironment() {
+		// assign act
+		String env = accc_ApexEnvironment.getEnvironment();
+		// assert
+		system.assertEquals(true, accc_ApexConstants.SUPPORTED_CATEGORY_SET.contains(env));
 
-    /**
-     * @description test the getter of the configuration provider
-     */
-    @isTest static void testGet() {
-        // Implement test code
-        system.assert( resource.load() == true,'accc_IConfigurationProviderTest:testGet() FAILED');
-        system.assert( ((String)resource.get(accc_ApexConstants.SoftAsserts_r)) != null,'accc_IConfigurationProviderTest:testGet() FAILED');
-    } // end of testGet
+	} // end of testgetEnvironment
 
-}
+	@isTest
+	static void testgetRuntimeEnvironment() {
+		// assign/ act
+		accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment() ;
+		String rType = null,
+		       expected = String.valueOf(runtime).split(':')[0];
+
+		if ( Test.isRunningTest()  ) {
+			rType = String.valueOf(accc_TestEnvironmentSingleton.class).split(':')[0];
+		} else {
+			rType = String.valueOf(accc_ApexBaseRuntimeEnvironment.class).split(':')[0];
+		}
+		// assert
+		system.assertEquals(expected, rType);
+	} // end of testgetRuntimeEnvironment
+
+	@isTest
+	static void testgetRuntimeFallbackExceptionHandler() {
+		system.assertNotEquals(null, accc_ApexEnvironment.getRuntimeFallbackExceptionHandler());
+	} // end of testgetRuntimeFallbackExceptionHandler
+
+	@isTest
+	static void testgetRuntimeFallbackResources() {
+		system.assertNotEquals(null, accc_ApexEnvironment.getRuntimeFallbackResources());
+	} // end of testgetRuntimeFallbackResources
+
+} // end of accc_ApexEnvironmentTest

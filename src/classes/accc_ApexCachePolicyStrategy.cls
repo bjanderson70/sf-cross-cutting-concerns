@@ -123,7 +123,15 @@ public virtual without sharing class accc_ApexCachePolicyStrategy implements acc
 	private accc_DataCachingDataModel.CacheInformation findCacheStrategy(string category, string nameOrLabel) {
 		accc_DataCachingDataModel.CacheInformation result = null;
 		List<accc_BaseMdtDataModel.BaseDataModelInformation> results = null;
-		accc_BaseMdtDataModel dci = (accc_BaseMdtDataModel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.DataCachingConfiguration_r);
+		accc_BaseMdtDataModel dci = (accc_BaseMdtDataModel)  accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.DataCachingConfiguration_r);
+
+		// resource not found -- configuration was wrong
+		if ( dci == null ) {
+			Exception excp = new accc_ApexApplicationException('accc_ApexCachePolicyStrategy.findCacheStrategy - Could not find the provider ' + accc_ApexConstants.DataCachingConfiguration_r + ', Remedy: Check accc_CustomSettings or accc_VirtualCustomSettings');
+			// process exception
+			accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
+			throw excp;
+		}
 		// do we have cactegory
 		if ( string.isBlank(category) ) {
 			// look up by name

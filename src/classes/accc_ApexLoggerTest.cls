@@ -119,7 +119,7 @@ private class accc_ApexLoggerTest {
     @isTest static void testTraceMessagesWithInjectionOfLogLevel() {
         // arrange & act
         List<String> messages = accc_ApexLoggerTest.getLogMessages();
-        LoggingLevel lvl = (LoggingLevel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.TraceLogLevel_r);
+        LoggingLevel lvl = (LoggingLevel)  accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
 
         accc_ILogger logger = accc_ApexLoggerTest.getLogger(lvl);
 
@@ -135,7 +135,7 @@ private class accc_ApexLoggerTest {
     @isTest static void testTraceListOfMessagesWithInjectionOfLogLevel() {
         // arrange & act
         List<String> messages = accc_ApexLoggerTest.getLogMessages();
-        LoggingLevel lvl = (LoggingLevel) accc_ApexRunEnvironmentSingleton.getInstance().provider().get(accc_ApexConstants.TraceLogLevel_r);
+        LoggingLevel lvl = (LoggingLevel)  accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
 
         accc_ILogger logger = accc_ApexLoggerTest.getLogger(lvl);
 
