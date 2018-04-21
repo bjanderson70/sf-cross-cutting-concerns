@@ -37,7 +37,7 @@
  */
 global without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
 
-    // pass information to the logger -- will only use one; if needed, instantiate when used
+    // pass information to the logger -- will only use one; if needed, instantiate when used TBD
     private final static accc_ApplicationLog theAppLog = new accc_ApplicationLog();
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //
