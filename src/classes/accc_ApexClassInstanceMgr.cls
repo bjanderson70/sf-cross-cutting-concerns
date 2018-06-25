@@ -93,13 +93,14 @@ public virtual without sharing class accc_ApexClassInstanceMgr implements accc_I
     * @param string the user-specific reference name (alias, myCache)
     */
     public accc_ApexClassInstanceMgr(string usrClassName, string interfaceName, string reference) {
+        
         if ( string.isBlank(usrClassName)) {
-            throw new accc_ApexApplicationException('accc_ApexApplicationException: classname cannot be null or empty');
+            throw new accc_ApexApplicationException('accc_ApexClassInstanceMgr: classname cannot be null or empty');
         }
         this.className = usrClassName;
         this.classInterfaceType = interfaceName == null ? usrClassName : interfaceName;
         this.referenceName = reference == null ? usrClassName : reference;
-
+         
     } // end of ctor
 
     /**
@@ -107,13 +108,15 @@ public virtual without sharing class accc_ApexClassInstanceMgr implements accc_I
     * @param classType the Type
     */
     public accc_ApexClassInstanceMgr(Type classType) {
+        
         if ( classType == null ) {
-            throw new accc_ApexApplicationException('accc_ApexApplicationException: classType cannot be null or empty');
+            throw new accc_ApexApplicationException('accc_ApexClassInstanceMgr: classType cannot be null');
         }
 
         this.className = classType.getName();
         this.classInterfaceType = this.className;
         this.referenceName = this.className;
+        
     } // end of ctor
 
     /*---------------------------------------------------------------------------------------
@@ -162,6 +165,7 @@ public virtual without sharing class accc_ApexClassInstanceMgr implements accc_I
             // process exception
             accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
         }
+
         return result;
 
     } // end of getClassInstance

@@ -46,7 +46,7 @@
     <description>The application log is used to store information around the underlying code. Also, provides a way to trace and monitor applications</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableChangeDataCapture>true</enableChangeDataCapture>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>

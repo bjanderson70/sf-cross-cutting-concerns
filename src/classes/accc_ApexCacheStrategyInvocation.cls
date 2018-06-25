@@ -76,6 +76,8 @@ public virtual without sharing class accc_ApexCacheStrategyInvocation implements
 	 *
 	 */
 	public accc_ApexCacheStrategyInvocation(String soqlQuery) {
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered soqlQuery=' + soqlQuery );
+
 		this.theSoqlQuery = soqlQuery;
 
 	} // end of ctor
@@ -94,6 +96,7 @@ public virtual without sharing class accc_ApexCacheStrategyInvocation implements
 	 */
 	public boolean invokeCacheStrategy(String soqlQuery, accc_DataCachingDataModel.CacheInformation invocationInformation) {
 
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered soqlQuery=' + soqlQuery );
 		this.setTheSoqlQuery( soqlQuery);
 		return this.invokeCacheStrategy(invocationInformation);
 
@@ -120,6 +123,7 @@ public virtual without sharing class accc_ApexCacheStrategyInvocation implements
 	 */
 	public boolean invokeCacheStrategy(accc_DataCachingDataModel.CacheInformation invocationInformation) {
 		Boolean result = false;
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered invocationInformation=' + invocationInformation );
 		if (string.isBlank(this.theSoqlQuery) ||
 		        invocationInformation == null ||
 		        !invocationInformation.isCachingEnabled) {
@@ -133,6 +137,8 @@ public virtual without sharing class accc_ApexCacheStrategyInvocation implements
 			accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);
 
 		}
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Exited result=' + result );
+
 		return result;
 	} // end of invokeCacheStrategy
 
@@ -150,8 +156,12 @@ public virtual without sharing class accc_ApexCacheStrategyInvocation implements
 	@TestVisible
 	protected virtual boolean invokeCustomImpl(String soqlQuery, accc_DataCachingDataModel.CacheInformation invocationInformation) {
 		boolean status = false;
+
 		// get from the factory
 		accc_IApexCacheStrategyInvocation invoke =  accc_ApexEnvironment.getRuntimeEnvironment().cacheStrategyInvocation();
+		
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered invocationInformation=' + invocationInformation );
+
 		if ( invoke != null ) {
 			// as this is the base class for others, we DO NOT call ourselves , in the event
 			// someone reference this class as the cache strategy
@@ -164,6 +174,8 @@ public virtual without sharing class accc_ApexCacheStrategyInvocation implements
 				status = invoke.invokeCacheStrategy(soqlQuery, invocationInformation);
 			}
 		}
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Exited status=' + status );
+
 		return status;
 	} // end of invokeCustomImpl
 

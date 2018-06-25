@@ -54,6 +54,7 @@ public virtual without sharing class accc_ApexCachePolicyStrategy implements acc
 	 * @return Boolean returns true, if to cache
 	 */
 	public boolean cacheValue(String nameOrLabel, string soqlQuery) {
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered nameOrLabel=' + nameOrLabel + ', soqlQuery=' + soqlQuery );
 
 		if ( string.isBlank(nameOrLabel) ||
 		        string.isBlank(soqlQuery) ) {
@@ -75,6 +76,8 @@ public virtual without sharing class accc_ApexCachePolicyStrategy implements acc
 	 */
 	public boolean cacheValue(String category, String label, string soqlQuery) {
 		Boolean result = false;
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered category=' + category +  ', label=' + label + ', soqlQuery=' + soqlQuery );
+
 		if ( string.isBlank(category) ||
 		        string.isBlank(label) ) {
 			return result;
@@ -125,6 +128,7 @@ public virtual without sharing class accc_ApexCachePolicyStrategy implements acc
 		List<accc_BaseMdtDataModel.BaseDataModelInformation> results = null;
 		accc_BaseMdtDataModel dci = (accc_BaseMdtDataModel)  accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.DataCachingConfiguration_r);
 
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered category=' + category +  ', nameOrLabel=' + nameOrLabel + ', dci=' + dci );
 		// resource not found -- configuration was wrong
 		if ( dci == null ) {
 			Exception excp = new accc_ApexApplicationException('accc_ApexCachePolicyStrategy.findCacheStrategy - Could not find the provider ' + accc_ApexConstants.DataCachingConfiguration_r + ', Remedy: Check accc_CustomSettings or accc_VirtualCustomSettings');
@@ -147,6 +151,8 @@ public virtual without sharing class accc_ApexCachePolicyStrategy implements acc
 		}
 		// we only grab the first one
 		result = results != null && results.size() > 0 ? (accc_DataCachingDataModel.CacheInformation)results[0] : (accc_DataCachingDataModel.CacheInformation)null;
+
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Exited result=' + result);
 
 		return result;
 	} // end of findCacheStrategy
@@ -171,6 +177,7 @@ public virtual without sharing class accc_ApexCachePolicyStrategy implements acc
 				result = this.checkSplitAndContain(cinfo.containFields, soqlQuery);
 			}
 		}
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered/Exited result=' + result );
 
 		return result;
 	} // end of regexSoqlQueryCheck
@@ -184,7 +191,9 @@ public virtual without sharing class accc_ApexCachePolicyStrategy implements acc
 	private boolean checkRegex(String regex, string soqlQuery) {
 		Pattern MyPattern = Pattern.compile(regex);
 		Matcher MyMatcher = MyPattern.matcher(soqlQuery);
-		return MyMatcher.find();
+		Boolean result = MyMatcher.find();
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered/Exited result=' + result );
+		return result;
 
 	} // end of checkRegex
 	/**
@@ -198,15 +207,21 @@ public virtual without sharing class accc_ApexCachePolicyStrategy implements acc
 		// remove multi-spaces
 		String soqlQuery = soqlQueryRaw.normalizeSpace();
 		String contains = containsRaw.normalizeSpace();
-
+		Boolean result = false;
 		Set<String> splitted = new Set<String>(soqlQuery.toLowerCase().split('\\b+'));
 		Set<String> uniqContains = new Set<String>(contains.toLowerCase().split('\\b+'));
+		
 		// remove empty/blank item
 		splitted.remove( ' ');
 		uniqContains.remove(' ');
 
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered soqlQuery=' + soqlQuery + ', contains=' + contains );
 		// look for all values
-		return splitted.containsAll(uniqContains); //search array for word
+		result = splitted.containsAll(uniqContains); //search array for word
+
+		accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Exited result=' + result );
+
+		return result;
 	} // end of checkSplitAndContain
 
 } // end of accc_ApexCachePolicyStrategy

@@ -77,7 +77,7 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
             // default  factory, subject to change
             result =  (accc_IApexFactory)accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.ObjectFactory, new accc_ApexObjectFactory());
         }
-
+         
         return result;
     } // end of objectFactory
 
@@ -91,7 +91,7 @@ public virtual without sharing class accc_ApexBaseRuntimeEnvironment implements 
             result = (accc_IConfigurationProvider)accc_ApexBaseRuntimeEnvironment.ccResources.put(accc_ApexConstants.ConfigurationResource,
                      this.objectFactory().create(accc_ApexConstants.ConfigurationResource));
         }
-
+        
         return result;
     } // end of provider
 

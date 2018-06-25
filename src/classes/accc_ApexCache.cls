@@ -107,6 +107,8 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
         // now go check that this partition is already created ( setup->cache in the Org)
         // Note, this is normally the Default cache partition ('local.work')
         this.cacheIsAvailable = this.getPartition(this.cacheNamespace, this.cachePartition) != null ;
+
+        accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered partition=' + partition + ', this.cacheIsAvailable=' + this.cacheIsAvailable );
     } // end of ctor
 
     /**
@@ -334,6 +336,20 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
         return results;
     } // end of remove
 
+    /**
+    * @description create a cache partition name from ns and partition
+    *
+    * @param string cache namespace
+    * @param string cache partition
+    *
+    * @return string cache partition name
+    */
+    public static string getCachePartitionName(string namespace, string partition) {
+        string thePartition = string.isBlank(partition) ? accc_ApexConstants.DefaultCachePartitionName_s : partition;
+        String nsInput = String.isBlank(namespace) ? CACHE_NS : namespace;
+
+        return nsInput + accc_ApexConstants.Period + thePartition;
+    } // end of getCachePartitionName
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Private Methods
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -379,20 +395,6 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
 
     } // end of getPartition
 
-    /**
-     * @description create a cache partition name from ns and partition
-     *
-     * @param string cache namespace
-     * @param string cache partition
-     *
-     * @return string cache partition name
-     */
-    @TestVisible
-    private static string getCachePartitionName(string namespace, string partition) {
-        string thePartition = string.isBlank(partition) ? accc_ApexConstants.DefaultCachePartitionName_s : partition;
-        String nsInput = String.isBlank(namespace) ? CACHE_NS : namespace;
 
-        return nsInput + accc_ApexConstants.Period + thePartition;
-    } // end of getCachePartitionName
 
 } // end of accc_ApexCache

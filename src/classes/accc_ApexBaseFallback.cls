@@ -53,7 +53,7 @@ public virtual without sharing class accc_ApexBaseFallback implements accc_IFall
      * @description default ctor
      */
     public accc_ApexBaseFallback() {
-        this('');
+        this(accc_ApexConstants.EmptyString);
     } // end of ctor
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -67,7 +67,7 @@ public virtual without sharing class accc_ApexBaseFallback implements accc_IFall
      */
     public accc_ApexBaseFallback(String defaultValue) {
         this.defaultResource = defaultValue;
-
+      
         if ( string.isBlank(this.defaultResource) ) {
             throw new accc_ApexApplicationException('accc_ApexBaseFallback: Bad default resource passed to ctor');
         }
@@ -114,7 +114,7 @@ public virtual without sharing class accc_ApexBaseFallback implements accc_IFall
      * @return get fallback resource as a Map<String,Object>
      */
     public virtual Map<String, Object> toMap() {
-
+       
         try {
             if ( accc_ApexBaseFallback.dataPair == null ) {
                 accc_ApexBaseFallback.dataPair =  (Map<String, Object>) JSON.deserializeUntyped(this.defaultResource );
@@ -136,6 +136,7 @@ public virtual without sharing class accc_ApexBaseFallback implements accc_IFall
     @TestVisible
     protected virtual Object getSubResource(Map<String, Object> mainMap, string category, string name) {
         Object result = null;
+       
         // second check for the data, in the event child calls us
         if ( !String.isBlank(name) && category != null && mainMap != null)  {
             try {
@@ -166,6 +167,7 @@ public virtual without sharing class accc_ApexBaseFallback implements accc_IFall
     private Map<String, Object> getJsonMap(string category, Map<String, Object> mainMap) {
 
         Map<String, Object> jsonMap = !String.isBlank(category) ? (Map<String, Object>) mainMap.get(category) : mainMap;
+      
         if ( jsonMap == null) {
             jsonMap =  mainMap;
         }
