@@ -26,9 +26,10 @@ All code, files and objects related to Apex Cross-Cutting Concerns are prefixed 
 
 To deploy/install select the button below
 
-```
-https://githubsfdeploy.herokuapp.com/app/githubdeploy/bjanderson70/sf-cross-cutting-concerns
-```
+<a href="https://githubsfdeploy.herokuapp.com/app/githubdeploy/bjanderson70/sf-cross-cutting-concerns">
+  <img alt="Deploy to Salesforce"
+       src="imgs/deploy_to_sf.png">
+</a>
 
 
 ## Contributing
