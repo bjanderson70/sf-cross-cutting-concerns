@@ -46,6 +46,8 @@
 		<members>accc_ApexExceptionPolicyEnum</members>
 		<members>accc_ApexExceptionPolicyStrategy</members>
 		<members>accc_ApexExceptionPolicyStrategyTest</members>
+		<members>accc_ApexEnvironment</members>
+		<members>accc_ApexEnvironmentTest</members>
 		<members>accc_ApexKnownCCConcernsFallback</members>
 		<members>accc_ApexKnownCCConcernsFallbackTest</members>
 		<members>accc_ApexLocalL1Cache</members>
