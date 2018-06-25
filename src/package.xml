@@ -86,8 +86,6 @@
 		<members>accc_ApplicationLogTest</members>
 		<members>accc_BaseMdtDataModel</members>
 		<members>accc_BaseMdtDataModelTest</members>
-		<members>accc_ConfigurationTestProvider</members>
-		<members>accc_ConfigurationTestProviderTest</members>
 		<members>accc_CrossCuttingConfigDataModel</members>
 		<members>accc_CrossCuttingConfigDataModelTest</members>
 		<members>accc_CrossCuttingConfigMgr</members>
@@ -111,7 +109,6 @@
 		<members>accc_IApexRunEnvironment</members>
 		<members>accc_ICache</members>
 		<members>accc_IConfigurationProvider</members>
-		<members>accc_IConfigurationProviderTest</members>
 		<members>accc_IDataFormat</members>
 		<members>accc_IFallbackResources</members>
 		<members>accc_ILogger</members>
@@ -139,10 +136,7 @@
 		<members>accc_LogPlatformEventTrigger</members>
 		<name>ApexTrigger</name>
 	</types>
-	 <types>
-        <members>Cross_Cutting_Concerns_Tests</members>
-        <name>ApexTestSuite</name>
-    </types>
+	
 	<types>
 		<members>accc_Apex_Code_Configuration__mdt-Apex Code Configuration Layout</members>
 		<members>AcccCrossCuttingUtilityData__mdt-CrossCuttingUtilityData Layout</members>
