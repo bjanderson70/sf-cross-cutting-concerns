@@ -20,7 +20,7 @@ In Salesforce Org, navigate to **Setup->Apex Classes** and run all tests
 
 ### And coding style tests
 
-All code, files and objects related to Apex Cross-Cutting Concerns are prefixed with 'accc_'
+All code, files and objects related to Apex Cross-Cutting Concerns are prefixed with 'accc'
 
 ## Deployment
 
@@ -38,7 +38,7 @@ Please read [CONTRIBUTING.md](sf-cross-cutting-concerns/Contributing) for detail
 
 ## Versioning
 
-version 0.9
+version 0.9.5
 
 ## Authors
 
