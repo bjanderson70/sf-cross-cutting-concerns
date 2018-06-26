@@ -46,7 +46,7 @@ version 0.9.5
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/bjanderson70/sf-cross-cutting-concerns/blob/master/LICENSE) file for details
 
 ## Acknowledgments
 
