@@ -36,7 +36,7 @@ If you download the **CCCDocs** and navigate to _ApexDocumentation_ directory an
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](sf-cross-cutting-concerns/Contributing) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [Contributing](https://github.com/bjanderson70/sf-cross-cutting-concerns/Contributing) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 

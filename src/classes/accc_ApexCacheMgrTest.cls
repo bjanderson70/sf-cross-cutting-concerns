@@ -43,7 +43,7 @@
  *
  * 	accc_ApexCacheMgr mgr = new accc_ApexCacheMgr() ; // default ctor, uses caching strategy
  * 	SomeData data= new SomeData();
- * 	Boolean wasCached = mgr.cache('Data','somedata',data); // cache data
+ * 	Boolean wasCached = mgr.cache('Data',data); // cache data
  * 	   :
  * 	   :
  * 	// assuming the data 'wasCached' == true
