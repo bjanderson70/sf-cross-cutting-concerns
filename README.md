@@ -31,6 +31,8 @@ To deploy/install select the button below
        src="imgs/deploy_to_sf.png">
 </a>
 
+## Apex Docs
+If you download the **CCCDocs** and navigate to _ApexDocumentation_ directory and bring up _index.htm_ in the browser you will get the JavaDoc-like information.
 
 ## Contributing
 
