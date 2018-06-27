@@ -36,7 +36,7 @@ If you download the **CCCDocs** and navigate to _ApexDocumentation_ directory an
 
 ## Contributing
 
-Please read [Contributing](https://github.com/bjanderson70/sf-cross-cutting-concerns/Contributing) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [Contributing](sf-cross-cutting-concerns/Contributing) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
@@ -48,7 +48,7 @@ version 0.9.5
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/bjanderson70/sf-cross-cutting-concerns/blob/master/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](sf-cross-cutting-concerns/LICENSE) file for details
 
 ## Acknowledgments
 
