@@ -1,0 +1,173 @@
+digraph G {
+	 rankdir=LR;rotate=45;
+	 ranksep=0.25;
+	 
+		/* Common */
+		accc_ApexApplicationException [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_ApexConstants [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_ApexUtilities [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_CustomSettings [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_VirtualCustomSettings [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_NameValuePair [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		 
+		accc_StopWatch [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_MessageTransformation [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_IPreviousTransactionResult [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_ApexBaseMessageSender [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_IApexMessageSender [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_IConfigurationProvider [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_IFallbackResources [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+	 
+		accc_ApexMailMessageSender [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_ApexMessagePayload [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_ApexMessageSendResponse [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_ApexPlatformEventDispatcher [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_ApexPreviousTransactionResult [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_ApexTestJSONDataFallback [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+		accc_ConfigurationTestProvider [shape=box,style=filled,color="lightgray",fillcolor="#EBDEF0"];
+
+		/* Factory and Runtime Environment */
+		accc_ApexClassInstanceMgr [shape=box,style=filled,color="lightgray",fillcolor="#D4E6F1"];
+		accc_ApexObjectFactory [shape=box,style=filled,color="lightgray",fillcolor="#D4E6F1"];
+		accc_IApexFactory [shape=box,style=filled,color="lightgray",fillcolor="#D4E6F1"];
+		accc_IApexRunEnvironment [shape=box,style=filled,color="lightgray",fillcolor="#D4E6F1"];
+		accc_ApexBaseRuntimeEnvironment [shape=box,style=filled,color="lightgray",fillcolor="#D4E6F1"];
+		accc_ApexRunEnvironmentSingleton [shape=box,style=filled,color="lightgray",fillcolor="#D4E6F1"];
+		accc_TestEnvironmentSingleton [shape=box,style=filled,color="lightgray",fillcolor="#D4E6F1"];
+		accc_ApexTestObjectFactory [shape=box,style=filled,color="lightgray",fillcolor="#D4E6F1"];
+		
+		/* Cache Related */
+		accc_ApexCache [shape=box,style=filled,color="lightgray",fillcolor="#AED6F1"];
+		accc_ApexCacheMgr [shape=box,style=filled,color="lightgray",fillcolor="#AED6F1"];
+		accc_ApexCachePolicyStrategy [shape=box,style=filled,color="lightgray",fillcolor="#AED6F1"];
+		accc_ApexCacheStrategyInvocation [shape=box,style=filled,color="lightgray",fillcolor="#AED6F1"];
+		accc_ApexLocalL1Cache [shape=box,style=filled,color="lightgray",fillcolor="#AED6F1"];
+		accc_IApexCachePolicyStrategy [shape=box,style=filled,color="lightgray",fillcolor="#AED6F1"];
+		accc_IApexCacheStrategyInvocation [shape=box,style=filled,color="lightgray",fillcolor="#AED6F1"];
+		accc_ICache [shape=box,style=filled,color="lightgray",fillcolor="#AED6F1"];
+		accc_TestInvokerApexCacheStrategy [shape=box,style=filled,color="lightgray",fillcolor="#AED6F1"];
+	
+
+		/* Logging */
+		accc_ILogger [shape=box,style=filled,color="lightgray",fillcolor="#FAD7A0"];
+		accc_ApexLogger [shape=box,style=filled,color="lightgray",fillcolor="#FAD7A0"];
+		accc_ApexNoOpLogger [shape=box,style=filled,color="lightgray",fillcolor="#FAD7A0"];
+		accc_ApexObjectLogger [shape=box,style=filled,color="lightgray",fillcolor="#FAD7A0"];
+		accc_ApexPublishEventLogger [shape=box,style=filled,color="lightgray",fillcolor="#FAD7A0"];
+		accc_ApplicationLog [shape=box,style=filled,color="lightgray",fillcolor="#FAD7A0"];
+		accc_LogPlatformEventHandler [shape=box,style=filled,color="lightgray",fillcolor="#FAD7A0"];
+		accc_IApexPlatformEventHandler [shape=box,style=filled,color="lightgray",fillcolor="#FAD7A0"];
+
+
+		/* Data Model for Custom Metadata Encapsulation */
+		accc_BaseMdtDataModel [shape=box,style=filled,color="lightgray",fillcolor="#A9DFBF"];
+		accc_CrossCuttingConfigDataModel [shape=box,style=filled,color="lightgray",fillcolor="#A9DFBF"];
+		accc_CrossCuttingConfigMgr [shape=box,style=filled,color="lightgray",fillcolor="#A9DFBF"];
+		accc_CrossCuttingUtilityDataModel [shape=box,style=filled,color="lightgray",fillcolor="#A9DFBF"];
+		accc_DataCachingDataModel [shape=box,style=filled,color="lightgray",fillcolor="#A9DFBF"];
+
+		/* Exception Handling */
+		accc_IDataFormat [shape=box,style=filled,color="lightgray",fillcolor="#E6B0AA"];
+		accc_ExceptionFormatter [shape=box,style=filled,color="lightgray",fillcolor="#E6B0AA"];
+		accc_IApexExceptionHandler [shape=box,style=filled,color="lightgray",fillcolor="#E6B0AA"];
+		accc_IApexExceptionPolicyStrategy [shape=box,style=filled,color="lightgray",fillcolor="#E6B0AA"];
+		accc_ApexExceptionHandler [shape=box,style=filled,color="lightgray",fillcolor="#E6B0AA"];
+		accc_ApexExceptionPolicyEnum [shape=box,style=filled,color="lightgray",fillcolor="#E6B0AA"];
+		accc_ApexExceptionPolicyStrategy [shape=box,style=filled,color="lightgray",fillcolor="#E6B0AA"];
+	 
+	 subgraph  clusterExcpHandling {
+		rankdir=TB; 
+		fontname="Sans bold";
+		label = "Exception Handling Classes";
+		
+		accc_ExceptionFormatter->accc_IDataFormat [arrowhead = "empty",style=dotted];
+		accc_ApexExceptionPolicyEnum->accc_ApexExceptionHandler [arrowhead = "diamond",style=solid];
+		accc_ApexExceptionHandler->accc_IApexExceptionHandler [arrowhead = "empty",style=dotted];
+		accc_ApexExceptionPolicyStrategy-> accc_IApexExceptionPolicyStrategy [arrowhead = "empty",style=dotted];
+		style=filled;
+		color="#FDEDEC";
+	}
+	subgraph  clusterCustomMDT {
+		rankdir=TB; 
+		fontname="Sans bold";
+		label = "Data Model Classes : Encapsulation of Custom Metadata Objects";
+		
+		accc_CrossCuttingConfigDataModel->accc_BaseMdtDataModel [arrowhead = "empty",style=solid];
+		accc_CrossCuttingConfigMgr -> accc_CrossCuttingConfigDataModel  [arrowhead = "diamond",style=solid];
+		accc_CrossCuttingUtilityDataModel -> accc_BaseMdtDataModel [arrowhead = "empty",style=solid];
+		accc_DataCachingDataModel->accc_BaseMdtDataModel [arrowhead = "empty",style=solid];
+		style=filled;
+		color="#EAFAF1";
+	}
+	subgraph  clusterLogging {
+		rankdir=TB; 
+		fontname="Sans bold";
+		label = "Logging Classes";
+		
+		accc_ApexLogger->accc_ILogger  [arrowhead = "empty",style=dotted];
+		accc_ApexNoOpLogger-> accc_ApexLogger  [arrowhead = "empty",style=solid];
+		accc_ApexObjectLogger -> accc_ApexLogger  [arrowhead = "empty",style=solid];
+		accc_ApexPublishEventLogger -> accc_ApexLogger  [arrowhead = "empty",style=solid];
+		accc_ApplicationLog->accc_ApexObjectLogger  [arrowhead = "diamond",style=solid];
+		accc_LogPlatformEventHandler  -> accc_IApexPlatformEventHandler  [arrowhead = "empty",style=dotted];
+		accc_ApplicationLog->accc_LogPlatformEventHandler  [arrowhead = "diamond",style=solid];
+		style=filled;
+		color="#FEF9E7";
+	}
+	
+	subgraph  clusterCaching {
+		rankdir=TB; 
+		fontname="Sans bold";
+		label = "Caching Classes";
+		
+		accc_ApexCache -> accc_ICache  [arrowhead = "empty",style=dotted];
+		accc_ApexCacheMgr -> accc_ApexCache   [arrowhead = "diamond",style=solid];
+		accc_ApexCacheMgr-> accc_ApexCachePolicyStrategy  [arrowhead = "diamond",style=solid];
+		accc_ApexCacheMgr->accc_ApexCacheStrategyInvocation  [arrowhead = "diamond",style=solid];
+		accc_ApexCachePolicyStrategy ->accc_IApexCachePolicyStrategy  [arrowhead = "empty",style=dotted];
+		accc_ApexCacheStrategyInvocation->accc_IApexCacheStrategyInvocation   [arrowhead = "empty",style=dotted];
+		accc_ApexCacheMgr->accc_ApexLocalL1Cache   [arrowhead = "diamond",style=solid];
+		accc_TestInvokerApexCacheStrategy->accc_IApexCacheStrategyInvocation [arrowhead = "empty",style=dotted];
+
+		style=filled;
+		color="#EBF5FB";
+	}
+	subgraph  clusterRuntime {
+		rankdir=TB; 
+		fontname="Sans bold";
+		label = "Factory and Runtime Classes";
+		
+		accc_ApexObjectFactory ->accc_IApexFactory  [arrowhead = "empty",style=dotted];
+		accc_ApexObjectFactory->accc_ApexClassInstanceMgr   [arrowhead = "diamond",style=solid];
+		accc_ApexBaseRuntimeEnvironment->accc_IApexRunEnvironment  [arrowhead = "empty",style=dotted];
+		accc_ApexRunEnvironmentSingleton->accc_ApexBaseRuntimeEnvironment  [arrowhead = "empty",style=solid];
+		accc_TestEnvironmentSingleton->accc_ApexBaseRuntimeEnvironment  [arrowhead = "empty",style=solid];
+		accc_TestEnvironmentSingleton->accc_ApexTestObjectFactory   [arrowhead = "diamond",style=dotted];
+		
+		style=filled;
+		color="#EAF2F8";
+	}
+	
+	subgraph  clusterCommon {
+		rankdir=TB;
+		fontname="Sans bold";
+		label = "Common Classes";
+		
+		{ accc_NameValuePair-> accc_ApexPlatformEventDispatcher->accc_ApexApplicationException->accc_ApexConstants [style=invis]; }
+		{ accc_StopWatch ->accc_ApexUtilities->accc_ApexMessagePayload [style=invis]; }	 
+		{ accc_MessageTransformation->accc_ApexMailMessageSender -> accc_ApexMessageSendResponse [style=invis];  }
+		{ accc_ApexPreviousTransactionResult->accc_IPreviousTransactionResult->accc_ApexBaseMessageSender-> accc_IApexMessageSender[style=invis];  }
+		{ accc_ConfigurationTestProvider->accc_IConfigurationProvider ->accc_VirtualCustomSettings->accc_CustomSettings [style=invis];  }
+		{ accc_ApexTestJSONDataFallback->accc_IFallbackResources [style=invis];  }
+		
+		accc_ApexPreviousTransactionResult->accc_IPreviousTransactionResult [arrowhead = "empty",style=dotted];
+		accc_ApexBaseMessageSender -> accc_IApexMessageSender [arrowhead = "empty",style=dotted];
+		accc_ConfigurationTestProvider->accc_IConfigurationProvider [arrowhead = "empty",style=dotted];
+		accc_VirtualCustomSettings->accc_CustomSettings [arrowhead = "empty",style=solid];
+		accc_ApexTestJSONDataFallback -> accc_IFallbackResources [arrowhead = "empty",style=dotted];
+		
+		style=filled;
+		color="#D7BDE2";
+	}
+	
+}

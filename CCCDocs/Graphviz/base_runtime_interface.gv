@@ -1,0 +1,30 @@
+digraph G {
+ rankdir=LR;rotate=45;
+ ranksep=equally;
+ accc_IApexRunEnvironment [shape=box,style=filled,color="lightgray",fillcolor="#FA8072",peripheries=2]; 
+ accc_IConfigurationProvider [shape=box,style=filled,color="lightgray",fillcolor="#FA8072" ];
+ accc_ILogger [shape=box,style=filled,color="lightgray",fillcolor="#FA8072"];
+ accc_IFallbackResources [shape=box,style=filled,color="lightgray",fillcolor="#FA8072"];
+ accc_IApexExceptionHandler [shape=box,style=filled,color="lightgray",fillcolor="#FA8072"];
+ accc_ICache [shape=box,style=filled,color="lightgray",fillcolor="#FA8072"];
+ accc_IPreviousTransactionResult [shape=box,style=filled,color="lightgray",fillcolor="#FA8072"];
+ accc_IApexCachePolicyStrategy [shape=box,style=filled,color="lightgray",fillcolor="#FA8072"];
+ accc_IApexCacheStrategyInvocation [shape=box,style=filled,color="lightgray",fillcolor="#FA8072"];
+ accc_IApexMessageSender [shape=box,style=filled,color="lightgray",fillcolor="#FA8072"];
+ accc_IApexFactory [shape=box,style=filled,color="lightgray",fillcolor="#FA8072"];
+ edge [
+                arrowhead = "diamond",
+				style=dotted
+      ]
+ accc_IApexFactory -> accc_IApexRunEnvironment;
+ accc_IConfigurationProvider-> accc_IApexRunEnvironment ;
+ accc_ILogger-> accc_IApexRunEnvironment ;
+ accc_IFallbackResources-> accc_IApexRunEnvironment ;
+ accc_IApexExceptionHandler-> accc_IApexRunEnvironment ;
+ accc_ICache-> accc_IApexRunEnvironment ;
+ accc_IPreviousTransactionResult-> accc_IApexRunEnvironment ;
+ accc_IApexCachePolicyStrategy-> accc_IApexRunEnvironment ;
+ accc_IApexCacheStrategyInvocation-> accc_IApexRunEnvironment ;
+ accc_IApexMessageSender-> accc_IApexRunEnvironment ;
+
+}

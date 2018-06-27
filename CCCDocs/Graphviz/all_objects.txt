@@ -1,0 +1,82 @@
+		accc_ApexApplicationException.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexConstants.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexUtilities.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_CustomSettings.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_HttpUtility.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_TriggerHelperClass.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_VirtualCustomSettings.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_NameValuePair.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ObjectJsonChunking.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_StaticTestDataJSON.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_StopWatch.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_MessageTransformation.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IPreviousTransactionResult.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexBaseMessageSender.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IApexMessageSender.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IConfigurationProvider.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IFallbackResources.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IHttpUtility.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexMailMessageSender.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexMessagePayload.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexMessageSendResponse.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexPlatformEventDispatcher.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexPreviousTransactionResult.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexTestJSONDataFallback.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexTestObjectFactory.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+
+		/* Factory and Runtime Environment */
+		accc_ApexClassInstanceMgr.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexObjectFactory.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IApexFactory.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IApexRunEnvironment.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexBaseRuntimeEnvironment.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexRunEnvironmentSingleton.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_TestEnvironmentSingleton.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ConfigurationTestProvider.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+
+		/* Cache Related */
+		accc_ApexCache.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexCacheMgr.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexCachePolicyStrategy.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexCacheStrategyInvocation.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexLocalL1Cache.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IApexCachePolicyStrategy.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IApexCacheStrategyInvocation.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ICache.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_TestInvokerApexCacheStrategy.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+
+		/* Exception Handling */
+		accc_ApexExceptionHandler.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexExceptionPolicyEnum.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexExceptionPolicyStrategy.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+
+		/* Logging */
+		accc_ILogger.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexLogger.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexNoOpLogger.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexObjectLogger.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApexPublishEventLogger.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ApplicationLog.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_LogPlatformEventHandler.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IApexPlatformEventHandler.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+
+
+		/* Data Model for Custom Metadata Encapsulation */
+		accc_BaseMdtDataModel.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_CrossCuttingConfigDataModel.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_CrossCuttingConfigMgr.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_CrossCuttingKnownNameInterfacePair.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_CrossCuttingUtilityDataModel.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_DataCachingDataModel.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+
+		/* Exception Handling */
+		accc_IDataFormat.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_ExceptionFormatter.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IApexExceptionHandler.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+		accc_IApexExceptionPolicyStrategy.cls[shape=box,style=filled,color=lightgray,fillcolor="#82E0AA"];
+
+
+
+
+
+

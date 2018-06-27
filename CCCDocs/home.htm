@@ -1,0 +1,208 @@
+<html>
+   <style>
+      .asset-bar {
+      width: 100%;
+      background-color: #555;
+      overflow: auto;
+      }
+      .asset-bar a {
+      float: left;
+      width: 20%;
+      text-align: center;
+      padding: 12px 0;
+      transition: all 0.3s ease;
+      color: white;
+      font-size: 36px;
+      }
+   </style>
+   <body>
+     
+      
+	  <div class=WordSection1>
+
+<h1>Cross-Cutting Concerns (CCC)</h1>
+<p>Version 0.9.5</p>  
+
+<h2>What is it?</h2>
+
+<p class=MsoNormal>The cross-cutting concerns/aspects consist of security,caching, exception handling, logging, etc. These aspects transcend into other concerns (i.e., layers). In a simple layered architecture you have three common layers: Presentation, Business and Data. The cross-cutting concerns are applicable throughout the architecture layers and it affects the entire  application. For example: logging, security and data transfer are the concerns which are needed in almost every module of an application, hence they are
+cross-cutting concerns.</p>
+
+<h2>What is the value?</h2>
+
+<p class=MsoNormal>Without some framework, or extensible tools, cross-cutting concerns are piecemealed, forgotten, or a mish-mash of incongruous parts. Development often forgets these aspects because it is boring or just an after-thought.
+ When you do need these aspects you patch only a portion or where there is a problem; but not consistently through-out. The foundations become tenuous and left neglected. </p>
+
+<p class=MsoNormal>The value lies in being consistent, reliable, reusable and flexible; understanding one size does not fit all.</p>
+
+<h2>Why do it?</h2>
+
+<p class=MsoNormal>In many object orient languages you will find solid frameworks which support these aspects, for example, Java’s <i style='mso-bidi-font-style:
+normal'>Spring, </i>Hibernate, C#’s <i style='mso-bidi-font-style:normal'>Spring.Net,
+NHibernate</i>, just to name a few<i style='mso-bidi-font-style:normal'>. <span
+style='mso-spacerun:yes'> </span></i>However, I did not find the same in Apex. I found some aspects but not dedicated to JUST cross-cutting concerns. Second, I consider these aspects as foundational; where others consider them, <i
+style='mso-bidi-font-style:normal'>boring</i>, <i style='mso-bidi-font-style:
+normal'>not sexy</i>, <i style='mso-bidi-font-style:normal'>or not important</i>.</p>
+
+<p class=MsoNormal>Cross-cutting Concerns (CCC) attempts to provide functionality that is was arduous in Apex than in other STOOLs<a
+style='mso-footnote-id:ftn1' href="#_ftn1" name="_ftnref1" title=""><span
+class=MsoFootnoteReference><span style='mso-special-character:footnote'><![if !supportFootnotes]><span
+class=MsoFootnoteReference><span style='font-size:11.0pt;line-height:107%;
+font-family:"Calibri",sans-serif;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:
+Calibri;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;
+mso-bidi-font-family:"Times New Roman";mso-bidi-theme-font:minor-bidi;
+mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'>[1]</span></span><![endif]></span></span></a>
+. The goal was to apply <a
+href="https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)">SOLID</a><a
+style='mso-footnote-id:ftn2' href="#_ftn2" name="_ftnref2" title=""><span
+class=MsoFootnoteReference><span style='mso-special-character:footnote'><![if !supportFootnotes]><span
+class=MsoFootnoteReference><span style='font-size:11.0pt;line-height:107%;
+font-family:"Calibri",sans-serif;mso-ascii-theme-font:minor-latin;mso-fareast-font-family:
+Calibri;mso-fareast-theme-font:minor-latin;mso-hansi-theme-font:minor-latin;
+mso-bidi-font-family:"Times New Roman";mso-bidi-theme-font:minor-bidi;
+mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:AR-SA'>[2]</span></span><![endif]></span></span></a>
+principles to allow flexibility to change and reuse.</p>
+
+<h2>How does it works?</h2>
+
+<p class=MsoNormal>Defining a set of common interfaces and custom metadata within the CCC framework allows one to change/augment aspects at different levels/granularity. The best way to understand the value is with a concrete example.</p>
+
+<p class=MsoNormal>For example, if we look at a common concern, such as <i
+style='mso-bidi-font-style:normal'>Logging</i>, one can see the two values eluded to earlier. First, there is the logging interface, <span class=SpellE><i
+style='mso-bidi-font-style:normal'>ILogger</i></span>. The interface allows a myriad of logging behaviour. For example, Logging supports four different functionalities</p>
+<ol>
+<li>Logging to Salesforce Debug Log(<i>accc_ApexLogging->accc_ILogger</i>)</li>
+<li>Logging to a custom object, AcccApplication_Log (<i>accc_ApexObjectLogging -> accc_ApexLogging</i>)</li>
+<li>Logging via Platform Events (<i>accc_ApexPublishEventLogger->accc_ApexLogging</i>)</li>
+<li>Turning off Logging  (<i>accc_ApexNoOpLogger->accc_ApexLogging</i>)</li>
+</ol>
+<p>The above loggers provides an easier way to log messages (without commenting out). In addition to the above loggers, there is the ability to <i>trace</i> information. Tracing allows you to setup sentinels. Sentinels/Traces can be turned on and off. 
+ Trace also adds additional information, such as <i>class-name, method-name, start-time, stack-trace, and line number </i>. These attributes are automatically added to the the log message by varying the <b>LoggingLevel</b>. More on this in the Logger section. </p>
+<p>
+<img src="../logging.png" alt="logging"  width="623" height="150" </></p>
+
+<p class=MsoCaption>Figure<span style='mso-no-proof:yes'>1</span>&nbsp;Logging</p>
+
+<p class=MsoNormal>Second, there is the use of custom metadata. CCC framework
+uses two important aspects, (1) an Object Factory (<span class=SpellE><i
+style='mso-bidi-font-style:normal'>accc_ApexObjectFactory</i></span>) and (2) a Runtime environment (<span class=SpellE><i style='mso-bidi-font-style:normal'>accc_ApexBaseRuntimeEnvironment</i></span>).
+These two classes (which also have a defined interface) allow one to seed (via a custom metadata object) the object factory with the supported interface.</p>
+
+<p class=MsoNormal>Thus, you can change the runtime behaviour of <i
+style='mso-bidi-font-style:normal'>Logging</i>. At this time, CCC supports
+three runtime environments:</p>
+<ol>
+<li><b>Debug </b>[i.e. When you run in a Sandbox?]</li>
+<li><b>Test </b>[i.e., When you run Tests (Test.isRunning)?]</li>
+<li><b>Production</b> (neither 1 nor 2)</li>
+</ol>
+</div>
+
+<div style='mso-element:footnote-list'><![if !supportFootnotes]><br clear=all>
+
+<hr align=left size=1 width="33%">
+
+<![endif]>
+
+
+  <!-- Tab content -->
+      <div id="content" class="tabcontent">
+         
+         <TABLE>
+            <tr>
+               <td>
+				<h3>Exception Handling</h3>
+                  <a href='.' onclick="gotomenu('https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Exception-Handling', event);return false;" class='nav-item'>
+                  <img src="../exceptionhandling.png" alt="exception handling" width="80" height="80"/>
+                  </a>
+               </td>
+               <td>
+				Properly wrapping challenging code in a try/catch block is the first step. Please note, handling an exception with an exception handler is NOT always needed. The primary goal is to simplify exception handling and management at your application or layer boundaries. The information below provides a high-level view                  
+				  </td>
+             <td>
+			 <h3>Data Model Classes</h3>
+               <a href='.' onclick="gotomenu('https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Data-Model-Classes', event);return false;" class='nav-item'>
+               <img src="../datamodeling.png" alt="data model classes" width="80" height="80"/>
+               </a>
+            </td>
+            <td>
+			The Data model provides access to the custom metadata. This allows the run-time environment to vary as needed.
+              </td>
+          </tr>
+         <tr>
+            <td>
+			<h3>Logging</h3>
+               <a href='.' onclick="gotomenu('https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Logging', event);return false;" class='nav-item'>
+               <img src="../logging.png" alt="logging" width="80" height="80"/>
+               </a>
+            </td>
+            <td>
+				Provide a flexible logging behaviour that allows run-time change as well augmentation.
+            </td>
+            <td>
+			 <h3>Caching</h3>
+               <a href='.' onclick="gotomenu('https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Caching', event);return false;" class='nav-item'>
+               <img src='../caching.png' alt="caching" width="80" height="80" />
+               </a>
+            </td>
+            <td>
+			Caching implementation provides a finer grain of control in order to avoid caching everything mentality. The goal was to encapsulate the behaviour into accc_ApexCacheMgr. This will allow for an easier adoption and maintenance going forward.
+            </td>
+         </tr>
+         <tr>
+            <td>
+			<h3>Factory and Runtime</h3>
+               <a href='.' onclick="gotomenu('https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Factory-and-Runtime', event);return false;" class='nav-item'>
+               <img src='../factory.png' alt="factory/runtime" width="80" height="80"/>
+               </a>
+            </td>
+            <td>
+			The Factory and Runtime supports run-time changes. There is a object factory which loads the custom metadata. There is a run-time environment which pulls
+			from the object factory the desired behaviour. The Object Factory uses the run-time (test, production, debug) to serve up the implementation to interface.
+            </td>
+            <td>
+				<h3>Common</h3>
+               <a href='.' onclick="gotomenu('https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Common', event);return false;" class='nav-item'>
+               <img src='../common.png'  alt="common" width="80" height="80"/></a>
+               </a>
+            </td>
+            <td>
+			These are helper methods, utilities, etc. 
+            </td>
+         </tr>
+         </table>
+      </div>
+	  <div style='mso-element:footnote' id=ftn1>
+
+<p class=MsoFootnoteText><a style='mso-footnote-id:ftn1' href="#_ftnref1"
+name="_ftn1" title=""><span class=MsoFootnoteReference><span style='mso-special-character:
+footnote'><![if !supportFootnotes]><span class=MsoFootnoteReference><span
+style='font-size:10.0pt;line-height:107%;font-family:"Calibri",sans-serif;
+mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font:
+minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:"Times New Roman";
+mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA'>[1]</span></span><![endif]></span></span></a>
+Static Object Orient Languages<o:p></o:p></p>
+
+</div>
+
+<div style='mso-element:footnote' id=ftn2>
+
+<p class=MsoFootnoteText><a style='mso-footnote-id:ftn2' href="#_ftnref2"
+name="_ftn2" title=""><span class=MsoFootnoteReference><span style='mso-special-character:
+footnote'><![if !supportFootnotes]><span class=MsoFootnoteReference><span
+style='font-size:10.0pt;line-height:107%;font-family:"Calibri",sans-serif;
+mso-ascii-theme-font:minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font:
+minor-latin;mso-hansi-theme-font:minor-latin;mso-bidi-font-family:"Times New Roman";
+mso-bidi-theme-font:minor-bidi;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:AR-SA'>[2]</span></span><![endif]></span></span></a> <b
+style='mso-bidi-font-weight:normal'>S</b>ingle Responsibilities, Open-Closed, <b
+style='mso-bidi-font-weight:normal'>L</b>iskov Substitutability, <b
+style='mso-bidi-font-weight:normal'>I</b>nterface Segregation, <b
+style='mso-bidi-font-weight:normal'>D</b>ependency Inversion.<o:p></o:p></p>
+
+</div>
+
+</div>
+   </body>
+</html>
