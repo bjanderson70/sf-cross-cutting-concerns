@@ -45,21 +45,21 @@
  *
  *       The ASSUMPTION is that the following is true:
  *
- *          Cache Class inherits from ICache,
- *          Exception Handling Class inherits from IExceptionHandler,
- *          Fallback Resources Class inherits from IFallbackResources
- *          Logging Class inherits from ILogger
+ *          Cache Class inherits from accc_ICache,
+ *          Exception Handling Class inherits from accc_IExceptionHandler,
+ *          Fallback Resources Class inherits from accc_IFallbackResources
+ *          Logging Class inherits from accc_ILogger
  *
  *      For example,
  *
  *      'debug' --> map <string,string> :
- *                                      'cacheClass' : 'ApexCache',
- *                                      'loggerClass': 'ApexLogger'
+ *                                      'cacheClass' : 'accc_ApexCache',
+ *                                      'loggerClass': 'accc_ApexLogger'
  *                                          :
  *                                          :
  *      'production' --> map <string,string> :
- *                                      'cacheClass' : 'ApexSessionCache',
- *                                      'loggerClass': 'ApexObjectLogger'
+ *                                      'cacheClass' : 'accc_ApexSessionCache',
+ *                                      'loggerClass': 'accc_ApexObjectLogger'
  *                                          :
  *                                          :
  *

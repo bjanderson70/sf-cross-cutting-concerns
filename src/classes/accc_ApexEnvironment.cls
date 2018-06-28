@@ -51,6 +51,9 @@ public without sharing class accc_ApexEnvironment {
 	/// Public Static Methods
 	////////////////////////////////////////////////////////////////////////////////
 
+	public static string getVersion() {
+		return accc_ApexConstants.CURRENT_VERSION;
+		} // end of getVersion
 	/**
 	* @description the environment
 	* @return either 'production', 'debug' (in sandbox) or 'test'

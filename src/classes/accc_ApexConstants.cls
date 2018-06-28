@@ -197,5 +197,9 @@ public class accc_ApexConstants {
      * Default Max. number of items/records in a chunk ( sent via Apex Batch)
      ************************************************************************************/
     public static final integer DEFAULT_MAX_NUMBER_OF_ITEMS_IN_CHUNK = 100;
-
+    /************************************************************************************
+     *
+     * Current Version
+     ************************************************************************************/
+     public static final String CURRENT_VERSION = '0.9.5';
 } // end of accc_ApexConstants

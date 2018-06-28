@@ -72,5 +72,10 @@ private class accc_ApexEnvironmentTest {
 	static void testgetRuntimeFallbackResources() {
 		system.assertNotEquals(null, accc_ApexEnvironment.getRuntimeFallbackResources());
 	} // end of testgetRuntimeFallbackResources
-
+	
+	@isTest
+	static void testgetVersion() {
+		system.assertEquals(accc_ApexConstants.CURRENT_VERSION, accc_ApexEnvironment.getVersion());
+	} // end of testgetVersion
+//
 } // end of accc_ApexEnvironmentTest
