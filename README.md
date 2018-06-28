@@ -32,7 +32,7 @@ To deploy/install select the button below
 </a>
 
 ## Apex Docs
-If you download the **CCCDocs** and navigate to _ApexDocumentation_ directory and bring up _index.htm_ in the browser you will get the JavaDoc-like information.
+If you download **CCCDocs** directory and navigate to _ApexDocumentation_ directory and bring up _index.htm_ in the browser you will get the JavaDoc-like information. The documentation will also link to the Wiki
 
 ## Contributing
 
