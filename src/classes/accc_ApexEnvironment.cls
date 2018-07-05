@@ -51,6 +51,11 @@ public without sharing class accc_ApexEnvironment {
 	/// Public Static Methods
 	////////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * @brief get the API version
+	 * @description get the API version of the framework
+	 * @return major.minor.revision string, i.e 0.9.5; note, may change to day,month,year TBD
+	 */
 	public static string getVersion() {
 		return accc_ApexConstants.CURRENT_VERSION;
 		} // end of getVersion
