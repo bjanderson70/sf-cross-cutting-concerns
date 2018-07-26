@@ -79,7 +79,6 @@
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
-            <restricted>true</restricted>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
@@ -93,9 +92,9 @@
                     <label>Error</label>
                 </value>
                 <value>
-                    <fullName>Fiest</fullName>
+                    <fullName>Finest</fullName>
                     <default>false</default>
-                    <label>Fiest</label>
+                    <label>Finest</label>
                 </value>
                 <value>
                     <fullName>Fine</fullName>
@@ -111,6 +110,16 @@
                     <fullName>Warning</fullName>
                     <default>false</default>
                     <label>Warning</label>
+                </value>
+                <value>
+                    <fullName>Finer</fullName>
+                    <default>false</default>
+                    <label>Finer</label>
+                </value>
+                <value>
+                    <fullName>Internal</fullName>
+                    <default>false</default>
+                    <label>Internal</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -296,6 +305,11 @@
         <unique>false</unique>
     </fields>
     <label>Accc Application Log</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <displayFormat>AL-{000000}</displayFormat>
         <label>Accc Application Log Name</label>
