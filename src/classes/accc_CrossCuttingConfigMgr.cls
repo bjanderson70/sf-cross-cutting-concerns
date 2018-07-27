@@ -331,7 +331,7 @@ public virtual without sharing  class accc_CrossCuttingConfigMgr {
         String result = validCategory && string.isBlank(referenceName)  ? null : (String)accc_ApexEnvironment.getRuntimeFallbackResources().get(category, referenceName) ;
 
         // this may not be applicable, but bec/ others CAN change the fallback resources, we will still check
-        // what we are wanting is the INTERFACE
+        // what we are wanting for the INTERFACE
         if ( result == null && validCategory && !string.isBlank(className) ) {
             result = (String)accc_ApexEnvironment.getRuntimeFallbackResources().get(category, className) ;
         }

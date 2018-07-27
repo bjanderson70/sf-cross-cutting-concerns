@@ -58,7 +58,7 @@ public without sharing class accc_ApexEnvironment {
 	 */
 	public static string getVersion() {
 		return accc_ApexConstants.CURRENT_VERSION;
-		} // end of getVersion
+	} // end of getVersion
 	/**
 	* @description the environment
 	* @return either 'production', 'debug' (in sandbox) or 'test'
@@ -81,12 +81,8 @@ public without sharing class accc_ApexEnvironment {
 	*/
 	public static accc_IApexRunEnvironment getRuntimeEnvironment() {
 		if ( accc_ApexEnvironment.runtimeEnvironment == null ) {
-
-			if ( Test.isRunningTest() ) {
-				accc_ApexEnvironment.runtimeEnvironment = accc_TestEnvironmentSingleton.getInstance();
-			} else {
-				accc_ApexEnvironment.runtimeEnvironment = accc_ApexRunEnvironmentSingleton.getInstance();
-			}
+			accc_ApexEnvironment.runtimeEnvironment = accc_ApexRunEnvironmentSingleton.getInstance();
+			// TBD -- May consider accc_ApexEnvironment.runtimeEnvironment = accc_TestEnvironmentSingleton.getInstance();
 		}
 
 		return accc_ApexEnvironment.runtimeEnvironment;

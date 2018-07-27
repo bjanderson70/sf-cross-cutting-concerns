@@ -53,12 +53,9 @@ private class accc_ApexEnvironmentTest {
 		accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment() ;
 		String rType = null,
 		       expected = String.valueOf(runtime).split(':')[0];
+		// TBD there is a Test runtime, accc_TestEnvironmentSingleton, but will exclude for now
+		rType = String.valueOf(accc_ApexRunEnvironmentSingleton.class).split(':')[0];
 
-		if ( Test.isRunningTest()  ) {
-			rType = String.valueOf(accc_TestEnvironmentSingleton.class).split(':')[0];
-		} else {
-			rType = String.valueOf(accc_ApexBaseRuntimeEnvironment.class).split(':')[0];
-		}
 		// assert
 		system.assertEquals(expected, rType);
 	} // end of testgetRuntimeEnvironment
@@ -72,7 +69,7 @@ private class accc_ApexEnvironmentTest {
 	static void testgetRuntimeFallbackResources() {
 		system.assertNotEquals(null, accc_ApexEnvironment.getRuntimeFallbackResources());
 	} // end of testgetRuntimeFallbackResources
-	
+
 	@isTest
 	static void testgetVersion() {
 		system.assertEquals(accc_ApexConstants.CURRENT_VERSION, accc_ApexEnvironment.getVersion());

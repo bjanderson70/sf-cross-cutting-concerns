@@ -164,6 +164,7 @@ public virtual without sharing class accc_ApexBaseFallback implements accc_IFall
      *
      * @return collection of resources
      */
+    @TestVisible
     private Map<String, Object> getJsonMap(string category, Map<String, Object> mainMap) {
 
         Map<String, Object> jsonMap = !String.isBlank(category) ? (Map<String, Object>) mainMap.get(category) : mainMap;

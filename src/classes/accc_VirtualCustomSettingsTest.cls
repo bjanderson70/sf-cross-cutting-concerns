@@ -106,7 +106,7 @@ private class accc_VirtualCustomSettingsTest {
             , accc_ApexConstants.SoftAsserts_r => false
             , accc_ApexConstants.EnvironmentClass_r => TestNameForEnvClass
             , accc_ApexConstants.TraceFlagOn_r => true
-            , accc_ApexConstants.TraceLogLevel_r => LoggingLevel.FINER
+           // , accc_ApexConstants.TraceLogLevel_r => LoggingLevel.FINER
             , accc_ApexConstants.ShowCCTraceInfo_r => true
         };
         // act
@@ -130,7 +130,7 @@ private class accc_VirtualCustomSettingsTest {
         system.assertEquals(accc_ApexConstants.DEFAULT_MAX_NUMBER_OF_ITEMS_IN_CHUNK,  settings.defaultMaxNumberOfItemsInChunks());
 
         system.assertEquals(true, settings.showCCTraceInfo());
-        system.assertEquals(LoggingLevel.FINER, settings.traceLogLevel());
+       // system.assertEquals(LoggingLevel.FINER, settings.traceLogLevel());
         system.assertEquals(true, settings.traceFlagOn());
     } // end of testActions
 
