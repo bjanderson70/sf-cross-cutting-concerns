@@ -3,11 +3,13 @@
 # sf-cross-cutting-concerns
 Cross cutting concerns for apex code. The previous [cross-cutting concerns](https://github.com/bjanderson70/Apex-Cross-Cutting-Concerns) is NO LONGER supported.
 
-This code designed to encapsulate common cross-cutting concerns (logging, exception handling, caching, etc.).Often times cross-cutting concerns are an after-thought; or, hastily injected without any ability to manage or control.This project was to encapsulate those concerns and provide a mechanism to change/augment. Changing behaviour is a matter of inheritance and specifying choice via custom metadata. See the [Wiki](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki) for more informaiton.
+This code designed to encapsulate common cross-cutting concerns (logging, exception handling, caching, etc.).Often times cross-cutting concerns are an after-thought; or, hastily injected without any ability to manage or control.This project was to encapsulate those concerns and provide a mechanism to change/augment. 
+Changing behaviour is a matter of inheritance and specifying choice via custom metadata. See the [Wiki](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki) for more informaiton.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
@@ -44,7 +46,7 @@ version 0.9.5
 
 ## Authors
 
-* **Bill Anderson** - *Initial work* - [Apex Cross-Cutting Concerns](https://github.com/bjanderson70)
+* **Bill Anderson** 
 
 ## License
 
