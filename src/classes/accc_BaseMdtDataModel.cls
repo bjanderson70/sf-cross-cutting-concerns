@@ -237,8 +237,9 @@ public abstract without sharing class accc_BaseMdtDataModel {
                 cmdt = this.queryCustomMDT(selector, theQueryType, lookup, category);
                 // any data to process
                 if ( cmdt != null && cmdt.size() > 0) {
+                    result = this.populateFrom(cmdt);
                     // let child populate information and place in local cache
-                    result = ( List<BaseDataModelInformation>) l1Cache.put(key, this.populateFrom(cmdt));
+                    l1Cache.put(key, result);
                 }
             }
         } catch (Exception excp) {
