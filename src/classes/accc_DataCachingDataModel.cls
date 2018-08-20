@@ -44,6 +44,8 @@ public without sharing class accc_DataCachingDataModel extends accc_BaseMdtDataM
 	//
 	/////////////////////////////////////////////////////////////////////////////////////////
 	@TestVisible
+	static private final String CATEGORY_FIELD = 'Category__c';
+	@TestVisible
 	static private final string TestLabel2018 = 'testLabel';
 	@TestVisible
 	static private final string TestName2018 = 'testName';
@@ -86,7 +88,7 @@ public without sharing class accc_DataCachingDataModel extends accc_BaseMdtDataM
 	 *
 	 */
 	public accc_DataCachingDataModel() {
-		super(MDT_Name);
+		super(MDT_Name,CATEGORY_FIELD);
 
 	} // end of ctor
 	/////////////////////////////////////////////////////////////////////////////////////////

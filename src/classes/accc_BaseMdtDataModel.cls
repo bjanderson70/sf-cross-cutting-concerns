@@ -76,6 +76,8 @@ public abstract without sharing class accc_BaseMdtDataModel {
     static final String CUSTOM_MDT_FIELDS = 'DeveloperName, Id, Label, MasterLabel, NamespacePrefix, QualifiedApiName';
     // the selected fields query
     static final String SELECT_FIELDS = accc_ApexConstants.SELECT_s + CUSTOM_MDT_FIELDS;
+    // category field ( which could be environment , depends upon the child class)
+    String m_categoryField = CUSTOM_MDT_CATEGORY;
     /////////////////////////////////////////////////////////////////////////////////////////
     //
     // Properties
@@ -98,10 +100,19 @@ public abstract without sharing class accc_BaseMdtDataModel {
      *
      */
     public accc_BaseMdtDataModel(String customMDT) {
+        this(customMDT, null);
+    } // end of ctor
+    /**
+     * @description ctor
+     *
+     */
+    public accc_BaseMdtDataModel(String customMDT, String category) {
         if ( string.isBlank(customMDT) ) {
             throw new accc_ApexApplicationException('accc_BaseMdtDataModel Exception ctor -- Bad Value, empty of null not allowed');
         }
         this.CustomMDTName = customMDT;
+        this.categoryField = category != null ? category : CUSTOM_MDT_CATEGORY;
+
     } // end of ctor
     /////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -123,7 +134,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
     * @return the model informaiton
     */
     public List<BaseDataModelInformation> findByCategory(String category) {
-        return this.getInformationByLookup(category, accc_ControlPolicySearchEnum.byLabel);
+        return this.getInformationByLookup(category, null,accc_ControlPolicySearchEnum.byLabel);
     }// end of findByCategory
     /**
      * @description find by category and label
@@ -199,6 +210,14 @@ public abstract without sharing class accc_BaseMdtDataModel {
     //
     /////////////////////////////////////////////////////////////////////////////////////////
     /**
+     * the Category field (i.e. environment, but not always)
+     */
+    @TestVisible
+    protected String  categoryField {
+        get { return this.m_categoryField;}
+        set {this.m_categoryField = value;}
+    } // end of categoryField
+    /**
      * @description find the custom mdt
      *
      * @param lookup lookup string
@@ -227,7 +246,8 @@ public abstract without sharing class accc_BaseMdtDataModel {
 
         // check out local cache to save some time
         List<BaseDataModelInformation> result =  (List<BaseDataModelInformation>)l1Cache.get(key);
-
+        System.debug('+++ getInformationByLookup.category=' + category);
+        System.debug('+++ getInformationByLookup.lookup=' + lookup);
         try {
             // still no data?
             if ( result == null ) {
@@ -240,7 +260,9 @@ public abstract without sharing class accc_BaseMdtDataModel {
                     result = this.populateFrom(cmdt);
                     // let child populate information and place in local cache
                     l1Cache.put(key, result);
+
                 }
+                System.debug('+++ getInformationByLookup.result=' + result);
             }
         } catch (Exception excp) {
             // process exception
@@ -293,6 +315,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
         if ( mdt != null ) {
             result = this.populateFromDataObjectChild(mdt);
         }
+        System.debug('+++ populateFrom.result=' + result);
         return result;
     } // end of populateFrom
 
@@ -329,17 +352,28 @@ public abstract without sharing class accc_BaseMdtDataModel {
         String clause = selectClause + accc_ApexConstants.FROM_s + this.customMDTName;
 
         if ( !string.isBlank(category) ) {
-            clause +=  accc_ApexConstants.WHERE_s
-                       + byValue + ' = :myValue '
-                       + accc_ApexConstants.ANDString + ' '
-                       + CUSTOM_MDT_CATEGORY + ' = :category';
+
+            if (  !string.isBlank(myValue)) {
+                if ( category != accc_ApexConstants.All_s) {
+                    clause +=  accc_ApexConstants.WHERE_s
+                               + byValue + ' = :myValue '
+                               + accc_ApexConstants.ANDString + ' '
+                               +  this.categoryField  + ' = :category';
+                } else {
+                    clause +=  accc_ApexConstants.WHERE_s
+                               + byValue + ' = :myValue ';
+                }
+            } else if ( category != accc_ApexConstants.All_s) {
+                clause +=  accc_ApexConstants.WHERE_s
+                           +  this.categoryField  + ' = :category';
+            } 
 
             // are we getting ALL items or not
         } else if ( myValue != accc_ApexConstants.All_s ) {
             clause +=  accc_ApexConstants.WHERE_s
                        + byValue + ' = : myValue';
         }
-
+        System.debug('+++ CLAUSE = ' + clause);
         // get the results
         return Database.query(String.escapeSingleQuotes(clause));
 

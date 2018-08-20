@@ -78,4 +78,15 @@ private class accc_CrossCuttingUtilityDataModelTest {
 		// assert
 		System.assertEquals(accc_CrossCuttingUtilityDataModel.TestName2018, result[0].DeveloperName);
 	} // end of testfindByName
+
+	@isTest
+	static void testfindByCategory() {
+		// act/assign
+		accc_CrossCuttingUtilityDataModel ctor = new accc_CrossCuttingUtilityDataModel();
+		List<accc_BaseMdtDataModel.BaseDataModelInformation> result = ctor.findByCategory(accc_CrossCuttingUtilityDataModel.TestName2018);
+		// assert
+		System.assertEquals(accc_CrossCuttingUtilityDataModel.CATEGORY_FIELD, ctor.categoryField);
+		System.assertEquals(true, result.size() > 0 );
+	} // end of testfindByCategory
+
 } // end of accc_CrossCuttingUtilityDataModelTest

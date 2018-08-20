@@ -52,6 +52,9 @@ private class accc_BaseMdtDataModelTest {
 
 	private without sharing class Testaccc_BaseMdtDataModel extends accc_BaseMdtDataModel {
 
+		public Testaccc_BaseMdtDataModel(string name, string category) {
+			super(name,category);
+		}
 		public Testaccc_BaseMdtDataModel(string name) {
 			super(name);
 		}
@@ -98,14 +101,25 @@ private class accc_BaseMdtDataModelTest {
 	static void testCtor() {
 		boolean didExcep = false;
 		try {
-			accc_BaseMdtDataModel ctor = new Testaccc_BaseMdtDataModel(null);
+			accc_BaseMdtDataModel ctor = new Testaccc_BaseMdtDataModel('null', null);
+		} catch (accc_ApexApplicationException execp) {
+			didExcep = true;
+		}
+		system.assertEquals(false, didExcep);
+
+	} // end of testCtor
+ 
+	@isTest
+	static void testCtorWithBadDataFirstParameter() {
+		boolean didExcep = false;
+		try {
+			accc_BaseMdtDataModel ctor = new Testaccc_BaseMdtDataModel(null, null);
 		} catch (accc_ApexApplicationException execp) {
 			didExcep = true;
 		}
 		system.assertEquals(true, didExcep);
 
-	} // end of testCtor
-
+	} // end of testCtorWithBadDataFirstParameter
 	@isTest
 	static void testfindAll() {
 		accc_BaseMdtDataModel ctor = new Testaccc_BaseMdtDataModel(TEST_MDT_Name);

@@ -83,4 +83,15 @@ private class accc_CrossCuttingConfigDataModelTest {
 		System.assertEquals(accc_ApexConstants.TEST_CATEGORY, result.DeveloperName);
 	} // end of testfindByName
 
+	@isTest
+	static void testfindByCategory() {
+		// act/assign
+		accc_CrossCuttingConfigDataModel ctor = new accc_CrossCuttingConfigDataModel();
+		List<accc_BaseMdtDataModel.BaseDataModelInformation> results = (List<accc_BaseMdtDataModel.BaseDataModelInformation> )ctor.findByCategory(accc_ApexConstants.TEST_CATEGORY);
+		accc_BaseMdtDataModel.BaseDataModelInformation result = results != null && results.size() > 0 ? results[0] : null;
+		// assert
+		System.assertEquals(accc_CrossCuttingConfigDataModel.CATEGORY_FIELD, ctor.categoryField);
+		System.assertEquals(true, result != null);
+	} // end of testfindByCategory
+
 } // end of CrossCuttingConfigInformationTest

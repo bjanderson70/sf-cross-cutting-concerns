@@ -34,9 +34,9 @@
  * @description  External representation of the data cached metadata. Providing a
  * wrapper around the internal data mapper allows one to vary the metadata w/o having to
  * change ALL dependencies. [Added layer of indirection to adjust for change].
- * 
+ *
  * To Add a new resource: See Steps below
- * 
+ *
  * @group Common Layer
  */
 public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseMdtDataModel {
@@ -46,6 +46,10 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
     // Data Members
     //
     /////////////////////////////////////////////////////////////////////////////////////////
+
+    // our field we categorize on ( this will hold the environment [test, debug,prod])
+    @TestVisible
+    static final String CATEGORY_FIELD = 'DeveloperName';
 
     // the custom mdt name
     @TestVisible
@@ -78,7 +82,7 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
     /**
      * @description data cache information - view representation , allows for changes
      * in the implementation (data representation) w/o affecting the consumption [DAO]
-     * 
+     *
      * To Added New Resouce classes (Step 1b: Add data member here (i.e.,'logFormatterClass'))
      *
      */
@@ -106,7 +110,7 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
      *
      */
     public accc_CrossCuttingConfigDataModel() {
-        super(MDT_Name);
+        super(MDT_Name, CATEGORY_FIELD);
 
     } // end of ctor
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -132,27 +136,27 @@ public without sharing class accc_CrossCuttingConfigDataModel extends accc_BaseM
                 CrossCuttingConfigInformation result = new CrossCuttingConfigInformation();
                 this.setValues((accc_BaseMdtDataModel.BaseDataModelInformation)result, cmdt.Label, cmdt.NamespacePrefix, cmdt.DeveloperName);
 
-               /* To Added New Resouce classes (Step 2: Assign data member here (i.e.,'logFormatterClass') 
-                *                                       from SF Object 'LogFormatter__c') 
-                *                                       
-                *                               Step 3: Ensure you add field to 'accc_Apex_Code_Configuration__mdt'
-                *                               Step 4: Ensure Fallback Resources have the Resource Name (see accc_ApexConstants and accc_ApexKnownCCConcernsFallback)
-                **/
+                /* To Added New Resouce classes (Step 2: Assign data member here (i.e.,'logFormatterClass')
+                 *                                       from SF Object 'LogFormatter__c')
+                 *
+                 *                               Step 3: Ensure you add field to 'accc_Apex_Code_Configuration__mdt'
+                 *                               Step 4: Ensure Fallback Resources have the Resource Name (see accc_ApexConstants and accc_ApexKnownCCConcernsFallback)
+                 **/
 
-                result.cacheClass = accc_Apexutilities.normalizeString(cmdt.CacheResource__c,true);
-                result.cacheStrategyInvocationClass = accc_Apexutilities.normalizeString(cmdt.CacheStrategyInvocation__c,true);
-                result.cacheStrategyClass = accc_Apexutilities.normalizeString(cmdt.CacheStrategy__c,true);
-                result.configurationClass = accc_Apexutilities.normalizeString(cmdt.ConfigurationResource__c,true);
-                result.exceptionFormatterClass = accc_Apexutilities.normalizeString(cmdt.ExceptionFormatter__c,true);
-                result.exceptionPolicyHandlerClass = accc_Apexutilities.normalizeString(cmdt.ExceptionPolicyHandler__c,true);
-                result.exceptionHandlerClass = accc_Apexutilities.normalizeString(cmdt.ExceptionHandler__c,true);
-                result.factoryClass = accc_Apexutilities.normalizeString(cmdt.FactoryResource__c,true);
-                result.fallbackResourcesClass = accc_Apexutilities.normalizeString(cmdt.FallbackResource__c,true);
-                result.loggingClass = accc_Apexutilities.normalizeString(cmdt.Logger__c,true);
-                result.logFormatterClass = accc_Apexutilities.normalizeString(cmdt.LogFormatter__c,true);
-                result.previousTransactionResultResourceClass = accc_Apexutilities.normalizeString(cmdt.PreviousTransactionResultResource__c,true);
-                result.sendEmailChannelClass = accc_Apexutilities.normalizeString(cmdt.SendEmailChannel__c,true);
-                result.runtimeEnvironmentClass = accc_Apexutilities.normalizeString(cmdt.RuntimeEnvironment__c,true);
+                result.cacheClass = accc_Apexutilities.normalizeString(cmdt.CacheResource__c, true);
+                result.cacheStrategyInvocationClass = accc_Apexutilities.normalizeString(cmdt.CacheStrategyInvocation__c, true);
+                result.cacheStrategyClass = accc_Apexutilities.normalizeString(cmdt.CacheStrategy__c, true);
+                result.configurationClass = accc_Apexutilities.normalizeString(cmdt.ConfigurationResource__c, true);
+                result.exceptionFormatterClass = accc_Apexutilities.normalizeString(cmdt.ExceptionFormatter__c, true);
+                result.exceptionPolicyHandlerClass = accc_Apexutilities.normalizeString(cmdt.ExceptionPolicyHandler__c, true);
+                result.exceptionHandlerClass = accc_Apexutilities.normalizeString(cmdt.ExceptionHandler__c, true);
+                result.factoryClass = accc_Apexutilities.normalizeString(cmdt.FactoryResource__c, true);
+                result.fallbackResourcesClass = accc_Apexutilities.normalizeString(cmdt.FallbackResource__c, true);
+                result.loggingClass = accc_Apexutilities.normalizeString(cmdt.Logger__c, true);
+                result.logFormatterClass = accc_Apexutilities.normalizeString(cmdt.LogFormatter__c, true);
+                result.previousTransactionResultResourceClass = accc_Apexutilities.normalizeString(cmdt.PreviousTransactionResultResource__c, true);
+                result.sendEmailChannelClass = accc_Apexutilities.normalizeString(cmdt.SendEmailChannel__c, true);
+                result.runtimeEnvironmentClass = accc_Apexutilities.normalizeString(cmdt.RuntimeEnvironment__c, true);
 
                 results.add(result);
             }

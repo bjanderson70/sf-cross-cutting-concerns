@@ -43,7 +43,11 @@ public without sharing class accc_CrossCuttingUtilityDataModel extends accc_Base
     // Data Members
     //
     /////////////////////////////////////////////////////////////////////////////////////////
+    @TestVisible
+    static final String CATEGORY_FIELD = 'DeveloperName';
+
     // Map the custom MDT to a name
+    @TestVisible
     static private final Map<String, LoggingLevel> cmdtNameLogLvlMapping = new Map<String, LoggingLevel> {
         LoggingLevel.DEBUG.name().toLowerCase() => LoggingLevel.DEBUG
         , LoggingLevel.INFO.name().toLowerCase() => LoggingLevel.INFO
@@ -101,8 +105,7 @@ public without sharing class accc_CrossCuttingUtilityDataModel extends accc_Base
      *
      */
     public accc_CrossCuttingUtilityDataModel() {
-        super(MDT_Name);
-
+        super(MDT_Name,CATEGORY_FIELD);
     } // end of ctor
     /////////////////////////////////////////////////////////////////////////////////////////
     //
