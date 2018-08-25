@@ -452,9 +452,14 @@ public virtual without sharing class accc_ApexUtilities {
         Type result = null;
 
         try {
+            // can only assume ALL the same
             if ( theSObject != null ) {
                 Schema.SObjectType sType = theSObject.getSobjectType();
                 result = Type.forName(sType.getdescribe().getName());
+                if ( result == null && theSObject.size() > 0) {
+                    sType = theSObject[0].getSobjectType();
+                    result = Type.forName(sType.getdescribe().getName());
+                }
             }
         } catch  (Exception excp) {
             // ignored at this time
@@ -715,7 +720,7 @@ public virtual without sharing class accc_ApexUtilities {
         }
         return result;
     } // end of returnDelimiterSeparatedString
-  
+
     /**
      *  @description convert string to integer
      *
