@@ -37,6 +37,7 @@
 @isTest
 private class accc_ApexUtilitiesTest {
 
+
     /**
      * @description Test is sandbox
      */
@@ -668,5 +669,49 @@ private class accc_ApexUtilitiesTest {
         // act / assert
         system.assertNotEquals(theClass, accc_ApexUtilities.popStack(trace));
     } // end of testpopStack
+
+    @isTest
+    static void testvalidDomainName() {
+        // assign
+        Map<String, Boolean> validDomain = new Map<String, Boolean> {
+            'Account' => true,
+            'jsajsawsksks' => false,
+            '*asdiwl*' => false,
+            'Contact' => true,
+            'Lead' => true,
+            'Opportunity' => true,
+            'my*-once*' => false,
+            '' => false,
+            '   ' => false,
+            null => false
+        };
+
+        for ( String name : validDomain.keyset()) {
+            // act/assert
+            system.assertEquals(validDomain.get(name),
+                                accc_ApexUtilities.validDomainName(name));
+        }
+    }
+
+    @isTest static void testgetTypeByName() {
+        // assign
+        Map<String, Boolean> validType = new Map<String, Boolean> {
+            'Account' => true,
+            'jsajsawsksks' => false,
+            '*asdiwl*' => false,
+            'Contact' => true,
+            'Lead' => true,
+            'Opportunity' => true,
+            'my*-once*' => false,
+            '' => false,
+            '   ' => false,
+            null => false
+        };
+
+        for ( String name : validType.keyset()) {
+            // assert
+            system.assertEquals(validType.get(name), accc_ApexUtilities.getTypeByName(name) != null);
+        }
+    }
 
 } // end of accc_ApexUtilitiesTest
