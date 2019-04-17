@@ -39,7 +39,10 @@
  */
 public class accc_ApexConstants {
 
-
+    // MAX JSON Size (in Big Object)
+    public static final integer MAX_JSON_SIZE = 131072;
+    // Max Text Size
+    public static final integer MAX_STRING_SIZE = 254;
     // use by the custom MDT for configuration categories
     public static final string DEBUG_CATEGORY = 'debug';
     public static final string PRODUCTION_CATEGORY = 'production';
