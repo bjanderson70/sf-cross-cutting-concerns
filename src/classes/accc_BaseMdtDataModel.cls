@@ -134,7 +134,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
     * @return the model informaiton
     */
     public List<BaseDataModelInformation> findByCategory(String category) {
-        return this.getInformationByLookup(category, null,accc_ControlPolicySearchEnum.byLabel);
+        return this.getInformationByLookup(category, null, accc_ControlPolicySearchEnum.byLabel);
     }// end of findByCategory
     /**
      * @description find by category and label
@@ -246,8 +246,6 @@ public abstract without sharing class accc_BaseMdtDataModel {
 
         // check out local cache to save some time
         List<BaseDataModelInformation> result =  (List<BaseDataModelInformation>)l1Cache.get(key);
-        System.debug('+++ getInformationByLookup.category=' + category);
-        System.debug('+++ getInformationByLookup.lookup=' + lookup);
         try {
             // still no data?
             if ( result == null ) {
@@ -262,7 +260,6 @@ public abstract without sharing class accc_BaseMdtDataModel {
                     l1Cache.put(key, result);
 
                 }
-                System.debug('+++ getInformationByLookup.result=' + result);
             }
         } catch (Exception excp) {
             // process exception
@@ -315,7 +312,6 @@ public abstract without sharing class accc_BaseMdtDataModel {
         if ( mdt != null ) {
             result = this.populateFromDataObjectChild(mdt);
         }
-        System.debug('+++ populateFrom.result=' + result);
         return result;
     } // end of populateFrom
 
@@ -366,14 +362,14 @@ public abstract without sharing class accc_BaseMdtDataModel {
             } else if ( category != accc_ApexConstants.All_s) {
                 clause +=  accc_ApexConstants.WHERE_s
                            +  this.categoryField  + ' = :category';
-            } 
+            }
 
             // are we getting ALL items or not
         } else if ( myValue != accc_ApexConstants.All_s ) {
             clause +=  accc_ApexConstants.WHERE_s
                        + byValue + ' = : myValue';
         }
-        System.debug('+++ CLAUSE = ' + clause);
+
         // get the results
         return Database.query(String.escapeSingleQuotes(clause));
 
