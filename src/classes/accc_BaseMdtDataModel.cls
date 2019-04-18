@@ -42,7 +42,11 @@ public abstract without sharing class accc_BaseMdtDataModel {
     // Data Members
     //
     /////////////////////////////////////////////////////////////////////////////////////////
-
+    // exposing common names and labels for the CMDT
+    // custom mdt name
+    public static final String CUSTOM_MDT_NAME = 'DeveloperName';
+    // custom mdt label
+    public static final String CUSTOM_MDT_LABEL =  'Label';
     /**
      * @description data cache information - view representation , allows for changes
      * in the implementation (data representation) w/o affecting the consumption
@@ -60,7 +64,8 @@ public abstract without sharing class accc_BaseMdtDataModel {
     public enum accc_ControlPolicySearchEnum {
         byLabel,            // by label
         byName,             // by name
-        byCategoryAndLabel  // by category
+        byCategoryAndLabel, // by category
+        byDomain            // by domain (account, contact, etc.) : future use
 
     } // end of accc_ControlPolicySearchEnum
 
@@ -68,10 +73,6 @@ public abstract without sharing class accc_BaseMdtDataModel {
     static final accc_ApexLocalL1Cache l1Cache = new  accc_ApexLocalL1Cache('accc_BaseMdtDataModel');
     // acts as the category
     static final String CUSTOM_MDT_CATEGORY = 'Category__c';
-    // custom mdt name
-    static final String CUSTOM_MDT_NAME = 'DeveloperName';
-    // custom mdt label
-    static final String CUSTOM_MDT_LABEL =  'Label';
     // custom mdt select fields for common custom mdt fields
     static final String CUSTOM_MDT_FIELDS = 'DeveloperName, Id, Label, MasterLabel, NamespacePrefix, QualifiedApiName';
     // the selected fields query
@@ -90,6 +91,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
      * @return the custom mdt name
      */
     public String CustomMDTName { get; private set;}
+
     /////////////////////////////////////////////////////////////////////////////////////////
     //
     // CTORS
@@ -111,7 +113,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
             throw new accc_ApexApplicationException('accc_BaseMdtDataModel Exception ctor -- Bad Value, empty of null not allowed');
         }
         this.CustomMDTName = customMDT;
-        this.categoryField = category != null ? category : CUSTOM_MDT_CATEGORY;
+        this.categoryField = !string.isBlank(category) ? category : CUSTOM_MDT_CATEGORY;
 
     } // end of ctor
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -206,7 +208,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     //
-    // PROTECTED METHODS
+    // PROTECTED PROPERTIES
     //
     /////////////////////////////////////////////////////////////////////////////////////////
     /**
@@ -217,6 +219,20 @@ public abstract without sharing class accc_BaseMdtDataModel {
         get { return this.m_categoryField;}
         set {this.m_categoryField = value;}
     } // end of categoryField
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // PROTECTED METHODS
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
+
+    ///**
+    // * Expose the L1 cache to children
+    // */
+    //@TestVisible
+    //protected accc_ApexLocalL1Cache getL1Cache {
+    //    get { return accc_BaseMdtDataModel.l1Cache;}
+    //}// end of getL1Cache
     /**
      * @description find the custom mdt
      *
@@ -226,9 +242,24 @@ public abstract without sharing class accc_BaseMdtDataModel {
      * @return the data model
      */
     @TestVisible
-    protected List<BaseDataModelInformation> getInformationByLookup(String lookup, accc_ControlPolicySearchEnum controlType) {
+    protected virtual List<BaseDataModelInformation> getInformationByLookup(String lookup, accc_ControlPolicySearchEnum controlType) {
         return this.getInformationByLookup(null, lookup, controlType);
     } // end of getInformationByLookup
+    /**
+     * @description get our query by string
+     * @details get our query by string
+     *
+     * @param category/namespace
+    *  @param lookup lookup string
+     * @param controlType control of the query by
+     * @return the query by string
+     */
+    @TestVisible
+    protected virtual string getQueryBy( accc_ControlPolicySearchEnum controlType) {
+        Boolean theControlType = controlType == accc_ControlPolicySearchEnum.byName;
+        return theControlType ? CUSTOM_MDT_NAME : CUSTOM_MDT_LABEL;
+    } // end of getQueryBy
+
     /**
     * @description find the custom mdt
     *
@@ -239,7 +270,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
     * @return the data model
     */
     @TestVisible
-    protected List<BaseDataModelInformation> getInformationByLookup(String category, String lookup, accc_ControlPolicySearchEnum controlType) {
+    protected virtual List<BaseDataModelInformation> getInformationByLookup(String category, String lookup, accc_ControlPolicySearchEnum controlType) {
         List<SObject> cmdt = null;
         String selector = this.makeSoqlSelect();
         string key = this.makeCacheKey(category, lookup);
@@ -249,8 +280,7 @@ public abstract without sharing class accc_BaseMdtDataModel {
         try {
             // still no data?
             if ( result == null ) {
-                Boolean theControlType = controlType == accc_ControlPolicySearchEnum.byName;
-                String theQueryType = theControlType ? CUSTOM_MDT_NAME : CUSTOM_MDT_LABEL;
+                String theQueryType = this.getQueryBy(controlType);
                 // preform query
                 cmdt = this.queryCustomMDT(selector, theQueryType, lookup, category);
                 // any data to process
@@ -279,48 +309,18 @@ public abstract without sharing class accc_BaseMdtDataModel {
      */
     @TestVisible
     protected void setValues(BaseDataModelInformation result, string lbl, string prefix, string name) {
-        result.label = accc_Apexutilities.normalizeString(lbl, true);
-        result.namespacePrefix = accc_Apexutilities.normalizeString(prefix, true);
-        result.developerName = accc_Apexutilities.normalizeString(name, true);
-    } // end of setValues
-    /////////////////////////////////////////////////////////////////////////////////////////
-    //
-    // PRIVATE METHODS
-    //
-    /////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * @description make key for the cache
-     *
-     * @param category the category (debug, production, etc.)
-     * @param lookup  how to find the value
-     *
-     * @return the key associate with the appropriate custom metadata
-     */
-    @TestVisible
-    private string makeCacheKey(string category, string lookup) {
-        return accc_ApexUtilities.makeLocalCacheKey(this.CustomMDTName , accc_ApexUtilities.makeLocalCacheKey(category, lookup));
-    } // end of makeCacheKey
-    /**
-     * @description populate our external view of the data cache structure
-     *
-     * @param cacheMDT the data cache Metadata
-     * @return our view of the data ( allows us to change internally)
-     */
-    @TestVisible
-    private List<BaseDataModelInformation> populateFrom(List<SObject> mdt) {
-        List<BaseDataModelInformation> result = null;
-        if ( mdt != null ) {
-            result = this.populateFromDataObjectChild(mdt);
-        }
-        return result;
-    } // end of populateFrom
 
+        result.label = accc_ApexUtilities.normalizeString(lbl, accc_ApexConstants.MAX_STRING_SIZE);
+        result.namespacePrefix = accc_ApexUtilities.normalizeString(prefix, accc_ApexConstants.MAX_STRING_SIZE);
+        result.developerName = accc_ApexUtilities.normalizeString(name, accc_ApexConstants.MAX_STRING_SIZE);
+
+    } // end of setValues
     /**
-     * @description create the soql select clause
-     * @return the select clause
-     */
+    * @description create the soql select clause
+    * @return the select clause
+    */
     @TestVisible
-    private String makeSoqlSelect() {
+    protected String makeSoqlSelect() {
         String result =  SELECT_FIELDS;
 
         List<String> childList = this.getSelectFields();
@@ -331,6 +331,22 @@ public abstract without sharing class accc_BaseMdtDataModel {
         return result;
     } // end of makeSoqlSelect
     /**
+    * @description populate our external view of the data cache structure
+    *
+    * @param mdt the data cache Metadata
+    * @return our view of the data ( allows us to change internally)
+    */
+    @TestVisible
+    protected List<BaseDataModelInformation> populateFrom(List<SObject> mdt) {
+        List<BaseDataModelInformation> result = null;
+        if ( mdt != null ) {
+            // call child's populate
+            result = this.populateFromDataObjectChild(mdt);
+        }
+        return result;
+    } // end of populateFrom
+
+    /**
      * @description query for the Custom MDT
      *
      * @param selectClause the select clause
@@ -339,10 +355,10 @@ public abstract without sharing class accc_BaseMdtDataModel {
      * @return the found SObject
      */
     @TestVisible
-    private List<SObject> queryCustomMDT(String selectClause,
-                                         String byValue,
-                                         String theValue,
-                                         String category) {
+    protected List<SObject> queryCustomMDT(String selectClause,
+                                           String byValue,
+                                           String theValue,
+                                           String category) {
 
         String myValue = theValue;
         String clause = selectClause + accc_ApexConstants.FROM_s + this.customMDTName;
@@ -374,5 +390,25 @@ public abstract without sharing class accc_BaseMdtDataModel {
         return Database.query(String.escapeSingleQuotes(clause));
 
     } // end of queryCustomMDT
+    /**
+    * @description make key for the cache
+    *
+    * @param category the category (debug, production, etc.)
+    * @param lookup  how to find the value
+    *
+    * @return the key associate with the appropriate custom metadata
+    */
+    @TestVisible
+    protected string makeCacheKey(string category, string lookup) {
+        return accc_ApexUtilities.makeLocalCacheKey(this.CustomMDTName , accc_ApexUtilities.makeLocalCacheKey(category, lookup));
+    } // end of makeCacheKey
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // PRIVATE METHODS
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
+
 
 } // end of accc_BaseMdtDataModel
