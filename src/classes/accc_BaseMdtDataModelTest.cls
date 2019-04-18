@@ -53,7 +53,7 @@ private class accc_BaseMdtDataModelTest {
 	private without sharing class Testaccc_BaseMdtDataModel extends accc_BaseMdtDataModel {
 
 		public Testaccc_BaseMdtDataModel(string name, string category) {
-			super(name,category);
+			super(name, category);
 		}
 		public Testaccc_BaseMdtDataModel(string name) {
 			super(name);
@@ -108,7 +108,7 @@ private class accc_BaseMdtDataModelTest {
 		system.assertEquals(false, didExcep);
 
 	} // end of testCtor
- 
+
 	@isTest
 	static void testCtorWithBadDataFirstParameter() {
 		boolean didExcep = false;
@@ -146,7 +146,13 @@ private class accc_BaseMdtDataModelTest {
 	@isTest
 	static void testfindByName() {
 		accc_BaseMdtDataModel ctor = new Testaccc_BaseMdtDataModel(TEST_MDT_Name);
+		// act
 		List<accc_BaseMdtDataModel.BaseDataModelInformation> result = ctor.findByName(null);
+		// assert
+		system.assertEquals(true, result == null);
+		// act
+		result = ctor.findByName('');
+		// assert
 		system.assertEquals(true, result == null);
 
 	} // end of testfindByName
