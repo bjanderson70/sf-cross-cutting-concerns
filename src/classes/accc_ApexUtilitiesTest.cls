@@ -713,5 +713,25 @@ private class accc_ApexUtilitiesTest {
             system.assertEquals(validType.get(name), accc_ApexUtilities.getTypeByName(name) != null);
         }
     }
+    @isTest static void testgetTypeFromSObjectList() {
+        //assign
+        Account sob = new account(Name = 'Acme', Description = 'Acme Account');
+        List<Account> sobs = new List<Account> { sob};
+        Type expected = Account.class;
+        // act
+        Type ns = accc_ApexUtilities.getTypeFromSObject(sobs);
+        // assert
+        System.assertEquals(expected, ns);
+    } // end of testgetTypeFromSObject
+
+    @isTest static void testgetSobjectTypeFromSObject() {
+        //assign
+        SObject sob = new account(Name = 'Acme', Description = 'Acme Account');
+        Schema.SObjectType expected = Account.getSobjectType();
+        // act
+        Schema.SObjectType ns = accc_ApexUtilities.getSobjectTypeFromSObject(sob);
+        // assert
+        System.assertEquals(expected, ns);
+    } // end of testgetSobjectTypeFromSObject
 
 } // end of accc_ApexUtilitiesTest
