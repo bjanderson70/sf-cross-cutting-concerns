@@ -549,7 +549,17 @@ public virtual without sharing class accc_ApexUtilities {
 		return result;
 	} // end of getExecutingMethod
 
-
+	/**
+	*
+	* @description Log Information, makes it easier to refactor for a logger later
+	* @param String message
+	* @param Boolean controlOutput control whether to output or not
+	*/
+	public static void log(String theMessage, Boolean controlOutput) {
+		if (  controlOutput ) {
+			accc_ApexUtilities.log(theMessage);
+		}
+	} // end of log
 	/**
 	*
 	* @description Log Information, makes it easier to refactor for a logger later
@@ -902,6 +912,46 @@ public virtual without sharing class accc_ApexUtilities {
 		return result;
 
 	} // end of getClassInstance
+
+	/**
+	 * @brief get the Type from the SObject collection
+	 * @description  get the Type from the SObject collection
+	 *
+	 * @param theSObject type we want
+	 * @return System Type
+	 */
+	public static Schema.SObjectType getSobjectTypeFromSObject(List<SObject> theSObject) {
+		Schema.SObjectType sType = null;
+
+		try {
+			if ( theSObject != null ) {
+				sType = theSObject.getSobjectType();
+			}
+		} catch  (Exception excp) {
+
+		}
+		return sType;
+	} // end of getSobjectTypeFromSObject
+
+	/**
+	 * @brief get the Type from the SObject collection
+	 * @description  get the Type from the SObject collection
+	 *
+	 * @param theSObject type we want
+	 * @return System Type
+	 */
+	public static Schema.SObjectType getSobjectTypeFromSObject(SObject theSObject) {
+		Schema.SObjectType sType = null;
+
+		try {
+			if ( theSObject != null ) {
+				sType = theSObject.getSobjectType();
+			}
+		} catch  (Exception excp) {
+
+		}
+		return sType;
+	} // end of getSobjectTypeFromSObject
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Private Static Methods
