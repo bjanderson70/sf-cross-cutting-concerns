@@ -734,4 +734,25 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(expected, ns);
     } // end of testgetSobjectTypeFromSObject
 
+    @isTest
+    static void testexceededGovernorLimits() {
+        //assign
+        // act
+
+        System.assertEquals(true,
+                            accc_ApexUtilities.exceededGovernorLimits(new DmlException()));
+
+        System.assertEquals(true,
+                            accc_ApexUtilities.exceededGovernorLimits(new AsyncException()));
+
+        System.assertEquals(true,
+                            accc_ApexUtilities.exceededGovernorLimits(new CalloutException()));
+
+        System.assertEquals(false,
+                            accc_ApexUtilities.exceededGovernorLimits(new NoAccessException()));
+
+        System.assertEquals(false,
+                            accc_ApexUtilities.exceededGovernorLimits(new JSONException()));
+    } // end of testexceededGovernorLimits
+
 } // end of accc_ApexUtilitiesTest
