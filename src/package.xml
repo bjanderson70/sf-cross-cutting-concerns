@@ -130,6 +130,8 @@
 		<members>accc_TriggerHelperClassTest</members>
 		<members>accc_VirtualCustomSettings</members>
 		<members>accc_VirtualCustomSettingsTest</members>
+		<members>accc_ApexPerformanceMetrics</members>
+		<members>accc_ApexPerformanceMetricsTest</members>
 		<name>ApexClass</name>
     </types>
 	<types>
