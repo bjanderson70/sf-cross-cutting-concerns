@@ -774,7 +774,7 @@ public virtual without sharing class accc_ApexUtilities {
 	 */
 	public static Type getTypeByName(String namespace, String name) {
 		Type objType = null;
-		
+
 		if ( !string.isBlank(name) ) {
 			String ns = namespace == null ? accc_ApexConstants.EmptyString : namespace;
 
@@ -952,6 +952,25 @@ public virtual without sharing class accc_ApexUtilities {
 		}
 		return sType;
 	} // end of getSobjectTypeFromSObject
+	/**
+	 * @description have we exceeded our governor limts?
+	 *
+	 * @param excp the exception to analyze to determine if we continue
+	 * @return true, if we violated a governor limit
+	 */
+	public static Boolean exceededGovernorLimits(Exception excp) {
+		Boolean result = false;
+
+		// if we get any of these exceptions, then whatever was going
+		// on will fail due to limits exceeded -- can't catch some exceptions
+		if ( excp instanceof DmlException ||
+		      excp instanceof AsyncException ||
+		      excp instanceof CalloutException 
+		    ) {
+			result = true;
+		} 
+		return result;
+	} // end of exceededGovernorLimits
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Private Static Methods
