@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description  Test class for the  accc_ApexUtilities methods
- * @group Common Test Layer
+ * @group Test Layer
  */
 @isTest
 private class accc_ApexUtilitiesTest {
