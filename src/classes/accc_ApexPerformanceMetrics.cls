@@ -37,7 +37,7 @@
  *
  * @group Common Layer
  **/
-public with sharing class accc_ApexPerformanceMetrics {
+public without sharing class accc_ApexPerformanceMetrics {
 
 	// our default user message
 	public static final String PERF_MESSAGE = 'PerformanceMetrics';
