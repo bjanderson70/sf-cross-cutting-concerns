@@ -132,8 +132,8 @@
 		<members>accc_VirtualCustomSettingsTest</members>
 		<members>accc_ApexPerformanceMetrics</members>
 		<members>accc_ApexPerformanceMetricsTest</members>
-		<members>accc_GenericDbResultHandle</members>
-		<members>accc_GenericDbResultHandleTest</members>
+		<members>accc_GenericDbResultHandler</members>
+		<members>accc_GenericDbResultHandlerTest</members>
 		<members>accc_QueableSObjects</members>
 		<members>accc_QueableSObjectsTest</members>
 		<members>accc_SObjectBaseWriter</members>
