@@ -138,6 +138,8 @@
 		<members>accc_QueableSObjectsTest</members>
 		<members>accc_SObjectBaseWriter</members>
 		<members>accc_SObjectBaseWriterTest</members>
+		<members>accc_SyncAsyncWriterTest</members>
+		<members>accc_SyncAsyncWriter</members>
 		<name>ApexClass</name>
     </types>
 	<types>
