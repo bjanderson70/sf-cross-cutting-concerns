@@ -600,6 +600,29 @@ public virtual without sharing class accc_ApexUtilities {
 	} // end of log
 	/**
 	*
+	* @description Trace Information, makes it easier to refactor for a logger later
+	* @param String message
+	*/
+	public static void trace(String message) {
+		if ( message != null ) {
+			accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
+
+			// used to test information sent from a test
+			accc_ApexUtilities.logForTesting(message);
+
+			// information is logged internally or controlled by sys-admin
+
+			String trace = accc_ApexUtilities.popStack(new DmlException().getStackTraceString()),
+			       className = accc_ApexUtilities.getExecutingClassName(trace),
+			       methodName = accc_ApexUtilities.getExecutingMethod(trace),
+			       logMsg = '+++ [' + className + '] [' + methodName + '] ' + message;
+			// log it
+			runtime.logger().trace(logMsg);
+
+		}
+	} // end of trace
+	/**
+	*
 	* @description Log Information for testing
 	*/
 	public static void logForTesting(String message) {
