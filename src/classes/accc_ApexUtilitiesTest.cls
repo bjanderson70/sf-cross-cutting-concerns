@@ -755,4 +755,12 @@ private class accc_ApexUtilitiesTest {
                             accc_ApexUtilities.exceededGovernorLimits(new JSONException()));
     } // end of testexceededGovernorLimits
 
+     @isTest static void testTrace() {
+        // assign
+        String result = 'This is a Test';
+        // assign/act
+        accc_ApexUtilities.trace(result);
+        // assert
+        System.assertEquals(accc_ApexUtilities.containsInTestLog(result), true);
+    } // end of testTrace
 } // end of accc_ApexUtilitiesTest
