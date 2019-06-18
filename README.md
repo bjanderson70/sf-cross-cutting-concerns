@@ -42,7 +42,7 @@ Please read [Contributing](Contributing) for details on our code of conduct, and
 
 ## Versioning
 
-version 0.9.5
+version 0.9.6
 
 ## Authors
 
