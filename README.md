@@ -13,7 +13,7 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-You will need to have Platform Cache enable; otherwise, caching WILL NOT work.
+You will need to have Platform Cache enable; otherwise, caching WILL NOT work. Please note, if you are developing in a **Dev Org**, there is no caching and those **related unit tests will fail**.
 
 ## Running the tests
 
