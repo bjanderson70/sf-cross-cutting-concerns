@@ -30,7 +30,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Bill Anderson
- * @description use as a wrapper around the application log
+ * @description use as a wrapper around the application log. Write information
+ * synchronously if possible; otherwise asynchronously.
+ *
  * @group Log Aspects
  */
 public without sharing class accc_ApplicationLog {
@@ -359,39 +361,33 @@ public without sharing class accc_ApplicationLog {
 
         // items logged ( saved)
         this.itemsLogged = 0;
-        // ensure string correctness
-        this.ensureStringCorrectness(logEntries);
-        accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
 
-        if ( (Limits.getDMLRows() < Limits.getLimitDMLRows()) &&
-                (Limits.getDMLStatements() < Limits.getLimitDMLStatements()) ) {
-            List<Database.SaveResult> savedResults = null;
-            // will only check the first entry id
-            this.entryId = logEntries[0].Id;
-
-            if ( this.entryId == null) {
-                // insert the information
-                savedResults = Database.insert(logEntries, true);
-            } else {
-                // someone must have insert this before as it already has an Id
-                savedResults = Database.update(logEntries, true);
-            }
-            // set the db results
-            runtime.transactionResult().databaseResult(savedResults);
-            // process errors, if any; if we did not have errors, 'processErrors' returns false
-            result = runtime.transactionResult().processErrors(true) == false;
-            // no errors process ( atomic )
-            if ( result == true) {
+        try {
+            // ensure string correctness
+            this.ensureStringCorrectness(logEntries);
+            // process the entries synchronously or asynchronously ( depends on Limits)
+            accc_SObjectBaseWriter syncAsyncWriter = new accc_SyncAsyncWriter(logEntries);
+            // process the entries
+            syncAsyncWriter.execute();
+            // ensure there is no issues; otherwise rethrow
+            if ( syncAsyncWriter.theException == null ) {
+                // tally the size
                 this.itemsLogged = logEntries.size();
+                // set status
+                result = true;
+            } else {
+                throw syncAsyncWriter.theException;
             }
-        } else {
-            final string dmlMsg = 'DML Limits on Application Log exceeded';
-            this.logExcp = new accc_ApexApplicationException(dmlMsg);
+        } catch ( Exception excp) {
+
+            this.logExcp = new accc_ApexApplicationException(excp.getMessage());
             this.handleExceptionResults(logEntries,
                                         LoggingLevel.ERROR,
-                                        new accc_ApexApplicationException(dmlMsg)
+                                        this.logExcp
                                        );
+
         }
+
         return result;
     } // end of logApplicationEntries
     /**

@@ -34,7 +34,7 @@
  *
  * @group Common Layer
  **/
-public with sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter {
+public without sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -124,22 +124,40 @@ public with sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter {
 					size = USE_FOR_TESTING_DATASIZE;
 				}
 			}
-			// determine the best course ; write synchronously as we will not hit Governor limits
-			// or do so asynchronously
+
+			// determine the best course ; 
+			// Either, write synchronously assuming  DML limits (150) are not exceeded, 
+			// Or do so asynchronously assuming the Queueable limit (50) is abided by;
+			// Otherwise, exception
 			if ( ( (Limits.getDMLRows() + size) < Limits.getLimitDMLRows()) &&
 			        ( (Limits.getDMLStatements() + NUMBER_OF_DML_STMTS) < Limits.getLimitDMLStatements()) ) {
+	
 				this.isAsyncWrite = false;
 				// perform the upsert/update or remove action
 				this.performDatabaseOperation();
 
-			} else if ( !isSynchronousOnly ) {
+				// are we asynch and not exceeded out limits
+			} else if ( !isSynchronousOnly
+			            && Limits.getQueueableJobs() < Limits.getLimitQueueableJobs()) {
 				// we would exceed out governor limits, so process in separate transaction
 				this.isAsyncWrite = true;
 				System.enqueueJob( new accc_QueableSObjects(this.entries, this.actions));
 			} else {
-				throw new accc_ApexApplicationException('Not Written - Synchronous mode only selected. Would cause DML exception.');
+				String excpMsg = '+++ Not Written - Governor Limit exception. +++ '
+				                 + accc_ApexConstants.NewLine
+				                 + '{ getLimitQueueableJobs:' + Limits.getLimitQueueableJobs()
+				                 + ', getQueueableJobs:' + Limits.getQueueableJobs()
+				                 + ', getLimitDMLStatements:' + Limits.getLimitDMLStatements()
+				                 + ', getDMLStatements: ' + Limits.getDMLStatements()
+				                 + ', NumberOfEntries:' + size
+				                 + ', getDMLRows:' + Limits.getDMLRows()
+				                 + '}';
+
+				throw new accc_ApexApplicationException(excpMsg);
 			}
 		} catch (Exception excp) {
+
+			// more than likely, Governor limts hit
 			this.theException = excp;
 			// process exception
 			accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp);

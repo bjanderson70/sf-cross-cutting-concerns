@@ -34,7 +34,7 @@
  *
  * @group Common Layer
  **/
-public virtual with sharing class accc_SObjectBaseWriter {
+public virtual without sharing class accc_SObjectBaseWriter {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Data Members

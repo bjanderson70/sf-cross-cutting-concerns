@@ -61,7 +61,9 @@ private class accc_ApplicationLogTest {
         AcccApplicationLog__c entry = new AcccApplicationLog__c();
         entry.IntegrationPayload__c = payload;
         // act
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog(entry);
+        Test.stopTest();
         // assert
         System.assertNotEquals(item, null);
         System.assertEquals(item.entry().IntegrationPayload__c, payload);
@@ -78,8 +80,9 @@ private class accc_ApplicationLogTest {
 
         accc_ApexApplicationException excp = new accc_ApexApplicationException();
         // act
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog(excp, 'classname', 'methodName');
-
+        Test.stopTest();
         // assert
         System.assertNotEquals(item, null);
         System.assertEquals( 'accc_ApexApplicationException', item.entry().Exception__c);
@@ -97,9 +100,11 @@ private class accc_ApplicationLogTest {
     static void accc_ApplicationLogCtorWithClassnameMethodNameTest() {
         // assign
         // act
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog('classname', 'methodName');
         // set payload
         item.setIntegrationPayload('Payload');
+        Test.stopTest();
         // assert
         System.assertNotEquals(null, item);
         System.assertEquals(null, item.entry().Exception__c);
@@ -118,8 +123,9 @@ private class accc_ApplicationLogTest {
     static void accc_ApplicationLogCtorWithMessageTest() {
         // assign
         // act
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog('message');
-
+        Test.stopTest();
         // assert
         System.assertNotEquals(item, null);
         System.assertEquals(item.entry().Exception__c, null);
@@ -138,8 +144,9 @@ private class accc_ApplicationLogTest {
     static void accc_ApplicationLogCtorWithExceptionAndMessageTest() {
         // assign
         // act
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog(new accc_ApexApplicationException('test'), 'message', true);
-
+        Test.stopTest();
         // assert
         System.assertNotEquals(null, item);
         System.assertEquals(item.entry().Exception__c, 'accc_ApexApplicationException');
@@ -155,6 +162,7 @@ private class accc_ApplicationLogTest {
     static void accc_ApplicationLogCtorWithMessageCheckLogTest() {
         // assign
         // act
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog('message will be logged');
         Id entryId = item.entryIdentifier();
         // assert
@@ -176,10 +184,11 @@ private class accc_ApplicationLogTest {
         // act
 
         accc_ApplicationLog item = new accc_ApplicationLog('message will be logged', false);
-        // cause governor limits to be reached an throw an internal exception
+        Test.startTest();
+        // cause governor limits to be reached and throw an internal exception
         while ( item.log() == true ) {
         }
-
+        Test.stopTest();
         // assert
         System.assertNotEquals(null, item.logException());
 
@@ -193,8 +202,10 @@ private class accc_ApplicationLogTest {
     static void accc_ApplicationLogCtorWithExceptionTest() {
         // assign
         // act
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog(new accc_ApexApplicationException('message will be logged'));
         item.log();
+        Test.stopTest();
 
         // assert
         System.assertNotEquals(item, null);
@@ -212,9 +223,10 @@ private class accc_ApplicationLogTest {
             new AcccApplicationLog__c()
         };
         // act
-
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog();
         Boolean result = item.log(entries);
+        Test.stopTest();
         // assert
 
         System.assertEquals(true, result);
@@ -231,9 +243,10 @@ private class accc_ApplicationLogTest {
         };
         // act
 
-
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog();
         item.log(entries);
+        Test.stopTest();
         Integer count = item.entriesLogged();
         // assert
         System.assertEquals(true, count == entries.size());
@@ -244,9 +257,11 @@ private class accc_ApplicationLogTest {
     static void testlogApplicationEntries() {
         // assign
         List<AcccApplicationLog__c> logEntries = null;
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog();
         // act
         Boolean result = item.logApplicationEntries(logEntries );
+        Test.stopTest();
 
         // assert
         System.assertEquals(false, result);
@@ -261,12 +276,14 @@ private class accc_ApplicationLogTest {
         AcccApplicationLog__c entry = null;
 
         // act
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog(entry);
 
         // assert
         System.assertNotEquals(null, item);
         System.assertEquals(null, item.entry());
         System.assertEquals(false, item.log());
+        Test.stopTest();
 
     } // end of accc_ApplicationLogCtorWithNullEntryTest
     /**
@@ -278,11 +295,13 @@ private class accc_ApplicationLogTest {
         // assign
 
         // act
+        Test.startTest();
         accc_ApplicationLog item = new accc_ApplicationLog();
         AcccApplicationLog__c entry = null;
         // assert
         System.assertNotEquals(null, item);
         System.assertEquals(false, item.log(entry));
+        Test.stopTest();
 
     } // end of accc_ApplicationLogCallLogWithNullTest
 
