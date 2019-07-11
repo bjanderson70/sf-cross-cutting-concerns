@@ -16,7 +16,7 @@
         <label>Event JSON</label>
         <length>131072</length>
         <required>false</required>
-		<visibleLines>2</visibleLines>
+		 
         <type>LongTextArea</type>
         <unique>false</unique>
     </fields>
@@ -26,7 +26,7 @@
         <label>Operation Ids</label>
         <length>131072</length>
         <required>false</required>
-	<visibleLines>2</visibleLines>
+	
         <type>LongTextArea</type>
         <unique>false</unique>
     </fields>
@@ -51,7 +51,7 @@
         <label>ReplayIds</label>
         <length>131072</length>
         <required>false</required>
-	<visibleLines>2</visibleLines>
+	 
         <type>LongTextArea</type>
         <unique>false</unique>
     </fields>

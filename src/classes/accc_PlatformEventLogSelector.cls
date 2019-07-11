@@ -185,8 +185,8 @@ public class accc_PlatformEventLogSelector {
 	@TestVisible
 	private static string formatYearMonthDay(integer year, integer month, integer day) {
 		String yearValue = String.valueOf(year),
-		       monthValue = accc_PlatformEvtUtilities.convertMonthToString(month),
-		       dayValue = accc_PlatformEvtUtilities.convertDayToString(day),
+		       monthValue = accc_ApexUtilities.convertMonthToString(month),
+		       dayValue = accc_ApexUtilities.convertDayToString(day),
 		       dateFormat = yearValue + '-' + monthValue + '-' + dayValue + 'T00:00:00-00:00';
 		return dateFormat;
 	} // end of formatYearMonthDay
