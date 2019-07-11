@@ -185,7 +185,7 @@ public without sharing class accc_MessageTransformation {
                 entry = new accc_PlatformEventDAOLog(
                     String.isBlank(item.Source__c) ?  'Unknown' : item.Source__c  ,
                    // String.isBlank(item.SourceFunction__c) ?  'Create' : item.SourceFunction__c  ,
-                    String.isBlank(item.Message__c) ? accc_PlatformEvtUtilities.EMPTY_JSON_s : item.Message__c,
+                    String.isBlank(item.Message__c) ? accc_PlatformEventDAOLog.EMPTY_JSON_s : item.Message__c,
                     now);
                // entry.userId = string.isBlank(item.Username__c) ? string.isBlank(item.OwnerId) ? UserInfo.getUserId() : item.OwnerId : item.Username__c;
                 //entry.theException = item.Exception__c;
