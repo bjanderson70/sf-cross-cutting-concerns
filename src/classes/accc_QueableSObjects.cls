@@ -37,7 +37,7 @@
  * @group Common Layer
  **/
 
-public without sharing class accc_QueableSObjects extends accc_SObjectBaseWriter implements Queueable  {
+public virtual without sharing class accc_QueableSObjects extends accc_SObjectBaseWriter implements Queueable  {
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
