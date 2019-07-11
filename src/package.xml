@@ -165,5 +165,5 @@
 		<members>AcccApplicationLog__c-Accc Application Log Layout</members>
 		<name>Layout</name>
 	</types>
-    <version>44.0</version>
+    <version>41.0</version>
 </Package>
