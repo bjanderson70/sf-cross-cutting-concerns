@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
  *
@@ -55,6 +54,8 @@ public without sharing class accc_GenericDbResultHandler {
 	// type of result set
 	@TestVisible
 	ResultType m_resultType;
+	@TestVisible
+	integer m_size = 0;
 	/*
 	* Misc strings for error messages
 	**/
@@ -74,8 +75,8 @@ public without sharing class accc_GenericDbResultHandler {
 	*/
 	public accc_GenericDbResultHandler(List<Database.SaveResult> result) {
 		this.theResultType = ResultType.INSERT_RESULT;
-		integer size = result != null ? result.size() : 0;
-		for ( integer inx = 0; inx < size; inx++) {
+		this.size = result != null ? result.size() : 0;
+		for ( integer inx = 0; inx < this.size; inx++) {
 			this.processErrors(result[inx].getErrors());
 		}
 	}// end of ctor
@@ -86,8 +87,8 @@ public without sharing class accc_GenericDbResultHandler {
 	*/
 	public accc_GenericDbResultHandler(List<Database.UpsertResult> result) {
 		this.theResultType = ResultType.UPDATE_RESULT;
-		integer size = result != null ? result.size() : 0;
-		for ( integer inx = 0; inx < size; inx++) {
+		this.size = result != null ? result.size() : 0;
+		for ( integer inx = 0; inx < this.size; inx++) {
 			this.processErrors(result[inx].getErrors());
 		}
 	}// end of ctor
@@ -98,8 +99,8 @@ public without sharing class accc_GenericDbResultHandler {
 	*/
 	public accc_GenericDbResultHandler(List<Database.DeleteResult> result) {
 		this.theResultType = ResultType.DELETE_RESULT;
-		integer size = result != null ? result.size() : 0;
-		for ( integer inx = 0; inx < size; inx++) {
+		this.size = result != null ? result.size() : 0;
+		for ( integer inx = 0; inx < this.size; inx++) {
 			this.processErrors(result[inx].getErrors());
 		}
 	}// end of ctor
@@ -110,8 +111,8 @@ public without sharing class accc_GenericDbResultHandler {
 	 */
 	public accc_GenericDbResultHandler(List<Database.UndeleteResult> result) {
 		this.theResultType = ResultType.UNDELETE_RESULT;
-		integer size = result != null ? result.size() : 0;
-		for ( integer inx = 0; inx < size; inx++) {
+		this.size = result != null ? result.size() : 0;
+		for ( integer inx = 0; inx < this.size; inx++) {
 			this.processErrors(result[inx].getErrors());
 		}
 	}// end of ctor
@@ -119,6 +120,12 @@ public without sharing class accc_GenericDbResultHandler {
 	////////////////////////////////////////////////////////////////////////
 	// Public Properties
 	/////////////////////////////////////////////////////////////////////////
+	@TestVisible
+	public integer size {
+		get {return this.m_size; }
+		protected set { this.m_size = value;}
+	} // end of size
+
 	@TestVisible
 	public List<Database.Error> dbErrors {
 		get {return this.m_errors; }

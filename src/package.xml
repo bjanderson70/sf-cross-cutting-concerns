@@ -6,7 +6,12 @@
 		<members>AcccDataCachingDataModel__mdt</members>
 		<members>AcccCrossCuttingUtilityData__mdt</members>
 		<members>accc_Log__e</members>
+		<members>accc_Org_Events__b</members>
 		<name>CustomObject</name>
+	</types>
+	<types>
+		<members>Org_Events_BigObject</members>
+		<name>PermissionSet</name>
 	</types>
 	<types>
 		<members>accc_Apex_Code_Configuration.debug</members>
@@ -136,10 +141,14 @@
 		<members>accc_GenericDbResultHandlerTest</members>
 		<members>accc_QueableSObjects</members>
 		<members>accc_QueableSObjectsTest</members>
+		<members>accc_QueableBigObjects</members>
+		<members>accc_QueableBigObjectsTest</members>
 		<members>accc_SObjectBaseWriter</members>
 		<members>accc_SObjectBaseWriterTest</members>
 		<members>accc_SyncAsyncWriterTest</members>
 		<members>accc_SyncAsyncWriter</members>
+		<members>accc_ApexBigObjectLogger</members>
+		<members>accc_ApexBigObjectLoggerTest</members>
 		<name>ApexClass</name>
     </types>
 	<types>
@@ -154,5 +163,5 @@
 		<members>AcccApplicationLog__c-Accc Application Log Layout</members>
 		<name>Layout</name>
 	</types>
-    <version>41.0</version>
+    <version>46.0</version>
 </Package>

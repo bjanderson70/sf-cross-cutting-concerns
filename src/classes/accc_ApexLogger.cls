@@ -127,67 +127,7 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
     public String lastMessage() {
         return this.theLastMessage;
     } // end of lastMessage
-    /**
-     * @description write out message to sink based on the  log level setting
-     *
-     * @param Object msg to write
-     */
-    public void write(Object msg) {
-        if ( msg != null ) {
-            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
-            this.write(this.logLevel(), this.logFormatter.format(msg , this.dataModel));
-        }
-    } // end of write
-    /**
-     * @description write out messages to sink based on the  log level setting
-     *
-     * @param List<Object> Objects to write
-     */
-    public void write(List<Object> msgs) {
-        if ( msgs != null ) {
-            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
-            this.write(this.logLevel(), this.logFormatter.format(String.valueOf(msgs) , this.dataModel));
-        }
-    } // end of write
-    /**
-    * @description trace message behaves like a write,but only if trace flag is on.
-    * In addition, if this is a cross-cutting type (i.e. 'accc_') and the show CC flag is off, then the trace
-    * for cross-cutting data is NOT display. Why? for the system debug log, will fill at @2M and you may not want
-    * to see the cross-cutting information.
-    *
-    * @param Object Object to write
-    */
-    public void trace(Object msg) {
 
-        if ( msg != null && this.isTracingOn()  ) {
-            LoggingLevel lvl = (LoggingLevel) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
-            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString(), lvl);
-            
-            if ( this.isTheTraceNotCCandShowAllowed() ) {
-                this.write(lvl, this.logFormatter.format(msg, this.dataModel));
-            }
-        }
-    }// end of trace
-    /**
-    * @description trace messages behaves like a write,but only if trace flag is on.
-    * In addition, if this is a cross-cutting type (i.e. 'accc_') and the show CC flag is off, then the trace
-    * for cross-cutting data is NOT display. Why? for the system debug log, will fill at @2M and you may not want
-    * to see the cross-cutting information.
-    * 
-    * @param List<Object> Objects to write
-    */
-    public void trace(List<Object> msgs) {
-
-        if (  msgs != null && this.isTracingOn() ) {
-            LoggingLevel lvl = (LoggingLevel) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
-            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString(), lvl);
-            string allstring = string.join(msgs, ',');
-
-            if ( this.isTheTraceNotCCandShowAllowed() ) {
-                this.write(lvl,  this.logFormatter.format(allstring, this.dataModel) ) ;
-            }
-        }
-    } // end of trace
     /**
      * @description info log level
      *
@@ -283,6 +223,73 @@ global virtual without sharing class accc_ApexLogger implements accc_ILogger {
         this.theLevel = level;
     } // end of logLevel
 
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Public Virtual for more control of writes
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * @description write out message to sink based on the  log level setting
+     *
+     * @param Object msg to write
+     */
+    public virtual void write(Object msg) {
+        if ( msg != null ) {
+            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
+            this.write(this.logLevel(), this.logFormatter.format(msg , this.dataModel));
+        }
+    } // end of write
+    /**
+     * @description write out messages to sink based on the  log level setting
+     *
+     * @param List<Object> Objects to write
+     */
+    public virtual void write(List<Object> msgs) {
+        if ( msgs != null ) {
+            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString());
+            this.write(this.logLevel(), this.logFormatter.format(String.valueOf(msgs) , this.dataModel));
+        }
+    } // end of write
+    /**
+    * @description trace message behaves like a write,but only if trace flag is on.
+    * In addition, if this is a cross-cutting type (i.e. 'accc_') and the show CC flag is off, then the trace
+    * for cross-cutting data is NOT display. Why? for the system debug log, will fill at @2M and you may not want
+    * to see the cross-cutting information.
+    *
+    * @param Object Object to write
+    */
+    public virtual void trace(Object msg) {
+
+        if ( msg != null && this.isTracingOn()  ) {
+            LoggingLevel lvl = (LoggingLevel) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
+            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString(), lvl);
+
+            if ( this.isTheTraceNotCCandShowAllowed() ) {
+                this.write(lvl, this.logFormatter.format(msg, this.dataModel));
+            }
+        }
+    }// end of trace
+    /**
+    * @description trace messages behaves like a write,but only if trace flag is on.
+    * In addition, if this is a cross-cutting type (i.e. 'accc_') and the show CC flag is off, then the trace
+    * for cross-cutting data is NOT display. Why? for the system debug log, will fill at @2M and you may not want
+    * to see the cross-cutting information.
+    *
+    * @param List<Object> Objects to write
+    */
+    public virtual void trace(List<Object> msgs) {
+
+        if (  msgs != null && this.isTracingOn() ) {
+            LoggingLevel lvl = (LoggingLevel) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
+            this.dataModel = new accc_ApexLogDataModel( new DmlException().getStackTraceString(), lvl);
+            string allstring = string.join(msgs, ',');
+
+            if ( this.isTheTraceNotCCandShowAllowed() ) {
+                this.write(lvl,  this.logFormatter.format(allstring, this.dataModel) ) ;
+            }
+        }
+    } // end of trace
+    
     ////////////////////////////////////////////////////////////////////////////////
     /// Protected methods
     ////////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -34,7 +34,7 @@
  *
  * @group Common Layer
  **/
-public virtual without sharing class accc_SObjectBaseWriter {
+public virtual without sharing class accc_SObjectBaseWriter implements  Database.RaisesPlatformEvents  {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Data Members
@@ -44,6 +44,8 @@ public virtual without sharing class accc_SObjectBaseWriter {
 	private List<SObject> m_entries;
 	@TestVisible
 	private Boolean m_removeAction = false;
+	@TestVisible
+	private Boolean m_isBigObject = false;
 	@TestVisible
 	private Exception m_exception = null;
 	@TestVisible
@@ -102,8 +104,17 @@ public virtual without sharing class accc_SObjectBaseWriter {
 	@TestVisible
 	public  Boolean actions {
 		get { return this.m_removeAction;}
-		protected set { this.m_removeAction = value;}
+		set { this.m_removeAction = value;}
 	} // end of actions
+
+	/**
+	* Indicatator on whether to perform I/O with Big Object
+	*/
+	@TestVisible
+	public Boolean isBigObject {
+		get { return this.m_isBigObject;}
+		set { this.m_isBigObject = value;}
+	} // end of isBigObject
 	/////////////////////////////////////////////////////////////////////////
 	// Public Methods
 	/////////////////////////////////////////////////////////////////////////
@@ -121,6 +132,27 @@ public virtual without sharing class accc_SObjectBaseWriter {
 		this.process();
 
 	} // end of execute
+
+	/**
+	 * @description create a queuable writer based on settings
+	 * @param entries data entries
+	 * @param remove true if to remove data; otherwise insert
+	 * @param isThisABigObject is a big object type
+	 *
+	 * @return either a Big Object writer or regular SObject writer
+	 */
+	public static accc_SObjectBaseWriter queuableWriter(List<SObject> sentries,
+	        boolean remove,
+	        Boolean isThisABigObject) {
+		accc_SObjectBaseWriter writer = null;
+		// have to treat operations differently ... REFACTOR in order to avoid the 'if'
+		if ( isThisABigObject ) {
+			writer = new accc_QueableBigObjects(sentries, remove);
+		} else {
+			writer = new accc_QueableSObjects(sentries, remove);
+		}
+		return writer;
+	} // end of queuableWriter
 
 	/////////////////////////////////////////////////////////////////////////
 	// Protcted Methods
@@ -156,14 +188,7 @@ public virtual without sharing class accc_SObjectBaseWriter {
 	 */
 	@TestVisible
 	protected virtual accc_GenericDbResultHandler  performDatabaseOperation() {
-		accc_GenericDbResultHandler result = null;
-
-		if ( this.actions == false ) {
-			// We upsert, this way we cover insert or update.
-			result = new accc_GenericDbResultHandler( Database.upsert(this.entries));
-		} else {
-			result = new accc_GenericDbResultHandler(  Database.deleteImmediate(this.entries));
-		}
+		accc_GenericDbResultHandler result =  this.isBigObject ? this.dataIOBigObject(this.actions) : this.dataIOSObject(this.actions);
 
 		// process errors, if any
 		if ( result != null && result.hasErrors() ) {
@@ -174,5 +199,76 @@ public virtual without sharing class accc_SObjectBaseWriter {
 
 		return result;
 	} // end of performDatabaseOperation
+	/**
+	 * @description data io for SObject
+	 *
+	 * @param action if true, remove otherwise insert
+	 * @return accc_GenericDbResultHandler Db Result
+	 */
+	@TestVisible
+	protected virtual accc_GenericDbResultHandler dataIOSObject(boolean action) {
+		accc_GenericDbResultHandler result = null;
+		if ( !this.isBigObject ) {
+			// ++++ Inserting
+			if ( action == false ) {
+				// We upsert, this way we cover insert or update.
+				result = new accc_GenericDbResultHandler( Database.upsert(this.entries));
+				// Deleting
+			} else {
+				// Use appropriate function for BO
+				result = new accc_GenericDbResultHandler( Database.delete(this.entries));
+			}
+		}
+		return result;
+	} // end of dataIOSObject
+	/**
+	 * @description data io for BigObject
+	 *
+	 * @param action if true, remove otherwise insert
+	 * @return accc_GenericDbResultHandler Db Result
+	 */
+	@TestVisible
+	protected virtual accc_GenericDbResultHandler dataIOBigObject(boolean action) {
+		accc_GenericDbResultHandler result = null;
+		// ensure we are dealing with Big Object
+		if ( this.isBigObject ) {
+			// are we testing
+			if ( Test.isRunningTest() ) {
+				result = getTestResultsForBigObject();
+			} else {
+				// ++++ Inserting
+				if ( action == false ) {
+					result = new accc_GenericDbResultHandler( Database.insertImmediate(this.entries));
+					// Deleting
+				} else {
+					// Use appropriate function for BO
+					result = new accc_GenericDbResultHandler( Database.deleteImmediate(this.entries));
+				}
+			}
+		}
+
+		return result;
+	} // end of dataIOBigObject
+
+	/**
+	 * @description used for testing big objects results
+	 *
+	 * @return  accc_GenericDbResultHandler Db Results
+	 */
+	@TestVisible
+	private static accc_GenericDbResultHandler getTestResultsForBigObject() {
+		accc_GenericDbResultHandler results = null;
+		if ( Test.isRunningTest() ) {
+			// SIMULATING RESULTS
+			results = new accc_GenericDbResultHandler( new  List<Database.SaveResult> {
+				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000AAA","success":true,"errors":[]}', Database.SaveResult.class),
+				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000BAA","success":true,"errors":[]}', Database.SaveResult.class),
+				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000CAA","success":true,"errors":[]}', Database.SaveResult.class)
+
+			});
+		}
+		return results;
+
+	}// end of getTestResultsForBigObject
 
 } // end of accc_SObjectBaseWriter

@@ -31,6 +31,10 @@
  *
  * @author Bill anderson
  * @description common utilities to separate mundane task. This may be refactor to segragate category (strings, objects, etc.)
+ *
+ *
+ *  NOTE: This is an abbreviate version: Cahcing, Cache Strategy and Messaging were removed
+ *
  * @group Miscellaneous
  */
 public virtual without sharing class accc_ApexUtilities {
@@ -592,10 +596,11 @@ public virtual without sharing class accc_ApexUtilities {
 	public static void log(Exception excp) {
 		if (excp != null) {
 			accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
-			// handle execptions
-			runtime.exceptionHandler().process(excp);
 			// used to test information sent from a test
 			accc_ApexUtilities.logForTesting(excp.getMessage());
+			// handle execptions
+			runtime.exceptionHandler().process(excp);
+
 		}
 	} // end of log
 	/**
@@ -937,7 +942,7 @@ public virtual without sharing class accc_ApexUtilities {
 	} // end of getClassInstance
 
 	/**
-	 * @brief get the Type from the SObject collection
+	 * @brief get the Type from the SObject collection (does not handle MIXed SOBject)
 	 * @description  get the Type from the SObject collection
 	 *
 	 * @param theSObject type we want
@@ -947,12 +952,20 @@ public virtual without sharing class accc_ApexUtilities {
 		Schema.SObjectType sType = null;
 
 		try {
-			if ( theSObject != null ) {
+			boolean isValid = theSObject != null;
+			if ( isValid ) {
 				sType = theSObject.getSobjectType();
+			}
+			// still can't figure it out, then ONLY look at the first one!
+			if ( sType == null
+			        && isValid
+			        && theSObject.size() > 0 ) {
+				sType = accc_Apexutilities.getSobjectTypeFromSObject(theSObject[0]);
 			}
 		} catch  (Exception excp) {
 
 		}
+
 		return sType;
 	} // end of getSobjectTypeFromSObject
 
@@ -973,6 +986,7 @@ public virtual without sharing class accc_ApexUtilities {
 		} catch  (Exception excp) {
 
 		}
+
 		return sType;
 	} // end of getSobjectTypeFromSObject
 	/**
@@ -987,13 +1001,36 @@ public virtual without sharing class accc_ApexUtilities {
 		// if we get any of these exceptions, then whatever was going
 		// on will fail due to limits exceeded -- can't catch some exceptions
 		if ( excp instanceof DmlException ||
-		      excp instanceof AsyncException ||
-		      excp instanceof CalloutException 
-		    ) {
+		        excp instanceof AsyncException ||
+		        excp instanceof CalloutException
+		   ) {
 			result = true;
-		} 
+		}
 		return result;
 	} // end of exceededGovernorLimits
+	/**
+	 *  @description split a string based on expression ( ie. whitespace \s)
+	 *
+	 * @param input string to split
+	 * @param expression expressions (i.e., \s | , | ;)
+	 *
+	 * @return collection of strings split by expression
+	 */
+	public static List<String> splitStringOnExpression(string input, string expression) {
+
+		List<String> result = null;
+		// we split on whitespace, comma or semi-colon
+		if ( !string.isBlank(input)
+		        && !string.isBlank(expression)
+		        && input.length() > 0
+		        && expression.length() > 0) {
+			result = input.split(expression);
+		} else {
+			result = new List<String>();
+		}
+		return result;
+	} // end of splitStringOnExpression
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Private Static Methods
@@ -1050,29 +1087,6 @@ public virtual without sharing class accc_ApexUtilities {
 		return found;
 	} // end of containsInTestLog
 
-	/**
-	 *  @description split a string based on expression ( ie. whitespace \s)
-	 *
-	 * @param input string to split
-	 * @param expression expressions (i.e., \s | , | ;)
-	 *
-	 * @return collection of strings split by expression
-	 */
-	@TestVisible
-	private static List<String> splitStringOnExpression(string input, string expression) {
-
-		List<String> result = null;
-		// we split on whitespace, comma or semi-colon
-		if ( !string.isBlank(input)
-		        && !string.isBlank(expression)
-		        && input.length() > 0
-		        && expression.length() > 0) {
-			result = input.split(expression);
-		} else {
-			result = new List<String>();
-		}
-		return result;
-	} // end of splitStringOnExpression
 
 
 } // end of accc_ApexUtilities

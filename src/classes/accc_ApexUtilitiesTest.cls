@@ -84,7 +84,7 @@ private class accc_ApexUtilitiesTest {
     @isTest static void testgetSobjectNameWithList() {
         //assign
         String expected = 'Account';
-        List<Account> alist = new List<Account> {
+        List<SObject> alist = new List<Account> {
             new account(Name = 'Acme', Description = 'Acme Account')
         };
         insert alist;
@@ -93,6 +93,17 @@ private class accc_ApexUtilitiesTest {
         // assert
         System.assertEquals(expected, result);
     } // end of testgetSobjectName
+
+      @isTest static void testgetSobjectNameWithNullList() {
+        //assign
+        String expected = accc_ApexConstants.EmptyString;
+        List<SObject> alist = null;
+        // act
+        String result = accc_ApexUtilities.getSobjectName(alist);
+        // assert
+        System.assertEquals(expected, result);
+    } // end of testgetSobjectNameWithNullList
+
 
     /**
      * @description test toString
@@ -298,10 +309,22 @@ private class accc_ApexUtilitiesTest {
         // assign
         String result = 'This is a Test';
         // assign/act
-        accc_ApexUtilities.log(result);
+        accc_ApexUtilities.log(result,true);
         // assert
         System.assertEquals(accc_ApexUtilities.containsInTestLog(result), true);
     } // end of testcontainsInTestLog
+
+
+    @isTest static void testgetClassInstance() {
+        // assign
+        String className = 'accc_ApexUtilities';
+        // assign/act
+
+        // assert
+        System.assertEquals(true, accc_ApexUtilities.getClassInstance(className) != null);
+        // assert
+        System.assertEquals(true, accc_ApexUtilities.getClassInstance('') == null);
+    } // end of testgetClassInstance
 
     @isTest static void testcontainsExceptionInApplicationLog() {
         // assign
@@ -732,6 +755,8 @@ private class accc_ApexUtilitiesTest {
         Schema.SObjectType ns = accc_ApexUtilities.getSobjectTypeFromSObject(sob);
         // assert
         System.assertEquals(expected, ns);
+        System.assertEquals(expected, accc_ApexUtilities.getSobjectTypeFromSObject(new List<SObject>{sob}));
+        System.assertEquals(null, accc_ApexUtilities.getSobjectTypeFromSObject((SObject)null));
     } // end of testgetSobjectTypeFromSObject
 
     @isTest
@@ -763,4 +788,5 @@ private class accc_ApexUtilitiesTest {
         // assert
         System.assertEquals(accc_ApexUtilities.containsInTestLog(result), true);
     } // end of testTrace
+    
 } // end of accc_ApexUtilitiesTest

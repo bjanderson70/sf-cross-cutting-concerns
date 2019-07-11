@@ -60,7 +60,7 @@ public without sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter
 	* @param entries data entries
 	*/
 	public accc_SyncAsyncWriter(List<SObject> entries) {
-		this(entries, false, false);
+		this(entries, false, false, false, false);
 	}// end ctor
 
 	/**
@@ -71,7 +71,7 @@ public without sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter
 	 *
 	 */
 	public accc_SyncAsyncWriter(List<SObject> entries, boolean remove) {
-		this(entries, remove, false);
+		this(entries, remove, false, false, false);
 	}// end ctor
 
 	/**
@@ -80,17 +80,53 @@ public without sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter
 	 * @param entries data entries
 	 * @param remove true if to remove data; otherwise insert
 	 * @param synchronousOnly only do synchronous mode ( no async)
-	 *
 	 */
-	public accc_SyncAsyncWriter(List<SObject> entries, boolean remove, boolean synchronousOnly) {
+	public accc_SyncAsyncWriter(List<SObject> entries, boolean remove,  boolean synchronousOnly) {
+		this(entries, remove, synchronousOnly, false, false);
+	}// end ctor
+
+	/**
+	 * @description ctor to insert/or remove items/sobjects
+	 *
+	 * @param entries data entries
+	 * @param remove true if to remove data; otherwise insert
+	 * @param synchronousOnly only do synchronous mode ( no async)
+	 * @param isBigObjectOnly is this a Big Object type?
+	 */
+	public accc_SyncAsyncWriter(List<SObject> entries, boolean remove,  boolean synchronousOnly, boolean isBigObjectOnly) {
+		this(entries, remove, synchronousOnly, isBigObjectOnly, false);
+	}// end ctor
+
+	/**
+	 * @description ctor to insert/or remove items/sobjects
+	 *
+	 * @param entries data entries
+	 * @param remove true if to remove data; otherwise insert
+	 * @param synchronousOnly only do synchronous mode ( no async)
+	 * @param isBigObjectOnly is this a Big Object type?
+	 * @param forceAsync force to enqueue the operation
+	 */
+	public accc_SyncAsyncWriter(List<SObject> entries,
+	                            boolean remove,
+	                            boolean synchronousOnly,
+	                            boolean isBigObjectOnly,
+	                            boolean forceAsync) {
 		super(entries, remove);
 		this.isSynchronousOnly = synchronousOnly;
 		this.isAsyncWrite = false;
+		this.forceAsyncWrite = forceAsync;
+		super.isBigObject = isBigObjectOnly;
 	}// end ctor
 
 	/////////////////////////////////////////////////////////////////////////
 	// Public Properties
 	/////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Indicatator on whether to perform I/O with Big Object
+	 */
+	@TestVisible
+	public Boolean forceAsyncWrite { get; protected set;}
 
 	/**
 	 * Indicatator on whether to perform I/O synchronously
@@ -125,25 +161,34 @@ public without sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter
 				}
 			}
 
-			// determine the best course ; 
-			// Either, write synchronously assuming  DML limits (150) are not exceeded, 
+			// determine the best course ;
+			// Check to see if user wants async ...
+			// Or, write synchronously assuming  DML limits (150) are not exceeded,
 			// Or do so asynchronously assuming the Queueable limit (50) is abided by;
 			// Otherwise, exception
-			if ( ( (Limits.getDMLRows() + size) < Limits.getLimitDMLRows()) &&
+			if ( !this.forceAsyncWrite
+			        && !super.isBigObject
+			        && ( (Limits.getDMLRows() + size) < Limits.getLimitDMLRows()) &&
 			        ( (Limits.getDMLStatements() + NUMBER_OF_DML_STMTS) < Limits.getLimitDMLStatements()) ) {
-	
+
 				this.isAsyncWrite = false;
 				// perform the upsert/update or remove action
 				this.performDatabaseOperation();
 
 				// are we asynch and not exceeded out limits
-			} else if ( !isSynchronousOnly
+			} else if ( !this.isSynchronousOnly
 			            && Limits.getQueueableJobs() < Limits.getLimitQueueableJobs()) {
 				// we would exceed out governor limits, so process in separate transaction
 				this.isAsyncWrite = true;
-				System.enqueueJob( new accc_QueableSObjects(this.entries, this.actions));
+				// enqueue the writer
+				System.enqueueJob(accc_SObjectBaseWriter.queuableWriter(this.entries,
+				                  										this.actions,
+				                  										super.isBigObject
+				                                                       )
+				                 );
+
 			} else {
-				String excpMsg = '+++ Not Written - Governor Limit exception. +++ '
+				String excpMsg = '+++ Not Written - Governor Limit exception would occur. +++ '
 				                 + accc_ApexConstants.NewLine
 				                 + '{ getLimitQueueableJobs:' + Limits.getLimitQueueableJobs()
 				                 + ', getQueueableJobs:' + Limits.getQueueableJobs()
@@ -151,6 +196,9 @@ public without sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter
 				                 + ', getDMLStatements: ' + Limits.getDMLStatements()
 				                 + ', NumberOfEntries:' + size
 				                 + ', getDMLRows:' + Limits.getDMLRows()
+				                 + ', is BigObject:' + this.isBigObject
+				                 + ', is SynchronousOnly:' + this.isSynchronousOnly
+				                 + ', force Async write:' + this.forceAsyncWrite
 				                 + '}';
 
 				throw new accc_ApexApplicationException(excpMsg);

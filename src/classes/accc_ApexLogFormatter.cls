@@ -34,7 +34,7 @@
  * @description Implementation of the log formatter.
  * @group Log Aspects
  */
-public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
+public virtual without sharing class accc_ApexLogFormatter implements accc_IDataFormat {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -48,7 +48,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @param  input data to format (message)
      * @return a formatted object
      */
-    public Object format(Object information) {
+    public virtual Object format(Object information) {
         return this.format(information, null);
     } // end of format
     /**
@@ -58,7 +58,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @param  addtional information [accc_ApexLogDataModel]( maybe null)
      * @return a formatted object
      */
-    public Object format(Object information, Object misc) {
+    public virtual Object format(Object information, Object misc) {
         String message = accc_ApexUtilities.toString(information);
         accc_ApexLogDataModel dataModel = (accc_ApexLogDataModel)misc;
 
@@ -93,7 +93,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
     } // end of format
     /////////////////////////////////////////////////////////////////////////////////////////
     //
-    // Private Methods
+    // Protected Methods (Virtual to allow one to override)
     //
     /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -107,7 +107,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @return formatted data
      */
     @TestVisible
-    private string finest(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
+    protected virtual  string finest(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
         return String.format('[{0}] [{1}] [{2}] [{3}] {4}\n [Start Time (ms)] {5} - {6} [Stack Trace] {7}', new String[] {
                                  theLogLevel.name()
                                  , dataModel.className
@@ -128,7 +128,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @return formatted data
      */
     @TestVisible
-    private string fine(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
+    protected virtual  string fine(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
         return String.format('[{0}] [{1}] [{2}] [{3}] {4}', new String[] {
                                  theLogLevel.name()
                                  , dataModel.className
@@ -146,7 +146,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @return formatted data
      */
     @TestVisible
-    private string finer(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
+    protected virtual  string finer(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
         return String.format('[{0}] [{1}] [{2}] [{3}] {4}\n[Stack Trace] {5}', new String[] {
                                  theLogLevel.name()
                                  , dataModel.className
@@ -165,7 +165,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @return formatted data
      */
     @TestVisible
-    private string debug(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
+    protected virtual  string debug(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
         return String.format('[{0}] [{1}] [{2}] {3}', new String[] {
                                  theLogLevel.name()
                                  , dataModel.className
@@ -182,7 +182,7 @@ public with sharing class accc_ApexLogFormatter implements accc_IDataFormat {
      * @return formatted data
      */
     @TestVisible
-    private string other(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
+    protected virtual  string other(String message, accc_ApexLogDataModel dataModel, LoggingLevel theLogLevel) {
         return String.format('[{0}] {1}', new String[] {
                                  theLogLevel.name()
                                  , message

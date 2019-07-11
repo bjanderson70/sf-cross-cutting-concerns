@@ -35,10 +35,10 @@
  *     Application Log (AcccApplicationLog__c)
  * @group Log Aspects
  */
-global without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
+global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
 
     // pass information to the logger -- will only use one; if needed, instantiate when used TBD
-    private final static accc_ApplicationLog theAppLog = new accc_ApplicationLog();
+    final static accc_ApplicationLog theAppLog = new accc_ApplicationLog();
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //
     // CTORS
@@ -65,6 +65,15 @@ global without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
     ////////////////////////////////////////////////////////////////////////////////
 
     /**
+    *
+    * @description get the Apex Object Logger; for children
+    *
+    */
+    @TestVisible
+    protected  virtual accc_ApplicationLog theObjectLogger() {
+        return accc_ApexObjectLogger.theAppLog;
+    }// end of theObjectLogger
+    /**
      *
      * @description write message
      *
@@ -78,25 +87,17 @@ global without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
         if ( message == null ) {
             return;
         }
-        // toString returns a '' value if null
-        String result = accc_ApexUtilities.toString(message);
-        // remember last value
-        this.setLastMessage(level, result);
-
-        // save, if we can
-        if ( sendToLogger ) {
-            // write it
-            this.writeOutput(level, result);
-        }
-
+        this.write(level,new List<Object> { message}, sendToLogger);
+    
     } // end of write
     /**
       *
       * @description write message
       *
-      * @param level log-level
-      * @param List<Object> the messages
-      * @param boolean, true it write to the application log
+      * @param LoggingLevel level log-level
+      * @param List<Object> messages the messages
+      * @param sendToLogger, true it write to the application log
+      * @return string of decomposed value
       */
     @TestVisible
     protected override void write(LoggingLevel level, List<Object> messages, boolean sendToLogger) {
@@ -105,57 +106,63 @@ global without sharing class accc_ApexObjectLogger extends accc_ApexLogger {
         if ( messages == null || messages.size() == 0 ) {
             return;
         }
+
         // toString returns a '' value if null
         String result = accc_ApexUtilities.toString(messages[ messages.size() - 1]);
         // remember last value
         this.setLastMessage(level, result);
+        // write it
+        this.writeOutput(level, result, sendToLogger);
 
-        // save, if we can
-        if ( sendToLogger ) {
-            // write it
-            this.writeOutput(level, result);
-        }
 
     } // end of write
-    ////////////////////////////////////////////////////////////////////////////////
-    /// Private methods
-    ////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @description write output to log
      *
      * @param LoggingLevel log level
      * @param Object data output
+     * @param sendToLogger, true it write to the application log
+     * @return collection of AcccApplicationLog__c
      */
     @TestVisible
-    private void writeOutput(LoggingLevel level, Object result) {
+    protected virtual List<AcccApplicationLog__c> writeOutput(LoggingLevel level, Object result, boolean sendToLogger) {
         // no check for result being null, done in public/protected methods
-        this.writeOutput(level, new List<Object> {result});
+        return this.writeOutput(level, new List<Object> {result}, sendToLogger);
     } // end of writeOutput
     /**
      * @description write output to log
      *
      * @param LoggingLevel log level
      * @param List<Object> data output
+     * @param sendToLogger, true it write to the application log
+     * @return collection of AcccApplicationLog__c
      */
     @TestVisible
-    private void writeOutput(LoggingLevel level, List<Object> result) {
+    protected virtual List<AcccApplicationLog__c> writeOutput(LoggingLevel level, List<Object> result, boolean sendToLogger) {
 
-        // no check for result being null, done in public/protected methods
+        // check again due to inheritance on result being null;
         List<AcccApplicationLog__c> appLogs = new List<AcccApplicationLog__c>();
-        integer size = result.size();
+        integer size = result != null ? result.size() : 0;
 
-        // create and write the log
+        // create  log
         for ( integer inx = 0; inx < size; ++inx) {
             appLogs.add(accc_MessageTransformation.translate(level, result[inx]));
         }
 
         // write data to the application log object
-        if ( !accc_ApexObjectLogger.theAppLog.log(appLogs) ) {
+        if ( sendToLogger
+                && !this.theObjectLogger().log(appLogs) ) {
             // let parent handle it as we could not
             super.write(level, result, true);
         }
+        return appLogs;
 
     } // end of writeOutput
+
+    ////////////////////////////////////////////////////////////////////////////////
+    /// Private methods
+    ////////////////////////////////////////////////////////////////////////////////
+
 
 } // end of accc_ApexObjectLogger
