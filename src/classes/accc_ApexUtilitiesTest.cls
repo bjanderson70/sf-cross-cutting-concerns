@@ -759,6 +759,39 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(null, accc_ApexUtilities.getSobjectTypeFromSObject((SObject)null));
     } // end of testgetSobjectTypeFromSObject
 
+    
+    @isTest
+    static void testconvertDayToString() {
+        //assign
+        // act
+        // assert
+        System.assertEquals('01', accc_ApexUtilities.convertDayToString(1));
+        System.assertEquals('01', accc_ApexUtilities.convertDayToString(0));
+        System.assertEquals('31', accc_ApexUtilities.convertDayToString(32));
+        System.assertEquals('31', accc_ApexUtilities.convertDayToString(31));
+        System.assertEquals('30', accc_ApexUtilities.convertDayToString(30));
+        System.assertEquals('10', accc_ApexUtilities.convertDayToString(10));
+        System.assertEquals('12', accc_ApexUtilities.convertDayToString(12));
+        System.assertEquals('21', accc_ApexUtilities.convertDayToString(21));
+        System.assertEquals('15', accc_ApexUtilities.convertDayToString(15));
+    }// end of testconvertDayToString
+
+    @isTest
+    static void testconvertMonthToString() {
+        //assign
+        // act
+        // assert
+        System.assertEquals('01', accc_ApexUtilities.convertMonthToString(1));
+        System.assertEquals('01', accc_ApexUtilities.convertMonthToString(0));
+        System.assertEquals('12', accc_ApexUtilities.convertMonthToString(32));
+        System.assertEquals('12', accc_ApexUtilities.convertMonthToString(12));
+
+        System.assertEquals('10', accc_ApexUtilities.convertMonthToString(10));
+        System.assertEquals('01', accc_ApexUtilities.convertMonthToString(-1));
+        System.assertEquals('02', accc_ApexUtilities.convertMonthToString(2));
+        System.assertEquals('10', accc_ApexUtilities.convertMonthToString(10));
+    }// end of convertMonthToString
+
     @isTest
     static void testexceededGovernorLimits() {
         //assign

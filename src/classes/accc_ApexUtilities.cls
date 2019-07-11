@@ -43,6 +43,36 @@ public virtual without sharing class accc_ApexUtilities {
 	/// Data Members
 	////////////////////////////////////////////////////////////////////////////////
 
+	public static final integer MAX_DAY_IN_MONTH = 31;
+	public static final integer MAX_NUM_OF_MONTH = 12;
+
+	/**
+	 * Month Index to 2 char string
+	 */
+	private static  Map<Integer, String> MonthIndex = new Map<Integer, String> {
+		1 => '01'
+		, 2 => '02'
+		, 3 => '03'
+		, 4 => '04'
+		, 5 => '05'
+		, 6 => '06'
+		, 7 => '07'
+		, 8 => '08'
+		, 9 => '09'
+		, 10 => '10'
+		, 11 => '11'
+		, 12 => '12'
+	} ;
+	/**
+	 * Day indexto 2 char string
+	 */
+	private static  Map<Integer, String> DayIndex = new Map<Integer, String> {
+		1 => '01', 2 => '02', 3 => '03', 4 => '04', 5 => '05', 6 => '06', 7 => '07', 8 => '08', 9 => '09', 10 => '10'
+		, 11 => '11', 12 => '12', 13 => '13', 14 => '14', 15 => '15', 16 => '16', 17 => '17', 18 => '18', 19 => '19', 20 => '20'
+		, 21 => '21', 22 => '22', 23 => '23', 24 => '24', 25 => '25', 26 => '26', 27 => '27', 28 => '28', 29 => '29', 30 => '30'
+		, 31 => '31'
+	} ;
+
 	@TestVisible
 	private static List<String> logTestData = null;
 	// simple mechanism to cache last id
@@ -1031,6 +1061,27 @@ public virtual without sharing class accc_ApexUtilities {
 		return result;
 	} // end of splitStringOnExpression
 
+	/**
+	 * @description get month string
+	 *
+	 * @param value month values 1 to 12
+	 * @return two char string, 1 == '01'
+	 */
+	public static String convertMonthToString(integer value) {
+		integer index = value <= 0 ?  1 : value > MAX_NUM_OF_MONTH ? MAX_NUM_OF_MONTH : value;
+		return MonthIndex.get(index);
+	} // end of convertMonthToString
+
+	/**
+	 * @description get month string
+	 *
+	 * @param value month values 1 to 31
+	 * @return two char string, 1 == '01'
+	 */
+	public static String convertDayToString(integer value) {
+		integer index = value <= 0 ?  1 : value > MAX_DAY_IN_MONTH ? MAX_DAY_IN_MONTH : value;
+		return DayIndex.get(index);
+	} // end of convertDayToString
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Private Static Methods
