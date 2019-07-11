@@ -149,6 +149,8 @@
 		<members>accc_SyncAsyncWriter</members>
 		<members>accc_ApexBigObjectLogger</members>
 		<members>accc_ApexBigObjectLoggerTest</members>
+		<members>accc_PlatformEventDAOLog</members>
+		<members>accc_PlatformEventDAOLogTest</members>
 		<name>ApexClass</name>
     </types>
 	<types>
@@ -163,5 +165,5 @@
 		<members>AcccApplicationLog__c-Accc Application Log Layout</members>
 		<name>Layout</name>
 	</types>
-    <version>46.0</version>
+    <version>44.0</version>
 </Package>
