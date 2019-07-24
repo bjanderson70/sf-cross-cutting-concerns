@@ -44,7 +44,7 @@ private class accc_QueableBigObjectsTest {
 		Test.startTest();
 		List<accc_Org_Events__b>  bos = createBigObject();
 		accc_QueableBigObjects obj = new accc_QueableBigObjects(bos);
-		final integer expectedSize = accc_QueableBigObjects.getTestResultsForBigObject().size;
+		final integer expectedSize = accc_QueableBigObjects.getTestResultsForBigObject().size();
 		// act
 		System.enqueueJob(obj);
 		Test.stopTest();
@@ -67,7 +67,7 @@ private class accc_QueableBigObjectsTest {
 		Test.startTest();
 		List<accc_Org_Events__b>  bos = createBigObject();
 		accc_QueableBigObjects obj = new accc_QueableBigObjects(bos, true);
-		final integer expectedSize = accc_QueableBigObjects.getTestResultsForBigObject().size;
+		final integer expectedSize = accc_QueableBigObjects.getTestResultsForBigObject().size();
 		// act
 		System.enqueueJob(obj);
 		Test.stopTest();
