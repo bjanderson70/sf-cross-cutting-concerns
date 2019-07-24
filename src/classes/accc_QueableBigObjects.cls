@@ -64,5 +64,24 @@ public virtual without sharing class accc_QueableBigObjects extends accc_Queable
 		super.isBigObject = true;
 	}// end ctor
 
+	
+	/////////////////////////////////////////////////////////////////////////
+	// Private Methods
+	/////////////////////////////////////////////////////////////////////////
+	@TestVisible
+	private static List<Database.SaveResult> getTestResultsForBigObject() {
+		List<Database.SaveResult> results = null;
+		if ( Test.isRunningTest() ) {
+			// SIMULATING RESULTS
+			results = new  List<Database.SaveResult> {
+				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000AAA","success":true,"errors":[]}', Database.SaveResult.class),
+				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000BAA","success":true,"errors":[]}', Database.SaveResult.class),
+				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000CAA","success":true,"errors":[]}', Database.SaveResult.class)
+
+			};
+		}
+		return results;
+
+	}// end of getTestResultsForBigObject
 
 } // end of accc_QueableBigObjects
