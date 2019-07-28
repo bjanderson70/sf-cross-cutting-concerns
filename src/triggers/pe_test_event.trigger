@@ -38,7 +38,9 @@
 trigger pe_test_event on pe_test__e (after insert) {
 	// only for testing -- no need to do anthing if someone mistakenly calls/users in production!
 	if ( Test.isRunningTest() ) {
-		accc_PlatformEventLogger.myInstance().log('++++ TEST Trigger Called - pe_test__e');
+		accc_ApexUtilities.log('++++ TEST Trigger Called - pe_test__e');
+		/**********
+		 *   Not Yet
 		// defining the attribute is not neccessary ( as the default would have been used)
 		//
 		Map<String, Object> attr = new Map<String, Object> {
@@ -56,8 +58,10 @@ trigger pe_test_event on pe_test__e (after insert) {
 		accc_IEventHandler consumer = theBuilder.buildConsumer();
 		// build our platform event model
 		accc_IPlatformEventModel model = theBuilder.build(consumer, attributes);
+		************/
+
 		// go handle/process our canonical form
-		accc_PlatformEventLogger.myInstance().log('++++ TEST Done pe_test__e result =' + model.process(Trigger.New));
+		accc_Apexutilities.log('++++ TEST Done pe_test__e result =' + model.process(Trigger.New));
 	}
 
 }
