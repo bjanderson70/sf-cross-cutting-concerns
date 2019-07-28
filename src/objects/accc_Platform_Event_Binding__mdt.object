@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Active</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Alert_Handler__c</fullName>
+        <defaultValue>&apos;evt_DefaultProcessHandler&apos;</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Alert Handler</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Allow_Consumer_Retry__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>A consume can cause a retry in the event some action does not get fulfilled. For example, the event is caught and the action is to update some objects. If the object is lock, the event handler may want to RETRY. If this flag is on, the retry will occur; otherwise, it will NOT.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>A consume can cause a retry in the event some action does not get fulfilled. For example, the event is caught and the action is to update some objects. If the object is lock, the event handler may want to RETRY. If this flag is on, the retry will occur.</inlineHelpText>
+        <label>Allow Consumer Retry</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Consumer__c</fullName>
+        <defaultValue>&apos;evt_DefaultPEConsumer&apos;</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Consumer</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Environment__c</fullName>
+        <defaultValue>&apos;test&apos;</defaultValue>
+        <description>Define the environment this event information applies to. Note, if you desire three different behaviors for the an event, i.e., pe_test__e, then you MUST define one for &apos;test&apos;, &apos;production&apos; and &apos;debug&apos;</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Define the environment this event information applies to. Note, if you desire three different behaviors for the an event, i.e., pe_test__e, then you MUST define one for &apos;test&apos;, &apos;production&apos; and &apos;debug&apos;</inlineHelpText>
+        <label>Environment</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Error_Handler__c</fullName>
+        <defaultValue>&apos;evt_DefaultProcessHandler&apos;</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Error Handler</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Log_Handler__c</fullName>
+        <defaultValue>&apos;evt_DefaultProcessHandler&apos;</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Log Handler</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Publisher__c</fullName>
+        <defaultValue>&apos;evt_DefaultPEPublisher&apos;</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Publisher</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Serialize_Event__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>In order to store data -- it MUST BE serialize</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>In order to store data -- it MUST BE serialize</inlineHelpText>
+        <label>Serialize Event</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Store_Handler__c</fullName>
+        <defaultValue>&apos;evt_DefaultProcessStoreHandler&apos;</defaultValue>
+        <description>The handler that handles storing the serialize event on pub/sub</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>The handler that handles storing the serialize event on pub/sub</inlineHelpText>
+        <label>Store Handler</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Success_Handler__c</fullName>
+        <defaultValue>&apos;evt_DefaultProcessHandler&apos;</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Success Handler</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>evt Platform Event Binding</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>MasterLabel</columns>
+        <columns>DeveloperName</columns>
+        <columns>Active__c</columns>
+        <columns>Alert_Handler__c</columns>
+        <columns>Allow_Consumer_Retry__c</columns>
+        <columns>Consumer__c</columns>
+        <columns>Environment__c</columns>
+        <columns>Error_Handler__c</columns>
+        <columns>Log_Handler__c</columns>
+        <columns>Publisher__c</columns>
+        <columns>Serialize_Event__c</columns>
+        <columns>Success_Handler__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <pluralLabel>evt Platform Event Bindings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

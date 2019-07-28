@@ -5,8 +5,10 @@
 		<members>AcccApplicationLog__c</members>
 		<members>AcccDataCachingDataModel__mdt</members>
 		<members>AcccCrossCuttingUtilityData__mdt</members>
+		<members>accc_Platform_Event_Binding__mdt</members>
 		<members>accc_Log__e</members>
 		<members>accc_Org_Events__b</members>
+		<members>pe_test__e</members>
 		<name>CustomObject</name>
 	</types>
 	<types>
@@ -14,6 +16,7 @@
 		<name>PermissionSet</name>
 	</types>
 	<types>
+		<members>accc_Platform_Event_Binding.pe_test</members>
 		<members>accc_Apex_Code_Configuration.debug</members>
 		<members>accc_Apex_Code_Configuration.production</members>
 		<members>accc_Apex_Code_Configuration.test</members>
@@ -157,6 +160,7 @@
     </types>
 	<types>
 		<members>accc_LogPlatformEventTrigger</members>
+		<members>pe_test_event</members>
 		<name>ApexTrigger</name>
 	</types>
 	
