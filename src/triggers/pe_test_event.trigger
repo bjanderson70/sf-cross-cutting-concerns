@@ -61,7 +61,7 @@ trigger pe_test_event on pe_test__e (after insert) {
 		************/
 
 		// go handle/process our canonical form
-		accc_Apexutilities.log('++++ TEST Done pe_test__e result =' + model.process(Trigger.New));
+		accc_Apexutilities.log('++++ TEST Done pe_test__e ');
 	}
 
 }
