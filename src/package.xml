@@ -16,7 +16,7 @@
 		<name>PermissionSet</name>
 	</types>
 	<types>
-		<members>accc_Platform_Event_Binding.pe_test</members>
+		<members>accc_Platform_Event_Binding.pe_test_e</members>
 		<members>accc_Apex_Code_Configuration.debug</members>
 		<members>accc_Apex_Code_Configuration.production</members>
 		<members>accc_Apex_Code_Configuration.test</members>
