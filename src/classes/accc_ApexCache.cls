@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -56,15 +56,19 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
     public static final Integer DEFAULT_TTL_IN_SECS = 600;
     public static final Integer DEFAULT_MIN_TTL_IN_SECS = 300;
     // Name of our partition -- must be created in Org (Setup) First!!!
+    // TODO : Pull from custom metadata!!
     public static final String CACHE_NS = 'local';
 
     // Our Org partition object
+    @TestVisible
     private static Map<String, Cache.OrgPartition> orgPartition = new Map<String, Cache.OrgPartition>();
-
+    @TestVisible
     private String orgPartitionName = null;
     // is cached enabled
+    @TestVisible
     private Boolean cacheEnabled = true;
     // is the parition available ( already created in Org)
+    @TestVisible
     private Boolean cacheIsAvailable = false;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -394,7 +398,5 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
         return result;
 
     } // end of getPartition
-
-
 
 } // end of accc_ApexCache

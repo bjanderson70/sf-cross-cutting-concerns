@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson. All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -72,6 +72,20 @@ private class accc_ApexPublishEventLoggerTest {
 
 	} // end of testpublishLogEvent
 
+		@isTest
+	static void testpublishLogEventWithNull() {
+		accc_ApexPublishEventLogger apel = new accc_ApexPublishEventLogger();
+		LoggingLevel level = LoggingLevel.DEBUG;
+	 
+		// Create a test event instance
+		Test.startTest();
+		boolean result = apel.publishLogEvent( level, (Object)null);
+		Test.stopTest();
+
+		// assert
+		System.assertEquals(false, result);
+
+	} // end of testpublishLogEventWithNull
 
 	@isTest
 	static void testwrite() {
@@ -81,7 +95,7 @@ private class accc_ApexPublishEventLoggerTest {
 
 		// Create a test event instance
 		Test.startTest();
-		apel.write(level, message);
+		apel.write(level, (Object)message);
 		Test.stopTest();
 
 		// assert
@@ -89,6 +103,33 @@ private class accc_ApexPublishEventLoggerTest {
 
 	} // end of testwrite
 
+	@isTest
+	static void testwriteNull() {
+		accc_ApexPublishEventLogger apel = new accc_ApexPublishEventLogger();
+		LoggingLevel level = LoggingLevel.DEBUG;
+		Object message = null;
+
+		Test.startTest();
+		apel.write(level, message);
+		Test.stopTest();
+		
+		// assert
+		System.assertEquals(true, apel.lastMessage()==null);
+	}// end of testwriteNull
+	
+	@isTest
+	static void testwriteNullList() {
+		accc_ApexPublishEventLogger apel = new accc_ApexPublishEventLogger();
+		LoggingLevel level = LoggingLevel.DEBUG;
+	
+		Test.startTest();
+		apel.write(level,(List<Object>)null);
+		Test.stopTest();
+		
+		// assert
+		System.assertEquals(true, apel.lastMessage()==null);
+	}// end of testwriteNullList
+	
 	@isTest
 	static void testwriteWithArray() {
 		accc_ApexPublishEventLogger apel = new accc_ApexPublishEventLogger();

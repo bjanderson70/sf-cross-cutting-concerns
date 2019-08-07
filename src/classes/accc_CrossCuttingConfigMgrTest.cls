@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -162,13 +162,11 @@ private class accc_CrossCuttingConfigMgrTest {
         // assign
         accc_CrossCuttingConfigMgr cccm = new accc_CrossCuttingConfigMgr();
         // act
-        accc_ApexClassInstanceMgr inst = cccm.getInstanceCreator('ApexClass', 'accc_ICache');
+        accc_ApexClassInstanceMgr inst = cccm.getInstanceCreator(accc_ApexConstants.LogFormatter, 'accc_IDataFormat');
         // assert
         system.assertEquals(true, inst != null );
-        system.assertEquals(true, inst.className == 'ApexClass' );
-        system.assertEquals(true, inst.classInterfaceType == 'accc_ICache' );
-
-
+        system.assertEquals(true, inst.className == accc_ApexConstants.LogFormatter );
+      
     } // end of testgetInstanceCreator
 
     @isTest

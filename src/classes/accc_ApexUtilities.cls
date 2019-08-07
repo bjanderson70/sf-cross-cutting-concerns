@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -32,12 +32,11 @@
  * @author Bill anderson
  * @description common utilities to separate mundane task. This may be refactor to segragate category (strings, objects, etc.)
  *
- *
- *  NOTE: This is an abbreviate version: Cahcing, Cache Strategy and Messaging were removed
+ ** Modification : BJA , Support for Platform Events routines added
  *
  * @group Miscellaneous
  */
-public virtual without sharing class accc_ApexUtilities {
+public without sharing class accc_ApexUtilities {
 
 	////////////////////////////////////////////////////////////////////////////////
 	/// Data Members
@@ -78,18 +77,22 @@ public virtual without sharing class accc_ApexUtilities {
 	// simple mechanism to cache last id
 	@TestVisible
 	private static String lastProfileName =  null;
+	// imple cache of last profile id
 	@TestVisible
 	private static Id lastProfileId = null;
+	// determine if sandbox
 	@TestVisible
 	private static final Boolean isSandboxBool = [SELECT IsSandbox FROM Organization LIMIT 1].IsSandbox;
-	// known Domains = BJA
+	// holds valid domain names
 	@TestVisible
 	private static Set<String> m_domainNames = new  Set<String>();
+	// holds valid event names
+	@TestVisible
+	private static Set<String> m_eventNames = new  Set<String>();
 
 	////////////////////////////////////////////////////////////////////////////////
 	/// Public Methods
 	////////////////////////////////////////////////////////////////////////////////
-
 	/**
 	*
 	* @description is this a sanbox
@@ -133,6 +136,23 @@ public virtual without sharing class accc_ApexUtilities {
 	* @return String - name of the sobject
 	*/
 	public static String getSobjectName(List<SObject> mySobject) {
+		String result = accc_ApexConstants.EmptyString;
+		if ( mySobject != null ) {
+			Type sType = accc_ApexUtilities.getTypeFromSObject(mySobject);
+			if ( sType != null ) {
+				result = sType.getName();
+			}
+		}
+		return result;
+	} // end of getSobjectName
+	/**
+	*
+	* @description get the name of the sobject
+	*
+	* @param mySobject Set<SObject>
+	* @return String - name of the sobject
+	*/
+	public static String getSobjectName(Set<SObject> mySobject) {
 		String result = accc_ApexConstants.EmptyString;
 		if ( mySobject != null ) {
 			Type sType = accc_ApexUtilities.getTypeFromSObject(mySobject);
@@ -489,13 +509,18 @@ public virtual without sharing class accc_ApexUtilities {
 		Type result = null;
 
 		try {
+		 
 			// can only assume ALL the same
 			if ( theSObject != null ) {
 				Schema.SObjectType sType = theSObject.getSobjectType();
-				result = Type.forName(sType.getdescribe().getName());
+				if ( sType != null ){
+					result = Type.forName(sType.getdescribe().getName());
+				}
 				if ( result == null && theSObject.size() > 0) {
 					sType = theSObject[0].getSobjectType();
-					result = Type.forName(sType.getdescribe().getName());
+					if ( sType != null ){
+						result = Type.forName(sType.getdescribe().getName());
+					}
 				}
 			}
 		} catch  (Exception excp) {
@@ -504,6 +529,24 @@ public virtual without sharing class accc_ApexUtilities {
 		return result;
 	} // end of getTypeFromSObject
 
+	/**
+	 *  @description  get the Type from the SObject collection
+	 *
+	 * @param theSObject type we want
+	 * @return System Type
+	 */
+	public static Type getTypeFromSObject(Set<SObject> theSObject) {
+		Type result = null;
+		try {
+			// can only assume ALL the same
+			if ( theSObject != null ) {
+				result= accc_ApexUtilities.getTypeFromSObject(new List<SObject>(theSObject));
+			}
+		} catch  (Exception excp) {
+			// ignored at this time
+		}
+		return result;
+	} // end of getTypeFromSObject
 	/*
 	 * Get executing class and method name borrowed (with slight modifications)
 	 * https://salesforce.stackexchange.com/questions/153835/get-currently-executing-class-method-name
@@ -670,7 +713,7 @@ public virtual without sharing class accc_ApexUtilities {
 	/**
 	 *  @description convert string of numbers to telephone #
 	 *
-	 * @param stringOfNums string of numbers '1111111111' or '(111) 111-1111'
+	 * @param phone string of numbers '1111111111' or '(111) 111-1111'
 	 * @return converted to telephone (111) 111-1111
 	 */
 	public static String formatNumberIntoUSTelephone(String phone) {
@@ -876,7 +919,7 @@ public virtual without sharing class accc_ApexUtilities {
 	} // end of normalizeString
 	/**
 	*
-	* @description normalize the data BJA
+	* @description normalize the data
 	*
 	* @param datum string to inspect
 	* @return string, normalize string
@@ -889,7 +932,69 @@ public virtual without sharing class accc_ApexUtilities {
 		}
 		return result;
 	} // end of normalizeString
+ 
+	/**
+	 * @description normalize the string (trim and size accordingly)
+	 *
+	 * @param datum string to normalize
+	 * @param dotrim true, if need to trim
+	 * @param size size the string should be
+	 *
+	 * @return normalize string
+	 */
+	public static string normalizeString(String datum, Boolean dotrim, integer size) {
+		string result = '';
 
+		if ( !string.isBlank(datum) ) {
+			if ( dotrim ) {
+				result = datum.trim();
+			} else {
+				result = datum;
+			}
+			result = accc_ApexUtilities.normalizeString(result, size);
+		}
+		return result;
+	} // end of normalizeString
+	/**
+	 * @description DML limits in string form for output
+	 * @return string
+	 */
+	public static String getDMLLimitsInStringForm() {
+		return
+		    '{' + '\n' +
+		    ' getDMLStatements     : ' + Limits.getDMLStatements() + '\n' +
+		    ' getLimitAsyncCalls   : ' + Limits.getLimitAsyncCalls() + '\n' +
+		    ' getLimitQueueableJobs: ' + Limits.getLimitQueueableJobs() + '\n' +
+		    ' getCpuTime           : ' + Limits.getCpuTime() + '\n' +
+		    ' getLimitCpuTime      : ' + Limits.getLimitCpuTime() + '\n' +
+		    ' getLimitDMLRows      : ' + Limits.getLimitDMLRows() + '\n' +
+		    ' getDMLRows           : ' + Limits.getDMLRows() + '\n' +
+		    '}';
+	} // end of getDMLLimitsInStringForm
+	/**
+	 * @description convert a list into a max. string, delimiter by some value
+	 *
+	 * @param theList the list to convert
+	 * @param theMaxSize maximum size ( if <= 0, do not shrink)
+	 * @param theDelimiter delimiter, defaults to comma
+	 * @return stringified value
+	 */
+	public static String convertListCollectionIntoString(List<String> theList,
+	        Integer theMaxSize,
+	        String theDelimiter) {
+		String result = accc_ApexConstants.EmptyString,
+		       delimiter = theDelimiter == null ? accc_ApexConstants.CommaDelimiter : theDelimiter;
+		// any data to convert
+		if (theList != null && theList.size() > 0 ) {
+			result =  string.join(theList, delimiter);
+			if ( theMaxSize > 1
+			        && result.length() > theMaxSize) {
+				result = result.Substring(0, theMaxSize - 1);
+			}
+		}
+		return  result;
+	} // end of convertListCollectionIntoString
+ 
 	/**
 	* @description make the local cache key
 	*
@@ -930,7 +1035,7 @@ public virtual without sharing class accc_ApexUtilities {
 	} // end of popStack
 
 	/**
-	* @description validate that this is an domain name - BJA
+	* @description validate that this is an domain name
 	*
 	* @param domainToValidate name of an domain (i.e. Account)
 	* @return true if present
@@ -947,6 +1052,21 @@ public virtual without sharing class accc_ApexUtilities {
 		return accc_ApexUtilities.m_domainNames.contains(domainToValidate.toLowerCase());
 	}// end of validDomainName
 
+	/** 
+	 * @description validate that this is an event
+	 *
+	 * @param eventToValidate name of an event (i.e. My_Event__e)
+	 * @return true if present
+	 */
+	public static Boolean validEventName(String eventToValidate) {
+		if ( string.isBlank(eventToValidate)) {
+			return false;
+		}
+		if ( accc_ApexUtilities.m_eventNames.size() == 0) {
+			accc_ApexUtilities.updateDomainInformation();
+		}
+		return accc_ApexUtilities.m_eventNames.contains(eventToValidate.toLowerCase());
+	}// end of validEventName
 	/**
 	* @description get the class instance
 	* @return Object, class instance which must be casted appropriately
@@ -1026,17 +1146,12 @@ public virtual without sharing class accc_ApexUtilities {
 	 * @return true, if we violated a governor limit
 	 */
 	public static Boolean exceededGovernorLimits(Exception excp) {
-		Boolean result = false;
-
 		// if we get any of these exceptions, then whatever was going
 		// on will fail due to limits exceeded -- can't catch some exceptions
-		if ( excp instanceof DmlException ||
-		        excp instanceof AsyncException ||
-		        excp instanceof CalloutException
-		   ) {
-			result = true;
-		}
-		return result;
+		return excp instanceof DmlException ||
+		       excp instanceof AsyncException ||
+		       excp instanceof CalloutException;
+ 
 	} // end of exceededGovernorLimits
 	/**
 	 *  @description split a string based on expression ( ie. whitespace \s)
@@ -1089,7 +1204,7 @@ public virtual without sharing class accc_ApexUtilities {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	* @description get domain and event information BJA
+	* @description get domain and event information
 	*/
 	@TestVisible
 	private static void updateDomainInformation() {
@@ -1099,6 +1214,9 @@ public virtual without sharing class accc_ApexUtilities {
 		if ( objNames != null && objNames.size() > 0 ) {
 			for (String objName : objNames) {
 				accc_ApexUtilities.m_domainNames.add(objName.toLowerCase());
+				if ( objName.endsWith(accc_ApexConstants.EVENT_TYPE_TAG_s)) {
+					m_eventNames.add(objName.toLowerCase());
+				}
 			}
 		}
 
@@ -1137,7 +1255,5 @@ public virtual without sharing class accc_ApexUtilities {
 		}
 		return found;
 	} // end of containsInTestLog
-
-
 
 } // end of accc_ApexUtilities

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -44,6 +44,7 @@ public virtual without sharing class accc_ApexCacheStrategyInvocation implements
 	/**
 	 * The expected interface for cache invocation
 	 */
+	@TestVisible
 	static final string CACHE_STRATEGY_INVOCATION_INTERFACE = 'accc_IApexCacheStrategyInvocation';
 	/*---------------------------------------------------------------------------------------
 	 * PROPERTIES

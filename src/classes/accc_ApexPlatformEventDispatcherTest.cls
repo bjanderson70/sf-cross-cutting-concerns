@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -39,7 +39,7 @@ private class accc_ApexPlatformEventDispatcherTest {
 
 	@isTest
 	static void testrun() {
-		accc_IApexPlatformEventHandler iplatEvt = new accc_LogPlatformEventHandler();
+		accc_ITriggerHandler iplatEvt = new accc_LogPlatformEventHandler();
 		accc_ApexPlatformEventDispatcher.run(iplatEvt);
 		// there is no trigger that will have fired
 		system.assertEquals(false, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.name'));
@@ -47,7 +47,7 @@ private class accc_ApexPlatformEventDispatcherTest {
 
 	@isTest
 	static void testrunWithNullParam() {
-		accc_ApexPlatformEventDispatcher.run(null);
+		accc_ApexPlatformEventDispatcher.run((accc_ITriggerHandler)null);
 		system.assertEquals(false, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.name'));
 	} // end of testrunWithNullParam
 

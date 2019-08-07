@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -39,10 +39,6 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
-	public static final string EMPTY_JSON_s = '{}';
-	public static final integer MAX_JSON_SIZE = 131072;
-	public static final integer MAX_TEXT_LONG_SIZE = 131072;
-
 	public static final String DEFAULT_STRING_RESULT = '';
 	public static final String DEFAULT_DELIMITER = ',';
 	public static final String EVENT_TYPE_TAG_s = '__e';
@@ -59,7 +55,7 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 	// Ctors
 	/////////////////////////////////////////////////////////////////////////
 	public accc_PlatformEventDAOLog(string name) {
-		this(name, accc_PlatformEventDAOLog.EMPTY_JSON_s, Datetime.Now(), 1);
+		this(name, accc_ApexConstants.EMPTY_JSON_s, Datetime.Now(), 1);
 	} // end of ctor
 	/**
 	 * @description ctor to intake all values of the big object
@@ -69,7 +65,7 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 	 *
 	 */
 	public accc_PlatformEventDAOLog(string theName,
-	                                string theJson) {
+	                               string theJson) {
 		this(theName, theJson, Datetime.Now(), 1, null, null);
 	} // end of ctor
 	/**
@@ -81,8 +77,8 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 	 *
 	 */
 	public accc_PlatformEventDAOLog(string theName,
-	                                string theJson,
-	                                Datetime theTimestamp ) {
+	                               string theJson,
+	                               Datetime theTimestamp ) {
 		this(theName, theJson, theTimestamp, 1, null, null);
 
 	} // end of ctor
@@ -95,8 +91,8 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 	 *
 	 */
 	public accc_PlatformEventDAOLog(string theName,
-	                                string theJson,
-	                                integer eventCount ) {
+	                               string theJson,
+	                               integer eventCount ) {
 		this(theName, theJson, Datetime.Now(), eventCount, null, null);
 
 	} // end of ctor
@@ -111,9 +107,9 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 	 *
 	 */
 	public accc_PlatformEventDAOLog(string theName,
-	                                string theJson,
-	                                Datetime theTimestamp,
-	                                integer eventCount ) {
+	                               string theJson,
+	                               Datetime theTimestamp,
+	                               integer eventCount ) {
 		this(theName, theJson, theTimestamp, eventCount, null, null);
 
 	} // end of ctor
@@ -130,16 +126,16 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 		 *
 		 */
 	public accc_PlatformEventDAOLog(string theName,
-	                                string theJson,
-	                                Datetime theTimestamp,
-	                                integer eventCount,
-	                                List<String> theReplayIds,
-	                                List<String> theOperationIds ) {
+	                               string theJson,
+	                               Datetime theTimestamp,
+	                               integer eventCount,
+	                               List<String> theReplayIds,
+	                               List<String> theOperationIds ) {
 		this.truncated = 0;
 		this.timestamp = theTimestamp;
 		// must be after truncated as the size may be truncated from property set
 		this.json = theJson;
-		this.name = string.isBlank(theName) ? this.timestamp.format() + accc_PlatformEventDAOLog.EVENT_TYPE_TAG_s : theName;
+		this.name = string.isBlank(theName) ? this.timestamp.format() + accc_ApexConstants.EVENT_TYPE_TAG_s : theName;
 		this.count = eventCount < 0 ? 1 : eventCount;
 		this.operationIds = theOperationIds;
 		this.replayIds = theReplayIds;
@@ -163,8 +159,8 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 	public string json {
 		get { return this.m_JsonData;}
 		protected set {
-			final integer maxSize = accc_PlatformEventDAOLog.MAX_JSON_SIZE - 1 ;
-			this.m_JsonData = string.isBlank(value) ? accc_PlatformEventDAOLog.EMPTY_JSON_s : value;
+			final integer maxSize = accc_ApexConstants.MAX_JSON_SIZE - 1 ;
+			this.m_JsonData = string.isBlank(value) ? accc_ApexConstants.EMPTY_JSON_s : value;
 
 			// check the json data, do we need to meet size requirement
 			if ( this.m_JsonData.length() > maxSize) {
@@ -260,11 +256,11 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 				                Event_Truncated__c = item.truncated,
 				                Number_Of_Events__c = item.count,
 				                Replay_Ids__c =  accc_PlatformEventDAOLog.convertListCollectionIntoString(item.replayIds,
-				                                 accc_PlatformEventDAOLog.MAX_TEXT_LONG_SIZE,
-				                                 accc_PlatformEventDAOLog.DEFAULT_DELIMITER ),
+				                                 accc_ApexConstants.MAX_TEXT_LONG_SIZE,
+				                                 accc_ApexConstants.CommaDelimiter ),
 				                Operation_Ids__c = accc_PlatformEventDAOLog.convertListCollectionIntoString(item.operationIds,
-				                                   accc_PlatformEventDAOLog.MAX_TEXT_LONG_SIZE,
-				                                   accc_PlatformEventDAOLog.DEFAULT_DELIMITER )
+				                                   accc_ApexConstants.MAX_TEXT_LONG_SIZE,
+				                                   accc_ApexConstants.CommaDelimiter )
 				            )
 				           );
 
@@ -302,7 +298,6 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 	/////////////////////////////////////////////////////////////////////////
 	// Private Static Methods
 	/////////////////////////////////////////////////////////////////////////
-
 	/**
 	 * @description convert a list into a max. string, delimiter by some value
 	 *
@@ -317,7 +312,6 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 	        String theDelimiter) {
 		String result = DEFAULT_STRING_RESULT,
 		       delimiter = theDelimiter == null ? DEFAULT_DELIMITER : theDelimiter;
-
 		// any data to convert
 		if (theList != null && theList.size() > 0 ) {
 			result =  string.join(theList, delimiter);
@@ -328,5 +322,4 @@ public virtual without sharing class accc_PlatformEventDAOLog {
 		}
 		return  result;
 	} // end of convertListCollectionIntoString
-
 } // end of accc_PlatformEventDAOLog

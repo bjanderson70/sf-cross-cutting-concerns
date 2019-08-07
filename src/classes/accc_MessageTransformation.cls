@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -126,7 +126,7 @@ public without sharing class accc_MessageTransformation {
     /**
      * @description translate a accc_Log__e to a AcccApplicationLog__c
      *
-     * @param eLog accc_Log__e
+     * @param datum, accc_Log__e
      * @return AcccApplicationLog__c
      */
     public static AcccApplicationLog__c translate(accc_Log__e datum) {
@@ -165,6 +165,59 @@ public without sharing class accc_MessageTransformation {
         return result;
 
     } // end of translate
+
+    /**
+     * @description translate a ACCC_Log_Event__e to a AcccApplicationLog__c
+     *
+     * @param datum ACCC_Log_Event__e
+     * @return AcccApplicationLog__c
+     */
+    public static AcccApplicationLog__c translate(ACCC_Log_Event__e datum) {
+        AcccApplicationLog__c result = null;
+        Id userId = UserInfo.getUserId();
+         
+        if ( datum != null ) {
+           
+            result = new AcccApplicationLog__c(LogCode__c =  datum.Action__c,
+                                               Source__c = datum.External_Id__c,
+                                               SourceFunction__c = datum.Action__c,
+                                               ReferenceId__c = datum.TransactionId__c,
+                                               Exception__c= datum.Exception__c,
+                                               InvocationType__c= datum.Object_Name__c,
+                                               IntegrationPayload__c  = datum.Payload__c,
+                                               OwnerId = userId,
+                                               Username__c = datum.UserId__c,
+                                               Timer__c =datum.DateTime__c.getTime(),
+                                               Message__c = datum.Sequence_Number__c + '-' + datum.Total_Number__c,
+                                               ReferenceInfo__c=datum.Version__c
+                                               );
+        }
+        return result;
+
+    } // end of translate
+    /**
+     * @description translate a ACCC_Log_Event__e to a AcccApplicationLog__c
+     *
+     * @param List<accc_LoACCC_Log_Event__eg__e> list of log events
+     * @return List<AcccApplicationLog__c> list of applicationLog
+     */
+    public static List<AcccApplicationLog__c> translate(List<ACCC_Log_Event__e> listDatum) {
+        List<AcccApplicationLog__c> result = null;
+
+        if ( listDatum != null && listDatum.size() > 0 ) {
+            AcccApplicationLog__c appLog;
+            result = new List<AcccApplicationLog__c>();
+            for (ACCC_Log_Event__e datum : listDatum ) {
+                appLog = accc_MessageTransformation.translate(datum);
+                if ( appLog != null) {
+                    result.add(appLog);
+                }
+            }
+        }
+        return result;
+
+    } // end of translate
+
      /**
     * @description map from AcccApplicationLog__c to accc_PlatformEventDAOLog
     * Apex does not distinguish properly (the parameter types are distinct enough) as
@@ -185,7 +238,7 @@ public without sharing class accc_MessageTransformation {
                 entry = new accc_PlatformEventDAOLog(
                     String.isBlank(item.Source__c) ?  'Unknown' : item.Source__c  ,
                    // String.isBlank(item.SourceFunction__c) ?  'Create' : item.SourceFunction__c  ,
-                    String.isBlank(item.Message__c) ? accc_PlatformEventDAOLog.EMPTY_JSON_s : item.Message__c,
+                    String.isBlank(item.Message__c) ? accc_ApexConstants.EMPTY_JSON_s : item.Message__c,
                     now);
                // entry.userId = string.isBlank(item.Username__c) ? string.isBlank(item.OwnerId) ? UserInfo.getUserId() : item.OwnerId : item.Username__c;
                 //entry.theException = item.Exception__c;

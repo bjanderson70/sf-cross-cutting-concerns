@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -36,16 +36,19 @@
  */
 public without sharing class accc_ApexPlatformEventDispatcher {
 
+    // public static void run(accc_EventBase handler){
+    //     accc_ApexPlatformEventDispatcher.run(handler);
+    // }
     /**
      * @description run the platform event handler
      *
-     * @param accc_IApexPlatformEventHandler apex platform event handler
+     * @param accc_ITriggerHandler apex platform event handler
      */
-    public static void run(accc_IApexPlatformEventHandler handler) {
+    public static void run(accc_ITriggerHandler handler) {
         // keep -- as this will log to an internal set during testing; otherwise, no-op
         accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher handler=' + handler);
 
-        // valid handler (Tirgger.New can be null if calling from non-trigger [testing])
+        // valid handler (Trigger.New can be null if calling from non-trigger [testing])
         // only handle after insert for dispatching platform events
         if (handler != null
                 && Trigger.New != null
@@ -60,7 +63,7 @@ public without sharing class accc_ApexPlatformEventDispatcher {
                 // toggle our state
                 accc_TriggerHelperClass.toggleRunState(name, accc_TriggerHelperClass.TriggerState.AfterInsert);
                 // call handler
-                handler.afterInsert(Trigger.New);
+                handler.onAfterInsertChild(Trigger.New);
             }
         }
     } // end of run

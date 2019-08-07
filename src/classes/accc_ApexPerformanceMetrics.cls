@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -37,7 +37,7 @@
  *
  * @group Common Layer
  **/
-public without sharing class accc_ApexPerformanceMetrics {
+public virtual without sharing class accc_ApexPerformanceMetrics {
 
 	// our default user message
 	public static final String PERF_MESSAGE = 'PerformanceMetrics';

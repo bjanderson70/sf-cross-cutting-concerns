@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -37,6 +37,7 @@
 @isTest
 private class accc_ApexUtilitiesTest {
 
+    static final String ExceptedEventLabelInCustomMDT = 'pe_test__e';
 
     /**
      * @description Test is sandbox
@@ -70,6 +71,39 @@ private class accc_ApexUtilitiesTest {
         // assert
         System.assertEquals(expected, result);
     } // end of testgetSobjectName
+
+     @isTest 
+     static void testgetSobjectNameWithSet() {
+        //assign
+        String expected = 'Account';
+        Set<SObject> accounts = new Set<SObject>();
+        accounts.add(new Account());
+        // act
+        String result = accc_ApexUtilities.getSobjectName(accounts);
+        // assert
+        System.assertEquals(expected, result);
+    } // end of testgetSobjectNameWithSet
+    @isTest
+    static void testgetTypeFromSObjectCollectionWithNoContacts() {
+        //assign
+        List<SObject> sob = new List<Contact>();
+        Type expected = Contact.class;
+        // act
+        Type ns = accc_ApexUtilities.getTypeFromSObject(sob);
+        // assert
+        System.assertEquals(expected, ns);
+    } // end of testgetTypeFromSObjectCollectionContact
+    @isTest
+    static void testgetTypeFromSObjectSet() {
+        //assign
+        Set<SObject> sob = new Set<SObject>();
+        sob.add(new Contact());
+        Type expected = Contact.class;
+        // act
+        Type ns = accc_ApexUtilities.getTypeFromSObject(sob);
+        // assert
+        System.assertEquals(expected, ns);
+    } // end of testgetTypeFromSObjectCollectionContact
 
     @isTest static void testgetSobjectNameWithBadParams() {
         //assign
@@ -622,6 +656,31 @@ private class accc_ApexUtilitiesTest {
         system.assertEquals(true, 'h' == result);
     } // end of testnormalizeStringValidStringWithSize
 
+// BJA Modifications
+    @isTest
+    static void testnormalizeStringWithTrim() {
+        String data = '  1221  ';
+        String expected = '1221';
+        String maxString = '';
+        String result = accc_ApexUtilities.normalizeString(data, true,expected.length() );
+        System.assertEquals( expected,result);
+        result = accc_ApexUtilities.normalizeString(data, false, '  12'.length());
+        System.assertEquals('  12',result);
+        for (integer inx = 0; inx < accc_ApexConstants.MAX_STRING_SIZE + 2; inx++) {
+            maxString += 'a';
+        }
+        result = accc_ApexUtilities.normalizeString(maxString, true,accc_ApexConstants.MAX_STRING_SIZE);
+        System.assertEquals(result.length(), accc_ApexConstants.MAX_STRING_SIZE);
+    } // end of testnormalizeStringWithTrim
+    @isTest
+    static void testvalidEventName() {
+        Boolean result = accc_ApexUtilities.validEventName('accc_ApexUtilities');
+        System.assertEquals(false, result);
+        result = accc_ApexUtilities.validEventName(ExceptedEventLabelInCustomMDT);
+        System.assertEquals( true, result );
+        result = accc_ApexUtilities.validEventName(null);
+        System.assertEquals(false, result);
+    } // end of testvalidEventName
     @isTest
     static void testgetNamespace() {
         string ns = 'highlevel',
@@ -821,5 +880,40 @@ private class accc_ApexUtilitiesTest {
         // assert
         System.assertEquals(accc_ApexUtilities.containsInTestLog(result), true);
     } // end of testTrace
+    @isTest
+    static void testgetDMLLimitsInStringForm() {
+        //assign
+        // act
+        // assert
+        System.assertEquals(true, accc_ApexUtilities.getDMLLimitsInStringForm() != null);
+    }// end of testgetDMLLimitsInStringForm
+    @isTest
+    static void testconvertListCollectionIntoString () {
+        List<String> operationIds = new List<String> {
+        };
+        List<String> expectedStrings = new List<String> {
+        };
+        // assert
+        for (String item : expectedStrings) {
+            System.assertEquals(item,
+                                accc_ApexUtilities.convertListCollectionIntoString(operationIds, item.length() + 1, accc_ApexConstants.CommaDelimiter)
+                               );
+            System.assertEquals(item,
+                                accc_ApexUtilities.convertListCollectionIntoString(operationIds, item.length() + 1, null)
+                               );
+            System.assertEquals(expectedStrings[0],
+                                accc_ApexUtilities.convertListCollectionIntoString(operationIds, -1, null)
+                               );
+        }
+        System.assertEquals(accc_ApexConstants.EmptyString,
+                            accc_ApexUtilities.convertListCollectionIntoString(null, 1, null)
+                           );
+        System.assertEquals(accc_ApexConstants.EmptyString,
+                            accc_ApexUtilities.convertListCollectionIntoString(new List<String>(), 1, null)
+                           );
+        System.assertEquals(accc_ApexConstants.EmptyString,
+                            accc_ApexUtilities.convertListCollectionIntoString(new List<String> {accc_ApexConstants.EmptyString}, 1000, null)
+                           );
+    }// end of testconvertListCollectionIntoString
     
 } // end of accc_ApexUtilitiesTest

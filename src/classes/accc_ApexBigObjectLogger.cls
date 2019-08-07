@@ -91,7 +91,7 @@ global virtual without sharing class accc_ApexBigObjectLogger extends accc_ApexO
 
 			// if all went well, we have the data sent to the custom object
 			if ( sendToLogger && null != entries ) {
-				// now, we have to  convert/translate to new entries (right now this is 2(O(n) in perf).
+				// now, we have to  convert/translate to new entries (right now this is 2(O(n)) in perf!!.
 				// Perhaps, another iteration/refactoring this will be changed
 				List<accc_PlatformEventDAOLog> daoBO = accc_MessageTransformation.translateFromAppLog(entries);
 				List<accc_Org_Events__b> bigObjects = accc_PlatformEventDAOLog.mapFrom(daoBO);
@@ -118,8 +118,8 @@ global virtual without sharing class accc_ApexBigObjectLogger extends accc_ApexO
 	@TestVisible
 	protected virtual accc_SObjectBaseWriter getWriter(List<SObject> entries) {
 		return  new accc_SyncAsyncWriter(entries,
-		                                 false,// Is NOT Delete
-		                                 false,// Is Synchronous Only (garnfathered in)
+		                                 false,// Do NOT Delete these items (upsert)
+		                                 false,// Is Synchronous Only (grandfathered in)
 		                                 true, // Is Big Object
 		                                 true  // Force Async
 		                                );
