@@ -65,7 +65,6 @@
     <testClassName>accc_PlatformEventTestServiceHelper</testClassName>
     <testClassName>accc_PlatformEvtBuilderTest</testClassName>
     <testClassName>accc_PlatformEvtMdtDataModelTest</testClassName>
-    <testClassName>accc_PlatformEvtUtilitiesTest</testClassName>
     <testClassName>accc_QueableBigObjectsTest</testClassName>
     <testClassName>accc_QueableSObjectsTest</testClassName>
     <testClassName>accc_SendPlatformEventNotificationTest</testClassName>
