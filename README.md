@@ -30,14 +30,14 @@ All code, files and objects related to Apex Cross-Cutting Concerns are prefixed 
 
 There are **TWO** repos now. One is the older version which does not have the Platform Events. The newer one incorporates Platform Events and Change Data Capture (CDC) into the cross-cutting concerns.
 
-Use the deploy/install select the button below to install the **newer version**
+Use the button below to install the **newer version** (i.e. with Platform Events)
 
 <a href="https://githubsfdeploy.herokuapp.com?owner=bjanderson70&repo=sf-cross-cutting-concerns&ref=merge-pe">
   <img alt="Deploy to Salesforce"
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
-Use the deploy/install select the button below to install the **older version**
+Use the button below to install the **older version**
 
 
 <a href="https://githubsfdeploy.herokuapp.com/app/githubdeploy/bjanderson70/sf-cross-cutting-concerns">
