@@ -39,6 +39,9 @@ public virtual without sharing class accc_SObjectBaseWriter implements  Database
 	//
 	// Data Members
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@TestVisible
+	static final String EXCEPTION_MESG_FOR_TEST = 'accc_SObjectBaseWriter caused Exception';
 
 	@TestVisible
 	private List<SObject> m_entries;
@@ -168,7 +171,7 @@ public virtual without sharing class accc_SObjectBaseWriter implements  Database
 			if (Test.isRunningTest()) {
 				// testing -- cause an exception
 				if ( accc_SObjectBaseWriter.m_testToCaseException) {
-					throw new accc_ApexApplicationException('accc_SObjectBaseWriter caused Exception');
+					throw new accc_ApexApplicationException(EXCEPTION_MESG_FOR_TEST);
 				}
 			}
 			// perform the sobject action ( add/remove) and process errors, if any

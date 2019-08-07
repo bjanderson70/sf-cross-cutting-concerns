@@ -108,7 +108,7 @@ public virtual without sharing class accc_DefaultProcessLogHandler  extends accc
 			List<String> fillers = new String[] { this.handlerName(),  results };
 			result = String.format(placeholder, fillers);
 
-			accc_PlatformEventLogger.myInstance().log(result);
+			accc_ApexUtilities.log(result);
 			List<String> items = new List<String>();
 
 			if ( data != null ) {
@@ -118,12 +118,12 @@ public virtual without sharing class accc_DefaultProcessLogHandler  extends accc
 				}
 				result = String.join(items, '\n++++++++++++++++\n');
 			}
-			accc_PlatformEventLogger.myInstance().log(result);
+			accc_ApexUtilities.log(result);
 
 		} catch (Exception excp) {
 			this.caughtException = excp;
 			result = excp.getMessage();
-			accc_PlatformEventLogger.myInstance().log('accc_DefaultProcessStoreHandler - Exception: ' + result);
+			accc_ApexUtilities.log(excp);
 		}
 
 		return result;

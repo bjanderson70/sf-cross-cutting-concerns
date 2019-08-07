@@ -101,8 +101,9 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 		List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData = new List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC>();
 		// holds alert information
 		List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theAlerts = new List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC>();
-
-
+		//
+		// get some event trigger information
+		//
 		integer retryCount = attributes.retryCount(),
 		        currentRetries = EventBus.TriggerContext.currentContext().retries;
 
@@ -131,7 +132,7 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 				throw new accc_PlatformEventException(this.formatRetryMessage('Consumer: Exceeded Platform Event Retries {0} - Max is 9', currentRetries));
 			}
 		} catch ( EventBus.RetryableException retryException ) {
-			accc_PlatformEventLogger.myInstance().log(retryException);
+			accc_ApexUtilities.log(retryException);
 			super.retryRequired = true;
 
 			// we got another exception, save
@@ -165,7 +166,7 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 			                    , theAlerts,
 			                    currentRetries);
 		}
-
+ 
 		return state;
 	} // end of childProcess
 	/**
@@ -174,7 +175,9 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 	 *  1) Save data for audit
 	 *  2) consume the event (whatever that means to the user)
 	 *  3) record good state
-	 *  4) return state
+	 *  4) save replayIds and operation Ids
+	 *  5) Store information
+	 *  6) return state
 	 * @param collectionOfEvents the event colection
 	 * @param handlers the handlers (log, error, success)
 	 * @param attributes platform event attributes
@@ -199,25 +202,48 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 		if ( super.theException != null ) {
 			errResult.add(new accc_DefaultPlatformEvent.PlatformEvtResultPOAC(new accc_DefaultPlatformEvent.ErrorResultPOAC(StatusCode.INVALID_STATUS, super.theException.getMessage())));
 		}
-		// child should override for desired behavior
+		// here we do some house-keeping so the child does not have to
+		this.preludeBeforeChildOverridingConsumption(collectionOfEvents, theLogData);
+		// child SHOULD OVERRIDE for desired behavior
 		state = this.consumePlatformEvent( collectionOfEvents
 		                                   , handlers
 		                                   , attributes
 		                                   , errResult
 		                                   , theLogData);
+										   
 		// record process of save result
 		super.addInstrumentation(super.willInstrument,
 		                         new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: consumePlatformEvent Processed')
 		                         , theLogData);
-
+ 
 		// did the child process finish successfully.
-
 		if ( state == true ) {
+			// update check point
+			super.updateCheckPoint();
+			// log success
 			super.logSuccess(handlers, theData, attributes);
 		}
 		return state;
 	} // end of consumeCanonicalForm
-
+	
+	/**
+	* @description This method is called BEFORE the child performs any override. This allows
+	* us to capture the replayIds
+	* @author Bill Anderson 
+	* @param List<SObject> collectionOfEvents
+	* @param List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData
+	* @return void
+	*/
+	protected void preludeBeforeChildOverridingConsumption(List<SObject> collectionOfEvents
+	        , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData)
+	{
+		// set the replay ids -- done in parent
+		// super.setReplayIds(collectionOfEvents);
+		// record process of save result
+		super.addInstrumentation(super.willInstrument,
+		                         new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: preludeBeforeChildOverridingConsumption')
+		                         , theLogData);
+	} // end of preludeBeforeChildOverridingConsumption
 	/**
 	 * @description child decide how to consume; child should throw EventBus.RetryableException if the handler
 	 * needs to be called again.
@@ -234,7 +260,11 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 	        , accc_PlatformEventAttrs attributes
 	        , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult
 	        , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData) {
-		// record process of save result
+
+		// if we are here , we handled the events; 
+		// NOTE, Children SHOULD OVERRIDE this method and perform consumption of the event
+
+		// record process of save result -- LEAVE this in for testing
 		super.addInstrumentation(super.willInstrument,
 		                         new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: consumePlatformEvent result=true')
 		                         , theLogData);
@@ -347,7 +377,7 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 			// allow the children to do any other type of cleanup
 			this.handleCompletion(collectionOfEvents, state, errResult, theData, theLogData, attributes );
 		} catch (Exception excp) {
-			accc_PlatformEventLogger.myInstance().log('accc_DefaultPEConsumer - Exception: ' + excp.getMessage());
+			accc_ApexUtilities.log(excp);
 			super.theException = excp;
 		}
 

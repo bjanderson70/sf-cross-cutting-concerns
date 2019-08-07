@@ -30,25 +30,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Bill Anderson
- * @description Platform Event Logger Tester (Singleton for the public; not so for protected/children)
+ * @description Platform Event Logger Tester (Singleton for the public; not so for protected/children).
+ * Gradually, merging into accc
  * @group Test Layer
  */
 @isTest
 private  class accc_PlatformEventLoggerTest {
-	@isTest
-	static void testlog() {
-		accc_PlatformEventLogger.myInstance().log('test me');
-		System.assertEquals( true, accc_PlatformEventLogger.myInstance().inLog('test me'));
-		accc_PlatformEventLogger.m_logInformation.clear();
-		accc_PlatformEventLogger.myInstance().log((String)null);
-		System.assertEquals( accc_PlatformEventLogger.m_logInformation.size(), 1);
-	}
+	 
 	@isTest
 	static void testlogWithException() {
 		accc_PlatformEventException excp = new accc_PlatformEventException('test me');
 
 		accc_PlatformEventLogger.myInstance().log(excp);
-		System.assertEquals( true, accc_PlatformEventLogger.myInstance().inLog('test me'));
+		System.assertEquals( true, accc_ApexUtilities.containsInTestLog('test me'));
 		accc_PlatformEventLogger.m_logInformation.clear();
 		accc_PlatformEventLogger.myInstance().log((Exception)null);
 		System.assertEquals(true, accc_PlatformEventLogger.m_logInformation.size() == 0);
@@ -57,23 +51,17 @@ private  class accc_PlatformEventLoggerTest {
 	@isTest
 	static void testinLog() {
 		accc_PlatformEventLogger.myInstance().log('test me');
-		System.assertEquals( true, accc_PlatformEventLogger.myInstance().inLog('test me'));
+		System.assertEquals( true, accc_ApexUtilities.containsInTestLog('test me'));
 		accc_PlatformEventLogger.m_logInformation.clear();
 		accc_PlatformEventLogger.myInstance().log((String)null);
-		System.assertEquals( accc_PlatformEventLogger.myInstance().inLog(null), false);
+		System.assertEquals(true, string.isBlank(accc_PlatformEventLogger.myInstance().getInLog()));
 	}
 	@isTest
 	static void testlogAsPlatformEvent() {
 		//assign/act
-		accc_PlatformEventLogger.myInstance().logAsPlatformEvent(LoggingLevel.DEBUG, 'test');
+		accc_PlatformEventLogger.myInstance().log( 'test');
 		//assert
 		System.assertEquals( true, accc_PlatformEventLogger.myInstance().getInLog().contains('test'));
 	}
 
-	@isTest
-	static void testusingACCC(){
-		integer expected = Database.countQuery(accc_PlatformEventLogger.CHECK_FOR_ACCC);
-		//assert
-		System.assertEquals( expected > 0, accc_PlatformEventLogger.usingACCC());
-	}
 } // end of accc_PlatformEventLoggerTest

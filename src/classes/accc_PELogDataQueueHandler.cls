@@ -33,17 +33,10 @@
  * @description Platform Event queuable to insert or delete into/from BO
  * @group Data
  */
-public class accc_PELogDataQueueHandler implements Queueable, Database.RaisesPlatformEvents {
+public class accc_PELogDataQueueHandler extends accc_QueableBigObjects {
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
-
-	@TestVisible
-	private List<accc_Org_Events__b> m_entries;
-	@TestVisible
-	private Boolean m_removeAction = false;
-	@TestVisible
-	private static Boolean m_forceException = false;
 
 	/////////////////////////////////////////////////////////////////////////
 	// Ctors
@@ -55,8 +48,7 @@ public class accc_PELogDataQueueHandler implements Queueable, Database.RaisesPla
 	* @param entries data entries
 	*/
 	public accc_PELogDataQueueHandler(List<accc_PlatformEventDAOLog> entries) {
-
-		this(entries, false);
+		super(accc_PlatformEventDAOLog.mapFrom(entries), false);
 	}
 	/**
 	* @description ctor to insert/or remove items from big object
@@ -65,8 +57,7 @@ public class accc_PELogDataQueueHandler implements Queueable, Database.RaisesPla
 	*
 	*/
 	public accc_PELogDataQueueHandler(List<accc_Org_Events__b> entries) {
-		this(entries, false);
-
+		super(entries, false);
 	}
 	/**
 	 * @description ctor to insert/or remove items from big object
@@ -76,88 +67,27 @@ public class accc_PELogDataQueueHandler implements Queueable, Database.RaisesPla
 	 *
 	 */
 	public accc_PELogDataQueueHandler(List<accc_PlatformEventDAOLog> entries, boolean remove) {
-
-		this.m_entries = accc_PlatformEventDAOLog.mapFrom(entries);
-		this.m_removeAction = remove;
+		super(accc_PlatformEventDAOLog.mapFrom(entries), remove);
 	}
 	/**
 	* @description ctor to insert/or remove items from big object
 	*
 	* @param entries data entries
-	* @param remove tru if to remove data; otherwise insert
+	* @param remove true if to remove data; otherwise insert
 	*
 	*/
 	public accc_PELogDataQueueHandler(List<accc_Org_Events__b> entries, boolean remove) {
-		this.m_entries = entries;
-		this.m_removeAction = remove;
+		super(entries, remove);
 	}
 	/////////////////////////////////////////////////////////////////////////
-	// Public Methods
+	// Private Methods
 	/////////////////////////////////////////////////////////////////////////
 
-	/*
-	* Here we insert the event data big object records,
-	* or log an error if insertion fails.
+	/**
+	* @description this is redundant ; used for testing
+	* @author Bill Anderson 
+	* @return List<Database.SaveResult>
 	*/
-	public void execute(QueueableContext context) {
-
-		if ( this.m_entries == null || this.m_entries.size() == 0 ) {
-			return;
-		}
-		this.process();
-
-	} // end of execute
-	/**
-	 * @description process the db operation
-	 */
-	@TestVisible
-	private void process() {
-		try {
-			//***************************
-			// used for testing
-			//***************************
-			if ( Test.isRunningTest() &&
-			        accc_PELogDataQueueHandler.m_forceException == true ) {
-				throw new accc_PlatformEventException('accc_PELogDataQueueHandler exception');
-			}
-
-			accc_GenericDbResultHandler result = this.performDatabaseOperation();
-
-			if ( result.hasErrors() ) {
-				result.processErrors();
-			}
-
-		} catch (Exception excp) {
-			// Exception occurred, output the exception message
-			accc_PlatformEventLogger.myInstance().log(excp);
-		}
-
-	} // end of process
-	/**
-	 * @description perform the db op
-	 * @return accc_GenericDbResultHandler, db handler
-	 */
-	@TestVisible
-	private accc_GenericDbResultHandler  performDatabaseOperation() {
-		accc_GenericDbResultHandler result = null;
-
-		// if NOT TEST
-		if ( !Test.isRunningTest() ) {
-			if ( this.m_removeAction == false ) {
-				// We have to use insertImmediate() to insert big object records.
-				result = new accc_GenericDbResultHandler( Database.insertImmediate(this.m_entries));
-			} else {
-				result = new accc_GenericDbResultHandler(  Database.deleteImmediate(this.m_entries));
-			}
-		} else {
-			// ***************** FOR TESTTING *****************
-			// SIMULATING RESULTS
-			result = new accc_GenericDbResultHandler(accc_PELogDataQueueHandler.getTestResultsForBigObject());
-		}
-
-		return result;
-	} // end of performDatabaseOperation
-
 	@TestVisible
 	private static List<Database.SaveResult> getTestResultsForBigObject() {
 		List<Database.SaveResult> results = null;
@@ -173,5 +103,4 @@ public class accc_PELogDataQueueHandler implements Queueable, Database.RaisesPla
 		return results;
 
 	}// end of getTestResultsForBigObject
-
 } // end of accc_PELogDataQueueHandler

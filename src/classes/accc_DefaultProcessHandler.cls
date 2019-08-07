@@ -207,10 +207,10 @@ public virtual without sharing class accc_DefaultProcessHandler implements accc_
 
 		} catch (Exception excp) {
 			this.caughtException = new accc_PlatformEventException(excp);
-			accc_PlatformEventLogger.myInstance().log('accc_DefaultProcessHandler - Exception: ' + excp.getMessage());
+			accc_ApexUtilities.log(excp);
 			throw this.caughtException;
 		}
-		accc_PlatformEventLogger.myInstance().log(result);
+		accc_ApexUtilities.log(result);
 
 		return result;
 	} // end of childProcess

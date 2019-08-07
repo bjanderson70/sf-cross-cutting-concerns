@@ -320,7 +320,7 @@ public virtual without sharing class accc_PlatformEvtMdtDataModel {
 			}
 		} catch (Exception excp) {
 			// process exception
-			accc_PlatformEventLogger.myInstance().log('+++ EXCEPTION +++ accc_PlatformEvtMdtDataModel.getInformationByLookup: ' + excp.getMessage());
+			accc_ApexUtilities.log('+++ EXCEPTION +++ accc_PlatformEvtMdtDataModel.getInformationByLookup: ' + excp.getMessage());
 		}
 
 		return result;

@@ -101,7 +101,7 @@ public with sharing class accc_SendPlatformEventNotification implements Queueabl
 
 		try {
 
-			accc_PlatformEventLogger.myInstance().log(
+			accc_ApexUtilities.log(
 			    '++++ In accc_SendPlatformEventNotification.process : \n' +
 			    '        +++++ size of entires      : ' + this.m_entries.size() + '\n' +
 			    '        +++++ getDMLStatements     : '	+ Limits.getDMLStatements() + '\n' +
@@ -125,11 +125,11 @@ public with sharing class accc_SendPlatformEventNotification implements Queueabl
 			// result of process
 			this.m_delivered = model.process(this.m_entries);
 			// [6] process/publish the event (returns true, if processed successfully)
-			accc_PlatformEventLogger.myInstance().log('++++ accc_SendPlatformEventNotification.process - result :' + this.m_delivered);
+			accc_ApexUtilities.log('++++ accc_SendPlatformEventNotification.process - result :' + this.m_delivered);
 
 		} catch (Exception excp) {
 			// Exception occurred, output the exception message
-			accc_PlatformEventLogger.myInstance().log(excp);
+			accc_ApexUtilities.log(excp);
 		}
 
 

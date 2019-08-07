@@ -119,7 +119,7 @@ public with sharing class accc_DefaultProcessStoreHandler  extends accc_DefaultP
 		List<String> fillers = new String[] { this.handlerName(),  results };
 		String result = String.format(placeholder, fillers);
 
-		accc_PlatformEventLogger.myInstance().log(result);
+		accc_ApexUtilities.log(result);
 		// reset our exception
 		this.caughtException = null;
 
@@ -137,7 +137,7 @@ public with sharing class accc_DefaultProcessStoreHandler  extends accc_DefaultP
 		} catch (Exception excp) {
 			this.caughtException = excp;
 			result = excp.getMessage();
-			accc_PlatformEventLogger.myInstance().log('accc_DefaultProcessStoreHandler - Exception: ' + result);
+			accc_ApexUtilities.log(excp);
 		}
 
 		return result;

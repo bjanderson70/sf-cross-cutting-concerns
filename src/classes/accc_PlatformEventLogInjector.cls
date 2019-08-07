@@ -105,11 +105,11 @@ public class accc_PlatformEventLogInjector {
 
 			// accc_PELogDataQueueHandler is an asynchronous queuable Apex class
 			if ( handler != null ) {
-				accc_PlatformEventLogger.myInstance().log('+++ accc_PELogDataQueueHandler.processAction :' + this.m_entries.size());
+				accc_Apexutilities.log('+++ accc_PELogDataQueueHandler.processAction :' + this.m_entries.size());
 				System.enqueueJob(handler);
 			}
 		} catch (Exception excp) {
-			accc_PlatformEventLogger.myInstance().log('+++ accc_PlatformEventLogInjector Exception: ' + excp.getMessage() + '\n=====' + excp.getStackTraceString() );
+			accc_Apexutilities.log('+++ accc_PlatformEventLogInjector Exception: ' + excp.getMessage() + '\n=====' + excp.getStackTraceString() );
 			throw new accc_PlatformEventLogInjectorException(excp.getMessage());
 
 		}

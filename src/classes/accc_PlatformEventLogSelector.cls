@@ -108,7 +108,7 @@ public class accc_PlatformEventLogSelector {
 
 		if ( !Test.isRunningTest() ) {
 			items = Database.query(String.escapeSingleQuotes(query));
-			accc_PlatformEventLogger.myInstance().log('++++++++ getBigObjectInformation.query=' + query);
+			accc_ApexUtilities.log('++++++++ getBigObjectInformation.query=' + query);
 
 		} else {
 			/*************************************************************

@@ -49,9 +49,7 @@ public virtual without sharing class accc_PlatformEventLogger {
 	static List<String> m_logInformation = new List<String>();
 	@TestVisible
 	static accc_PlatformEventLogger m_instance ;
-	// are we using the apex cross-cutting -concerns
-	@TestVisible
-	static integer m_AcccCount = -1;
+
 
 	/**
 	 * @description static initialization
@@ -71,12 +69,7 @@ public virtual without sharing class accc_PlatformEventLogger {
 	 * @param message message to send out
 	 */
 	public virtual void log(LoggingLevel level, String message) {
-		// Integration w/ ACCC - need to figure a better way to integrate.
-		// Probably, integration via Factory reading from CMDT ...
-		//
-		//accc_ApexUtilities.log(message, level);
-		//
-		accc_PlatformEventLogger.myInstance().logToSystem(level, message);
+		this.logToSystem(message);
 	} // end of log
 	/**
 	 * @description format log information (overridable)
@@ -95,10 +88,7 @@ public virtual without sharing class accc_PlatformEventLogger {
 	public virtual void log(String message) {
 		// Integration w/ ACCC - need to figure a better way to integrate
 		//
-		//accc_ApexUtilities.log(message);
-		//
-
-		accc_PlatformEventLogger.myInstance().log(LoggingLevel.INFO, message);
+		this.logToSystem(message);
 	} // end of log
 	/**
 	 * @description log exception
@@ -106,12 +96,8 @@ public virtual without sharing class accc_PlatformEventLogger {
 	 * @param message exception message to send out
 	 */
 	public virtual void log(Exception message) {
-		if ( message != null ) {
-			// Integration w/ ACCC - need to figure a better way to integrate
-			//
-			//accc_ApexUtilities.log(message);
-			//
-			accc_PlatformEventLogger.myInstance().log(LoggingLevel.ERROR, message.getMessage());
+		if ( message != null ){
+			this.logToSystem(message.getMessage());
 		}
 	} // end of log
 
@@ -122,17 +108,7 @@ public virtual without sharing class accc_PlatformEventLogger {
 	 * @param message message to send out
 	 */
 	public virtual void logAsPlatformEvent(LoggingLevel level, String message) {
-		String msg = accc_PlatformEventLogger.myInstance().format(level, message);
-
-		if (  Test.isRunningTest() ) {
-			accc_PlatformEventLogger.m_logInformation.add(msg);
-		}
-		// using accc
-		if ( !usingACCC() ) {
-			System.debug(level, msg);
-		} else {
-			accc_PlatformEventLogger.myInstance().log(level, message);
-		}
+		this.logToSystem(message);
 	} // end of logAsPlatformEvent
 
 	/////////////////////////////////////////////////////////////////////////
@@ -149,15 +125,11 @@ public virtual without sharing class accc_PlatformEventLogger {
 	// Protected Ctors
 	/////////////////////////////////////////////////////////////////////////
 	/**
-	* @description ctor  Allow children to redefine
+	* @description ctor 
 	*
 	*/
 	protected accc_PlatformEventLogger() {
-		// have we checked -- only once
-		if ( accc_PlatformEventLogger.m_AcccCount == -1 ) {
-			// If you integrate with the cross-cutting-concerns ...
-			accc_PlatformEventLogger.m_AcccCount = (integer) Database.countQuery(CHECK_FOR_ACCC);
-		}
+
 	} // end of ctor
 
 	/////////////////////////////////////////////////////////////////////////
@@ -182,43 +154,18 @@ public virtual without sharing class accc_PlatformEventLogger {
 		return String.format(PLATFORM_FORMAT, fillers);
 
 	} // end of formatForOutput
-	/**
-	 * @description check to see if we are using ACCC unmanaged package
-	 *
-	 * @return true, if we are using ACCC unmanaged package
-	 */
-	@TestVisible
-	private static boolean usingACCC() {
-		return accc_PlatformEventLogger.m_AcccCount > 0;
-	} // end of usingACCC
-	/**
-	 * @description for searching in the collection for a message
-	 *
-	 * @param value string value
-	 *
-	 * @return true if value is in collection of log messages
-	 */
-	@TestVisible
-	private  boolean inLog(string value) {
-		if ( value != null && Test.isRunningTest() ) {
-			return accc_PlatformEventLogger.myInstance().getInLog().contains(value);
-		}
-		return false;
-	}
+		
 	/**
 	 * @description log information
 	 *
-	 * @param level Logging level
 	 * @param message message to send out
 	 */
 	@TestVisible
-	private  void logToSystem(LoggingLevel level, String message) {
-		String msg =  accc_PlatformEventLogger.myInstance().format(level, message);
-
-		if (  Test.isRunningTest() ) {
-			accc_PlatformEventLogger.m_logInformation.add(msg);
+	private  void logToSystem(String message) {
+		accc_ApexUtilities.log(message);
+		if ( message != null ){
+			accc_PlatformEventLogger.m_logInformation.add(message);
 		}
-		System.debug(msg);
 	} // end of logToSystem
 	/**
 	 * @description getting the log container

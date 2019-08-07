@@ -49,6 +49,7 @@ private class accc_DefaultPlatformEventTest {
 		system.assertEquals(true, dpe.canLogError == false);
 		system.assertEquals(true, dpe.serializeEvent == true);
 		system.assertEquals(true, dpe.willInstrument == false);
+		system.assertEquals(true, dpe.getLastReplayId() == null);
 	}
 	@isTest
 	static void testCtorWithEventName() {
@@ -111,6 +112,7 @@ private class accc_DefaultPlatformEventTest {
 		accc_IProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
 		accc_PlatformEventAttrs attributes = new accc_PlatformEventAttrs ();
 		accc_DefaultPlatformEvent dpe = new accc_DefaultPlatformEvent();
+		accc_DefaultPlatformEvent.DO_NOT_SET_CHECKPOINT = true;
 		Boolean exceptionFired = false;
 		try {
 			// act
@@ -122,6 +124,10 @@ private class accc_DefaultPlatformEventTest {
 		// assert
 		system.assertEquals(true, exceptionFired == false);
 		system.assertEquals(true, result);
+		system.assertEquals(true, dpe.getLastReplayId() != null);
+		system.assertEquals(true, dpe.updateCheckPoint());
+		system.assertEquals(true, dpe.operationIds.size()==1);
+		
 	} // end of testprocessWithValidValues
 
 	@isTest

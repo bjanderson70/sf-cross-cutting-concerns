@@ -179,6 +179,8 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
 	protected virtual List<Database.SaveResult> publish(List<SObject> events) {
 		// Call method to publish events
 		return EventBus.publish(events);
+		// // set our operation ids from the publish event results
+		// super.setOperationIds(results);
 
 	} // end of publish
 
@@ -227,8 +229,8 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
 			Integer inx = 0;
 			// Inspect publishing result for each event
 			for (Database.SaveResult sr : results) {
-				// set the replay ids
-				this.setReplayIds(collectionOfEvents[inx++]);
+				// set the replay ids done in parent
+				// this.setReplayIds(collectionOfEvents[inx++]);
 				// set the operation ids
 				this.setOperationIds(sr);
 				// if error
@@ -353,7 +355,7 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
 
 		try {
 
-			accc_PlatformEventLogger.myInstance().log('++++' + this.toString());
+			accc_ApexUtilities.log('++++' + this.toString());
 
 			// Here we log the successful state by calling it's handler
 			if ( theData.size() > 0 && super.canLogSuccess && state == true ) {
@@ -401,7 +403,7 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
 			this.handleCompletion(collectionOfEvents, state, errResult, theData, theLogData, attributes );
 
 		} catch (Exception excp) {
-			accc_PlatformEventLogger.myInstance().log('accc_DefaultPEPublisher - Exception: ' + excp.getMessage());
+			accc_ApexUtilities.log(excp);
 			// if we are here, something occur with one of the handlers
 			// save it for the callee
 			super.theException = excp;

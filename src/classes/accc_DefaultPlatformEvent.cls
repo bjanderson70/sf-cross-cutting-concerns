@@ -40,7 +40,10 @@
  * NOTE: 'accc_DefaultPEPublisher' and 'accc_DefaultPEConsumer' define the process but DO NOT define the handlers!
  *
  * Ideally, define custom metadata to seed the correct object/class (done via a builder). This way
- * one can vary the behavior of the platform events
+ * one can vary the behavior of the platform events.
+ *
+ *  When Testing just this class, EventBus.publish() is NOT used. This, we have to simulate
+ *  the ReplayId; during NORMAL process of the Consumer/Publisher classes, this is not needed
  *
  * @group Common Layer
  */
@@ -49,7 +52,12 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	/////////////////////////////////////////////////////////////////////////
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
-
+	public static final String REPLAY_ID_INDEX_NAME = 'ReplayId';
+	@TestVisible
+	static final String EXPECTED_REPLAY_ID_FOR_TESTING = '28531';
+	@TestVisible
+	static Boolean DO_NOT_SET_CHECKPOINT = false;
+	
 	/**
 	 * @description Error information for processed events
 	 */
@@ -347,7 +355,18 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 */
 	@TestVisible
 	public List<String> operationIds {
-		get { return this.m_opIds;}
+		get { 
+			// special test condition : this class does not use EventBus.publish when processing
+			// so we simulate
+			if ( Test.isRunningTest() 
+					&& DO_NOT_SET_CHECKPOINT==true ){
+				if (  this.m_opIds == null ) {
+					this.m_opIds  = new List<String>();
+				}
+				this.m_opIds.add(EXPECTED_REPLAY_ID_FOR_TESTING);
+			}
+			return this.m_opIds;
+		}
 		protected set { this.m_opIds = value;}
 	} // end of operationIds
 
@@ -448,6 +467,9 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 		}
 		// is the event active, then call the child process
 		if ( this.isEventActive ) {
+			// let's set out replay ids prior to child invocation
+			this.setReplayIds(parameter);
+			// now call child process (CHILDREN SHOULD OVERRIDE -- may make ABSTRACT to Force)
 			processResult = this.childProcess(parameter, handlers, attributes);
 		}
 		return processResult;
@@ -471,12 +493,18 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 		if ( this.replayIds == null ) {
 			this.replayIds  = new List<String>();
 		}
+
 		String replayId = null;
 		// event getting the replay id
 		try {
-			replayId = (String)event.get('ReplayId');
+			replayId = (String)event.get(REPLAY_ID_INDEX_NAME);
 			if ( replayId != null ) {
 				this.replayIds.add(replayId);
+			} else if ( Test.isRunningTest() ){
+				// when testing and we DO NOT use the trigger to insert
+				// then the system did NOT process via the regular channel;
+				// thus, NO REPLAY ID will be generated ( so we simulate it) :-(  )
+				this.replayIds.add(EXPECTED_REPLAY_ID_FOR_TESTING);
 			}
 		} catch (Exception excp) {
 			// this is NOT an event type ( ends in __e)
@@ -499,7 +527,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 		if ( events != null
 		        && accc_ApexUtilities.validEventName(accc_ApexUtilities.getSobjectName(events))
 		   )  {
-
+			
 			// iterate over the events getting the replay id
 			for ( SObject sobj : events) {
 				this.setReplayIds(sobj);
@@ -509,6 +537,60 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 
 	}// end of setReplayIds
 
+	/**
+	 * @description get the last replay id from the known list (if any)
+	 *
+	 * @param events collection of events that have been Published
+	 * @return last Replay Id (String)
+	 */
+	@TestVisible
+	protected String getLastReplayId() {
+		String result = null;
+		// look at list and pull last one
+		if ( this.replayIds != null )  {
+			integer lastIndex = this.replayIds.size()-1;
+			 // ensure correctness
+			if ( lastIndex >= 0 ){
+				result =this.replayIds.get(lastIndex);
+			}
+		}
+		return result;
+
+	}// end of getLastReplayId
+
+	/**
+	* @description update the last trigger event checkpoint
+	* @author Bill Anderson
+	* @return Boolean returns true, if updated with valid replay id
+	*/
+	@TestVisible
+	protected Boolean updateCheckPoint(){
+		Boolean result = true;
+		String lastReplayId = this.getLastReplayId();
+		// valid data
+		if ( string.isNotBlank(lastReplayId) ){
+			// set our new checkpoint 
+			// specal consideration for testing :-(  )
+			if ( Test.isRunningTest() ) {
+				// user wants to set checkpoint
+				if ( DO_NOT_SET_CHECKPOINT == false) {
+					// no need to fault all
+					try {
+						EventBus.TriggerContext.currentContext().setResumeCheckpoint(lastReplayId);
+					} catch (Exception excp){
+						accc_ApexUtilities.log(excp);
+					}
+				}
+			} else {
+				EventBus.TriggerContext.currentContext().setResumeCheckpoint(lastReplayId);
+			}
+			 
+		} else {
+			result = false;
+		}
+		return result;
+	} // end of updateCheckPoint
+	
 	/**
 	 * @description get the operation ids from the save result
 	 *
@@ -555,9 +637,9 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 				// reset to null, thus, the caller can retry.
 				this.operationIds = null;
 				// REPLACE as needed to log to custom object, etc.
-				accc_PlatformEventLogger.myInstance().log('++++ EXCEPTION +++++ accc_DefaultPlatformEvent.operationIds : getOperationId - error getting operation id' + excp.getMessage());
+				accc_Apexutilities.log(excp);
 			}
-		}
+		} 
 		return this.operationIds;
 	} // end of setOperationIds
 	/**
@@ -691,7 +773,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 			this.theException = excp;
 			result = false;
 			// REPLACE as needed to log to custom object, etc.
-			accc_PlatformEventLogger.myInstance().log('++++ EXCEPTION +++++ accc_DefaultPlatformEvent.callHandler : Child DID NOT handle the exception' + excp.getMessage());
+			accc_ApexUtilities.log(excp);
 		}
 		return result;
 	} // end of callHandler
@@ -752,4 +834,4 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 		return result;
 	} // end of serializeEventData
 
-} // end of accc_DefaultPlatformEvent
+} // end of accc_DefaultPlatformEvent// ensure

@@ -2,11 +2,22 @@
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
      
     <label>Accc Org Event Permission Set</label>
- 
+	 <hasActivationRequired>false</hasActivationRequired>
+	 
 	 <fieldPermissions>
         <editable>true</editable>
         <field>accc_Org_Events__b.Event_Json__c</field>
         <readable>true</readable>
     </fieldPermissions>
-	
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>accc_Org_Events__b.Operation_Ids__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>accc_Org_Events__b.Replay_Ids__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+	 
 </PermissionSet>

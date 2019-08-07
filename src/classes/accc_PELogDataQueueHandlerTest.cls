@@ -66,8 +66,8 @@ private class accc_PELogDataQueueHandlerTest {
 
 		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
 
-		System.assertEquals(0, handler.m_entries.size());
-		System.assertEquals(false, handler.m_removeAction );
+		System.assertEquals(0, handler.entries.size());
+		System.assertEquals(false, handler.actions );
 	}
 
 	@isTest
@@ -77,8 +77,8 @@ private class accc_PELogDataQueueHandlerTest {
 
 		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList, true);
 
-		System.assertEquals(0, handler.m_entries.size());
-		System.assertEquals(true, handler.m_removeAction );
+		System.assertEquals(0, handler.entries.size());
+		System.assertEquals(true, handler.actions );
 	}
 
 	@isTest
@@ -88,8 +88,8 @@ private class accc_PELogDataQueueHandlerTest {
 
 		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
 		handler.execute(null);
-		System.assertEquals(0, handler.m_entries.size());
-		System.assertEquals(false, handler.m_removeAction );
+		System.assertEquals(0, handler.entries.size());
+		System.assertEquals(false, handler.actions );
 	}
 
 	@isTest
@@ -99,8 +99,8 @@ private class accc_PELogDataQueueHandlerTest {
 
 		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
 
-		System.assertEquals(daoList.size(), handler.m_entries.size());
-		System.assertEquals(false, handler.m_removeAction );
+		System.assertEquals(daoList.size(), handler.entries.size());
+		System.assertEquals(false, handler.actions );
 	}
 
 	@isTest
@@ -109,14 +109,14 @@ private class accc_PELogDataQueueHandlerTest {
 		List<accc_PlatformEventDAOLog> daoList = accc_PELogDataQueueHandlerTest.getPEData();
 
 		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
-		accc_PELogDataQueueHandler.m_forceException = true;
+		accc_SObjectBaseWriter.m_testToCaseException = true;
 		// startTest/stopTest block to force async processes
 		//   to run in the test.
 		Test.startTest();
 		// act
 		System.enqueueJob(handler);
 		Test.stopTest();
-		System.assertEquals(true, accc_PlatformEventLogger.myInstance().inLog('accc_PELogDataQueueHandler'));
+		System.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_SObjectBaseWriter.EXCEPTION_MESG_FOR_TEST));
 
 	}
 
@@ -127,8 +127,8 @@ private class accc_PELogDataQueueHandlerTest {
 
 		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
 
-		System.assertEquals(daoList.size(), handler.m_entries.size());
-		System.assertEquals(false, handler.m_removeAction );
+		System.assertEquals(daoList.size(), handler.entries.size());
+		System.assertEquals(false, handler.actions );
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
