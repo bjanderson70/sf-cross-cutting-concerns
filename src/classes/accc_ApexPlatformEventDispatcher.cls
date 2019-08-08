@@ -36,11 +36,45 @@
  */
 public without sharing class accc_ApexPlatformEventDispatcher {
 
-/**
- * @description run the platform event handler
- *
- * @param accc_ITriggerHandler apex platform event handler
- */
+    /**
+     * @description The type of event (PE/CDC) we will use to lookup in the Trigger Handler.
+     * The code below is commented out if you are not incorporating the trigger handler found
+     * here ( https://github.com/bjanderson70/sf-trigger-handling )
+     *
+     * @author Bill Anderson | 8/8/2019
+     * @param Type handlerType
+     * @return void
+     */
+    public static void run(Type handlerType) {
+        Boolean result = false;
+        // simple check to ensure the type is not null
+        if ( handlerType != null ) {
+            //
+            // comment out if you have the Trigger Handler Framework
+            //
+            /*
+             accc_TriggerMediator triggerMediator = new accc_TriggerMediator(handlerType);
+             */
+            // keep -- as this will log to an internal set during testing; otherwise, no-op
+            accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher.handlerType=' + handlerType);
+            // invoke trigger handlers related to the AfterInsert ( for events, only after insert)
+            /*
+            result = triggerMediator.execute(accc_TriggerHelperClass.TriggerState.AfterInsert);
+            */
+            // returns true if successful; false if an exception occurs and not handled
+            // keep -- as this will log to an internal set during testing; otherwise, no-op
+            accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher result=' + result);
+        } else {
+            Exception excp = new accc_PlatformEventException('accc_ApexPlatformEventDispatcher invoked with a null type');
+            accc_ApexUtilities.log(excp);
+        }
+
+    }  // end of run
+    /**
+     * @description run the platform event handler
+     *
+     * @param accc_ITriggerHandler apex platform event handler
+     */
     public static void run(accc_ITriggerHandler handler) {
         // keep -- as this will log to an internal set during testing; otherwise, no-op
         accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher handler=' + handler);
