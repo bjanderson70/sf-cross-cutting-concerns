@@ -106,6 +106,19 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>MessageId__c</fullName>
+        <description>Message Id</description>
+        <externalId>false</externalId>
+        <isFilteringDisabled>false</isFilteringDisabled>
+        <isNameField>false</isNameField>
+        <isSortingDisabled>false</isSortingDisabled>
+        <label>MessageId</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>TransactionId__c</fullName>
         <description>Transaction Id</description>
         <externalId>false</externalId>

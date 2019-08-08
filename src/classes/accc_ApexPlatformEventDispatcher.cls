@@ -36,9 +36,6 @@
  */
 public without sharing class accc_ApexPlatformEventDispatcher {
 
-    // public static void run(accc_EventBase handler){
-    //     accc_ApexPlatformEventDispatcher.run(handler);
-    // }
     /**
      * @description run the platform event handler
      *
