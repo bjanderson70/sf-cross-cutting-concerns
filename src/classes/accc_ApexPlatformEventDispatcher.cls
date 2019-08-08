@@ -36,11 +36,11 @@
  */
 public without sharing class accc_ApexPlatformEventDispatcher {
 
-    /**
-     * @description run the platform event handler
-     *
-     * @param accc_ITriggerHandler apex platform event handler
-     */
+/**
+ * @description run the platform event handler
+ *
+ * @param accc_ITriggerHandler apex platform event handler
+ */
     public static void run(accc_ITriggerHandler handler) {
         // keep -- as this will log to an internal set during testing; otherwise, no-op
         accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher handler=' + handler);
@@ -48,9 +48,9 @@ public without sharing class accc_ApexPlatformEventDispatcher {
         // valid handler (Trigger.New can be null if calling from non-trigger [testing])
         // only handle after insert for dispatching platform events
         if (handler != null
-                && Trigger.New != null
-                && Trigger.IsAfter
-                && Trigger.IsInsert) {
+            && Trigger.New != null
+            && Trigger.IsAfter
+            && Trigger.IsInsert) {
             String name = accc_ApexUtilities.getClassName(handler);
             // keep -- as this will log to an internal set during testing; otherwise, no-op
             accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher.name=' + name);

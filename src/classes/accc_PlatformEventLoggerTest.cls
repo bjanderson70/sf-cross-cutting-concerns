@@ -35,33 +35,33 @@
  * @group Test Layer
  */
 @isTest
-private  class accc_PlatformEventLoggerTest {
-	 
-	@isTest
-	static void testlogWithException() {
-		accc_PlatformEventException excp = new accc_PlatformEventException('test me');
+private class accc_PlatformEventLoggerTest {
 
-		accc_PlatformEventLogger.myInstance().log(excp);
-		System.assertEquals( true, accc_ApexUtilities.containsInTestLog('test me'));
-		accc_PlatformEventLogger.m_logInformation.clear();
-		accc_PlatformEventLogger.myInstance().log((Exception)null);
-		System.assertEquals(true, accc_PlatformEventLogger.m_logInformation.size() == 0);
-	} // end of testlogWithException
+    @isTest
+    static void testlogWithException() {
+        accc_PlatformEventException excp = new accc_PlatformEventException('test me');
 
-	@isTest
-	static void testinLog() {
-		accc_PlatformEventLogger.myInstance().log('test me');
-		System.assertEquals( true, accc_ApexUtilities.containsInTestLog('test me'));
-		accc_PlatformEventLogger.m_logInformation.clear();
-		accc_PlatformEventLogger.myInstance().log((String)null);
-		System.assertEquals(true, string.isBlank(accc_PlatformEventLogger.myInstance().getInLog()));
-	}
-	@isTest
-	static void testlogAsPlatformEvent() {
-		//assign/act
-		accc_PlatformEventLogger.myInstance().log( 'test');
-		//assert
-		System.assertEquals( true, accc_PlatformEventLogger.myInstance().getInLog().contains('test'));
-	}
+        accc_PlatformEventLogger.myInstance().log(excp);
+        System.assertEquals( true, accc_ApexUtilities.containsInTestLog('test me'));
+        accc_PlatformEventLogger.m_logInformation.clear();
+        accc_PlatformEventLogger.myInstance().log((Exception)null);
+        System.assertEquals(true, accc_PlatformEventLogger.m_logInformation.size() == 0);
+    } // end of testlogWithException
+
+    @isTest
+    static void testinLog() {
+        accc_PlatformEventLogger.myInstance().log('test me');
+        System.assertEquals( true, accc_ApexUtilities.containsInTestLog('test me'));
+        accc_PlatformEventLogger.m_logInformation.clear();
+        accc_PlatformEventLogger.myInstance().log((String)null);
+        System.assertEquals(true, string.isBlank(accc_PlatformEventLogger.myInstance().getInLog()));
+    }
+    @isTest
+    static void testlogAsPlatformEvent() {
+        //assign/act
+        accc_PlatformEventLogger.myInstance().log( 'test');
+        //assert
+        System.assertEquals( true, accc_PlatformEventLogger.myInstance().getInLog().contains('test'));
+    }
 
 } // end of accc_PlatformEventLoggerTest

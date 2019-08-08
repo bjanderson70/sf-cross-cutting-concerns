@@ -175,12 +175,17 @@ public without sharing class accc_MessageTransformation {
     public static AcccApplicationLog__c translate(ACCC_Log_Event__e datum) {
         AcccApplicationLog__c result = null;
         Id userId = UserInfo.getUserId();
-         
+
         if ( datum != null ) {
-           
+            // check the only data that is referencing a method
+            // to ensure things progress. If this gets too crazy,
+            // will create a separate method
+            if (datum.DateTime__c == null ) {
+                datum.DateTime__c = DateTime.now();
+            }
             result = new AcccApplicationLog__c(LogCode__c =  datum.Action__c,
                                                Source__c = datum.External_Id__c,
-                                               SourceFunction__c = datum.Action__c,
+                                               SourceFunction__c = datum.MessageId__c,
                                                ReferenceId__c = datum.TransactionId__c,
                                                Exception__c= datum.Exception__c,
                                                InvocationType__c= datum.Object_Name__c,
@@ -218,15 +223,15 @@ public without sharing class accc_MessageTransformation {
 
     } // end of translate
 
-     /**
-    * @description map from AcccApplicationLog__c to accc_PlatformEventDAOLog
-    * Apex does not distinguish properly (the parameter types are distinct enough) as
-    * there is no Covariance or Contravariant  in play here. Had to call, 'translateFromAppLog' 
-    * instead of 'translate'.
-    *
-    * @param entries collection of AcccApplicationLog__c
-    * @return collection of accc_PlatformEventDAOLog
-    */
+    /**
+     * @description map from AcccApplicationLog__c to accc_PlatformEventDAOLog
+     * Apex does not distinguish properly (the parameter types are distinct enough) as
+     * there is no Covariance or Contravariant  in play here. Had to call, 'translateFromAppLog'
+     * instead of 'translate'.
+     *
+     * @param entries collection of AcccApplicationLog__c
+     * @return collection of accc_PlatformEventDAOLog
+     */
     public static List<accc_PlatformEventDAOLog> translateFromAppLog(List<AcccApplicationLog__c> entries) {
         List<accc_PlatformEventDAOLog> results = new List<accc_PlatformEventDAOLog>();
         accc_PlatformEventDAOLog entry = null;
@@ -236,11 +241,11 @@ public without sharing class accc_MessageTransformation {
                 // we create a local DAO as it does much of the calculation
                 // as well as filling in whether truncated, day, month, etc.
                 entry = new accc_PlatformEventDAOLog(
-                    String.isBlank(item.Source__c) ?  'Unknown' : item.Source__c  ,
-                   // String.isBlank(item.SourceFunction__c) ?  'Create' : item.SourceFunction__c  ,
+                    String.isBlank(item.Source__c) ?  'Unknown' : item.Source__c,
+                    // String.isBlank(item.SourceFunction__c) ?  'Create' : item.SourceFunction__c  ,
                     String.isBlank(item.Message__c) ? accc_ApexConstants.EMPTY_JSON_s : item.Message__c,
                     now);
-               // entry.userId = string.isBlank(item.Username__c) ? string.isBlank(item.OwnerId) ? UserInfo.getUserId() : item.OwnerId : item.Username__c;
+                // entry.userId = string.isBlank(item.Username__c) ? string.isBlank(item.OwnerId) ? UserInfo.getUserId() : item.OwnerId : item.Username__c;
                 //entry.theException = item.Exception__c;
                 results.add(entry);
             }
