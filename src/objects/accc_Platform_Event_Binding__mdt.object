@@ -120,7 +120,7 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>evt Platform Event Binding</label>
+    <label>Accc Platform Event Binding</label>
     <listViews>
         <fullName>All</fullName>
         <columns>MasterLabel</columns>
@@ -139,6 +139,6 @@
         <label>All</label>
         <language>en_US</language>
     </listViews>
-    <pluralLabel>evt Platform Event Bindings</pluralLabel>
+    <pluralLabel>Accc Platform Event Bindings</pluralLabel>
     <visibility>Public</visibility>
 </CustomObject>
