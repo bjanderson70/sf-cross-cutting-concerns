@@ -53,6 +53,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	// Data Members
 	/////////////////////////////////////////////////////////////////////////
 	public static final String REPLAY_ID_INDEX_NAME = 'ReplayId';
+	
 	@TestVisible
 	static final String EXPECTED_REPLAY_ID_FOR_TESTING = '28531';
 	@TestVisible
@@ -205,7 +206,9 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 * @param serializeTheEvent the data should be serialize
 	 * @param isActive is the event active
 	 */
-	public accc_DefaultPlatformEvent(String theEventName, Boolean serializeTheEvent, Boolean isActive) {
+	public accc_DefaultPlatformEvent(String theEventName, 
+									 Boolean serializeTheEvent, 
+									 Boolean isActive) {
 		this.eventName = theEventName;
 		this.serializeEvent = serializeTheEvent;
 		this.isEventActive = isActive;
@@ -223,7 +226,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 		return this.isEventActive;
 	}
 	/**
-	 * @description  the event name, ('my_event__e')
+	 * @description  the event name, (ie, 'my_event__e')
 	 * @return name of the event
 	 */
 	public String handlerEventName() {
@@ -239,7 +242,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	}// end of handlerEventName
 	/**
 	 * @description any exception which may have occurred
-	 * @details [long description]
+	 *
 	 * @return  Exception
 	 */
 	public Exception handlerException() {
@@ -383,16 +386,25 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 		set { this.m_retry = value;}
 	} // end of retryRequired
 
+	/**
+	 * Can we log on success
+	 */
 	@TestVisible
 	protected Boolean canLogSuccess {
 		get { return this.m_canLogSuccess;}
 		set { this.m_canLogSuccess = value;}
 	} // end of canLogSuccess
+	/**
+	 * Can we Log Information
+	 */
 	@TestVisible
 	protected Boolean canLog {
 		get { return this.m_canLog;}
 		set { this.m_canLog = value;}
 	} // end of canLog
+	/**
+	 * Can we Log Error Information
+	 */
 	@TestVisible
 	protected Boolean canLogError {
 		get { return this.m_canLogError;}
@@ -484,7 +496,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 * @description set the replay ids. You can only set the replay Ids after you
 	 * have published the events!!
 	 *
-	 * @param event event that has been Published
+	 * @param event, event that has been Published
 	 * @return collection of Replay Ids (List<String>)
 	 */
 	@TestVisible
@@ -560,7 +572,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 
 	/**
 	* @description update the last trigger event checkpoint
-	* @author Bill Anderson
+	* 
 	* @return Boolean returns true, if updated with valid replay id
 	*/
 	@TestVisible
@@ -627,7 +639,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 			try {
 				// reset the operations ids to ensure we are getting the
 				// full list of results. As we do not know if the user first
-				// called the 'operationIds' w/ just a sing;e saved result
+				// called the 'operationIds' w/ just a single saved result
 				this.operationIds = null;
 				for (Database.SaveResult srx : results) {
 					this.setOperationIds(srx);
@@ -660,10 +672,12 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 * @return true, if successful
 	 */
 	@TestVisible
-	protected virtual boolean childProcess(List<SObject> parameter, accc_IProcessEventHandlers handlers, accc_PlatformEventAttrs attributes) {
+	protected virtual boolean childProcess(List<SObject> parameter, 
+										   accc_IProcessEventHandlers handlers, 
+										   accc_PlatformEventAttrs attributes) {
 		return true;
 
-	} // end of process
+	} // end of childProcess
 	/**
 	 * @description invoke success,  can be overridden
 	 *
@@ -672,7 +686,9 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 * @param attributes platform events attributes
 	 */
 	@TestVisible
-	protected virtual boolean logSuccess (accc_IProcessEventHandlers handler,  List<PlatformEvtResultPOAC> data, accc_PlatformEventAttrs attributes ) {
+	protected virtual boolean logSuccess (accc_IProcessEventHandlers handler, 
+										  List<PlatformEvtResultPOAC> data, 
+										  accc_PlatformEventAttrs attributes ) {
 		if ( handler != null && handler.successHandler() != null ) {
 			return this.callHandler(handler.successHandler(), data, attributes);
 		}
@@ -686,7 +702,9 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 * @param attributes platform events attributes
 	 */
 	@TestVisible
-	protected virtual boolean  errorHandler (accc_IProcessEventHandlers handler, List<PlatformEvtResultPOAC> data, accc_PlatformEventAttrs attributes ) {
+	protected virtual boolean  errorHandler (accc_IProcessEventHandlers handler, 
+											 List<PlatformEvtResultPOAC> data, 
+											 accc_PlatformEventAttrs attributes ) {
 		if ( handler != null && handler.errorHandler() != null ) {
 			return this.callHandler(handler.errorHandler(), data, attributes);
 		}
@@ -700,7 +718,9 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	* @param attributes platform events attributes
 	*/
 	@TestVisible
-	protected virtual boolean logHandler (accc_IProcessEventHandlers handler, List<PlatformEvtResultPOAC> data, accc_PlatformEventAttrs attributes ) {
+	protected virtual boolean logHandler (accc_IProcessEventHandlers handler, 
+										  List<PlatformEvtResultPOAC> data, 
+										  accc_PlatformEventAttrs attributes ) {
 		if ( handler != null && handler.logHandler() != null ) {
 			return this.callHandler(handler.logHandler(), data, attributes);
 		}
@@ -715,7 +735,9 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 * @param attributes platform events attributes
 	 */
 	@TestVisible
-	protected virtual boolean alertHandler (accc_IProcessEventHandlers handler,  List<PlatformEvtResultPOAC> data, accc_PlatformEventAttrs attributes ) {
+	protected virtual boolean alertHandler (accc_IProcessEventHandlers handler,  
+											List<PlatformEvtResultPOAC> data, 
+											accc_PlatformEventAttrs attributes ) {
 		if ( handler != null && handler.alertHandler() != null ) {
 			return this.callHandler(handler.alertHandler(), data, attributes);
 		}
@@ -729,7 +751,9 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 * @param attributes platform events attributes
 	 */
 	@TestVisible
-	protected virtual boolean storeHandler (accc_IProcessEventHandlers handler,  List<PlatformEvtResultPOAC> data, accc_PlatformEventAttrs attributes ) {
+	protected virtual boolean storeHandler (accc_IProcessEventHandlers handler,  
+											List<PlatformEvtResultPOAC> data, 
+											accc_PlatformEventAttrs attributes ) {
 		if ( handler != null && handler.storeHandler() != null ) {
 			return this.callHandler(handler.storeHandler(), data, attributes);
 		}
@@ -765,7 +789,9 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 * @param attributes platform events attributes
 	 */
 	@TestVisible
-	protected virtual  boolean callHandler (accc_IProcessEventHandler handler, List<PlatformEvtResultPOAC> data, accc_PlatformEventAttrs attributes ) {
+	protected virtual  boolean callHandler (accc_IProcessEventHandler handler, 
+											List<PlatformEvtResultPOAC> data, 
+											accc_PlatformEventAttrs attributes ) {
 		boolean result = true;
 		try {
 			handler.process(data, attributes);
@@ -788,7 +814,10 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 * @return status of result of alert
 	 */
 	@TestVisible
-	protected virtual boolean alertAddAndSend(accc_IProcessEventHandlers handler, PlatformEvtResultPOAC data, List<PlatformEvtResultPOAC> theList, accc_PlatformEventAttrs attributes ) {
+	protected virtual boolean alertAddAndSend(accc_IProcessEventHandlers handler, 
+											  PlatformEvtResultPOAC data, 
+											  List<PlatformEvtResultPOAC> theList, 
+											  accc_PlatformEventAttrs attributes ) {
 		// any work to perform
 		if ( handler == null
 		        || data == null
@@ -807,7 +836,8 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 	 * @return JSON string of the event collection
 	 */
 	@TestVisible
-	protected virtual String serializeEventData(List<PlatformEvtResultPOAC> theList, List<SObject> collectionOfEvents) {
+	protected virtual String serializeEventData(List<PlatformEvtResultPOAC> theList, 
+												List<SObject> collectionOfEvents) {
 		String result = accc_ApexConstants.EMPTY_JSON_s;
 
 		// just in case the serialization throws an exception
@@ -834,4 +864,4 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 		return result;
 	} // end of serializeEventData
 
-} // end of accc_DefaultPlatformEvent// ensure
+} // end of accc_DefaultPlatformEvent

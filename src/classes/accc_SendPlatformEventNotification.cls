@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Bill Anderson
- * @description send out a Platform Event (queuable)
- * @group Data
+ * @description send out a Platform Event via (queuable)
+ * @group Data Layer
  */
 public with sharing class accc_SendPlatformEventNotification implements Queueable {
 	/////////////////////////////////////////////////////////////////////////
@@ -54,6 +54,7 @@ public with sharing class accc_SendPlatformEventNotification implements Queueabl
 	 * @brief ctor
 	 * @description ctor
 	 *
+	 * @param entries collection of SObjects
 	 */
 	public accc_SendPlatformEventNotification(List<SObject> entries) {
 		this(entries, null, null);
@@ -62,6 +63,8 @@ public with sharing class accc_SendPlatformEventNotification implements Queueabl
 	 * @brief ctor
 	 * @description ctor
 	 *
+	 * @param entries collection of SObjects
+	 * @param environment (test, debug, production)
 	 */
 	public accc_SendPlatformEventNotification(List<SObject> entries, String environment) {
 		this(entries, null, environment);
@@ -71,7 +74,8 @@ public with sharing class accc_SendPlatformEventNotification implements Queueabl
 	 * @description ctor to insert/or remove items from big object
 	 *
 	 * @param entries data entries
-	 * @param remove true if to remove data; otherwise insert
+	 * @param event name
+	 * @param the environment  (test, debug, production)
 	 *
 	 */
 	public accc_SendPlatformEventNotification(List<SObject> entries, String eventName, String environment) {
@@ -94,8 +98,10 @@ public with sharing class accc_SendPlatformEventNotification implements Queueabl
 	/////////////////////////////////////////////////////////////////////////
 
 	/*
-	* Here we insert the event data big object records,
+	* @description Here we insert the event data big object records,
 	* or log an error if insertion fails.
+	*
+    * @param queuable context
 	*/
 	public void execute(QueueableContext context) {
 
@@ -131,7 +137,6 @@ public with sharing class accc_SendPlatformEventNotification implements Queueabl
 			// Exception occurred, output the exception message
 			accc_ApexUtilities.log(excp);
 		}
-
 
 	} // end of execute
 

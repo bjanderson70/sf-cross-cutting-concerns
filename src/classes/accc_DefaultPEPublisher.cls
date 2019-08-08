@@ -229,8 +229,7 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
 			Integer inx = 0;
 			// Inspect publishing result for each event
 			for (Database.SaveResult sr : results) {
-				// set the replay ids done in parent
-				// this.setReplayIds(collectionOfEvents[inx++]);
+
 				// set the operation ids
 				this.setOperationIds(sr);
 				// if error

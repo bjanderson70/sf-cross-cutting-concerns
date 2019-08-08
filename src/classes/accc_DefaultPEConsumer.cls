@@ -31,11 +31,15 @@
  *
  *
  * @author Bill Anderson
- * @description defines the consumer process
+ *
+ * @description defines the consumer process. This a default consumer. It DOES NOT do true processing
+ * of the incoming event. It does a lot of the heavy lifting. If you are reading this then know,
+ * you would override the method 'consumePlatformEvent'. It does pass quite a number of parameters.
+ * The Unit Test shows how they are used. You can see how they are used in 'consumePlatformEvent'
+ *
  * @group Common Layer
  */
 public virtual without sharing class accc_DefaultPEConsumer extends accc_DefaultPlatformEvent {
-
 
 	////////////////////////////////////////////////////////////////////////
 	// Ctors
@@ -59,7 +63,7 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 	* @description ctor with event name
 	*
 	* @param theEventName the event name
-	* @param doSerialization do we serialize the event
+	* @param doSerialization do we serialize the event (if you want to store it in BO, this is needed)
 	*/
 	public accc_DefaultPEConsumer(String theEventName, Boolean doSerialization) {
 		super(theEventName, doSerialization);
@@ -127,6 +131,8 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 				                      ,  new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: Before Processing')
 				                      , theAlerts
 				                      , attributes);
+				// perform the function needed. Requires the child to override
+				// 'consumePlatformEvent'
 				state = this.consumeCanonicalForm(collectionOfEvents, handlers, attributes, theData, errResult, theLogData);
 			} else {
 				throw new accc_PlatformEventException(this.formatRetryMessage('Consumer: Exceeded Platform Event Retries {0} - Max is 9', currentRetries));
@@ -228,8 +234,8 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 	
 	/**
 	* @description This method is called BEFORE the child performs any override. This allows
-	* us to capture the replayIds
-	* @author Bill Anderson 
+	* us to provide some information ( as the child may not)
+	*
 	* @param List<SObject> collectionOfEvents
 	* @param List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData
 	* @return void
@@ -237,8 +243,6 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 	protected void preludeBeforeChildOverridingConsumption(List<SObject> collectionOfEvents
 	        , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData)
 	{
-		// set the replay ids -- done in parent
-		// super.setReplayIds(collectionOfEvents);
 		// record process of save result
 		super.addInstrumentation(super.willInstrument,
 		                         new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: preludeBeforeChildOverridingConsumption')
@@ -263,6 +267,7 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 
 		// if we are here , we handled the events; 
 		// NOTE, Children SHOULD OVERRIDE this method and perform consumption of the event
+		// TBD -- Make Abstract
 
 		// record process of save result -- LEAVE this in for testing
 		super.addInstrumentation(super.willInstrument,
