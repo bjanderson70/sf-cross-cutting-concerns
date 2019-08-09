@@ -50,6 +50,7 @@ private class accc_DefaultPlatformEventTest {
 		system.assertEquals(true, dpe.serializeEvent == true);
 		system.assertEquals(true, dpe.willInstrument == false);
 		system.assertEquals(true, dpe.getLastReplayId() == null);
+		system.assertEquals(true, dpe.eventBatchSize == accc_PlatformEventAttrs.DEFAULT_EVENT_BATCH_SIZE);
 	}
 	@isTest
 	static void testCtorWithEventName() {

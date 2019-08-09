@@ -36,204 +36,245 @@
  */
 @isTest
 private class accc_DefaultPEConsumerTest {
-	static final String ExceptedEventLabelInCustomMDT = 'pe_test__e';
+    static final String ExceptedEventLabelInCustomMDT = 'pe_test__e';
 
-	// class to excercise the default consumer
-	public class accc_ConsumerTest extends accc_DefaultPEConsumer {
-		public Boolean didHandle = false;
-		public boolean throwException = false;
+    // class to excercise the default consumer
+    public class accc_ConsumerTest extends accc_DefaultPEConsumer {
+        public Boolean didHandle = false;
+        public boolean throwException = false;
 
-		public accc_ConsumerTest() {
+        public accc_ConsumerTest() {
 
-			super(null);
+            super(null);
 
-		}
-		public accc_ConsumerTest(string evt) {
+        }
+        public accc_ConsumerTest(string evt) {
 
-			super(evt);
+            super(evt);
 
-		}
-		public accc_ConsumerTest(string evt, Boolean serialization) {
+        }
+        public accc_ConsumerTest(string evt, Boolean serialization) {
 
-			super(evt,serialization);
+            super(evt,serialization);
 
-		}
-		protected override void handleCompletion(Object event
-		        , Boolean state
-		        , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult
-		        , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData
-		        , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData
-		        , accc_PlatformEventAttrs attributes) {
-			didHandle = true;
-		}
-		protected override boolean consumePlatformEvent(List<SObject> parameter,
-		        accc_IProcessEventHandlers handlers,
-		        accc_PlatformEventAttrs attributes,
-		        List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult,
-		        List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData) {
-			if ( this.throwException) {
-				throw new EventBus.RetryableException('accc_ConsumerTest');
-			}
-			return true;
+        }
+        protected override void handleCompletion(Object event
+                                                 , Boolean state
+                                                 , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult
+                                                 , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData
+                                                 , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData
+                                                 , accc_PlatformEventAttrs attributes) {
+            didHandle = true;
+        }
+        protected override boolean consumePlatformEvent(List<SObject> parameter,
+                                                        accc_IProcessEventHandlers handlers,
+                                                        accc_PlatformEventAttrs attributes,
+                                                        List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult,
+                                                        List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData) {
+            if ( this.throwException) {
+                throw new EventBus.RetryableException('accc_ConsumerTest');
+            }
+            return true;
 
-		} // end of accc_ConsumerTest
-	}
+        } // end of accc_ConsumerTest
+    }
 
-	@isTest
-	static void testBasicConsumerCtor() {
-		// assign / act
-		accc_ConsumerTest consumer = new accc_ConsumerTest();
-		// assert
-		System.assertEquals(true, consumer.handlerEventName() == null);
-		System.assertEquals(true, consumer.handlerToSerialize() == true);
+    @isTest
+    static void testBasicConsumerCtor() {
+        // assign / act
+        accc_ConsumerTest consumer = new accc_ConsumerTest();
+        // assert
+        System.assertEquals(true, consumer.handlerEventName() == null);
+        System.assertEquals(true, consumer.handlerToSerialize() == true);
 
-	}
-	@isTest
-	static void testBasicConsumerCtorWithSerialization() {
-		// assign / act
-		final String name = 'mytest_pe';
-		accc_ConsumerTest consumer = new accc_ConsumerTest(name,true);
-		// assert
-		System.assertEquals(true, consumer.handlerEventName() == name);
-		System.assertEquals(true, consumer.handlerToSerialize() == true);
+    }
+    @isTest
+    static void testBasicConsumerCtorWithSerialization() {
+        // assign / act
+        final String name = 'mytest_pe';
+        accc_ConsumerTest consumer = new accc_ConsumerTest(name,true);
+        // assert
+        System.assertEquals(true, consumer.handlerEventName() == name);
+        System.assertEquals(true, consumer.handlerToSerialize() == true);
 
-	}
-	@isTest
-	static void testBasicConsumer() {
+    }
+    @isTest
+    static void testBasicConsumer() {
 
-		final String eventName = ExceptedEventLabelInCustomMDT;
-		Boolean result;
-		accc_PlatformEvtBuilder ctor = new accc_PlatformEvtBuilder(eventName, accc_ApexConstants.TEST_CATEGORY);
-		accc_IEventHandler Consumer = ctor.buildConsumer();
-		List<SObject> evt = new List<SObject> { new pe_test__e()};
-		accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+        final String eventName = ExceptedEventLabelInCustomMDT;
+        Boolean result;
+        accc_PlatformEvtBuilder ctor = new accc_PlatformEvtBuilder(eventName, accc_ApexConstants.TEST_CATEGORY);
+        accc_IEventHandler Consumer = ctor.buildConsumer();
+        List<SObject> evt = new List<SObject> { new pe_test__e()};
+        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
 
-		Test.startTest();
-		// Consumer test event
-		result = Consumer.process(evt, handlers, attrs);
-		Test.stopTest();
+        Test.startTest();
+        // Consumer test event
+        result = Consumer.process(evt, handlers, attrs);
+        Test.stopTest();
 
-		// Verify results value
-		System.assertEquals(true, result);
+        // Verify results value
+        System.assertEquals(true, result);
 
-	}
-	@isTest
-	static void testConsumerTest() {
+    }
+    @isTest
+    static void testConsumerTest() {
 
-		final String eventName = ExceptedEventLabelInCustomMDT;
-		Boolean result;
-		accc_ConsumerTest Consumer = new accc_ConsumerTest(eventName);
-		accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
-		List<SObject> evt = new List<SObject> { new pe_test__e()};
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+        final String eventName = ExceptedEventLabelInCustomMDT;
+        Boolean result;
+        accc_ConsumerTest Consumer = new accc_ConsumerTest(eventName);
+        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
+        List<SObject> evt = new List<SObject> { new pe_test__e()};
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
 
-		Test.startTest();
-		// Consumer test event
-		result = Consumer.process(evt, handlers, attrs);
-		Test.stopTest();
+        Test.startTest();
+        // Consumer test event
+        result = Consumer.process(evt, handlers, attrs);
+        Test.stopTest();
 
-		// Verify SaveResult value
-		System.assertEquals(true, result);
-		System.assertEquals(true, Consumer.eventName == eventName);
-		System.assertEquals(true, Consumer.didHandle);
-	}
-	@isTest
-	static void testConsumerTestNoEvent() {
+        // Verify SaveResult value
+        System.assertEquals(true, result);
+        System.assertEquals(true, Consumer.eventName == eventName);
+        System.assertEquals(true, Consumer.didHandle);
+    }
+    @isTest
+    static void testConsumerTestNoEvent() {
 
-		final String eventName = ExceptedEventLabelInCustomMDT;
-		Boolean result;
-		accc_ConsumerTest Consumer = new accc_ConsumerTest(eventName);
-		accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
-		List<SObject> evt = new List<SObject> { };
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+        final String eventName = ExceptedEventLabelInCustomMDT;
+        Boolean result;
+        accc_ConsumerTest Consumer = new accc_ConsumerTest(eventName);
+        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
+        List<SObject> evt = new List<SObject> { };
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
 
-		Test.startTest();
-		try {
-			// Consumer test event
-			result = Consumer.process(evt, handlers, attrs);
-		} catch (Exception excp) {
-			result = false;
-		}
-		Test.stopTest();
+        Test.startTest();
+        try {
+            // Consumer test event
+            result = Consumer.process(evt, handlers, attrs);
+        } catch (Exception excp) {
+            result = false;
+        }
+        Test.stopTest();
 
-		// Verify results
-		System.assertEquals(false, result);
-		System.assertEquals(true, Consumer.eventName == eventName);
-		System.assertEquals(false, Consumer.didHandle);
-	}
+        // Verify results
+        System.assertEquals(false, result);
+        System.assertEquals(true, Consumer.eventName == eventName);
+        System.assertEquals(false, Consumer.didHandle);
+    }
 
-	@isTest
-	static void testEventTrigger() {
-		String logData = '';
-		Test.startTest();
-		Test.enableChangeDataCapture();
-		List<pe_Test__e> pe = new List<pe_test__e> { new pe_test__e()};
-		EventBus.publish(pe);
-		Test.getEventBus().deliver();
-		Test.stopTest();
+    @isTest
+    static void testEventTrigger() {
+        String logData = '';
+        Test.startTest();
+        Test.enableChangeDataCapture();
+        List<pe_Test__e> pe = new List<pe_test__e> { new pe_test__e()};
+        EventBus.publish(pe);
+        Test.getEventBus().deliver();
+        Test.stopTest();
 
-		// check the log
-		System.assertEquals(true, accc_ApexUtilities.containsInTestLog('++++ TEST Done pe_test__e result =true'));
-	}
+        // check the log
+        System.assertEquals(true, accc_ApexUtilities.containsInTestLog('++++ TEST Done pe_test__e result =true'));
+    }
 
-	@isTest
-	static void testConsumerTestCauseThrow() {
+    @isTest
+    static void testConsumerTestCauseThrow() {
 
-		final String eventName = ExceptedEventLabelInCustomMDT;
-		Boolean result = true;
-		accc_ConsumerTest Consumer = new accc_ConsumerTest(eventName);
-		accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
-		List<SObject> evt = new List<SObject> {new pe_test__e() };
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
-		integer count = 1;
-		Consumer.throwException = true;
+        final String eventName = ExceptedEventLabelInCustomMDT;
+        Boolean result = true;
+        accc_ConsumerTest Consumer = new accc_ConsumerTest(eventName);
+        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
+        List<SObject> evt = new List<SObject> {new pe_test__e() };
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+        integer count = 1;
+        Consumer.throwException = true;
 
-		Test.startTest();
-		while ( Consumer.throwException == true) {
-			try {
+        Test.startTest();
+        while ( Consumer.throwException == true) {
+            try {
 
-				// Consumer test event
-				result = Consumer.process(evt, handlers, attrs);
+                // Consumer test event
+                result = Consumer.process(evt, handlers, attrs);
 
-			} catch ( EventBus.RetryableException retryExcp) {
-				Consumer.throwException = false;
-			} catch (Exception excp) {
-				result = false;
-				Consumer.throwException = false;
-			}
-		}
-
-
-		Test.stopTest();
-
-		// Verify results
-		System.assertEquals(true, result);
-		System.assertEquals(true, Consumer.eventName == eventName);
-		System.assertEquals(true, Consumer.didHandle);
-	}
+            } catch ( EventBus.RetryableException retryExcp) {
+                Consumer.throwException = false;
+            } catch (Exception excp) {
+                result = false;
+                Consumer.throwException = false;
+            }
+        }
 
 
-	@isTest
-	static void testformatRetryMessage() {
-		String msg = 'testing [{0}]', result, expected = 'testing [5]';
-		integer retryCount = 5;
-		accc_ConsumerTest consumer = new accc_ConsumerTest();
-		system.assertEquals(expected, consumer.formatRetryMessage(msg, retryCount));
-	}
-	@isTest
-	static void testformatRetryMessageWithNull() {
-		String msg = null, result, expected = 'Platform Event message [5]';
-		integer retryCount = 5;
-		accc_ConsumerTest consumer = new accc_ConsumerTest();
-		system.assertEquals(expected, consumer.formatRetryMessage(msg, retryCount));
-	}
-	@isTest
-	static void testformatRetryMessageWithSingleInteger() {
-		String msg = null, result, expected = 'Platform Event condition is not met, so retrying the trigger again [5]';
-		integer retryCount = 5;
-		accc_ConsumerTest consumer = new accc_ConsumerTest();
-		system.assertEquals(expected, consumer.formatRetryMessage(retryCount));
-	}
+        Test.stopTest();
+
+        // Verify results
+        System.assertEquals(true, result);
+        System.assertEquals(true, Consumer.eventName == eventName);
+        System.assertEquals(true, Consumer.didHandle);
+    }
+
+    @isTest
+    static void testConsumerTestEventBatchSizeCauseRetry() {
+
+        final String eventName = ExceptedEventLabelInCustomMDT;
+        Boolean result = true;
+        accc_ConsumerTest consumer = new accc_ConsumerTest(eventName);
+        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
+        List<SObject> evt = new List<SObject> {new pe_test__e(),new pe_test__e(),new pe_test__e() };
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+
+        attrs.eventBatchSize(2);
+        integer count = 0;
+        consumer.throwException = true;
+
+        Test.startTest();
+        while ( consumer.throwException == true) {
+            try {
+
+                // Consumer test event
+                result = consumer.process(evt, handlers, attrs);
+
+            } catch ( EventBus.RetryableException retryExcp) {
+                consumer.throwException = false;
+                count++;
+            } catch (Exception excp) {
+                result = false;
+                consumer.throwException = false;
+            }
+        }
+
+
+        Test.stopTest();
+
+        // Verify results
+        System.assertEquals(true, result);
+		// count should be 1 for event batch size caused a retry
+		System.assertEquals(1, count);
+        System.assertEquals(true, consumer.eventName == eventName);
+        System.assertEquals(true, consumer.didHandle);
+    }
+
+
+    @isTest
+    static void testformatRetryMessage() {
+        String msg = 'testing [{0}]', result, expected = 'testing [5]';
+        integer retryCount = 5;
+        accc_ConsumerTest consumer = new accc_ConsumerTest();
+        system.assertEquals(expected, consumer.formatRetryMessage(msg, retryCount));
+    }
+    @isTest
+    static void testformatRetryMessageWithNull() {
+        String msg = null, result, expected = 'Platform Event message [5]';
+        integer retryCount = 5;
+        accc_ConsumerTest consumer = new accc_ConsumerTest();
+        system.assertEquals(expected, consumer.formatRetryMessage(msg, retryCount));
+    }
+    @isTest
+    static void testformatRetryMessageWithSingleInteger() {
+        String msg = null, result, expected = 'Platform Event condition is not met, so retrying the trigger again [5]';
+        integer retryCount = 5;
+        accc_ConsumerTest consumer = new accc_ConsumerTest();
+        system.assertEquals(expected, consumer.formatRetryMessage(retryCount));
+    }
 
 }

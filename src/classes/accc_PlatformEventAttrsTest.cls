@@ -37,319 +37,367 @@
 @isTest
 private class accc_PlatformEventAttrsTest {
 
-	static final integer EXPECTED_ATTR_COUNT = 7;
-	@isTest
-	static void testGetterserializeData() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.SERIALIZE_EVENTS_s => false
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		Boolean ae = attrs.serializeData();
-		// assert
-		system.assertEquals(ae, false);
-		system.assertEquals(true, attrs.instrumentation());
+    static final integer EXPECTED_ATTR_COUNT = 8;
+    @isTest
+    static void testGetterserializeData() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.SERIALIZE_EVENTS_s => false
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        Boolean ae = attrs.serializeData();
+        // assert
+        system.assertEquals(ae, false);
+        system.assertEquals(true, attrs.instrumentation());
 
-	}
-	@isTest
-	static void testGetterserializeDataNoPreset() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.ADD_INSTRUMENTATION_s => true
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		// assert
-		system.assertEquals(true, attrs.serializeData());
-		system.assertEquals(true, attrs.instrumentation());
-	}
-	@isTest
-	static void testSetterserializeData() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.SERIALIZE_EVENTS_s => false
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		// assert
-		System.assertEquals(false, attrs.serializeData());
-		attrs.serializeData(true);
-		// assert
-		System.assertEquals(true, attrs.serializeData());
+    }
+    @isTest
+    static void testGetterserializeDataNoPreset() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.ADD_INSTRUMENTATION_s => true
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        // assert
+        system.assertEquals(true, attrs.serializeData());
+        system.assertEquals(true, attrs.instrumentation());
+    }
+    @isTest
+    static void testSetterserializeData() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.SERIALIZE_EVENTS_s => false
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        // assert
+        System.assertEquals(false, attrs.serializeData());
+        attrs.serializeData(true);
+        // assert
+        System.assertEquals(true, attrs.serializeData());
 
-	}
+    }
 
-	@isTest
-	static void testGetterloggingStatus() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.EVENT_LOGGING_s => accc_PlatformEventAttrs.EventLogging.ALL
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		accc_PlatformEventAttrs.EventLogging ae = attrs.loggingStatus();
-		// assert
-		system.assertEquals(ae, accc_PlatformEventAttrs.EventLogging.ALL);
-		system.assertNotEquals(ae, accc_PlatformEventAttrs.EventLogging.ON_SUCCESS);
+    @isTest
+    static void testGetterloggingStatus() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.EVENT_LOGGING_s => accc_PlatformEventAttrs.EventLogging.ALL
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        accc_PlatformEventAttrs.EventLogging ae = attrs.loggingStatus();
+        // assert
+        system.assertEquals(ae, accc_PlatformEventAttrs.EventLogging.ALL);
+        system.assertNotEquals(ae, accc_PlatformEventAttrs.EventLogging.ON_SUCCESS);
 
-	}
-	@isTest
-	static void testGetterloggingStatusNoPreset() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.ADD_INSTRUMENTATION_s => true
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+    }
+    @isTest
+    static void testGetterloggingStatusNoPreset() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.ADD_INSTRUMENTATION_s => true
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
 
-		// asseert
-		system.assertEquals(accc_PlatformEventAttrs.EventLogging.ALL, attrs.loggingStatus());
-		system.assertEquals(true, attrs.checkEvent());
+        // asseert
+        system.assertEquals(accc_PlatformEventAttrs.EventLogging.ALL, attrs.loggingStatus());
+        system.assertEquals(true, attrs.checkEvent());
 
-	}
-	@isTest
-	static void testSetterloggingStatus() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.EVENT_LOGGING_s => accc_PlatformEventAttrs.EventLogging.ALL
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		attrs.loggingStatus(accc_PlatformEventAttrs.EventLogging.ON_SUCCESS);
-		accc_PlatformEventAttrs.EventLogging ae = attrs.loggingStatus();
-		// assert
-		System.assertEquals(ae, accc_PlatformEventAttrs.EventLogging.ON_SUCCESS);
+    }
+    @isTest
+    static void testSetterloggingStatus() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.EVENT_LOGGING_s => accc_PlatformEventAttrs.EventLogging.ALL
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        attrs.loggingStatus(accc_PlatformEventAttrs.EventLogging.ON_SUCCESS);
+        accc_PlatformEventAttrs.EventLogging ae = attrs.loggingStatus();
+        // assert
+        System.assertEquals(ae, accc_PlatformEventAttrs.EventLogging.ON_SUCCESS);
 
-	}
-	@isTest
-	static void testGettercheckEvent() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.CHECK_EVENT_NAME_s => true
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+    }
+    @isTest
+    static void testGettercheckEvent() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.CHECK_EVENT_NAME_s => true
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
 
-		// assert
-		system.assertEquals(true, attrs.checkEvent());
+        // assert
+        system.assertEquals(true, attrs.checkEvent());
 
-	}
-	@isTest
-	static void testGettercheckEventNoPresets() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.ADD_INSTRUMENTATION_s => false
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+    }
+    @isTest
+    static void testGettercheckEventNoPresets() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.ADD_INSTRUMENTATION_s => false
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
 
-		// assert
-		system.assertEquals(true, attrs.checkEvent());
-		system.assertEquals(false , attrs.instrumentation());
+        // assert
+        system.assertEquals(true, attrs.checkEvent());
+        system.assertEquals(false, attrs.instrumentation());
 
-	}
-	@isTest
-	static void testSettercheckEvent() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.CHECK_EVENT_NAME_s => false
-		};
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		// assert
-		system.assertEquals(false, attrs.checkEvent());
-		// act
+    }
+    @isTest
+    static void testSettercheckEvent() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.CHECK_EVENT_NAME_s => false
+        };
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        // assert
+        system.assertEquals(false, attrs.checkEvent());
+        // act
 
-		attrs.checkEvent(true);
+        attrs.checkEvent(true);
 
-		// assert
-		system.assertEquals(true, attrs.checkEvent());
-		system.assertEquals(true , attrs.instrumentation());
+        // assert
+        system.assertEquals(true, attrs.checkEvent());
+        system.assertEquals(true, attrs.instrumentation());
 
-	}
-	@isTest
-	static void testGetterinstrumentation() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.ADD_INSTRUMENTATION_s => true
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+    }
+    @isTest
+    static void testGetterinstrumentation() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.ADD_INSTRUMENTATION_s => true
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
 
-		// assert
-		system.assertEquals(true, attrs.instrumentation());
-
-
-	}
-	@isTest
-	static void testGetterinstrumentationNoPreset() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.CHECK_EVENT_NAME_s => false
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-
-		// assert
-		system.assertEquals(true, attrs.instrumentation());
-		system.assertEquals(false, attrs.checkEvent());
+        // assert
+        system.assertEquals(true, attrs.instrumentation());
 
 
-	}
-	@isTest
-	static void testSetterinstrumentation() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.ADD_INSTRUMENTATION_s => false
-		};
+    }
+    @isTest
+    static void testGetterinstrumentationNoPreset() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.CHECK_EVENT_NAME_s => false
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
 
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		// assert
-		system.assertEquals(false, attrs.instrumentation());
-		// act
-		attrs.instrumentation(true);
-
-		// assert
-		system.assertEquals(true, attrs.instrumentation());
+        // assert
+        system.assertEquals(true, attrs.instrumentation());
+        system.assertEquals(false, attrs.checkEvent());
 
 
-	}
-	@isTest
-	static void testGetterallowretryNoPreset() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.ALLOW_RETRY_AFTER_EXCEPTION_s => false
-		};
-		// act
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+    }
+    @isTest
+    static void testSetterinstrumentation() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.ADD_INSTRUMENTATION_s => false
+        };
 
-		Boolean ce = attrs.allowRetryAfterException();
-		// assert
-		system.assertEquals(ce, false);
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        // assert
+        system.assertEquals(false, attrs.instrumentation());
+        // act
+        attrs.instrumentation(true);
 
-
-	}
-	@isTest
-	static void testSetterallowretry() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.ALLOW_RETRY_AFTER_EXCEPTION_s => false
-		};
-
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		Boolean ctorStatus = attrs.allowRetryAfterException();
-		// act
-
-		attrs.allowRetryAfterException(true);
-
-		// assert
-		system.assertEquals(true, attrs.allowRetryAfterException());
-		system.assertEquals(false, ctorStatus);
-
-	}
-	@isTest
-	static void testGetterretryCount() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.RETRY_COUNT_s => 1
-		};
-
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		// actt
-		Integer ce = attrs.retryCount();
-		// asser
-		system.assertEquals(1, ce);
-		system.assertNotEquals(2, ce);
-
-	}
-	@isTest
-	static void testGetterretryCountNoPreset() {
-		// assign
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
-		//act
-		Integer ce = attrs.retryCount();
-		// assert
-		system.assertEquals(ce, accc_PlatformEventAttrs.DEFAULT_RETRY_COUNT);
-
-	}
-	@isTest
-	static void testSetterretryCount() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.RETRY_COUNT_s => 1
-		};
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-
-		attrs.retryCount(accc_PlatformEventAttrs.RETRY_COUNT_MAX + 1);
-		//act
-		Integer ce = attrs.retryCount();
-		// assert
-		system.assertEquals(ce, accc_PlatformEventAttrs.RETRY_COUNT_MAX);
-		system.assertNotEquals(ce, accc_PlatformEventAttrs.RETRY_COUNT_MAX + 1);
-		// act
-		attrs.retryCount(-1);
-		ce = attrs.retryCount();
-		// assert
-		system.assertEquals(1, ce);
-
-	}
-	@isTest
-	static void testget() {
-		// assign
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
-		// act
-		Object ce = attrs.get(null);
-		// assert
-		system.assertEquals(null, ce);
-
-	}
-	@isTest
-	static void testput() {
-		// assign
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
-		// act
-		Boolean rce = (Boolean)attrs.put(null, 1);
-		// assert
-		system.assertEquals(rce, false);
-		system.assertNotEquals(rce, true);
-		// act
-		attrs.put('test', 1);
-		integer ce = (integer)attrs.get('test');
-		// assert
-		system.assertEquals(1, ce);
+        // assert
+        system.assertEquals(true, attrs.instrumentation());
 
 
-	}
-	@isTest
-	static void testgetAttributes() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.RETRY_COUNT_s => 1
-		};
-		Map<String, Object> copyAttrs = null;
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		// act
-		copyAttrs = attrs.getAttributes();
-		// assert
-		system.assertEquals(EXPECTED_ATTR_COUNT, copyAttrs.size());
-		system.assertEquals(1, (integer)copyAttrs.get(accc_PlatformEventAttrs.RETRY_COUNT_s));
+    }
+    @isTest
+    static void testGetterallowretryNoPreset() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.ALLOW_RETRY_AFTER_EXCEPTION_s => false
+        };
+        // act
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
 
-	}
+        Boolean ce = attrs.allowRetryAfterException();
+        // assert
+        system.assertEquals(ce, false);
 
-	@isTest
-	static void teststoreEvent() {
-		// assign
-		Map<String, Object> attributes = new Map<String, Object> {
-			accc_PlatformEventAttrs.EVENT_STORING_s => true
-		};
 
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
-		// act
-		Boolean ce = attrs.storeEvent();
-		// asser
-		system.assertEquals(true, ce);
-		attrs.storeEvent(false);
-		system.assertNotEquals(false, ce);
+    }
+    @isTest
+    static void testSetterallowretry() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.ALLOW_RETRY_AFTER_EXCEPTION_s => false
+        };
 
-	}
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        Boolean ctorStatus = attrs.allowRetryAfterException();
+        // act
+
+        attrs.allowRetryAfterException(true);
+
+        // assert
+        system.assertEquals(true, attrs.allowRetryAfterException());
+        system.assertEquals(false, ctorStatus);
+
+    }
+    @isTest
+    static void testGetterretryCount() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.RETRY_COUNT_s => 1
+        };
+
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        // actt
+        Integer ce = attrs.retryCount();
+        // asser
+        system.assertEquals(1, ce);
+        system.assertNotEquals(2, ce);
+
+    }
+    @isTest
+    static void testGetterretryCountNoPreset() {
+        // assign
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+        //act
+        Integer ce = attrs.retryCount();
+        // assert
+        system.assertEquals(ce, accc_PlatformEventAttrs.DEFAULT_RETRY_COUNT);
+
+    }
+    @isTest
+    static void testSetterretryCount() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.RETRY_COUNT_s => 1
+        };
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+
+        attrs.retryCount(accc_PlatformEventAttrs.RETRY_COUNT_MAX + 1);
+        //act
+        Integer ce = attrs.retryCount();
+        // assert
+        system.assertEquals(ce, accc_PlatformEventAttrs.RETRY_COUNT_MAX);
+        system.assertNotEquals(ce, accc_PlatformEventAttrs.RETRY_COUNT_MAX + 1);
+        // act
+        attrs.retryCount(-1);
+        ce = attrs.retryCount();
+        // assert
+        system.assertEquals(1, ce);
+
+    }
+    @isTest
+    static void testget() {
+        // assign
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+        // act
+        Object ce = attrs.get(null);
+        // assert
+        system.assertEquals(null, ce);
+
+    }
+    @isTest
+    static void testput() {
+        // assign
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+        // act
+        Boolean rce = (Boolean)attrs.put(null, 1);
+        // assert
+        system.assertEquals(rce, false);
+        system.assertNotEquals(rce, true);
+        // act
+        attrs.put('test', 1);
+        integer ce = (integer)attrs.get('test');
+        // assert
+        system.assertEquals(1, ce);
+
+
+    }
+    @isTest
+    static void testgetAttributes() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.RETRY_COUNT_s => 1
+        };
+        Map<String, Object> copyAttrs = null;
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        // act
+        copyAttrs = attrs.getAttributes();
+        // assert
+        system.assertEquals(EXPECTED_ATTR_COUNT, copyAttrs.size());
+        system.assertEquals(1, (integer)copyAttrs.get(accc_PlatformEventAttrs.RETRY_COUNT_s));
+
+    }
+
+    @isTest
+    static void teststoreEvent() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.EVENT_STORING_s => true
+        };
+
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        // act
+        Boolean ce = attrs.storeEvent();
+        // asser
+        system.assertEquals(true, ce);
+        attrs.storeEvent(false);
+        system.assertNotEquals(false, ce);
+
+    }
+    /// Event Batch Size
+
+    @isTest
+    static void testGetterBatchSizeCount() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.EVENT_PROCESSING_BATCH_SIZE_s => 1
+        };
+
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+        // actt
+        Integer ce = attrs.eventBatchSize();
+        // asser
+        system.assertEquals(1, ce);
+        system.assertNotEquals(2, ce);
+
+    }
+    @isTest
+    static void testGetterBatchSizeCountNoPreset() {
+        // assign
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+        //act
+        Integer ce = attrs.eventBatchSize();
+        // assert
+        system.assertEquals(ce, accc_PlatformEventAttrs.DEFAULT_EVENT_BATCH_SIZE);
+
+    }
+    @isTest
+    static void testSetterEventBatchSizeCount() {
+        // assign
+        Map<String, Object> attributes = new Map<String, Object> {
+            accc_PlatformEventAttrs.EVENT_PROCESSING_BATCH_SIZE_s => 1
+        };
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs(attributes);
+
+        attrs.eventBatchSize(accc_PlatformEventAttrs.MAX_EVENT_BATCH_SIZE + 1);
+        //act
+        Integer ce = attrs.eventBatchSize();
+        // assert
+        system.assertEquals(ce, accc_PlatformEventAttrs.MAX_EVENT_BATCH_SIZE);
+        system.assertNotEquals(ce, accc_PlatformEventAttrs.MAX_EVENT_BATCH_SIZE + 1);
+        // act
+        attrs.eventBatchSize(-1);
+        ce = attrs.eventBatchSize();
+        // assert
+        system.assertEquals(accc_PlatformEventAttrs.MIN_EVENT_BATCH_SIZE, ce);
+
+    }
 }
