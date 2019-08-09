@@ -5,8 +5,11 @@ Cross cutting concerns for apex code. The previous [cross-cutting concerns](http
 
 See this highlevel [blog](https://developer.salesforce.com/blogs/2018/10/configuration-first-replacing-code-at-runtime.html) on this framework.
 
-This code designed to encapsulate common cross-cutting concerns (logging, exception handling, **platform events**, caching, etc.).Often times cross-cutting concerns are an after-thought; or, hastily injected without any ability to manage or control.This project was to encapsulate those concerns and provide a mechanism to change/augment. 
+This code designed to encapsulate common cross-cutting concerns (logging, exception handling, **platform events**, caching, etc.).Often times cross-cutting concerns are an after-thought; or, hastily injected without any ability to manage or control.This package encapsulates those concerns and provide a mechanism to change/augment. 
 Changing behaviour is a matter of inheritance and specifying choice via custom metadata. See the [Wiki](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki) for more informaiton.
+
+## Caveat
+This package utilities a good deal of Object Oriented Principles (OOP) (as outlined in the blog linked). This [site](http://ootips.org/) provides information around OOP and elements therein. Without having a good Object Oriented base, you may be able to take advantage of the components within the package, but you will not fully realize the underlying benefits/intent.  
 
 ## Getting Started
 
@@ -15,7 +18,7 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-You will need to have Platform Cache enable; otherwise, caching WILL NOT work. Please note, if you are developing in a **Dev Org**, there is no caching and those **related unit tests will fail**.
+You will need to have Platform Cache enable; otherwise, caching WILL NOT work. Please note, if you are developing in a **Dev Org**, there is no caching and those **related unit tests will fail**. In addition, tests will fail if email deliverability is disabled.
 
 ## Running the tests
 
