@@ -12,7 +12,7 @@ Changing behaviour is a matter of inheritance and specifying choice via custom m
 Cross-Cutting Concerns (**merge-pe** branch) has been incorporated into this framework. The overlap was too much to ignore.
 
 It now includes a section on [Platform Events](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Platform-Events). The work is on-going and will be addressed in conjunction with requests. Currently, the updates for Platform Events includes:
-* Adding Summer '19 features AsyncOperationEvent; however, this will tie this the package (merge-pe branch) to minimum version 46.
+* Added Summer '19 features _AsyncOperationEvent_; however, this will tie this the package (merge-pe branch) to minimum version 46.
 * Updates include more data written into the BigObject (i.e. replayids and operation ids) for recovery on a queued high-volume event.
 * The template will be started but will probably not be done before the merge.
 * Incorporate Trigger Handling for Platform Events and CDC. There is a section that can tie in the [trigger handling framework](https://github.com/bjanderson70/sf-trigger-handling/wiki)
