@@ -9,7 +9,7 @@ This code designed to encapsulate common cross-cutting concerns (logging, except
 Changing behaviour is a matter of inheritance and specifying choice via custom metadata. See the [Wiki](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki) for more information.
 
 ## :star2: Updates - Incorporated [Platform Events](https://github.com/bjanderson70/sf-platform-events) Consumer/Publisher
-Cross-Cutting Concerns (:point_right:**merge-pe** branch) has been incorporated into this framework. The overlap was too much to ignore.
+Platform Events has been incorporated into this framework  (:point_right:**merge-pe** branch) . The overlap between the two was too much to ignore.
 
 It now includes a section on [Platform Events](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Platform-Events). The work is on-going and will be addressed in conjunction with requests. Currently, the updates for Platform Events includes:
 * Added Summer '19 features _AsyncOperationEvent_; however, this will tie this the package (merge-pe branch) to minimum version 46.
