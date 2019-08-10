@@ -8,8 +8,8 @@ See this highlevel [blog](https://developer.salesforce.com/blogs/2018/10/configu
 This code designed to encapsulate common cross-cutting concerns (logging, exception handling, **platform events**, caching, etc.).Often times cross-cutting concerns are an after-thought; or, hastily injected without any ability to manage or control.This package encapsulates those concerns and provide a mechanism to change/augment. 
 Changing behaviour is a matter of inheritance and specifying choice via custom metadata. See the [Wiki](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki) for more information.
 
-## Updates - Include Platform Event 
-Cross-Cutting Concerns (**merge-pe** branch) has been incorporated into this framework. The overlap was too much to ignore.
+## :star2: Updates - Incorporated [Platform Events](https://github.com/bjanderson70/sf-platform-events) Consumer/Publisher
+Cross-Cutting Concerns (:point_right:**merge-pe** branch) has been incorporated into this framework. The overlap was too much to ignore.
 
 It now includes a section on [Platform Events](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Platform-Events). The work is on-going and will be addressed in conjunction with requests. Currently, the updates for Platform Events includes:
 * Added Summer '19 features _AsyncOperationEvent_; however, this will tie this the package (merge-pe branch) to minimum version 46.
