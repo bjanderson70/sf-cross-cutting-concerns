@@ -63,7 +63,7 @@ private class accc_ApexPlatformEventDispatcherTest {
         accc_ApexPlatformEventDispatcher.run(eventType);
         // assert
         // exception is filed for null ( though, it does not throw, just logs)
-        system.assertEquals(true, accc_ApexUtilities.containsInTestLog('accc_PlatformEventException'));
+        system.assertEquals(true, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher'));
         // this checks that the event did not execute w/o looking at the result
         system.assertEquals(false, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.handlerType='));
     }  // end of testrunWithNullType
