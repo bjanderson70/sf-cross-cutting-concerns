@@ -31,12 +31,13 @@
  *
  *
  * @author Bill Anderson
- * @description Handles Testing of Platform Events Disptaching (after insert only). In two
- * overloaded forms. You can either pass the specific handler to be invoked or, pass in the
- * Type which will be looked up in the Trigger Handler. The latter assumes you have :
+ * @description Handles Testing of Platform Events Disptaching (after insert only).In two
+ * overloaded forms.You can either pass the specific handler to be invoked or, pass in the
+ * Type which will be looked up in the Trigger Handler.The latter assumes you have:
  *   (1) Installed the trigger handler ( https://github.com/bjanderson70/sf-trigger-handling )
  *   (2) Uncommented out the code in accc_ApexPlatformEventDispatcher
- * @group Common Test Layer
+ *
+ * @group Test Layer
  */
 @isTest
 private class accc_ApexPlatformEventDispatcherTest {
@@ -44,28 +45,32 @@ private class accc_ApexPlatformEventDispatcherTest {
     @isTest
     static void testrun() {
         accc_ITriggerHandler iplatEvt = new accc_LogPlatformEventHandler();
-        accc_ApexPlatformEventDispatcher.run(iplatEvt);
+        boolean status =accc_ApexPlatformEventDispatcher.run(iplatEvt);
         // there is no trigger that will have fired
         system.assertEquals(false, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.name'));
+        system.assertEquals(false, status);
+
     } // end of testrun
 
     @isTest
     static void testrunWithType() {
         Type eventType = Contact.class;
-        accc_ApexPlatformEventDispatcher.run(eventType);
+        Boolean status=accc_ApexPlatformEventDispatcher.run(eventType);
         // this checks that the event is execute w/o looking at the result
         system.assertEquals(true, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.handlerType='));
+        system.assertEquals(true, status);
     } // end of testrunWithType
 
     @isTest
     static void testrunWithNullType() {
         Type eventType = null;
-        accc_ApexPlatformEventDispatcher.run(eventType);
+        Boolean status=accc_ApexPlatformEventDispatcher.run(eventType);
         // assert
         // exception is filed for null ( though, it does not throw, just logs)
         system.assertEquals(true, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher'));
         // this checks that the event did not execute w/o looking at the result
         system.assertEquals(false, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.handlerType='));
+        system.assertEquals(false, status);
     }  // end of testrunWithNullType
 
     @isTest
