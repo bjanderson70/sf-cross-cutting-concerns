@@ -31,7 +31,9 @@
  *
  *
  * @author Bill Anderson
- * @description Handles Platform Events Disptaching (after insert only)
+ * @description Handles Platform Events Disptaching (after insert only).Supports
+ * invocation by (1) accc_ITriggerHandler or by (2) Type ( the latter assumes a Trigger Handler)
+ *
  * @group Common Layer
  */
 public without sharing class accc_ApexPlatformEventDispatcher {
@@ -45,22 +47,23 @@ public without sharing class accc_ApexPlatformEventDispatcher {
      * @param Type handlerType
      * @return void
      */
-    public static void run(Type handlerType) {
+    public static Boolean run(Type handlerType) {
         Boolean result = false;
         // simple check to ensure the type is not null
         if ( handlerType != null ) {
-            //
-            // comment out if you have the Trigger Handler Framework
-            //
-            /*
-             accc_TriggerMediator triggerMediator = new accc_TriggerMediator(handlerType);
-             */
-            // keep -- as this will log to an internal set during testing; otherwise, no-op
-            accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher.handlerType=' + handlerType);
-            // invoke trigger handlers related to the AfterInsert ( for events, only after insert)
-            /*
-            result = triggerMediator.execute(accc_TriggerHelperClass.TriggerState.AfterInsert);
-            */
+            try {
+                accc_TriggerMediator triggerMediator = new accc_TriggerMediator(handlerType);
+
+                // keep -- as this will log to an internal set during testing; otherwise, no-op
+                accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher.handlerType=' + handlerType);
+                // invoke trigger handlers related to the AfterInsert ( for events, only after insert)
+                result = triggerMediator.execute(accc_TriggerHelperClass.TriggerState.AfterInsert);
+
+            } catch ( accc_ApexApplicationException th_excp) {
+                accc_ApexUtilities.log(th_excp);
+            } catch (Exception excp) {
+                accc_ApexUtilities.log(excp);
+            }
             // returns true if successful; false if an exception occurs and not handled
             // keep -- as this will log to an internal set during testing; otherwise, no-op
             accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher result=' + result);
@@ -68,14 +71,15 @@ public without sharing class accc_ApexPlatformEventDispatcher {
             Exception excp = new accc_PlatformEventException('accc_ApexPlatformEventDispatcher invoked with a null type');
             accc_ApexUtilities.log(excp);
         }
-
-    }  // end of run
+        return result;
+    }   // end of run
     /**
      * @description run the platform event handler
      *
      * @param accc_ITriggerHandler apex platform event handler
      */
-    public static void run(accc_ITriggerHandler handler) {
+    public static Boolean run(accc_ITriggerHandler handler) {
+        Boolean result = true;
         // keep -- as this will log to an internal set during testing; otherwise, no-op
         accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher handler=' + handler);
 
@@ -96,6 +100,9 @@ public without sharing class accc_ApexPlatformEventDispatcher {
                 // call handler
                 handler.onAfterInsertChild(Trigger.New);
             }
+        } else {
+            result = false;
         }
+        return result;
     } // end of run
 } // end of accc_ApexPlatformEventDispatcher
