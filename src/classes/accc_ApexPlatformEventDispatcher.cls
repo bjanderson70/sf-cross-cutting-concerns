@@ -52,13 +52,23 @@ public without sharing class accc_ApexPlatformEventDispatcher {
         // simple check to ensure the type is not null
         if ( handlerType != null ) {
             try {
+                /***************** FOR TRIGGER HANDLER FRAMEWORK ************************************
+                 *
+                [Step 1] - If you decide to load the sf-trigger-handler, then uncomment this portion and the next
                 accc_TriggerMediator triggerMediator = new accc_TriggerMediator(handlerType);
-
+                 *
+                */
+                
                 // keep -- as this will log to an internal set during testing; otherwise, no-op
                 accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher.handlerType=' + handlerType);
+                /**************** FOR TRIGGER HANDLER FRAMEWORK ************************************
+                 *
+                 [Step 2] -  Requires the sf-trigger-handler framework
+                  
                 // invoke trigger handlers related to the AfterInsert ( for events, only after insert)
                 result = triggerMediator.execute(accc_TriggerHelperClass.TriggerState.AfterInsert);
-
+                 *
+                 */
             } catch ( accc_ApexApplicationException th_excp) {
                 accc_ApexUtilities.log(th_excp);
             } catch (Exception excp) {
