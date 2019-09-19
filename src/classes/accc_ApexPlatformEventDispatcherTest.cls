@@ -44,9 +44,11 @@ private class accc_ApexPlatformEventDispatcherTest {
 
     @isTest
     static void testrun() {
+        // arrange
         accc_ITriggerHandler iplatEvt = new accc_LogPlatformEventHandler();
+        // act
         boolean status =accc_ApexPlatformEventDispatcher.run(iplatEvt);
-        // there is no trigger that will have fired
+        // assert - there is no trigger that will have fired
         system.assertEquals(false, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.name'));
         system.assertEquals(false, status);
 
@@ -54,21 +56,26 @@ private class accc_ApexPlatformEventDispatcherTest {
 
     @isTest
     static void testrunWithType() {
+        // arrange
         Type eventType = Contact.class;
+        // act
         Boolean status=accc_ApexPlatformEventDispatcher.run(eventType);
+        // assert
         // this checks that the event is execute w/o looking at the result
         system.assertEquals(true, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.handlerType='));
         /************************
          * This is commented out as it would assume you have the sf-trigger-handler installed. Bec/ the handler is
          * not installed beforehand, the status will be false; however, once the trigger handler IS installed, and assuming the
          * TriggerMediator ran successfully, the result would be true. Thus, will leave commented out.
-          system.assertEquals(true, status);
+           system.assertEquals(true, status);
          *************************/
     } // end of testrunWithType
 
     @isTest
     static void testrunWithNullType() {
+        // arrange
         Type eventType = null;
+        // act
         Boolean status=accc_ApexPlatformEventDispatcher.run(eventType);
         // assert
         // exception is filed for null ( though, it does not throw, just logs)
@@ -80,21 +87,40 @@ private class accc_ApexPlatformEventDispatcherTest {
 
     @isTest
     static void testrunWithNullParam() {
+        // arrange/act
         accc_ApexPlatformEventDispatcher.run((accc_ITriggerHandler)null);
+        // assert
         system.assertEquals(false, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.name'));
     } // end of testrunWithNullParam
 
     @isTest
     static void testrunWithTriggerFire() {
+        // arrange
         String msg = 'testrunWithTriggerFire';
         List<accc_Log__e> logEvt = new List<accc_Log__e> {new accc_Log__e(Message__c = msg)};
-
+        // act
         Test.startTest();
         // Publish log event
         List<Database.SaveResult> sr = EventBus.publish(logEvt);
         Test.stopTest();
-
+        // assert
         // there is a trigger that will have fired
         system.assertEquals(true, accc_ApexUtilities.containsInTestLog('accc_ApexPlatformEventDispatcher.name=accc_LogPlatformEventHandler'));
     } // end of testrunWithTriggerFire
+
+
+    @isTest
+    static void testrunWithException() {
+        // arrange
+        accc_ApexPlatformEventDispatcher.useForTestingException=true;
+        Type eventType = Contact.class;
+  
+        // act
+        Boolean status=accc_ApexPlatformEventDispatcher.run(eventType);
+        // assert
+        // should have been an exception thrown ( looking for exception message)
+        system.assertEquals(true, accc_ApexUtilities.containsInTestLog('accc_ApexApplicationException'));
+        system.assertEquals(false, status);
+    } // end of testrunWithException
+
 } // end of accc_ApexPlatformEventDispatcherTest

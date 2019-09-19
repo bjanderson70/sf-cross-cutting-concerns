@@ -41,6 +41,15 @@
  */
 public without sharing class accc_LogPlatformEventHandler extends accc_EventBase {
 
+    /////////////////////////////////////////////////////////////////////////
+    // Data Members
+    /////////////////////////////////////////////////////////////////////////
+    // use for testing exception
+    @TestVisible
+    static Boolean useForTestingException=false;
+    /////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    /////////////////////////////////////////////////////////////////////////
     /**
      * @description Platform events only supports after insert
      *
@@ -51,6 +60,12 @@ public without sharing class accc_LogPlatformEventHandler extends accc_EventBase
         try {
             List<accc_Log__e> elogs = (List<accc_Log__e>)newItems;
             List<AcccApplicationLog__c> theApplicationLogs = accc_MessageTransformation.translate(elogs);
+            //
+            // are we causing an exception during testing
+            //
+            if ( Test.isRunningTest() && true == accc_LogPlatformEventHandler.useForTestingException) {
+                throw new accc_ApexApplicationException('accc_LogPlatformEventHandler:accc_ApexApplicationException');
+            }
             // any data to add
             if ( theApplicationLogs != null && theApplicationLogs.size() > 0) {
                 accc_SObjectBaseWriter writer = new accc_QueableSObjects(theApplicationLogs);
@@ -58,7 +73,7 @@ public without sharing class accc_LogPlatformEventHandler extends accc_EventBase
             }
         } catch (Exception excp) {
             // process exception, handle w/ care
-            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
+            accc_ApexUtilities.log(excp);
         }
 
     } // end of onAfterInsertChild

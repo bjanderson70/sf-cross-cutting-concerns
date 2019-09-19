@@ -36,23 +36,25 @@
  */
 public interface accc_IEventHandler {
 
-	// getter -- the consumer required a retry.
-	Boolean handlerRequiredRetry();
-	// is the event active
-	Boolean handlerIsActive();
+    // getter -- the consumer required a retry.
+    Boolean handlerRequiredRetry();
+    // is the event active
+    Boolean handlerIsActive();
 
-	// getter -- determine if we serialize data
-	Boolean handlerToSerialize();
-	// setter -- serialize data
-	void handlerToSerialize(Boolean doSerialize);
+    // getter -- determine if we serialize data
+    Boolean handlerToSerialize();
+    // setter -- serialize data
+    void handlerToSerialize(Boolean doSerialize);
 
-	// getter -- the event name, ('my_event__e')
-	String handlerEventName();
-	// setter -- the event name
-	void handlerEventName(String theEventName);
+    // getter -- the event name, ('my_event__e')
+    String handlerEventName();
+    // setter -- the event name
+    void handlerEventName(String theEventName);
 
-	// getter -- exception which may have occurred
-	Exception handlerException();
+    // getter -- exception which may have occurred
+    Exception handlerException();
+	 // getter -- of the saved results, if any
+    List<Database.SaveResult> theSaveResults();
 
 	// method the pubisher or subscriber/consumer uses
 	boolean process(List<SObject> parameter, accc_IProcessEventHandlers handlers, accc_PlatformEventAttrs attributes);

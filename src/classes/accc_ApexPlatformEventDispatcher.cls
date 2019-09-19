@@ -38,6 +38,16 @@
  */
 public without sharing class accc_ApexPlatformEventDispatcher {
 
+    /////////////////////////////////////////////////////////////////////////
+    // Data Members
+    /////////////////////////////////////////////////////////////////////////
+    // use for testing exception
+    @TestVisible
+    static Boolean useForTestingException=false;
+    /////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    /////////////////////////////////////////////////////////////////////////
+
     /**
      * @description The type of event (PE/CDC) we will use to lookup in the Trigger Handler.
      * The code below is commented out if you are not incorporating the trigger handler found
@@ -52,25 +62,29 @@ public without sharing class accc_ApexPlatformEventDispatcher {
         // simple check to ensure the type is not null
         if ( handlerType != null ) {
             try {
+                //
+                // cause exception testing via injection
+                //
+                if ( Test.isRunningTest() && true == accc_ApexPlatformEventDispatcher.useForTestingException ) {
+                    throw new accc_ApexApplicationException('accc_ApexPlatformEventDispatcher: accc_ApexApplicationException');
+                }
                 /***************** FOR TRIGGER HANDLER FRAMEWORK ************************************
                  *
-                [Step 1] - If you decide to load the sf-trigger-handler, then uncomment this portion and the next
-                accc_TriggerMediator triggerMediator = new accc_TriggerMediator(handlerType);
+                   [Step 1] - If you decide to load the sf-trigger-handler, then uncomment this portion and the next
+                   accc_TriggerMediator triggerMediator = new accc_TriggerMediator(handlerType);
                  *
-                */
-                
+                 */
+
                 // keep -- as this will log to an internal set during testing; otherwise, no-op
                 accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher.handlerType=' + handlerType);
                 /**************** FOR TRIGGER HANDLER FRAMEWORK ************************************
                  *
-                 [Step 2] -  Requires the sf-trigger-handler framework
-                  
-                // invoke trigger handlers related to the AfterInsert ( for events, only after insert)
-                result = triggerMediator.execute(accc_TriggerHelperClass.TriggerState.AfterInsert);
+                   [Step 2] -  Requires the sf-trigger-handler framework
+
+                   // invoke trigger handlers related to the AfterInsert ( for events, only after insert)
+                   result = triggerMediator.execute(accc_TriggerHelperClass.TriggerState.AfterInsert);
                  *
                  */
-            } catch ( accc_ApexApplicationException th_excp) {
-                accc_ApexUtilities.log(th_excp);
             } catch (Exception excp) {
                 accc_ApexUtilities.log(excp);
             }

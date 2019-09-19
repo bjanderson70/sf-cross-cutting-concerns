@@ -216,6 +216,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
         this.eventName = theEventName;
         this.serializeEvent = serializeTheEvent;
         this.isEventActive = isActive;
+        this.ourCurrentSaveResults =null;
 
     }// end of ctor
     /////////////////////////////////////////////////////////////////////////
@@ -252,6 +253,15 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
     public Exception handlerException() {
         return this.theException;
     }// end of handlerException
+
+
+    /**
+     * @description the saved results from a publish (default is null)
+     * @return List<Database.SaveResult>
+     **/
+    public List<Database.SaveResult> theSaveResults(){
+        return this.ourCurrentSaveResults;
+    }
     /**
      * @description retry required from the child. Normally, the consumer, processing an event via a trigger handler,
      * indicates (via boolean) whether a retry is required within the trigger.
@@ -349,6 +359,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
         set { this.m_exception = value;}
     } // end of theException
 
+
     /**
      * @description collection of replay Ids of platform event
      */
@@ -381,7 +392,13 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
     /////////////////////////////////////////////////////////////////////////
     // Protected Properties
     /////////////////////////////////////////////////////////////////////////
-
+    /**
+     * @description getter/setter of the current database saveresults
+     */
+    protected List<Database.SaveResult> ourCurrentSaveResults {
+        get;
+        set;
+    }// end of ourCurrentSaveResults
     /**
      * @description Retry Required
      */
@@ -467,9 +484,9 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
 
         accc_PlatformEventAttrs.EventLogging logStatus = attributes.loggingStatus();
 
-		/*
-		 * Set our attributes for this events
-		 */
+        /*
+         * Set our attributes for this events
+         */
         this.willInstrument = attributes.instrumentation();
         this.allowRetryAfterException = attributes.allowRetryAfterException();
         this.isEventToBeStored = attributes.storeEvent();
@@ -503,6 +520,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
             this.setReplayIds(parameter);
             // now call child process (CHILDREN SHOULD OVERRIDE -- may make ABSTRACT to Force)
             processResult = this.childProcess(parameter, handlers, attributes);
+           
         }
         return processResult;
 
