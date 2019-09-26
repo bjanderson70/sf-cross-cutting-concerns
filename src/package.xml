@@ -156,6 +156,8 @@
 		<members>accc_PlatformEventDAOLogTest</members>
 			<members>accc_PlatformEventLogSelector</members>
 			<members>accc_PlatformEventLogSelectorTest</members>
+		<members>accc_PlatformEventLogger</members>
+		<members>accc_PlatformEventLoggerTest</members>
 		<name>ApexClass</name>
     </types>
 	<types>
