@@ -520,7 +520,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
             this.setReplayIds(parameter);
             // now call child process (CHILDREN SHOULD OVERRIDE -- may make ABSTRACT to Force)
             processResult = this.childProcess(parameter, handlers, attributes);
-           
+
         }
         return processResult;
 

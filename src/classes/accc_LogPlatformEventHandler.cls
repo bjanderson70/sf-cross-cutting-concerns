@@ -47,6 +47,9 @@ public without sharing class accc_LogPlatformEventHandler extends accc_EventBase
     // use for testing exception
     @TestVisible
     static Boolean useForTestingException=false;
+    @TestVisible
+    static final string FOR_TESTING_EXCEPTION = 'accc_LogPlatformEventHandler:accc_ApexApplicationException';
+
     /////////////////////////////////////////////////////////////////////////
     // Public Methods
     /////////////////////////////////////////////////////////////////////////
@@ -63,8 +66,8 @@ public without sharing class accc_LogPlatformEventHandler extends accc_EventBase
             //
             // are we causing an exception during testing
             //
-            if ( Test.isRunningTest() && true == accc_LogPlatformEventHandler.useForTestingException) {
-                throw new accc_ApexApplicationException('accc_LogPlatformEventHandler:accc_ApexApplicationException');
+            if ( true == accc_LogPlatformEventHandler.useForTestingException && Test.isRunningTest() ) {
+                throw new accc_ApexApplicationException(FOR_TESTING_EXCEPTION);
             }
             // any data to add
             if ( theApplicationLogs != null && theApplicationLogs.size() > 0) {
