@@ -60,7 +60,7 @@ public virtual class accc_BatchApexErrorEventHandler extends accc_EventBase {
 		try {
 
 			// if testing are we throwing an exception
-			if  (Test.isRunningTest()) {
+			if  (accc_ApexConstants.UnitTestsRunning) {
 				if ( accc_BatchApexErrorEventHandler.causeExceptionForTesting ) {
 					throw new accc_ApexApplicationException(DEBUG_LEVEL);
 				}

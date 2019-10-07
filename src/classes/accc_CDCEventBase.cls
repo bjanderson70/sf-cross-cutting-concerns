@@ -307,7 +307,7 @@ public virtual with sharing class accc_CDCEventBase  extends accc_EventBase  {
         //
         // for testing we create the changeeventheader
         //
-        if ( Test.isRunningTest() 
+        if ( accc_ApexConstants.UnitTestsRunning 
             && result == null 
             && ( recordType == AccountChangeEvent.class
                 || recordType == ContactChangeEvent.class
@@ -470,7 +470,7 @@ public virtual with sharing class accc_CDCEventBase  extends accc_EventBase  {
     @TestVisible
     private static EventBus.ChangeEventHeader  getChangeEventHeaderForTesting (){
         EventBus.ChangeEventHeader result=null;
-        if ( Test.isRunningTest() ){
+        if ( accc_ApexConstants.UnitTestsRunning ){
             result = new EventBus.ChangeEventHeader();
             result.changeOrigin = FOR_TEST_CHANGE_ORIGIN_NAME;
             result.changeType = CDC_CREATE_CHANGE_TYPE;

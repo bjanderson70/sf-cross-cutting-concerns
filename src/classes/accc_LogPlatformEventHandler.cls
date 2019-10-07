@@ -66,7 +66,7 @@ public without sharing class accc_LogPlatformEventHandler extends accc_EventBase
             //
             // are we causing an exception during testing
             //
-            if ( true == accc_LogPlatformEventHandler.useForTestingException && Test.isRunningTest() ) {
+            if ( true == accc_LogPlatformEventHandler.useForTestingException && accc_ApexConstants.UnitTestsRunning ) {
                 throw new accc_ApexApplicationException(FOR_TESTING_EXCEPTION);
             }
             // any data to add

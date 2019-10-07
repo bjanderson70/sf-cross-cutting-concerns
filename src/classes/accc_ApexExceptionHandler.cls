@@ -37,9 +37,9 @@
 public virtual without sharing class accc_ApexExceptionHandler implements accc_IApexExceptionHandler {
 
     /*---------------------------------------------------------------------------------------
-    * DATA MEMBERS
-    *---------------------------------------------------------------------------------------
-    **/
+     * DATA MEMBERS
+     *---------------------------------------------------------------------------------------
+     **/
 
     /**
      * @description handles the logger diferently (normally, forces output to system.debug)
@@ -53,24 +53,30 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
     @TestVisible
     static accc_ILogger logger = null;
 
+    /*
+     * cause an exception during uni tests
+     */
+    @TestVisible
+    static Boolean mForceException = false;
+
     ////////////////////////////////////////////////////////////////////////////////
     /// Public Methods
     ////////////////////////////////////////////////////////////////////////////////
 
     /**
-    * @description Process the exception (defaults to Global policy)
-    *
-    * @param excp  Exception
-    */
+     * @description Process the exception (defaults to Global policy)
+     *
+     * @param excp  Exception
+     */
     public virtual void process(Exception excp) {
         this.process(excp, accc_ApexExceptionPolicyEnum.Top);
     } // end of process
     /**
-    * @description Process the exception (w/ special handling of the data logged)
-    *
-    * @param Exception
-    * @param Boolean handle Log Output Carefully
-    */
+     * @description Process the exception (w/ special handling of the data logged)
+     *
+     * @param Exception
+     * @param Boolean handle Log Output Carefully
+     */
     public virtual void process(Exception excp, boolean handleLogOutputCarefully) {
         this.process(excp, accc_ApexExceptionPolicyEnum.Top, true, handleLogOutputCarefully);
     } // end of process
@@ -82,27 +88,27 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
     } // end of process
 
     /**
-    * @description Process the exception and the associate policy
-    * @param excp Exception
-    * @param policy accc_ApexExceptionPolicyEnum
-    */
+     * @description Process the exception and the associate policy
+     * @param excp Exception
+     * @param policy accc_ApexExceptionPolicyEnum
+     */
     public virtual void process(Exception excp, accc_ApexExceptionPolicyEnum policy, Boolean logException) {
         this.process(excp, policy, logException, false);
     } // end of process
 
     /**
-    * @description rethrow the exception less revealing
-    * @param excp Exception
-    */
+     * @description rethrow the exception less revealing
+     * @param excp Exception
+     */
     public virtual Exception rethrow(Exception excp) {
         return this.rethrow(excp, accc_ApexExceptionPolicyEnum.Top);
     } // end of rethrow
 
     /**
-    * @description rethrow the exception less revealing
-    * @param excp Exception
-    * @param policy accc_ApexExceptionPolicyEnum
-    */
+     * @description rethrow the exception less revealing
+     * @param excp Exception
+     * @param policy accc_ApexExceptionPolicyEnum
+     */
     public virtual Exception rethrow(Exception excp, accc_ApexExceptionPolicyEnum policy) {
         Exception returned = excp;
         // do the normal processing of the exception

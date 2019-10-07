@@ -81,7 +81,7 @@ global virtual without sharing class accc_ApexBigObjectLogger extends accc_ApexO
 		List<AcccApplicationLog__c> entries = null;
 		try {
 
-			if ( Test.isRunningTest() 
+			if ( accc_ApexConstants.UnitTestsRunning 
 				&& accc_ApexBigObjectLogger.m_forceException==true){
 				throw new accc_ApexApplicationException(EXCEPTION_MSG_FOR_TEST);
 			}

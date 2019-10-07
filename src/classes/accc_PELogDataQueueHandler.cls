@@ -91,7 +91,7 @@ public class accc_PELogDataQueueHandler extends accc_QueableBigObjects {
 	@TestVisible
 	private static List<Database.SaveResult> getTestResultsForBigObject() {
 		List<Database.SaveResult> results = null;
-		if ( Test.isRunningTest() ) {
+		if ( accc_ApexConstants.UnitTestsRunning ) {
 			// SIMULATING RESULTS
 			results = new  List<Database.SaveResult> {
 				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000AAA","success":true,"errors":[]}', Database.SaveResult.class),

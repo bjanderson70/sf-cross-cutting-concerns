@@ -377,7 +377,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
         get {
             // special test condition : this class does not use EventBus.publish when processing
             // so we simulate
-            if ( Test.isRunningTest()
+            if ( accc_ApexConstants.UnitTestsRunning
                  && DO_NOT_SET_CHECKPOINT==true ) {
                 if (  this.m_opIds == null ) {
                     this.m_opIds  = new List<String>();
@@ -550,7 +550,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
             replayId = (String)event.get(REPLAY_ID_INDEX_NAME);
             if ( replayId != null ) {
                 this.replayIds.add(replayId);
-            } else if ( Test.isRunningTest() ) {
+            } else if ( accc_ApexConstants.UnitTestsRunning ) {
                 // when testing and we DO NOT use the trigger to insert
                 // then the system did NOT process via the regular channel;
                 // thus, NO REPLAY ID will be generated ( so we simulate it) :-(  )
@@ -621,7 +621,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
         if ( string.isNotBlank(lastReplayId) ) {
             // set our new checkpoint
             // specal consideration for testing :-(  )
-            if ( Test.isRunningTest() ) {
+            if ( accc_ApexConstants.UnitTestsRunning ) {
                 // user wants to set checkpoint
                 if ( DO_NOT_SET_CHECKPOINT == false) {
                     // no need to fault all

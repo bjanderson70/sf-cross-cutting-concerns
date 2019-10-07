@@ -109,7 +109,7 @@ public with sharing class accc_PlatformEventTestServiceHelper {
 	 * @return results of the publishing
 	 */
 	public  PlatformEventResults publish(SObject record) {
-		if ( Test.isRunningTest() ) {
+		if ( accc_ApexConstants.UnitTestsRunning ) {
 			if ( record == null ) {
 				this.results.successful = false;
 				this.results.exceptions = new PlatformEventTestException('null pointer passed into publisher');
@@ -126,7 +126,7 @@ public with sharing class accc_PlatformEventTestServiceHelper {
 	 * @return results of the publishing
 	 */
 	public  PlatformEventResults publish(List<SObject> records) {
-		if ( Test.isRunningTest() ) {
+		if ( accc_ApexConstants.UnitTestsRunning ) {
 			try {
 				if ( !instantiated ) {
 					Test.startTest();
