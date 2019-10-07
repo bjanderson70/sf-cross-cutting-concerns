@@ -35,79 +35,101 @@
  */
 @isTest
 private class accc_PlatformEventLogInjectorTest {
-	@isTest
-	static void testCtoraccc_PlatformEventLogInjector() {
-		// assign
-		String name = 'logInfo';
-		accc_PlatformEventDAOLog dao = new accc_PlatformEventDAOLog(name);
-		// act
-		accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(dao);
-		// assert
-		system.assertEquals(true, ctor.m_entries.size() == 1);
-	}
-	@isTest
-	static void testCtoraccc_PlatformEventLogInjectorWithNull() {
-		// assign
-		// act
-		accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector((accc_PlatformEventDAOLog)null);
-		// assert
-		system.assertEquals(true, ctor.m_entries.size() == 0);
-	}
-	@isTest
-	static void testCtoraccc_PlatformEventLogInjectorList() {
-		// assign
-		String name = 'logInfo';
-		List<accc_PlatformEventDAOLog> daolist = new List<accc_PlatformEventDAOLog> {
-			new accc_PlatformEventDAOLog(name)
-		};
-		// act
-		accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(daolist);
-		// assert
-		system.assertEquals(true, ctor.m_entries.size() == 1);
-	}
+    @isTest
+    static void testCtoraccc_PlatformEventLogInjector() {
+        // assign
+        String name = 'logInfo';
+        accc_PlatformEventDAOLog dao = new accc_PlatformEventDAOLog(name);
+        // act
+        accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(dao);
+        // assert
+        system.assertEquals(true, ctor.m_entries.size() == 1);
+    }
+    @isTest
+    static void testCtoraccc_PlatformEventLogInjectorWithNull() {
+        // assign
+        // act
+        accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector((accc_PlatformEventDAOLog)null);
+        // assert
+        system.assertEquals(true, ctor.m_entries.size() == 0);
+    }
+    @isTest
+    static void testCtoraccc_PlatformEventLogInjectorList() {
+        // assign
+        String name = 'logInfo';
+        List<accc_PlatformEventDAOLog> daolist = new List<accc_PlatformEventDAOLog> {
+            new accc_PlatformEventDAOLog(name)
+        };
+        // act
+        accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(daolist);
+        // assert
+        system.assertEquals(true, ctor.m_entries.size() == 1);
+    }
 
-	@isTest
-	static void teststore() {
-		// assign
-		String name = 'logInfo';
-		List<accc_PlatformEventDAOLog> daolist = new List<accc_PlatformEventDAOLog> {
-			new accc_PlatformEventDAOLog(name)
-		};
-		Test.startTest();
-		// act
-		accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(daolist);
-		Boolean result = ctor.store();
-		Test.stopTest();
-		// assert
-		system.assertEquals(true, result);
-	}
-	@isTest
-	static void testremove() {
-		// assign
-		String name = 'logInfo';
-		List<accc_PlatformEventDAOLog> daolist = new List<accc_PlatformEventDAOLog> {
-			new accc_PlatformEventDAOLog(name)
-		};
-		Test.startTest();
-		// act
-		accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(daolist);
-		Boolean result = ctor.remove();
-		Test.stopTest();
-		// assert
-		system.assertEquals(true, result);
-	}
+    @isTest
+    static void teststore() {
+        // assign
+        String name = 'logInfo';
+        List<accc_PlatformEventDAOLog> daolist = new List<accc_PlatformEventDAOLog> {
+            new accc_PlatformEventDAOLog(name)
+        };
+        Test.startTest();
+        // act
+        accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(daolist);
+        Boolean result = ctor.store();
+        Test.stopTest();
+        // assert
+        system.assertEquals(true, result);
+    }
+    @isTest
+    static void testremove() {
+        // assign
+        String name = 'logInfo';
+        List<accc_PlatformEventDAOLog> daolist = new List<accc_PlatformEventDAOLog> {
+            new accc_PlatformEventDAOLog(name)
+        };
+        Test.startTest();
+        // act
+        accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(daolist);
+        Boolean result = ctor.remove();
+        Test.stopTest();
+        // assert
+        system.assertEquals(true, result);
+    }
 
-	@isTest
-	static void testGetHandler() {
-		// assign
-		String name = 'logInfo';
-		List<accc_PlatformEventDAOLog> daolist = new List<accc_PlatformEventDAOLog> {
-			new accc_PlatformEventDAOLog(name)
-		};
-		// act
-		accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(daolist);
-		accc_PELogDataQueueHandler handler = ctor.getHandler(false);
-		// assert
-		system.assertEquals(true, handler != null);
-	}
+    @isTest
+    static void testGetHandler() {
+        // assign
+        String name = 'logInfo';
+        List<accc_PlatformEventDAOLog> daolist = new List<accc_PlatformEventDAOLog> {
+            new accc_PlatformEventDAOLog(name)
+        };
+        
+        accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(daolist);
+		 // act
+        accc_PELogDataQueueHandler handler = ctor.getHandler(false);
+        // assert
+        system.assertEquals(true, handler != null);
+    }
+
+    @isTest
+    static void testprocessAction() {
+        // assign
+        String name = 'logInfo';
+        List<accc_PlatformEventDAOLog> daolist = new List<accc_PlatformEventDAOLog> {
+            new accc_PlatformEventDAOLog(name)
+        };
+        Boolean exceptionOccurred = false;
+       
+        accc_PlatformEventLogInjector ctor = new accc_PlatformEventLogInjector(daolist);
+        accc_PlatformEventLogInjector.mForceException = true;
+        try {
+			 // act
+            Boolean result = ctor.processAction(false);
+        } catch (Exception excp) {
+            exceptionOccurred=true;
+        }
+        // assert
+        system.assertEquals(true, exceptionOccurred);
+    }
 }

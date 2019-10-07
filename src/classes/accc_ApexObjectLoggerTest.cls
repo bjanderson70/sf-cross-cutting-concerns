@@ -35,121 +35,141 @@
  */
 @isTest
 private class accc_ApexObjectLoggerTest {
-	@isTest
-	static void testDefaultCtor() {
-		final String value = 'data';
-		accc_ApexObjectLogger logger = new accc_ApexObjectLogger();
+    @isTest
+    static void testDefaultCtor() {
+        final String value = 'data';
+        accc_ApexObjectLogger logger = new accc_ApexObjectLogger();
 
-		System.assertEquals(LoggingLevel.DEBUG, logger.logLevel());
-		System.assertEquals(null, logger.lastMessage());
+        System.assertEquals(LoggingLevel.DEBUG, logger.logLevel());
+        System.assertEquals(null, logger.lastMessage());
 
-	} // end of testDefaultCtor
+    } // end of testDefaultCtor
 
-	@isTest
-	static void testCtor() {
-		final String value = 'data';
-		accc_ILogger logger = new accc_ApexObjectLogger();
+    @isTest
+    static void testCtor() {
+        final String value = 'data';
+        accc_ILogger logger = new accc_ApexObjectLogger();
 
-		logger.write(value);
-		System.assertEquals(true, logger.lastMessage().contains(value));
+        logger.write(value);
+        System.assertEquals(true, logger.lastMessage().contains(value));
 
-	} // end of testCtor
-	@isTest
-	static void testsetLastMessage() {
-		final String value = 'data';
-		accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.DEBUG);
+    } // end of testCtor
+    @isTest
+    static void testsetLastMessage() {
+        final String value = 'data';
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.DEBUG);
 
-		logger.setLastMessage(LoggingLevel.ERROR, value);
-		System.assertEquals(true, logger.lastMessage().contains(value));
+        logger.setLastMessage(LoggingLevel.ERROR, value);
+        System.assertEquals(true, logger.lastMessage().contains(value));
 
-	} // end of testsetLastMessage
+    } // end of testsetLastMessage
 
-	@isTest
-	static void testCtorCheckLogLevel() {
-		final String value = 'data';
-		accc_ILogger logger = accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
-		System.assertEquals(LoggingLevel.ERROR, logger.logLevel());
+    @isTest
+    static void testCtorCheckLogLevel() {
+        final String value = 'data';
+        accc_ILogger logger = accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
+        System.assertEquals(LoggingLevel.ERROR, logger.logLevel());
 
-	} // end of testCtorCheckLogLevel
+    } // end of testCtorCheckLogLevel
 
 
-	@isTest
-	static void testwriteWithTrueSendLogger() {
-		final String value = 'data';
-		accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
-		logger.write(LoggingLevel.DEBUG, value, true);
-		System.assertEquals(true, logger.lastMessage().contains(value));
-	}// end of testwriteWithTrueSendLogger
+    @isTest
+    static void testwriteWithTrueSendLogger() {
+        final String value = 'data';
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
+        logger.write(LoggingLevel.DEBUG, value, true);
+        System.assertEquals(true, logger.lastMessage().contains(value));
+    }// end of testwriteWithTrueSendLogger
 
-	@isTest
-	static void testwriteWithFalseSendLogger() {
-		final String value = 'data';
-		accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
-		logger.write(LoggingLevel.DEBUG, value, false);
-		System.assertEquals(true, logger.lastMessage().contains(value));
-	}// end of testwriteWithFalseSendLogger
+    @isTest
+    static void testwriteWithFalseSendLogger() {
+        final String value = 'data';
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
+        logger.write(LoggingLevel.DEBUG, value, false);
+        System.assertEquals(true, logger.lastMessage().contains(value));
+    }// end of testwriteWithFalseSendLogger
 
-	@isTest
-	static void testwriteWithArraySendLogger() {
-		final String lastValue = 'data3';
-		final List<String> values = new List<String> {
-			'data',
-			'data2',
-			lastValue
-		};
-		accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
-		logger.write(LoggingLevel.DEBUG, values, false);
-		System.assertEquals(true, logger.lastMessage().contains(lastValue));
-	}// end of testwriteWithArraySendLogger
-	@isTest
-	static void testwriteWithArraySendLoggerWith2Params() {
-		final String lastValue = 'data3';
-		final List<String> values = new List<String> {
-			'data',
-			'data2',
-			lastValue
-		};
-		accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
-		logger.write(LoggingLevel.DEBUG, values);
-		System.assertEquals(true, logger.lastMessage().contains(lastValue));
-	}// end of testwriteWithArraySendLoggerWith2Params
+    @isTest
+    static void testwriteWithArraySendLogger() {
+        final String lastValue = 'data3';
+        final List<String> values = new List<String> {
+            'data',
+            'data2',
+            lastValue
+        };
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
+        logger.write(LoggingLevel.DEBUG, values, false);
+        System.assertEquals(true, logger.lastMessage().contains(lastValue));
+    }// end of testwriteWithArraySendLogger
 
-	@isTest
-	static void testwriteWithArraySingleParam() {
-		final String lastValue = 'data3';
-		final List<String> values = new List<String> {
-			'data',
-			'data2',
-			lastValue
-		};
-		accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.DEBUG);
-		logger.write(values);
-		System.assertEquals(true, logger.lastMessage().contains(lastValue));
-	}// end of testwriteWithArraySingleParam
+    @isTest
+    static void testwriteWithEmptyAndNullArraySendLogger() {
+        final String lastValue = 'data3';
+        final List<String> values = new List<String> {
+            'data',
+            'data2',
+            lastValue
+        };
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
+        logger.write(LoggingLevel.DEBUG, new List<String>(), false);
+        System.assertEquals( null, logger.lastMessage());
+        logger.write(LoggingLevel.DEBUG, (List<Object>)null, false);
+        System.assertEquals( null, logger.lastMessage());
+    } // end of testwriteWithEmptyAndNullArraySendLogger
 
-	@isTest
-	static void testwriteWithNoSendLogger() {
-		final String value = 'data';
-		accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
-		logger.write(LoggingLevel.DEBUG, value);
-		System.assertEquals(true, logger.lastMessage().contains(value));
-	}// end of testwriteWithNoSendLogger
+    @isTest
+    static void testwriteWithArraySendLoggerWith2Params() {
+        final String lastValue = 'data3';
+        final List<String> values = new List<String> {
+            'data',
+            'data2',
+            lastValue
+        };
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
+        logger.write(LoggingLevel.DEBUG, values);
+        System.assertEquals(true, logger.lastMessage().contains(lastValue));
+    }// end of testwriteWithArraySendLoggerWith2Params
 
-	@isTest
-	static void testwriteWithListArray() {
-		final List<Object> values = new List<Object> {'data', 'two'};
-		accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
-		logger.write(LoggingLevel.DEBUG, values);
-		System.assertEquals(true, logger.lastMessage().contains('two'));
-	}// end of testwriteWithListArray
-	//////////////////////////////////////////////////////////////////////////////////
-	// PRIVATE METHODS
-	//////////////////////////////////////////////////////////////////////////////////
+    @isTest
+    static void testwriteWithArraySingleParam() {
+        final String lastValue = 'data3';
+        final List<String> values = new List<String> {
+            'data',
+            'data2',
+            lastValue
+        };
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.DEBUG);
+        logger.write(values);
+        System.assertEquals(true, logger.lastMessage().contains(lastValue));
+        logger.write((Object)null);
+		// last message is still present
+        System.assertEquals(true, logger.lastMessage().contains(lastValue));
+    
+    }// end of testwriteWithArraySingleParam
 
-	//
-	// get the logger ... can be changed to pull from the test environment (if needed)
-	//
-	private static accc_ILogger getLogger(LoggingLevel loglevel) {
-		return new accc_ApexObjectLogger(logLevel);
-	} // end of getLogger
+    @isTest
+    static void testwriteWithNoSendLogger() {
+        final String value = 'data';
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
+        logger.write(LoggingLevel.DEBUG, value);
+        System.assertEquals(true, logger.lastMessage().contains(value));
+    }// end of testwriteWithNoSendLogger
+
+    @isTest
+    static void testwriteWithListArray() {
+        final List<Object> values = new List<Object> {'data', 'two'};
+        accc_ApexObjectLogger logger = (accc_ApexObjectLogger)accc_ApexObjectLoggerTest.getLogger(LoggingLevel.ERROR);
+        logger.write(LoggingLevel.DEBUG, values);
+        System.assertEquals(true, logger.lastMessage().contains('two'));
+    }// end of testwriteWithListArray
+    //////////////////////////////////////////////////////////////////////////////////
+    // PRIVATE METHODS
+    //////////////////////////////////////////////////////////////////////////////////
+
+    //
+    // get the logger ... can be changed to pull from the test environment (if needed)
+    //
+    private static accc_ILogger getLogger(LoggingLevel loglevel) {
+        return new accc_ApexObjectLogger(logLevel);
+    } // end of getLogger
 } // end of accc_ApexObjectLoggerTest

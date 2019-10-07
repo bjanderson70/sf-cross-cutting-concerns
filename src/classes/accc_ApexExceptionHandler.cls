@@ -115,6 +115,13 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
         this.process(excp, policy);
         // get the rethrow exception, if any
         try {
+            /*****************************
+             * TESTING
+             *****************************
+             */
+            if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+                throw new accc_ApexApplicationException('Exception Testing');
+            }
             accc_IApexExceptionPolicyStrategy policyStrategy = (accc_IApexExceptionPolicyStrategy) accc_ApexEnvironment.getRuntimeEnvironment().objectFactory().create(accc_ApexConstants.ExceptionPolicyHandler);
             // what to do with an exception, translate it or returned null [meaning no need to rethrow]
             returned = policyStrategy.rethrow( excp, policy);
@@ -192,6 +199,13 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
         accc_IDataFormat formatter = this.getDataFormatter();
 
         try {
+            /*****************************
+             * TESTING
+             *****************************
+             */
+            if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+                throw new accc_ApexApplicationException('Exception Testing');
+            }
             message = (String)formatter.format( excp, policy);
         } catch (Exception iexcp) {
             this.handleException(iexcp);
@@ -212,6 +226,13 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
     private void handleException(Exception excp) {
         // send to the debug log
         this.getLogger().error(excp.getMessage());
+        /*****************************
+         * TESTING
+         *****************************
+         */
+        if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+            accc_ApexUtilities.log(excp.getMessage());
+        }
     } // end of handleException
 
     /**
@@ -222,6 +243,14 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
     private accc_ILogger getLogger() {
         accc_ILogger logger =  null;
         try {
+            /*****************************
+             * TESTING
+             *****************************
+             */
+            if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+                throw new accc_ApexApplicationException('Exception Testing');
+            }
+
             if ( this.handlingLoggingWithCare == false ) {
                 logger =  accc_ApexEnvironment.getRuntimeEnvironment().logger();
             } else {
@@ -243,11 +272,19 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
         accc_IDataFormat formatter = null;
 
         try {
+            /*****************************
+             * TESTING
+             *****************************
+             */
+            if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+                throw new accc_ApexApplicationException('Exception Testing');
+            }
             if ( this.handlingLoggingWithCare == false ) {
                 formatter = (accc_IDataFormat) accc_ApexEnvironment.getRuntimeEnvironment().objectFactory().create(accc_ApexConstants.ExceptionFormatter);
             } else {
                 formatter = new accc_ExceptionFormatter();
             }
+
         } catch (Exception iexcp) {
             formatter = new accc_ExceptionFormatter();
         }

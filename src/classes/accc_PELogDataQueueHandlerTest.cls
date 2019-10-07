@@ -35,120 +35,131 @@
  */
 @isTest
 private class accc_PELogDataQueueHandlerTest {
-	@isTest
-	static  void testPlatformEventLogDataQueueHandlerEnque() {
-		// assign
-		DateTime now = DateTime.Now();
-		String name = 'my-test-pe-test-today';
+    @isTest
+    static void testPlatformEventLogDataQueueHandlerEnque() {
+        // assign
+        DateTime now = DateTime.Now();
+        String name = 'my-test-pe-test-today';
 
+        // act
+        List<accc_PlatformEventDAOLog> daoList = accc_PELogDataQueueHandlerTest.getPEData();
+
+        // startTest/stopTest block to force async processes
+        //   to run in the test.
+        Test.startTest();
+        // act
+        System.enqueueJob(new accc_PELogDataQueueHandler(daoList));
+        Test.stopTest();
+        // assert -- this is bogus !
+
+        // the queueable calls database.insertImmediate which does not error out but then does not
+        // add the items via Test. Thus, the class, 'accc_PELogDataQueueHandler' simulates
+        // the results
+        System.assertEquals(true, accc_PELogDataQueueHandler.getTestResultsForBigObject().size() > 0);
+
+    }
+
+    @isTest
+    static void testctorWithNULLDAOList() {
+        // assign
+        List<accc_PlatformEventDAOLog> daoList = null;
+
+        accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
+
+        System.assertEquals(0, handler.entries.size());
+        System.assertEquals(false, handler.actions );
+    }
+
+    @isTest
+    static void testctorWithNULLDAOListAndRemoval() {
+        // assign
+        List<accc_PlatformEventDAOLog> daoList = null;
+
+        accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList, true);
+
+        System.assertEquals(0, handler.entries.size());
+        System.assertEquals(true, handler.actions );
+    }
+
+    @isTest
+    static void testctorWithNULLDAOListCallingExecute() {
+        // assign
+        List<accc_PlatformEventDAOLog> daoList = null;
+
+        accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
+        handler.execute(null);
+        System.assertEquals(0, handler.entries.size());
+        System.assertEquals(false, handler.actions );
+    }
+
+    @isTest
+    static void testctorWithDAOList() {
+        // assign
+        List<accc_PlatformEventDAOLog> daoList = accc_PELogDataQueueHandlerTest.getPEData();
+
+        accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
+
+        System.assertEquals(daoList.size(), handler.entries.size());
+        System.assertEquals(false, handler.actions );
+    }
+
+    @isTest
+    static void testprocessWithException() {
+        // assign
+        List<accc_PlatformEventDAOLog> daoList = accc_PELogDataQueueHandlerTest.getPEData();
+
+        accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
+        accc_SObjectBaseWriter.m_testToCaseException = true;
+        // startTest/stopTest block to force async processes
+        //   to run in the test.
+        Test.startTest();
+        // act
+        System.enqueueJob(handler);
+        Test.stopTest();
+        System.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_SObjectBaseWriter.EXCEPTION_MESG_FOR_TEST));
+
+    }
+
+    @isTest
+    static void testctorWithBigObjectList() {
+        // assign
+        List<accc_Org_Events__b> daoList = accc_PELogDataQueueHandlerTest.getBigPEData();
+
+        accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
+
+        System.assertEquals(daoList.size(), handler.entries.size());
+        System.assertEquals(false, handler.actions );
+    }
+
+    @isTest
+    static void testctorWithBigObjectListWithTwoParams() {
+        // assign
+        List<accc_Org_Events__b> daoList = accc_PELogDataQueueHandlerTest.getBigPEData();
 		// act
-		List<accc_PlatformEventDAOLog> daoList = accc_PELogDataQueueHandlerTest.getPEData();
+        accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList,true);
 
-		// startTest/stopTest block to force async processes
-		//   to run in the test.
-		Test.startTest();
-		// act
-		System.enqueueJob(new accc_PELogDataQueueHandler(daoList));
-		Test.stopTest();
-		// assert -- this is bogus !
+        System.assertEquals(daoList.size(), handler.entries.size());
+        System.assertEquals(true, handler.actions );
+    }
 
-		// the queueable calls database.insertImmediate which does not error out but then does not
-		// add the items via Test. Thus, the class, 'accc_PELogDataQueueHandler' simulates
-		// the results
-		System.assertEquals(true, accc_PELogDataQueueHandler.getTestResultsForBigObject().size() > 0);
+    /////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Private Methods
+    /////////////////////////////////////////////////////////////////////////////////////
+    static List<accc_PlatformEventDAOLog> getPEData() {
+        DateTime now = DateTime.Now();
+        String name = 'my-test-pe-test-today';
 
-	}
+        List<accc_PlatformEventDAOLog> daoList = new List<accc_PlatformEventDAOLog> {
+            new accc_PlatformEventDAOLog(name, JSON.serialize(new pe_test__e()), now),
+            new accc_PlatformEventDAOLog(name, JSON.serialize(new pe_test__e()), now + 1),
+            new accc_PlatformEventDAOLog(name, JSON.serialize(new pe_test__e()), now + 2)
+        };
+        return daoList;
+    } // end of getPEData
 
-	@isTest
-	static  void testctorWithNULLDAOList() {
-		// assign
-		List<accc_PlatformEventDAOLog> daoList = null;
-
-		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
-
-		System.assertEquals(0, handler.entries.size());
-		System.assertEquals(false, handler.actions );
-	}
-
-	@isTest
-	static  void testctorWithNULLDAOListAndRemoval() {
-		// assign
-		List<accc_PlatformEventDAOLog> daoList = null;
-
-		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList, true);
-
-		System.assertEquals(0, handler.entries.size());
-		System.assertEquals(true, handler.actions );
-	}
-
-	@isTest
-	static  void testctorWithNULLDAOListCallingExecute() {
-		// assign
-		List<accc_PlatformEventDAOLog> daoList = null;
-
-		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
-		handler.execute(null);
-		System.assertEquals(0, handler.entries.size());
-		System.assertEquals(false, handler.actions );
-	}
-
-	@isTest
-	static  void testctorWithDAOList() {
-		// assign
-		List<accc_PlatformEventDAOLog> daoList = accc_PELogDataQueueHandlerTest.getPEData();
-
-		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
-
-		System.assertEquals(daoList.size(), handler.entries.size());
-		System.assertEquals(false, handler.actions );
-	}
-
-	@isTest
-	static  void testprocessWithException() {
-		// assign
-		List<accc_PlatformEventDAOLog> daoList = accc_PELogDataQueueHandlerTest.getPEData();
-
-		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
-		accc_SObjectBaseWriter.m_testToCaseException = true;
-		// startTest/stopTest block to force async processes
-		//   to run in the test.
-		Test.startTest();
-		// act
-		System.enqueueJob(handler);
-		Test.stopTest();
-		System.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_SObjectBaseWriter.EXCEPTION_MESG_FOR_TEST));
-
-	}
-
-	@isTest
-	static  void testctorWithBigObjectList() {
-		// assign
-		List<accc_Org_Events__b> daoList = accc_PELogDataQueueHandlerTest.getBigPEData();
-
-		accc_PELogDataQueueHandler handler = new accc_PELogDataQueueHandler(daoList);
-
-		System.assertEquals(daoList.size(), handler.entries.size());
-		System.assertEquals(false, handler.actions );
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Private Methods
-	/////////////////////////////////////////////////////////////////////////////////////
-	static List<accc_PlatformEventDAOLog> getPEData() {
-		DateTime now = DateTime.Now();
-		String name = 'my-test-pe-test-today';
-
-		List<accc_PlatformEventDAOLog> daoList = new List<accc_PlatformEventDAOLog> {
-			new accc_PlatformEventDAOLog(name, JSON.serialize(new pe_test__e()), now),
-			new accc_PlatformEventDAOLog(name, JSON.serialize(new pe_test__e()), now + 1),
-			new accc_PlatformEventDAOLog(name, JSON.serialize(new pe_test__e()), now + 2)
-		};
-		return daoList;
-	} // end of getPEData
-
-	static List<accc_Org_Events__b> getBigPEData() {
-		return accc_PlatformEventDAOLog.mapFrom(accc_PELogDataQueueHandlerTest.getPEData());
-	} // end of getBigPEData
+    static List<accc_Org_Events__b> getBigPEData() {
+        return accc_PlatformEventDAOLog.mapFrom(accc_PELogDataQueueHandlerTest.getPEData());
+    } // end of getBigPEData
 
 } // end of accc_PELogDataQueueHandlerTest

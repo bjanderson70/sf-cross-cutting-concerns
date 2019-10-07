@@ -35,81 +35,90 @@
  */
 public class accc_PlatformEventLogInjector {
 
-	/////////////////////////////////////////////////////////////////////////
-	// Data Members
-	/////////////////////////////////////////////////////////////////////////
-	public class accc_PlatformEventLogInjectorException extends Exception {}
+    /////////////////////////////////////////////////////////////////////////
+    // Data Members
+    /////////////////////////////////////////////////////////////////////////
+    public class accc_PlatformEventLogInjectorException extends Exception {}
 
-	// data access object of event information
-	@TestVisible
-	private List<accc_PlatformEventDAOLog> m_entries = new List<accc_PlatformEventDAOLog>();
+    // data access object of event information
+    @TestVisible
+    private List<accc_PlatformEventDAOLog> m_entries = new List<accc_PlatformEventDAOLog>();
+    //
+    // for an exception (TESTING)
+    @TestVisible
+    private static boolean mForceException = false;
+    /////////////////////////////////////////////////////////////////////////
+    // Ctors
+    /////////////////////////////////////////////////////////////////////////
 
-	/////////////////////////////////////////////////////////////////////////
-	// Ctors
-	/////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * @description ctor, injecting one element
-	 *
-	 */
-	public accc_PlatformEventLogInjector(accc_PlatformEventDAOLog entry) {
-		if (entry != null ) {
-			this.m_entries.add(entry);
-		}
-	} // end of ctor
-	/**
-	 * @description , injecting list of elements
-	 *
-	 */
-	public accc_PlatformEventLogInjector(List<accc_PlatformEventDAOLog> entries) {
-		if (entries != null ) {
-			this.m_entries.addAll(entries);
-		}
-	} // end of ctor
-
-
-	/////////////////////////////////////////////////////////////////////////
-	// Public Methods
-	/////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * @description store data
-	 * @return boolean true, if no errors
-	 */
-	public boolean store() {
-		return this.processAction(false);
-	}// end of store
-	/**
-	 * @description remove data
-	 * @return boolean true, if no errors
-	 */
-	public boolean remove() {
-		return this.processAction(true);
-	} // end of remove
+    /**
+     * @description ctor, injecting one element
+     *
+     */
+    public accc_PlatformEventLogInjector(accc_PlatformEventDAOLog entry) {
+        if (entry != null ) {
+            this.m_entries.add(entry);
+        }
+    } // end of ctor
+    /**
+     * @description , injecting list of elements
+     *
+     */
+    public accc_PlatformEventLogInjector(List<accc_PlatformEventDAOLog> entries) {
+        if (entries != null ) {
+            this.m_entries.addAll(entries);
+        }
+    } // end of ctor
 
 
-	/////////////////////////////////////////////////////////////////////////
-	// Private Methods
-	/////////////////////////////////////////////////////////////////////////
-	/**
-	 * @description process the the store or removal of information from the Big Object
-	 *
-	 * @param isRemovingData rue, if removing data from Big Object
-	 * @return true on success enqueing of action
-	 */
-	@TestVisible
-	private boolean processAction(boolean isRemovingData) {
-		boolean results = true;
-		try {
-			accc_PELogDataQueueHandler handler = this.getHandler(isRemovingData);
+    /////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    /////////////////////////////////////////////////////////////////////////
 
-			// accc_PELogDataQueueHandler is an asynchronous queuable Apex class
-			if ( handler != null ) {
-				accc_Apexutilities.log('+++ accc_PELogDataQueueHandler.processAction :' + this.m_entries.size());
-				System.enqueueJob(handler);
-			}
-		} catch (Exception excp) {
-			accc_Apexutilities.log('+++ accc_PlatformEventLogInjector Exception: ' + excp.getMessage() + '\n=====' + excp.getStackTraceString() );
+    /**
+     * @description store data
+     * @return boolean true, if no errors
+     */
+    public boolean store() {
+        return this.processAction(false);
+    }// end of store
+    /**
+     * @description remove data
+     * @return boolean true, if no errors
+     */
+    public boolean remove() {
+        return this.processAction(true);
+    } // end of remove
+
+
+    /////////////////////////////////////////////////////////////////////////
+    // Private Methods
+    /////////////////////////////////////////////////////////////////////////
+    /**
+     * @description process the the store or removal of information from the Big Object
+     *
+     * @param isRemovingData rue, if removing data from Big Object
+     * @return true on success enqueing of action
+     */
+    @TestVisible
+    private boolean processAction(boolean isRemovingData) {
+        boolean results = true;
+        try {
+            accc_PELogDataQueueHandler handler = this.getHandler(isRemovingData);
+            /*****************
+            * TESTING
+            *****************/
+            if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+                throw new accc_PlatformEventLogInjectorException('Testing Exception');
+			 }
+            // accc_PELogDataQueueHandler is an asynchronous queuable Apex class
+            if ( handler != null ) {
+                //accc_Apexutilities.log('+++ accc_PELogDataQueueHandler.processAction :' + this.m_entries.size());
+                System.enqueueJob(handler);
+            }
+        } catch (Exception excp) {
+            accc_ApexUtilities.log(excp);
+			//accc_Apexutilities.log('+++ accc_PlatformEventLogInjector Exception: ' + excp.getMessage() + '\n=====' + excp.getStackTraceString() );
 			throw new accc_PlatformEventLogInjectorException(excp.getMessage());
 
 		}
