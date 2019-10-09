@@ -516,8 +516,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
         }
         // is the event active, then call the child process
         if ( this.isEventActive ) {
-            // let's set out replay ids prior to child invocation
-            this.setReplayIds(parameter);
+
             // now call child process (CHILDREN SHOULD OVERRIDE -- may make ABSTRACT to Force)
             processResult = this.childProcess(parameter, handlers, attributes);
 
@@ -538,7 +537,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
      * @return collection of Replay Ids (List<String>)
      */
     @TestVisible
-    protected List<String> setReplayIds(SObject event) {
+    protected virtual List<String> setReplayIds(SObject event) {
 
         if ( this.replayIds == null ) {
             this.replayIds  = new List<String>();
@@ -551,13 +550,22 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
             if ( replayId != null ) {
                 this.replayIds.add(replayId);
             } else if ( accc_ApexConstants.UnitTestsRunning ) {
+                /*********************************************************************
+                 * START OF TESTING
+                 */
                 // when testing and we DO NOT use the trigger to insert
                 // then the system did NOT process via the regular channel;
                 // thus, NO REPLAY ID will be generated ( so we simulate it) :-(  )
                 this.replayIds.add(EXPECTED_REPLAY_ID_FOR_TESTING);
+                /*
+                 * END OF TESTING
+                 **********************************************************************/
             }
+
         } catch (Exception excp) {
-            // this is NOT an event type ( ends in __e)
+            accc_ApexUtilities.log(excp);
+            this.theException = excp;
+            // this is may NOT be an event type ( ends in __e)
             // Not checking everytime
         }
         return this.replayIds;
@@ -570,14 +578,13 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
      * @return collection of Replay Ids (List<String>)
      */
     @TestVisible
-    protected List<String> setReplayIds(List<SObject> events) {
+    protected virtual List<String> setReplayIds(List<SObject> events) {
 
         // iterate over the events getting the replay ids
         // will check here to see if this is an Event type
         if ( events != null
              && accc_ApexUtilities.validEventName(accc_ApexUtilities.getSobjectName(events))
              )  {
-
             // iterate over the events getting the replay id
             for ( SObject sobj : events) {
                 this.setReplayIds(sobj);
@@ -594,7 +601,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
      * @return last Replay Id (String)
      */
     @TestVisible
-    protected String getLastReplayId() {
+    protected virtual String getLastReplayId() {
         String result = null;
         // look at list and pull last one
         if ( this.replayIds != null )  {
@@ -614,7 +621,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
      * @return Boolean returns true, if updated with valid replay id
      */
     @TestVisible
-    protected Boolean updateCheckPoint(){
+    protected virtual Boolean updateCheckPoint(){
         Boolean result = true;
         String lastReplayId = this.getLastReplayId();
         // valid data
@@ -622,17 +629,19 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
             // set our new checkpoint
             // specal consideration for testing :-(  )
             if ( accc_ApexConstants.UnitTestsRunning ) {
+                /*********************************************************************
+                 * START OF TESTING
+                 */
                 // user wants to set checkpoint
                 if ( DO_NOT_SET_CHECKPOINT == false) {
                     // no need to fault all
-                    try {
-                        EventBus.TriggerContext.currentContext().setResumeCheckpoint(lastReplayId);
-                    } catch (Exception excp) {
-                        accc_ApexUtilities.log(excp);
-                    }
+                    result=this.setResumeCheckpoint(lastReplayId);
                 }
+                /*
+                 * END OF TESTING
+                 **********************************************************************/
             } else {
-                EventBus.TriggerContext.currentContext().setResumeCheckpoint(lastReplayId);
+                result=this.setResumeCheckpoint(lastReplayId);
             }
 
         } else {
@@ -830,9 +839,13 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
     protected virtual boolean callHandler (accc_IProcessEventHandler handler,
                                            List<PlatformEvtResultPOAC> data,
                                            accc_PlatformEventAttrs attributes ) {
-        boolean result = true;
+        boolean result = handler != null;
         try {
-            handler.process(data, attributes);
+            // simple check to ensure handler is not null; no need to THROW when
+            // a simple check will do
+            if ( result ) {
+                handler.process(data, attributes);
+            }
         } catch (Exception excp) {
             this.theException = excp;
             result = false;
@@ -902,4 +915,25 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
         return result;
     } // end of serializeEventData
 
+
+    /**
+     * @description perform the set resume checkpoint
+     * @param lastReplayId last replay id
+     * @return boolean true, if successful, otherwise false (supplied Replay ID is not valid—the replay ID)
+     **/
+    protected virtual Boolean setResumeCheckpoint(String lastReplayId){
+        Boolean didFault = false;
+        /* we can get a fault....The method throws an EventBus.InvalidReplayIdException if
+         * the supplied Replay ID is not valid—the replay ID isn’t in the current trigger batch of
+         * events in the Trigger.new list .
+         */
+        try {
+            EventBus.TriggerContext.currentContext().setResumeCheckpoint(lastReplayId);
+        } catch (Exception excp) {
+            didFault = true;
+            this.theException = excp;
+            accc_ApexUtilities.log(excp);
+        }
+        return didFault;
+    }// end of setResumeCheckpoint
 } // end of accc_DefaultPlatformEvent

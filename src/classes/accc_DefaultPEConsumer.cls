@@ -42,6 +42,14 @@
 public virtual without sharing class accc_DefaultPEConsumer extends accc_DefaultPlatformEvent {
 
     ////////////////////////////////////////////////////////////////////////
+    // Data Members
+    /////////////////////////////////////////////////////////////////////////
+    /*
+     * keep track of the number of events processed
+     */
+    @TestVisible
+    integer numberOfEventsProcessed = 0;
+    ////////////////////////////////////////////////////////////////////////
     // Ctors
     /////////////////////////////////////////////////////////////////////////
     /**
@@ -73,6 +81,7 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
     // Public Methods
     /////////////////////////////////////////////////////////////////////////
 
+    public class accc_DefaultPEConsumerException extends Exception {}
 
     ////////////////////////////////////////////////////////////////////////
     // Protected Methods
@@ -110,24 +119,64 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
         //
         integer retryCount = attributes.retryCount(),
                 currentRetries = EventBus.TriggerContext.currentContext().retries,
-                eventBatchSize = attributes.eventBatchSize();
-        // are there more entries than we have batched for; if so, will force a retry
-        Boolean willNeedRetryDueToBatchSize = collectionOfEvents.size() > eventBatchSize;
+                eventBatchSize = attributes.eventBatchSize(),
+                collectionSize= (collectionOfEvents !=null ) ? collectionOfEvents.size() : 0;
+        // are there more entries than we have batched for; if so, will slice and set next replay id
+        Boolean willNeedRetryDueToBatchSize = collectionSize > eventBatchSize;
 
         // start message
         accc_DefaultPlatformEvent.PlatformEvtResultPOAC alertMsg = new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: Start Time');
-
         // add instrumentation, if necessary
         super.addInstrumentation(super.willInstrument
                                  , alertMsg
                                  , theLogData);
 
         try {
+            // take note of the incoming collection ( may need to slice)
+            List<SObject>  collectionOfEventsByAttribute=collectionOfEvents;
+            this.numberOfEventsProcessed = 0;
+            //********************************************************************************
+            // Batching ?
+            //
+            // (refer: https ://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_events_subscribe_compare_checkpoint_retryable.htm)
+            //
+            // Users have the ability to specify how much data they wish to process. This
+            // allows the user to determine ( via testing) how much data they can process within
+            // the trigger (for example, see pe_test__e which sets the Batch to 200). The class
+            // uses setResumeCheckpoint() for a number of reasons:
+            //
+            //    (1) Any DML is NOT rolled back like EventBus.RetryableException
+            //    (2) We slice the data into the Batch chunk specified by the invoker (controlled via attributes)
+            //    (3) When the trigger fires AGAIN, only the event messages after the one with the specified replay ID are resent
+            //
+            // User still has the ability to throw a EventBus.RetryableException. However, it has
+            // the following consequences:
+            //
+            //    (1) DML operations performed before the exception is thrown are rolled back and not committed .
+            //    (2) When the trigger fires again, all event messages from the previous batch are resent in the new batch, in addition to any new event messages .
+            //
+            //
+            //*******************************************************************************/
+
+            // for test reference
+            this.numberOfEventsProcessed =collectionSize;
+            // When the Batch limit is specified we DO NOT throw; instead, we slice and 
+            // set last replayid processed
+            //
+            // do we need to slice the data
+           if (willNeedRetryDueToBatchSize ) {
+               collectionOfEventsByAttribute= (List<SObject>)accc_ApexUtilities.slice(collectionOfEvents,0,eventBatchSize);
+                this.numberOfEventsProcessed = eventBatchSize;
+            }
+            
+            // let's remember our replay ids ( just remembering)
+            super.setReplayIds(collectionOfEventsByAttribute);
             // reset the retry (in case of re-entrance)
             super.retryRequired = false;
             // add message and alert we have started
             super.alertAddAndSend(handlers, alertMsg, theAlerts, attributes);
             // normal processing, assuming the retry count is less than we allow
+            // ( only applicable w/ EventBus.RetryableException)
             if ( currentRetries < retryCount ) {
                 // add message and alert we about to process
                 super.alertAddAndSend(handlers
@@ -136,18 +185,14 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
                                       , attributes);
                 // perform the function needed. Requires the child to override
                 // 'consumePlatformEvent'
-                state = this.consumeCanonicalForm(collectionOfEvents, handlers, attributes, theData, errResult, theLogData);
+                state = this.consumeCanonicalForm(collectionOfEventsByAttribute, handlers, attributes, theData, errResult, theLogData);
             } else {
                 throw new accc_PlatformEventException(this.formatRetryMessage('Consumer: Exceeded Platform Event Retries {0} - Max is 9', currentRetries));
             }
-            // special check for honoring batch size
-            if ( willNeedRetryDueToBatchSize ) {
-                throw new accc_PlatformEventException (this.formatRetryMessage ('Consumer: Event Batch Size is < collection of events : {0}; forcing a retry', collectionOfEvents.size()));
-            }
+
         } catch ( EventBus.RetryableException retryException ) {
             accc_ApexUtilities.log(retryException);
             super.retryRequired = true;
-
             // we got another exception, save
             errResult.add(new accc_DefaultPlatformEvent.PlatformEvtResultPOAC(new accc_DefaultPlatformEvent.ErrorResultPOAC(StatusCode.UNKNOWN_EXCEPTION, retryException.getMessage())));
             // child decided to retry again, check our retry  level
@@ -158,7 +203,6 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
                 if ( errResult.size() > 0 && super.canLogError ) {
                     super.errorHandler(handlers, errResult, attributes);
                 }
-
                 // Condition isn't met, so try again later. Up to 9 times (it is 10, but we already did 1)
                 throw retryException;
             }
@@ -166,7 +210,6 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
             // we got another exception, save
             errResult.add(new accc_DefaultPlatformEvent.PlatformEvtResultPOAC(new accc_DefaultPlatformEvent.ErrorResultPOAC(StatusCode.INVALID_STATUS, excp.getMessage())));
         } finally {
-
             // do not allow possible children to throw exceptions in our finally clause
             // instead, catch
             this.finallyProcess(collectionOfEvents
@@ -179,7 +222,6 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
                                 , theAlerts,
                                 currentRetries);
         }
-
         return state;
     } // end of childProcess
     /**
@@ -194,8 +236,8 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
      * @param collectionOfEvents the event colection
      * @param handlers the handlers (log, error, success)
      * @param attributes platform event attributes
-     * @param errResult the error log
      * @param theData the event information (json)
+     * @param errResult the error log
      * @param theLogData the log information
      * @return true, if successful
      */
@@ -215,8 +257,19 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
         if ( super.theException != null ) {
             errResult.add(new accc_DefaultPlatformEvent.PlatformEvtResultPOAC(new accc_DefaultPlatformEvent.ErrorResultPOAC(StatusCode.INVALID_STATUS, super.theException.getMessage())));
         }
+
         // here we do some house-keeping so the child does not have to
         this.preludeBeforeChildOverridingConsumption(collectionOfEvents, theLogData);
+        // Here is where we ensure that the Batch Size requested is processed correctly.
+        // From : https ://releasenotes.docs.salesforce.com/en-us/summer19/release-notes/rn_platform_event_batch.htm
+        //
+        // Why : By processing fewer event messages, your trigger is less likely to hit Apex governor limits.
+        // The maximum batch size of a platform event trigger is 2,000, while the maximum of an Apex object
+        // trigger is 200. Therefore, platform event triggers are more likely to reach limits and can benefit
+        // from this feature .
+
+        // NOTE, Children SHOULD OVERRIDE method (consumePlatformEvent) and perform consumption of the event
+        // TBD -- Make Abstract
         // child SHOULD OVERRIDE for desired behavior
         state = this.consumePlatformEvent( collectionOfEvents
                                            , handlers
@@ -231,7 +284,7 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 
         // did the child process finish successfully.
         if ( state == true ) {
-            // update check point
+            // update check point ( this is where the setresumereplayid is done)
             super.updateCheckPoint();
             // log success
             super.logSuccess(handlers, theData, attributes);
@@ -257,11 +310,12 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
     } // end of preludeBeforeChildOverridingConsumption
     /**
      * @description child decide how to consume; child should throw EventBus.RetryableException if the handler
-     * needs to be called again.
+     * needs to be called again. Or, specify a small batch size ( via the attributes) to process a smaller chunk.
      *
      * @param collectionOfEvents the collection of events
      * @param handlers platform event handlers
      * @param attributes platform event attributes
+     * @param theData the event information (json)
      * @param errResult errors that occur
      * @return true if processed
      */
@@ -272,21 +326,25 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
                                                    , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult
                                                    , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData) {
 
-        // if we are here , we handled the events;
+
         // NOTE, Children SHOULD OVERRIDE this method and perform consumption of the event
         // TBD -- Make Abstract
 
-        // record process of save result -- LEAVE this in for testing
-        super.addInstrumentation(super.willInstrument,
-                                 new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: consumePlatformEvent result=true')
-                                 , theLogData);
+        // if we are here , we handled the events;
+        if ( accc_ApexConstants.UnitTestsRunning) {
+            // record process of save result -- LEAVE this in for testing
+            super.addInstrumentation(super.willInstrument,
+                                     new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: consumePlatformEvent result=true , collection size=' + collectionOfEvents.size())
+                                     , theLogData);
+        }
+
         return true;
 
     } // end of consumePlatformEvent
     /**
      * @description Allow the child to do anything after completion of the event publish process
      *
-     * @param event the event
+     * @param collectionOfEvents the events
      * @param state true if successful completion
      * @param errResult the error log
      * @param theData the event information (json)
@@ -295,17 +353,18 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
      * @return void
      */
     @TestVisible
-    protected virtual void handleCompletion(Object event
+    protected virtual void handleCompletion(List<SObject>  collectionOfEvents
                                             , Boolean state
                                             , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult
                                             , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData
                                             , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData
                                             , accc_PlatformEventAttrs attributes) {
-
-        // NO-OP
-        super.addInstrumentation(super.willInstrument,
-                                 new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: handleCompletion result=true')
-                                 , theLogData);
+        if ( accc_ApexConstants.UnitTestsRunning) {
+            // NO-OP
+            super.addInstrumentation(super.willInstrument,
+                                     new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: handleCompletion result=true')
+                                     , theLogData);
+        }
     } // end of handleCompletion
 
     /**
@@ -385,6 +444,11 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
             // store data (once) ... if we have retried multiple times, only store it ONCE
             if ( theData != null && theData.size() > 0 && currentRetries == 0) {
                 super.storeHandler(handlers, theData, attributes);
+            }
+            // update the state
+            if ( state ) {
+                // update check point
+                super.updateCheckPoint();
             }
             // allow the children to do any other type of cleanup
             this.handleCompletion(collectionOfEvents, state, errResult, theData, theLogData, attributes );

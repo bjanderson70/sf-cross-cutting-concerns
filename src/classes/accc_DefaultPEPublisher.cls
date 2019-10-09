@@ -118,7 +118,6 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
                                  , theLogData);
 
         try {
-
             // Step 1: Notify
             //
             // add message and alert we have started
@@ -322,6 +321,7 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
                               , attributes);
         // Call method to publish events
         List<Database.SaveResult> results = this.publish(collectionOfEvents);
+         
         // record the operation ids and replay ids in case of
         // an AsyncOperationEvent failure
         this.recordOperationAndReplayIds(theData);

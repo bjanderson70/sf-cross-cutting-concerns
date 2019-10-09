@@ -123,10 +123,11 @@ private class accc_DefaultPlatformEventTest {
 
 		}
 		// assert
-		system.assertEquals(true, exceptionFired == false);
+		system.assertEquals(false, exceptionFired);
 		system.assertEquals(true, result);
-		system.assertEquals(true, dpe.getLastReplayId() != null);
-		system.assertEquals(true, dpe.updateCheckPoint());
+		// by default replay ids are not set for 'accc_DefaultPlatformEvent' only in the consumer
+		system.assertEquals(true, dpe.getLastReplayId() == null);
+		system.assertEquals(false, dpe.updateCheckPoint());
 		system.assertEquals(true, dpe.operationIds.size()==1);
 		
 	} // end of testprocessWithValidValues

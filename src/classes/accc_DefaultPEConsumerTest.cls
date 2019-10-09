@@ -42,6 +42,7 @@ private class accc_DefaultPEConsumerTest {
     public class accc_ConsumerTest extends accc_DefaultPEConsumer {
         public Boolean didHandle = false;
         public boolean throwException = false;
+        public Integer consumedEvents = 0;
 
         public accc_ConsumerTest() {
 
@@ -58,7 +59,7 @@ private class accc_DefaultPEConsumerTest {
             super(evt,serialization);
 
         }
-        protected override void handleCompletion(Object event
+        protected override void handleCompletion(List<SObject> events
                                                  , Boolean state
                                                  , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult
                                                  , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData
@@ -71,9 +72,11 @@ private class accc_DefaultPEConsumerTest {
                                                         accc_PlatformEventAttrs attributes,
                                                         List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult,
                                                         List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData) {
+            consumedEvents = 0;
             if ( this.throwException) {
                 throw new EventBus.RetryableException('accc_ConsumerTest');
             }
+            consumedEvents = parameter.size();
             return true;
 
         } // end of accc_ConsumerTest
@@ -93,6 +96,16 @@ private class accc_DefaultPEConsumerTest {
         // assign / act
         final String name = 'mytest_pe';
         accc_ConsumerTest consumer = new accc_ConsumerTest(name,true);
+        // assert
+        System.assertEquals(true, consumer.handlerEventName() == name);
+        System.assertEquals(true, consumer.handlerToSerialize() == true);
+
+    }
+    @isTest
+    static void testBasicConsumerCtorWithJustEvent() {
+        // assign / act
+        final String name = 'mytest_pe';
+        accc_ConsumerTest consumer = new accc_ConsumerTest(name);
         // assert
         System.assertEquals(true, consumer.handlerEventName() == name);
         System.assertEquals(true, consumer.handlerToSerialize() == true);
@@ -216,42 +229,45 @@ private class accc_DefaultPEConsumerTest {
     @isTest
     static void testConsumerTestEventBatchSizeCauseRetry() {
 
-        final String eventName = ExceptedEventLabelInCustomMDT;
-        Boolean result = true;
-        accc_ConsumerTest consumer = new accc_ConsumerTest(eventName);
-        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
-        List<SObject> evt = new List<SObject> {new pe_test__e(),new pe_test__e(),new pe_test__e() };
-        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
-
-        attrs.eventBatchSize(2);
-        integer count = 0;
-        consumer.throwException = true;
-
-        Test.startTest();
-        while ( consumer.throwException == true) {
-            try {
-
-                // Consumer test event
-                result = consumer.process(evt, handlers, attrs);
-
-            } catch ( EventBus.RetryableException retryExcp) {
-                consumer.throwException = false;
-                count++;
-            } catch (Exception excp) {
-                result = false;
-                consumer.throwException = false;
-            }
+        // This test has to PUBLISH the events ( via EventBus.publish)
+        // bec/ the test trigger ( pe_test_event) has the batch size == 10
+        // we will process increments of 10 ( thus, 2 passes in the handler)
+        List<SObject> evt = new List<SObject>();
+        final Integer NUM_EVTS = 20;
+        // set to 20 bec/ within the test trigger ( pe_test_event) the  batch size == 10!!
+        for ( integer inx=0; inx < NUM_EVTS; inx++) {
+            evt.add(new pe_test__e());
         }
-
+      
+        Test.startTest();
+        // act ( publish)
+        List<Database.SaveResult>results=EventBus.publish(evt);
+        // validate ALL were sent.
+        for (Database.SaveResult sr : results) {
+            System.assertEquals(true, sr.isSuccess());
+        }
+        // deliver the first 10
+        Test.getEventBus().deliver();
+ 
+        // Get old position of this subscriber
+        EventBusSubscriber subOld =
+        [SELECT Name, Position, Topic
+         FROM EventBusSubscriber
+         WHERE Topic='pe_test__e' AND Name='pe_test_event'];
+       
+        // Verify results ( first 10 processed)
+        System.assertEquals(NUM_EVTS/2,subOld.Position);
+        // process the next 10 items
+        Test.getEventBus().deliver();
+        // VERIFICATION of last position
+        // Get new position of this subscriber
+        EventBusSubscriber subNew =
+        [SELECT Name, Position, Topic
+         FROM EventBusSubscriber
+         WHERE Topic='pe_test__e' AND Name='pe_test_event'];
+        System.assertEquals(NUM_EVTS, subNew.Position);
 
         Test.stopTest();
-
-        // Verify results
-        System.assertEquals(true, result);
-		// count should be 1 for event batch size caused a retry
-		System.assertEquals(1, count);
-        System.assertEquals(true, consumer.eventName == eventName);
-        System.assertEquals(true, consumer.didHandle);
     }
 
 

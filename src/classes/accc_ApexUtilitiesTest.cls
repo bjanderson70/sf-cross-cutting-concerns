@@ -72,8 +72,8 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(expected, result);
     } // end of testgetSobjectName
 
-     @isTest 
-     static void testgetSobjectNameWithSet() {
+    @isTest
+    static void testgetSobjectNameWithSet() {
         //assign
         String expected = 'Account';
         Set<SObject> accounts = new Set<SObject>();
@@ -128,7 +128,7 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(expected, result);
     } // end of testgetSobjectName
 
-      @isTest static void testgetSobjectNameWithNullList() {
+    @isTest static void testgetSobjectNameWithNullList() {
         //assign
         String expected = accc_ApexConstants.EmptyString;
         List<SObject> alist = null;
@@ -747,7 +747,7 @@ private class accc_ApexUtilitiesTest {
     static void testpopStack() {
         // assign
         string trace = new DmlException().getStackTraceString(),
-        theClass =  accc_ApexConstants.EmptyString;
+               theClass =  accc_ApexConstants.EmptyString;
         // act / assert
         system.assertNotEquals(theClass, accc_ApexUtilities.popStack(trace));
     } // end of testpopStack
@@ -814,11 +814,11 @@ private class accc_ApexUtilitiesTest {
         Schema.SObjectType ns = accc_ApexUtilities.getSobjectTypeFromSObject(sob);
         // assert
         System.assertEquals(expected, ns);
-        System.assertEquals(expected, accc_ApexUtilities.getSobjectTypeFromSObject(new List<SObject>{sob}));
+        System.assertEquals(expected, accc_ApexUtilities.getSobjectTypeFromSObject(new List<SObject> {sob}));
         System.assertEquals(null, accc_ApexUtilities.getSobjectTypeFromSObject((SObject)null));
     } // end of testgetSobjectTypeFromSObject
 
-    
+
     @isTest
     static void testconvertDayToString() {
         //assign
@@ -872,7 +872,7 @@ private class accc_ApexUtilitiesTest {
                             accc_ApexUtilities.exceededGovernorLimits(new JSONException()));
     } // end of testexceededGovernorLimits
 
-     @isTest static void testTrace() {
+    @isTest static void testTrace() {
         // assign
         String result = 'This is a Test';
         // assign/act
@@ -887,6 +887,7 @@ private class accc_ApexUtilitiesTest {
         // assert
         System.assertEquals(true, accc_ApexUtilities.getDMLLimitsInStringForm() != null);
     }// end of testgetDMLLimitsInStringForm
+
     @isTest
     static void testconvertListCollectionIntoString () {
         List<String> operationIds = new List<String> {
@@ -897,23 +898,50 @@ private class accc_ApexUtilitiesTest {
         for (String item : expectedStrings) {
             System.assertEquals(item,
                                 accc_ApexUtilities.convertListCollectionIntoString(operationIds, item.length() + 1, accc_ApexConstants.CommaDelimiter)
-                               );
+                                );
             System.assertEquals(item,
                                 accc_ApexUtilities.convertListCollectionIntoString(operationIds, item.length() + 1, null)
-                               );
+                                );
             System.assertEquals(expectedStrings[0],
                                 accc_ApexUtilities.convertListCollectionIntoString(operationIds, -1, null)
-                               );
+                                );
         }
         System.assertEquals(accc_ApexConstants.EmptyString,
                             accc_ApexUtilities.convertListCollectionIntoString(null, 1, null)
-                           );
+                            );
         System.assertEquals(accc_ApexConstants.EmptyString,
                             accc_ApexUtilities.convertListCollectionIntoString(new List<String>(), 1, null)
-                           );
+                            );
         System.assertEquals(accc_ApexConstants.EmptyString,
                             accc_ApexUtilities.convertListCollectionIntoString(new List<String> {accc_ApexConstants.EmptyString}, 1000, null)
-                           );
+                            );
     }// end of testconvertListCollectionIntoString
-    
+
+    @isTest
+    static void testslice(){
+        // assign
+        List<String> data = new List<String> { 'John', 'Mary', 'Susie', 'Igor', 'Jake' };
+        List<String> sliced = (List<String>)accc_ApexUtilities.slice(data, 1, 3);
+        // act /assert
+        system.assertEquals (2, sliced.size()); // 2
+        system.assertEquals ('Mary', (String)sliced[0]);
+        system.assertEquals ('Susie', (String)sliced[1]);
+        // act
+        sliced = (List<String>)accc_ApexUtilities.slice(data, 0, 1);
+        // assert
+        system.assertEquals(1,sliced.size());
+        system.assertEquals('John',(String)sliced[0]);
+        // act
+        sliced = (List<String>)accc_ApexUtilities.slice(data, 2);
+        // assert
+        system.assertEquals(3,sliced.size());
+        system.assertEquals('Susie',(String)sliced[0]);
+        system.assertEquals('Igor',(String)sliced[1]);
+        system.assertEquals('Jake',(String)sliced[2]);
+        // act
+        sliced = (List<String>)accc_ApexUtilities.slice(null, 2);
+        // assert
+        system.assertEquals(null,sliced);
+    } // end of testslice
+
 } // end of accc_ApexUtilitiesTest
