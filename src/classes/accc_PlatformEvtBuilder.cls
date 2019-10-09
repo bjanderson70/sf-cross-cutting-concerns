@@ -81,7 +81,15 @@ public without sharing class accc_PlatformEvtBuilder {
      *
      */
     public accc_PlatformEvtBuilder(string theEventName, string enviroment) {
-        this(theEventName,enviroment,null);
+        this.eventName = theEventName;
+        // what type of environment (test, debug, prod)?
+        this.eventEnvironment = accc_ApexEnvironment.ensureEnviromentIsCorrectOtherwiseDebug(enviroment);
+        // here we go read the custom metadata information
+        this.m_elements =  (new accc_PlatformEvtMdtDataModel()).findByEnvironmentAndLabel(this.m_environment, this.m_eventName);
+        // check for later
+        this.validEventName = accc_ApexUtilities.validEventName(this.m_eventName) == false;
+        // is this event active
+        this.eventActive = accc_PlatformEvtBuilder.isEventActive(this.m_elements);
     } // end of ctor
 
     /////////////////////////////////////////////////////////////////////////////////////////
