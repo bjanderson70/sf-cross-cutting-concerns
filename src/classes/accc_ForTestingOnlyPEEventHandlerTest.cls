@@ -1,6 +1,5 @@
 /**
- * Copyright (c) 2016-2019, Bill Anderson.
- * All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -32,9 +31,36 @@
  *
  *
  * @author Bill Anderson
- * @description test  CDC for Account
- * @group CDC Layer
+ * @description test the generic pe_test__e
+ * @group Test Layer
  */
-trigger accc_cdcAccountHandler on AccountChangeEvent (after insert) {
-    accc_ApexPlatformEventDispatcher.run(new accc_CDCEventBase( ) );
-}
+@isTest
+private class accc_ForTestingOnlyPEEventHandlerTest {
+
+    @isTest
+    static void testTriggerFlow(){
+
+        Test.startTest();
+        List<pe_test__e> pe = new List<pe_test__e> { new pe_test__e()};
+        EventBus.publish(pe);
+        Test.getEventBus().deliver();
+        Test.stopTest();
+
+        // check the log
+        System.assertEquals(true, accc_ApexUtilities.containsInTestLog('++++ TEST Done pe_test__e result =true'));
+
+    }
+    @isTest
+    static void testTriggerClassExplicitly(){
+        accc_ForTestingOnlyPEEventHandler handler = new accc_ForTestingOnlyPEEventHandler();
+        Test.startTest();
+        List<pe_test__e> pe = new List<pe_test__e> { new pe_test__e()};
+        handler.onAfterInsertChild(pe);
+        Test.getEventBus().deliver();
+        Test.stopTest();
+
+        // check the log
+        System.assertEquals(true, accc_ApexUtilities.containsInTestLog('++++ TEST Done pe_test__e result =true'));
+
+    }
+}// end of accc_ForTestingOnlyPEEventHandlerTest

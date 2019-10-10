@@ -44,7 +44,7 @@
  * For CDC Events, there is a plethora of mechanisms available to you:
  *             1) If you override 'onAfterInsertChildrInsert' (as for PE) then you control everything.
  *                You can look at 'accc_EventBase' onAfterInsertChildrInsert for items to help
- *             2)
+ *             2) Inherit from  CDCEventBase for CDC events as it takes care of a lot plumbing
  *
  * @group Common Layer
  **/
@@ -114,7 +114,6 @@ public virtual with sharing class accc_EventBase  extends accc_TriggerHandlerBas
     //==============================================================
     /**
     * @description getter/setter for the Type of Event
-    * @author Bill Anderson 
     * @return Type
     */
     @TestVisible

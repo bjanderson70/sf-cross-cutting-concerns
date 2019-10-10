@@ -53,9 +53,8 @@ public without sharing class accc_ApexPlatformEventDispatcher {
      * The code below is commented out if you are not incorporating the trigger handler found
      * here ( https://github.com/bjanderson70/sf-trigger-handling )
      *
-     * @author Bill Anderson | 8/8/2019
      * @param Type handlerType
-     * @return void
+     * @return Boolean
      */
     public static Boolean run(Type handlerType) {
         Boolean result = false;
@@ -65,7 +64,8 @@ public without sharing class accc_ApexPlatformEventDispatcher {
                 //
                 // cause exception testing via injection
                 //
-                if ( accc_ApexConstants.UnitTestsRunning && true == accc_ApexPlatformEventDispatcher.useForTestingException ) {
+                if ( true == accc_ApexPlatformEventDispatcher.useForTestingException
+                     && accc_ApexConstants.UnitTestsRunning) {
                     throw new accc_ApexApplicationException('accc_ApexPlatformEventDispatcher: accc_ApexApplicationException');
                 }
                 /***************** FOR TRIGGER HANDLER FRAMEWORK ************************************
@@ -77,6 +77,7 @@ public without sharing class accc_ApexPlatformEventDispatcher {
 
                 // keep -- as this will log to an internal set during testing; otherwise, no-op
                 accc_ApexUtilities.logForTesting('accc_ApexPlatformEventDispatcher.handlerType=' + handlerType);
+                result = true;
                 /**************** FOR TRIGGER HANDLER FRAMEWORK ************************************
                  *
                    [Step 2] -  Requires the sf-trigger-handler framework

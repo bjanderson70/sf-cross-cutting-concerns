@@ -45,7 +45,7 @@ private class accc_LogPlatformEventHandlerTest {
             new accc_Log__e(Message__c = '3')
         };
         accc_ITriggerHandler evtHndlr = new accc_LogPlatformEventHandler();
-
+        Test.startTest();
         evtHndlr.onAfterInsertChild(elogs);
         List<AcccApplicationLog__c> logs = [select Message__c from AcccApplicationLog__c];
         for (AcccApplicationLog__c item : logs ) {
@@ -55,6 +55,7 @@ private class accc_LogPlatformEventHandlerTest {
                 inx++;
             }
         }
+        Test.stopTest();
         system.assertEquals(3, inx);
     } // end of testafterInsert
 

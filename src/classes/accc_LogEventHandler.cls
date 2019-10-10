@@ -40,13 +40,27 @@
  *     1). Go to 'trigger' directory and create  the following (name it 'accc_LogEventTrigger'):
  *
  *               trigger accc_LogEventTrigger on ACCC_Log_Event__e (after insert) {
- *             	      accc_ApexPlatformEventDispatcher.run(new accc_LogEventHandler());
+ *                    accc_ApexPlatformEventDispatcher.run(new accc_LogEventHandler());
  *               }
  *
  * @group Log Aspects
  */
-public without sharing class accc_LogEventHandler  extends accc_EventBase { 
-     
+public without sharing class accc_LogEventHandler extends accc_EventBase {
+
+    /////////////////////////////////////////////////////////////////////////
+    // Data Members
+    /////////////////////////////////////////////////////////////////////////
+    // use for testing exception
+    @TestVisible
+    static Boolean useForTestingException=false;
+    @TestVisible
+    static final string FOR_TESTING_EXCEPTION = 'accc_LogEventHandler:accc_ApexApplicationException';
+    @TestVisible
+    static final string TEST_MESSAGE = '++++ TEST Trigger Called - accc_LogEventHandler';
+
+    /////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    /////////////////////////////////////////////////////////////////////////
     /**
      * @description Capture the ACCC_Log_Event__e events -- only supports after insert
      *
@@ -55,7 +69,18 @@ public without sharing class accc_LogEventHandler  extends accc_EventBase {
     public override void onAfterInsertChild(List<SObject> newItems) {
 
         try {
-            
+            /*******************************************************
+             * START : FOR Testing
+             */
+            if ( accc_ApexConstants.UnitTestsRunning ) {
+                accc_ApexUtilities.log(TEST_MESSAGE);
+                if (useForTestingException ) {
+                    throw new accc_ApexApplicationException(FOR_TESTING_EXCEPTION);
+                }
+            }
+            /*
+             * END: FOR Testing
+             *******************************************************/
             List<ACCC_Log_Event__e> elogs = (List<ACCC_Log_Event__e>)newItems;
             List<AcccApplicationLog__c> theApplicationLogs = accc_MessageTransformation.translate(elogs);
             // any data to add
@@ -63,10 +88,20 @@ public without sharing class accc_LogEventHandler  extends accc_EventBase {
                 accc_SObjectBaseWriter writer = new accc_QueableSObjects(theApplicationLogs);
                 writer.execute();
             }
-            
+
         } catch (Exception excp) {
             // process exception, handle w/ care
             accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
+            /*******************************************************
+             * START : FOR Testing
+             */
+            if ( useForTestingException && accc_ApexConstants.UnitTestsRunning ) {
+                // ensure we are write internally (static array)
+                accc_ApexUtilities.log(excp);
+            }
+            /*
+             * END: FOR Testing
+             *******************************************************/
         }
 
     } // end of onAfterInsertChild

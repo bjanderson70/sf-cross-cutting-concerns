@@ -36,20 +36,65 @@
  *
  * @group Platform Events Handling
  */
-public  with sharing class accc_AsyncOperationEventHandler extends accc_EventBase {
+public with sharing class accc_AsyncOperationEventHandler extends accc_EventBase {
 
-	@TestVisible
-	static Boolean causeExceptionForTesting = false;
+    /////////////////////////////////////////////////////////////////////////
+    // Data Members
+    /////////////////////////////////////////////////////////////////////////
+    // use for testing exception
+    @TestVisible
+    static Boolean useForTestingException=false;
+    @TestVisible
+    static final string FOR_TESTING_EXCEPTION = 'accc_AsyncOperationEventHandler:accc_ApexApplicationException';
+    @TestVisible
+    static final string TEST_MESSAGE = '++++ TEST Trigger Called - accc_AsyncOperationEventHandler';
 
-	/**
-	* @description Platform events only supports after insert
-	*
-	* @param List<SObject> list of new sobjects
-	*/
-	public virtual override void onAfterInsertChild(List<SObject> newItems) {
-		this.records(newItems);
-		// TBD
-		// We have some events that did not get published. 
-		// The publisher writes the data into the BigObject
-	}
+    /////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    /////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @description Platform events only supports after insert
+     *
+     * @param List<SObject> list of new sobjects
+     */
+    public virtual override void onAfterInsertChild(List<SObject> newItems) {
+        /*
+         * TBD
+         * We have some events that did not get published .
+         * The publisher writes the data into the BigObject
+         */
+        try {
+            /*******************************************************
+             * START : FOR Testing
+             */
+            if ( accc_ApexConstants.UnitTestsRunning ) {
+                accc_ApexUtilities.log(TEST_MESSAGE);
+                if (useForTestingException ) {
+                    throw new accc_ApexApplicationException(FOR_TESTING_EXCEPTION);
+                }
+            }
+            /*
+             * END: FOR Testing
+             *******************************************************/
+        
+			// TBD !!!!!!
+			
+        } catch (Exception excp) {
+            // process exception, handle w/ care
+            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
+            /*******************************************************
+             * START : FOR Testing
+             */
+            if ( useForTestingException && accc_ApexConstants.UnitTestsRunning ) {
+                // ensure we are write internally (static array)
+                accc_ApexUtilities.log(excp);
+            }
+            /*
+             * END: FOR Testing
+             *******************************************************/
+        }
+
+    }// end of onAfterInsertChild
+
 } // end of accc_AsyncOperationEventHandler
