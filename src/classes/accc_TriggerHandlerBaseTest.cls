@@ -77,10 +77,10 @@ private class accc_TriggerHandlerBaseTest {
     @isTest
     static void testaccc_TriggerHandlerBaseMessages() {
         // assign
-        final String MYDATA='this is argument';
-        final accc_TriggerHandlerResources.PassThruResourceDAO theData = new accc_TriggerHandlerResources.PassThruResourceDAO(MYDATA);
-        accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
-        ctor.handlerResources().add('test',theData);
+       final String MYDATA='this is argument';
+       final accc_TriggerHandlerResources.PassThruResourceDAO theData = new accc_TriggerHandlerResources.PassThruResourceDAO(MYDATA);
+       accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
+       ctor.handlerResources().add('test',theData);
         // act
         system.assertEquals(MYDATA, (String)ctor.theParameters.get('test').triggerData);
         ctor.onAfterUndeleteChild(null);

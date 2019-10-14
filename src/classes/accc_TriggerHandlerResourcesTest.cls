@@ -99,8 +99,8 @@ private class accc_TriggerHandlerResourcesTest {
         res.remove('string');
 
         accc_TriggerHandlerResources.PassThruResourceDAO setResDAO = res.get('set'),
-                                                         listResDAO = res.get('list'),
-                                                         stringResDAO = res.get('string');
+                            listResDAO = res.get('list'),
+                            stringResDAO = res.get('string');
 
 
         System.assertEquals(null,setResDAO);

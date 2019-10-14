@@ -30,27 +30,42 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Bill anderson
- * Encapsulates all behaviour logic relating to chain of responsibility ( or link-list)
+ * @description Encapsulates all behaviour logic relating to testing the
+ * Trigger Handler Framework as developers will use it
  *
- * For more guidelines and details see
- *   https://developer.salesforce.com/page/Apex_Enterprise_Patterns_-_Domain_Layer
- * @group Domain Layer
+ * NOTE: JUST USED FOR TESTING
+ *  @group Test Layer
  **/
-public interface accc_IHandlerChain {
+
+public with sharing class accc_TestTriggerHandlerForContact extends accc_TriggerHandlerBase {
+	
+	public static final String OBIC = '++++++++++++++ OBIC - accc_TestTriggerHandlerForContact';
+	public static final String OAUC = '++++++++++++++ OAUC - accc_TestTriggerHandlerForContact';
+
+	//////////////////////////////////////////////////////////////////
+	//
+	// We are ONLY overriding the one method for testing. You override
+	// any trigger event you are interested ( and NO MORE)
+	//
+	//////////////////////////////////////////////////////////////////
+
 	/**
-	 * @description set the next link in the chain
-	 * 
-	 * @param nextInChain accc_IHandlerChain
-	 */
-    void setNext(accc_IHandlerChain nextInChain); 
-    /**
-     * @description get the next link in the chain
-     */
-    accc_IHandlerChain getNext(); 
-    /**
-     * @description get the handler in the chain
-     * 
-     * @return accc_ITriggerHandler
-     */
-    accc_ITriggerHandler getHandler(); 
-} // end of accc_IHandlerChain
+	 * @description On Before Insert - We override this to perform  processing
+	 * @param records the current records associated with the event
+	 **/
+	public override void onBeforeInsertChild(List<SObject> records) {
+		if ( Test.isRunningTest()) {
+			accc_ApexUtilities.log(OBIC);
+		}
+	} // end of onBeforeInsertChild
+	/**
+	 * @description On After Update - Override this to perform  processing
+	 * @param records the current records associated with the event
+	 * @param existingRecords the old records associated with the event
+	 **/
+	public override void onAfterUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords) {
+		if ( Test.isRunningTest()) {
+			accc_ApexUtilities.log(OAUC);
+		}
+	}// end of onAfterUpdateChild
+} // end of accc_TestTriggerHandlerForContact

@@ -30,27 +30,49 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Bill anderson
- * Encapsulates all behaviour logic relating to chain of responsibility ( or link-list)
+ * @description all behaviour logic relating to the testing the trigger handler for children
  *
- * For more guidelines and details see
- *   https://developer.salesforce.com/page/Apex_Enterprise_Patterns_-_Domain_Layer
- * @group Domain Layer
+ * NOTE: JUST USED FOR TESTING
+ *
+ * @group Test Layer
  **/
-public interface accc_IHandlerChain {
+
+@isTest
+private class accc_TestTriggerHandlerForAccountTwoTest  {
+	public static final String OBDC_TEST = accc_TestTriggerHandlerForAccountTwo.OBDC;
+
+	// IF TESTS FAIL HERE ... did you add 'accc_TestTriggerHandlerForAccountTwo'
+	// into the custom metadata under 'Test' and made Active
+
+	//
+	// This is ALL we overroad in accc_TestTriggerHandlerForAccountTwo, and so we test
+	// that method we wrote as follows:
+	@isTest
+	static void testonBeforeDeleteChild() {
+		// arrange/assign
+		cannotAssumeWeAreWireIntoTriggerHandler('Account');
+		
+		// assert
+		system.assertEquals(true, accc_ApexUtilities.containsInTestLog(OBDC_TEST));
+	}
+
 	/**
-	 * @description set the next link in the chain
+	 * @description used to fire the trigger handler. Normally,
+	 * this is fire when the handler function is wired into your trigger framework
 	 * 
-	 * @param nextInChain accc_IHandlerChain
+	 * @param domain name
 	 */
-    void setNext(accc_IHandlerChain nextInChain); 
-    /**
-     * @description get the next link in the chain
-     */
-    accc_IHandlerChain getNext(); 
-    /**
-     * @description get the handler in the chain
-     * 
-     * @return accc_ITriggerHandler
-     */
-    accc_ITriggerHandler getHandler(); 
-} // end of accc_IHandlerChain
+	static void cannotAssumeWeAreWireIntoTriggerHandler(String domain) {
+		accc_TriggerHandlerChainManager mgr = new accc_TriggerHandlerChainManager(accc_ApexEnvironment.getEnvironment());
+		accc_IHandlerChain chain = mgr.createHandlerChainByDomain(domain);
+
+		while (chain != null ) {
+			// invoke the event we want
+			accc_ITriggerHandler handler = chain.getHandler();
+			handler.onBeforeDeleteChild(null);
+
+			// get next handler in the chain
+			chain = chain.getNext();
+		}
+	}
+} // end of accc_TestTriggerHandlerForAccountTwoTest

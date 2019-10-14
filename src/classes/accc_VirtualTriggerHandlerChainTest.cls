@@ -30,27 +30,39 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Bill anderson
- * Encapsulates all behaviour logic relating to chain of responsibility ( or link-list)
+ * @description Encapsulates test of all behaviour logic relating to the handlers in the chain
  *
  * For more guidelines and details see
  *   https://developer.salesforce.com/page/Apex_Enterprise_Patterns_-_Domain_Layer
- * @group Domain Layer
+ * @group Test Layer
  **/
-public interface accc_IHandlerChain {
-	/**
-	 * @description set the next link in the chain
-	 * 
-	 * @param nextInChain accc_IHandlerChain
-	 */
-    void setNext(accc_IHandlerChain nextInChain); 
-    /**
-     * @description get the next link in the chain
-     */
-    accc_IHandlerChain getNext(); 
-    /**
-     * @description get the handler in the chain
-     * 
-     * @return accc_ITriggerHandler
-     */
-    accc_ITriggerHandler getHandler(); 
-} // end of accc_IHandlerChain
+@isTest
+private class accc_VirtualTriggerHandlerChainTest {
+	// place holder for testing trigger handler classes
+	public class myTestTriggerHandler extends accc_TriggerHandlerBase {
+	}
+
+	@isTest
+	static void testctor() {
+		// assign
+		accc_ITriggerHandler handler = new myTestTriggerHandler();
+		// act
+		accc_VirtualTriggerHandlerChain chain = new accc_VirtualTriggerHandlerChain(handler);
+
+		// assert
+		system.assertEquals(true, chain.getHandler() != null);
+	}
+
+	@isTest
+	static void testgetNextAndgetHandler() {
+		// assign
+		accc_ITriggerHandler handler = new myTestTriggerHandler();
+		// act
+		accc_IHandlerChain chain1 = new accc_VirtualTriggerHandlerChain(handler);
+		accc_IHandlerChain chain2 = new accc_VirtualTriggerHandlerChain(handler);
+		chain1.setNext(chain2);
+		// assert
+		system.assertEquals(handler, chain1.getHandler());
+		system.assertEquals(chain2, chain1.getNext());
+	}
+}

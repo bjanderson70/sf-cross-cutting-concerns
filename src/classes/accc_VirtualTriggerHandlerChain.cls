@@ -30,27 +30,61 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Bill anderson
- * Encapsulates all behaviour logic relating to chain of responsibility ( or link-list)
+ * @description Encapsulates all behaviour logic relating to the handlers in the chain
  *
  * For more guidelines and details see
  *   https://developer.salesforce.com/page/Apex_Enterprise_Patterns_-_Domain_Layer
- * @group Domain Layer
+ * @group Common Trigger Layer
  **/
-public interface accc_IHandlerChain {
+public virtual with sharing class accc_VirtualTriggerHandlerChain implements accc_IHandlerChain {
+
+	////////////////////////////////////////////////////////////////////////////////
+	/// Data Member
+	////////////////////////////////////////////////////////////////////////////////
+
+	// the next handler to call
+	@TestVisible
+	accc_ITriggerHandler m_handler = null;
+	@TestVisible
+	accc_IHandlerChain m_chain = null;
+
+	////////////////////////////////////////////////////////////////////////////////
+	/// Ctor
+	////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * @description ctor to define the handler in the chain
+	 *
+	 * @param handler trigger handler
+	 */
+	public accc_VirtualTriggerHandlerChain(accc_ITriggerHandler handler) {
+		this.m_handler = handler;
+	}// end of ctor
+	////////////////////////////////////////////////////////////////////////////////
+	/// Public Methods
+	////////////////////////////////////////////////////////////////////////////////
+
 	/**
 	 * @description set the next link in the chain
-	 * 
+	 *
 	 * @param nextInChain accc_IHandlerChain
 	 */
-    void setNext(accc_IHandlerChain nextInChain); 
-    /**
-     * @description get the next link in the chain
-     */
-    accc_IHandlerChain getNext(); 
-    /**
-     * @description get the handler in the chain
-     * 
-     * @return accc_ITriggerHandler
-     */
-    accc_ITriggerHandler getHandler(); 
-} // end of accc_IHandlerChain
+	public virtual void setNext(accc_IHandlerChain nextInChain) {
+		this.m_chain = nextInChain;
+	}// end of setNext
+	/**
+	* @description get the next link in the chain
+	*/
+	public virtual accc_IHandlerChain getNext() {
+		return this.m_chain;
+	}// en dof getNext
+	/**
+	 * @description the next handler in the chain
+	 *
+	 * @return accc_ITriggerHandler
+	 */
+	public virtual accc_ITriggerHandler getHandler() {
+		return this.m_handler;
+	}// end of getHandler
+
+} // end of accc_VirtualTriggerHandlerChain

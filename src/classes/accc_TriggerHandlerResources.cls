@@ -48,7 +48,7 @@ public without sharing class accc_TriggerHandlerResources {
      * This provides the container and manager of Pass Thru data betw/ handlers.
      * Thus, the data is freely available going from one handler to the next.
      *
-     * The trigger resource allows passing information from one handler (in the chain)
+     * The trigger resource allows passing information from one handler (in the chain) 
      * to another.
      */
     public class PassThruResourceDAO {
@@ -93,7 +93,7 @@ public without sharing class accc_TriggerHandlerResources {
     public accc_TriggerHandlerResources() {
 
     }// end of ctor
-
+    
 
     //==============================================================
     // Properties

@@ -10,7 +10,7 @@
     </fields>
     <fields>
         <fullName>Alert_Handler__c</fullName>
-        <defaultValue>&apos;accc_DefaultProcessHandler&apos;</defaultValue>
+        <defaultValue>&apos;evt_DefaultProcessHandler&apos;</defaultValue>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
         <label>Alert Handler</label>
@@ -31,7 +31,7 @@
     </fields>
     <fields>
         <fullName>Consumer__c</fullName>
-        <defaultValue>&apos;accc_DefaultPEConsumer&apos;</defaultValue>
+        <defaultValue>&apos;evt_DefaultPEConsumer&apos;</defaultValue>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
         <label>Consumer</label>
@@ -55,7 +55,7 @@
     </fields>
     <fields>
         <fullName>Error_Handler__c</fullName>
-        <defaultValue>&apos;accc_DefaultProcessHandler&apos;</defaultValue>
+        <defaultValue>&apos;evt_DefaultProcessHandler&apos;</defaultValue>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
         <label>Error Handler</label>
@@ -66,7 +66,7 @@
     </fields>
     <fields>
         <fullName>Log_Handler__c</fullName>
-        <defaultValue>&apos;accc_DefaultProcessHandler&apos;</defaultValue>
+        <defaultValue>&apos;evt_DefaultProcessHandler&apos;</defaultValue>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
         <label>Log Handler</label>
@@ -77,7 +77,7 @@
     </fields>
     <fields>
         <fullName>Publisher__c</fullName>
-        <defaultValue>&apos;accc_DefaultPEPublisher&apos;</defaultValue>
+        <defaultValue>&apos;evt_DefaultPEPublisher&apos;</defaultValue>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
         <label>Publisher</label>
@@ -98,7 +98,7 @@
     </fields>
     <fields>
         <fullName>Store_Handler__c</fullName>
-        <defaultValue>&apos;accc_DefaultProcessStoreHandler&apos;</defaultValue>
+        <defaultValue>&apos;evt_DefaultProcessStoreHandler&apos;</defaultValue>
         <description>The handler that handles storing the serialize event on pub/sub</description>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
@@ -111,7 +111,7 @@
     </fields>
     <fields>
         <fullName>Success_Handler__c</fullName>
-        <defaultValue>&apos;accc_DefaultProcessHandler&apos;</defaultValue>
+        <defaultValue>&apos;evt_DefaultProcessHandler&apos;</defaultValue>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
         <label>Success Handler</label>
@@ -120,7 +120,7 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Accc Platform Event Binding</label>
+    <label>evt Platform Event Binding</label>
     <listViews>
         <fullName>All</fullName>
         <columns>MasterLabel</columns>
@@ -139,6 +139,6 @@
         <label>All</label>
         <language>en_US</language>
     </listViews>
-    <pluralLabel>Accc Platform Event Bindings</pluralLabel>
+    <pluralLabel>evt Platform Event Bindings</pluralLabel>
     <visibility>Public</visibility>
 </CustomObject>

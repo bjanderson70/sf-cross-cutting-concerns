@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
         <name>ApexClass</name>
     </types>
-    <types>
-        <members>*</members>
-        <name>ApexTestSuite</name>
-    </types>
+   
     <types>
         <members>*</members>
         <name>ApexTrigger</name>
@@ -16,17 +13,17 @@
         <members>*</members>
         <name>CustomMetadata</name>
     </types>
-    <types>
-        <members>*</members>
-        <name>CustomObject</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>Layout</name>
-    </types>
-    <types>
+     <types>
         <members>*</members>
         <name>PermissionSet</name>
+    </types>
+     <types>
+        <members>*</members>
+        <name>ApexTestSuite</name>
+    </types>
+      <types>
+        <members>*</members>
+        <name>ListView</name>
     </types>
     <version>46.0</version>
 </Package>
