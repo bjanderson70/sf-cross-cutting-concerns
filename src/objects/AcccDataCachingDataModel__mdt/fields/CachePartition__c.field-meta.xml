@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CachePartition__c</fullName>
+    <defaultValue>&#39;work&#39;</defaultValue>
+    <description>The cache partition used in Platform Cache. Default is &#39;work&#39;</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>The cache partition used in Platform Cache.Default is &#39;work&#39;</inlineHelpText>
+    <label>Cache Partition</label>
+    <length>50</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

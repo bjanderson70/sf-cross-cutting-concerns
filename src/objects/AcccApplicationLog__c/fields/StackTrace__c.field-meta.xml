@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StackTrace__c</fullName>
+    <description>Raw exception stack trace for unhandled errors</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Raw exception stack trace for unhandled errors</inlineHelpText>
+    <label>StackTrace</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Performance_Metrics__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Performance Metrics of each handler (namely, running time in milliseconds)</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Performance Metrics of each handler (namely, running time in milliseconds)</inlineHelpText>
+    <label>Performance Metrics</label>
+    <type>Checkbox</type>
+</CustomField>

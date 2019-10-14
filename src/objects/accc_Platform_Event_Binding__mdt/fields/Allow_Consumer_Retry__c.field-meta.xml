@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Allow_Consumer_Retry__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>A consume can cause a retry in the event some action does not get fulfilled. For example, the event is caught and the action is to update some objects. If the object is lock, the event handler may want to RETRY. If this flag is on, the retry will occur; otherwise, it will NOT.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>A consume can cause a retry in the event some action does not get fulfilled. For example, the event is caught and the action is to update some objects. If the object is lock, the event handler may want to RETRY. If this flag is on, the retry will occur.</inlineHelpText>
+    <label>Allow Consumer Retry</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Continue_If_Exception__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Continue if an exception occurs in a trigger handler. For example, if there are more than one trigger handler and the first one causes an exception, do you want to continue with the other handlers or stop. Checking this box will allow the exception to be caught so that you can continue to the next</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Continue if an exception occurs in a trigger handler. For example, if there are more than one trigger handler and the first one causes an exception, do you want to continue with the other handlers or stop. Checking this box will allow you to continue.</inlineHelpText>
+    <label>Continue If Exception</label>
+    <type>Checkbox</type>
+</CustomField>

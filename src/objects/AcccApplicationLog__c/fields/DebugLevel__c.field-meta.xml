@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DebugLevel__c</fullName>
+    <description>Error, Info, Warning, Debug</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Error, Info, Warning, Debug</inlineHelpText>
+    <label>DebugLevel</label>
+    <required>true</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Debug</fullName>
+                <default>false</default>
+                <label>Debug</label>
+            </value>
+            <value>
+                <fullName>Error</fullName>
+                <default>false</default>
+                <label>Error</label>
+            </value>
+            <value>
+                <fullName>Finest</fullName>
+                <default>false</default>
+                <label>Finest</label>
+            </value>
+            <value>
+                <fullName>Fine</fullName>
+                <default>false</default>
+                <label>Fine</label>
+            </value>
+            <value>
+                <fullName>Info</fullName>
+                <default>true</default>
+                <label>Info</label>
+            </value>
+            <value>
+                <fullName>Warning</fullName>
+                <default>false</default>
+                <label>Warning</label>
+            </value>
+            <value>
+                <fullName>Finer</fullName>
+                <default>false</default>
+                <label>Finer</label>
+            </value>
+            <value>
+                <fullName>Internal</fullName>
+                <default>false</default>
+                <label>Internal</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

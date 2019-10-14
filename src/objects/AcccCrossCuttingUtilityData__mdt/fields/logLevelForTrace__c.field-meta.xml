@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>logLevelForTrace__c</fullName>
+    <defaultValue>&#39;Finest&#39;</defaultValue>
+    <description>The loglevel used when printing out in testmode. This will override users setting</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>The loglevel used when printing out in test mode</inlineHelpText>
+    <label>LogLevel For Trace</label>
+    <required>true</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Info</fullName>
+                <default>false</default>
+                <label>Info</label>
+            </value>
+            <value>
+                <fullName>Debug</fullName>
+                <default>true</default>
+                <label>Debug</label>
+            </value>
+            <value>
+                <fullName>Fine</fullName>
+                <default>false</default>
+                <label>Fine</label>
+            </value>
+            <value>
+                <fullName>Finer</fullName>
+                <default>false</default>
+                <label>Finer</label>
+            </value>
+            <value>
+                <fullName>Finest</fullName>
+                <default>false</default>
+                <label>Finest</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

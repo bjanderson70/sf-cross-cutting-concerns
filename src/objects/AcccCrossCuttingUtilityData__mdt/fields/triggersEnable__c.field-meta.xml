@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>triggersEnable__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>are the triggers enable</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>are the triggers enable</inlineHelpText>
+    <label>Triggers Enable</label>
+    <type>Checkbox</type>
+</CustomField>

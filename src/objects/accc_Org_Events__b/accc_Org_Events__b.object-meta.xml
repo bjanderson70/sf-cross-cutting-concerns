@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Cross-cutting concerns which holds event information for audit and retrieval</description>
+    <label>Accc Org Event</label>
+    <pluralLabel>Accc Org Events</pluralLabel>
+</CustomObject>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>useCachingStrategy__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Use the caching strategy. This value is checked in the default ctor of &#39;accc_ApexCacheMgr&#39;</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Use the caching strategy. This value is checked in the default ctor of &#39;accc_ApexCacheMgr&#39;</inlineHelpText>
+    <label>Use Caching Strategy</label>
+    <type>Checkbox</type>
+</CustomField>

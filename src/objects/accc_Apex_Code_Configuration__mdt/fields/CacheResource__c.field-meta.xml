@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CacheResource__c</fullName>
+    <defaultValue>&#39;ApexCache&#39;</defaultValue>
+    <description>class that implements class ICache</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>class that implements class ICache</inlineHelpText>
+    <label>Cache Resource</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
