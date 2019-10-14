@@ -59,7 +59,6 @@
     <testClassName>accc_PlatformEventAttrsTest</testClassName>
     <testClassName>accc_PlatformEventCmdFallbackTest</testClassName>
     <testClassName>accc_PlatformEventDAOLogTest</testClassName>
-    <testClassName>accc_PlatformEventLoggerTest</testClassName>
     <testClassName>accc_PlatformEventLogInjectorTest</testClassName>
     <testClassName>accc_PlatformEventLogSelectorTest</testClassName>
     <testClassName>accc_PlatformEventTestServiceHelper</testClassName>
@@ -79,4 +78,5 @@
     <testClassName>accc_TriggerHandlerBaseTest</testClassName>
     <testClassName>accc_TriggerHelperClassTest</testClassName>
     <testClassName>accc_VirtualCustomSettingsTest</testClassName>
+    <testClassName>accc_TriggerHandlerBaseTest</testClassName>
 </ApexTestSuite>
