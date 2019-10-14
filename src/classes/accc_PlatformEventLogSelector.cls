@@ -106,7 +106,7 @@ public class accc_PlatformEventLogSelector {
 	private static List<accc_PlatformEventDAOLog> getBigObjectInformation(string query) {
 		List<accc_Org_Events__b> items = null;
 
-		if ( !accc_ApexConstants.UnitTestsRunning ) {
+		if ( !accc_ApexConstants.UNIT_TEST_RUNNING ) {
 			items = Database.query(String.escapeSingleQuotes(query));
 			accc_ApexUtilities.log('++++++++ getBigObjectInformation.query=' + query);
 

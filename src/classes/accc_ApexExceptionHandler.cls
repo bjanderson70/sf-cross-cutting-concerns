@@ -119,7 +119,7 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
              * TESTING
              *****************************
              */
-            if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+            if ( mForceException && accc_ApexConstants.UNIT_TEST_RUNNING) {
                 throw new accc_ApexApplicationException('Exception Testing');
             }
             accc_IApexExceptionPolicyStrategy policyStrategy = (accc_IApexExceptionPolicyStrategy) accc_ApexEnvironment.getRuntimeEnvironment().objectFactory().create(accc_ApexConstants.ExceptionPolicyHandler);
@@ -203,7 +203,7 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
              * TESTING
              *****************************
              */
-            if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+            if ( mForceException && accc_ApexConstants.UNIT_TEST_RUNNING) {
                 throw new accc_ApexApplicationException('Exception Testing');
             }
             message = (String)formatter.format( excp, policy);
@@ -230,7 +230,7 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
          * TESTING
          *****************************
          */
-        if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+        if ( mForceException && accc_ApexConstants.UNIT_TEST_RUNNING) {
             accc_ApexUtilities.log(excp.getMessage());
         }
     } // end of handleException
@@ -247,7 +247,7 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
              * TESTING
              *****************************
              */
-            if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+            if ( mForceException && accc_ApexConstants.UNIT_TEST_RUNNING) {
                 throw new accc_ApexApplicationException('Exception Testing');
             }
 
@@ -276,7 +276,7 @@ public virtual without sharing class accc_ApexExceptionHandler implements accc_I
              * TESTING
              *****************************
              */
-            if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+            if ( mForceException && accc_ApexConstants.UNIT_TEST_RUNNING) {
                 throw new accc_ApexApplicationException('Exception Testing');
             }
             if ( this.handlingLoggingWithCare == false ) {

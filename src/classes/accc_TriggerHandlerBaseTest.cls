@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2019, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -41,83 +41,86 @@
  */
 @isTest
 private class accc_TriggerHandlerBaseTest {
-	// our messages posted per trigger event
-	static final List<String> logMsgs = new List<String> {
-		'On Before Insert' ,
-		'On Before Update' ,
-		'On After Insert' ,
-		'On After Update' ,
-		'On Before Delete' ,
-		'On After Delete' ,
-		'On After UnDelete'
-	};
+    // our messages posted per trigger event
+    static final List<String> logMsgs = new List<String> {
+        'On Before Insert',
+        'On Before Update',
+        'On After Insert',
+        'On After Update',
+        'On Before Delete',
+        'On After Delete',
+        'On After UnDelete'
+    };
 
-	@isTest
-	static void testaccc_TriggerHandlerBaseNoParams() {
-		// assign/act
-		accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
+    @isTest
+    static void testaccc_TriggerHandlerBaseNoParams() {
+        // assign/act
+        accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
 
-		// assert
-		system.assertEquals(null, ctor.theParameters);
+        // assert
+        system.assertEquals(true, ctor.theParameters!=null);
 
-	}// end of testaccc_TriggerHandlerBaseNoParams
+    }// end of testaccc_TriggerHandlerBaseNoParams
 
-	@isTest
-	static void testaccc_TriggerHandlerBaseWithParams() {
-		// assign
-		final String param = 'this is argument';
-		accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase(param);
+    @isTest
+    static void testaccc_TriggerHandlerBaseWithParams() {
+        // assign
+        final String MYDATA='this is argument';
+        final accc_TriggerHandlerResources.PassThruResourceDAO theData = new accc_TriggerHandlerResources.PassThruResourceDAO(MYDATA);
+        accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
+        ctor.handlerResources().add('test',theData);
+        // assert
+        system.assertEquals(MYDATA, (String)ctor.theParameters.get('test').triggerData);
 
-		// assert
-		system.assertEquals(param, ctor.theParameters);
+    }// end of testaccc_TriggerHandlerBaseWithParams
 
-	}// end of testaccc_TriggerHandlerBaseWithParams
+    @isTest
+    static void testaccc_TriggerHandlerBaseMessages() {
+        // assign
+        final String MYDATA='this is argument';
+        final accc_TriggerHandlerResources.PassThruResourceDAO theData = new accc_TriggerHandlerResources.PassThruResourceDAO(MYDATA);
+        accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
+        ctor.handlerResources().add('test',theData);
+        // act
+        system.assertEquals(MYDATA, (String)ctor.theParameters.get('test').triggerData);
+        ctor.onAfterUndeleteChild(null);
+        ctor.onAfterDeleteChild(null);
+        ctor.onBeforeDeleteChild(null);
+        ctor.onAfterUpdateChild(null, null);
+        ctor.onAfterInsertChild(null);
+        ctor.onBeforeUpdateChild(null, null);
+        ctor.onBeforeInsertChild(null);
+        ctor.addError(null, MYDATA);
+        // assert
+        for ( String key : accc_TriggerHandlerBaseTest.logMsgs) {
+            system.assertEquals(true, accc_ApexUtilities.containsInTestLog(key));
+        }
+        // error message passed to addError
+        system.assertEquals(null, ctor.for_testing);
 
-	@isTest
-	static void testaccc_TriggerHandlerBaseMessages() {
-		// assign
-		final String param = 'this is argument again';
-		accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase(param);
-		// act
-		system.assertEquals(param, ctor.theParameters);
-		ctor.onAfterUndeleteChild(null);
-		ctor.onAfterDeleteChild(null);
-		ctor.onBeforeDeleteChild(null);
-		ctor.onAfterUpdateChild(null, null);
-		ctor.onAfterInsertChild(null);
-		ctor.onBeforeUpdateChild(null, null);
-		ctor.onBeforeInsertChild(null);
-		ctor.addError(null, param);
-		// assert
-		for ( String key : accc_TriggerHandlerBaseTest.logMsgs) {
-			system.assertEquals(true, accc_ApexUtilities.containsInTestLog(key));
-		}
-		// error message passed to addError
-		system.assertEquals(null, ctor.for_testing);
+    }// end of testaccc_TriggerHandlerBaseMessages
 
-	}// end of testaccc_TriggerHandlerBaseMessages
+    @isTest
+    static void testaccc_TriggerHandlerBaseaddError() {
+        // assign
+        final String param = 'this is argument again';
+        Boolean expectedExceptionThrown = false;
+        accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
+        Contact myContact = insertNewContactToFireTriggers();
+        // act
+        ctor.addError(myContact, param);
+        // assert
+        // error message passed to addError
+        system.assertEquals(param, ctor.for_testing);
 
-	@isTest
-	static void testaccc_TriggerHandlerBaseaddError() {
-		// assign
-		final String param = 'this is argument again';
-		Boolean expectedExceptionThrown = false;
-		accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
-		Contact myContact = accc_TriggerHandlerBaseTest.insertNewContactToFireTriggers();
-		// act
-		ctor.addError(myContact, param);
-		// assert
-		// error message passed to addError
-		system.assertEquals(param, ctor.for_testing);
-
-	}// end of testaccc_TriggerHandlerBaseMessages
+    }// end of testaccc_TriggerHandlerBaseMessages
 
 
-	static Contact insertNewContactToFireTriggers() {
-		Contact newContact = new Contact(LastName = 'testlastname',
-		                                 FirstName = 'theFirstName',
-		                                 Email = 'myname@somecompany.com');
-		insert newContact;
-		return newContact;
-	} // end of insertNewContactToFireTriggers
-} // end of accc_TriggerHandlerBaseTest
+    static Contact insertNewContactToFireTriggers() {
+        Contact newContact = new Contact(LastName = 'testlastname',
+                                         FirstName = 'theFirstName',
+                                         Email = 'myname@somecompany.com');
+        insert newContact;
+        return newContact;
+    }
+}

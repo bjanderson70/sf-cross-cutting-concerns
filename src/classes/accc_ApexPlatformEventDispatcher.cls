@@ -65,7 +65,7 @@ public without sharing class accc_ApexPlatformEventDispatcher {
                 // cause exception testing via injection
                 //
                 if ( true == accc_ApexPlatformEventDispatcher.useForTestingException
-                     && accc_ApexConstants.UnitTestsRunning) {
+                     && accc_ApexConstants.UNIT_TEST_RUNNING) {
                     throw new accc_ApexApplicationException('accc_ApexPlatformEventDispatcher: accc_ApexApplicationException');
                 }
                 /***************** FOR TRIGGER HANDLER FRAMEWORK ************************************

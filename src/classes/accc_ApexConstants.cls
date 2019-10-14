@@ -220,5 +220,5 @@ public class accc_ApexConstants {
     *
     * Set the is test running ( instead of checking multiple times in code -- waste of a function call)
     ************************************************************************************/
-    public static Boolean UnitTestsRunning = Test.isRunningTest();
+    public final static Boolean UNIT_TEST_RUNNING = Test.isRunningTest();
 } // end of accc_ApexConstants

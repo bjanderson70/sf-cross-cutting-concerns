@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2019, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -44,148 +44,172 @@
  *       there class. 'accc_TriggerHandlerChainManager' takes care of the rest (by reading the data model and
  *       creating the chain of handlers).
  *
+ *
+ *
+ *
  * @group Common Trigger Layer
  **/
 public virtual with sharing class accc_TriggerHandlerBase implements accc_ITriggerHandler {
 
-	////////////////////////////////////////////////////////////////////////////////
-	/// Data Members
-	////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    /// Data Members
+    ////////////////////////////////////////////////////////////////////////////////
 
-	@TestVisible
-	private Object m_parameters = null;
-	@TestVisible
-	private Object for_testing = null;
-	////////////////////////////////////////////////////////////////////////////////
-	/// Ctors
-	////////////////////////////////////////////////////////////////////////////////
+    @TestVisible
+    private accc_TriggerHandlerResources m_parameters = null;
+    @TestVisible
+    private Object for_testing = null;
+    // make this call once! It adds up for bulk
+    @TestVisible
+    static final private Boolean IS_UNIT_TESTING =Test.isRunningTest();
+    ////////////////////////////////////////////////////////////////////////////////
+    /// Ctors
+    ////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * @description default ctor
-	 *
-	 */
-	public accc_TriggerHandlerBase() {
-		this(null);
-	} // end of ctor
+    /**
+     * @description default ctor
+     *
+     */
+    public accc_TriggerHandlerBase() {
+        this(null);
+    } // end of ctor
 
-	/**
-	 * @description ctor
-	 *
-	 * @param parameters information for the children
-	 */
-	public accc_TriggerHandlerBase(Object parameters) {
-		this.theParameters = parameters;
-	} // end of ctor
+    /**
+     * @description ctor
+     *
+     * @param parameters information for the children
+     */
+    public accc_TriggerHandlerBase(accc_TriggerHandlerResources parameters) {
+        this.theParameters = parameters == null ? new accc_TriggerHandlerResources() : parameters;
+    }// end of ctor
 
-	////////////////////////////////////////////////////////////////////////////////
-	/// Properties
-	////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    /// Properties
+    ////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * The parameters for this handler
-	 */
-	@TestVisible
-	protected Object theParameters {
-		get { return this.m_parameters;}
-		set { this.m_parameters = value;}
-	} // end of theParameters
+    /**
+     * The paramters (resources) for this handler.
+     * Used to pass information between handlers
+     */
+    @TestVisible
+    protected accc_TriggerHandlerResources theParameters {
+        get { return this.m_parameters;}
+        protected set {
+            if ( value != null) {
+                this.m_parameters = value;
+            }
+        }
+    } // end of theParameters
 
-	////////////////////////////////////////////////////////////////////////////////
-	/// Public Methods
-	////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    /// Public Methods
+    ////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * @description add an error on the sobject. When used on Trigger.new
-	 * in before insert and before update triggers, and on Trigger.old in
-	 * before delete triggers, the error message is displayed in the application
-	 * interface.
-	 *
-	 * @param triggerObject the salesforce object (from the trigger invocation) to see the error message
-	 * @param errorMessage error message
-	 */
-	public virtual void addError(SObject triggerObject, String errorMessage) {
-		// is this valid data
-		if ( triggerObject != null
-		        && !string.isBlank(errorMessage)
-		   ) {
-			// validate information coming in for test
-			if ( accc_ApexConstants.UnitTestsRunning) {
-				this.for_testing = errorMessage;
-			}
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //
+    // If you need to handle after/before events, override the following methods
+    // Note, current records from the trigger are in 'records'
+    //
 
-			//try {
-			triggerObject.addError(errorMessage);
-			//} catch (Exception) {
-			// TBD -- ensure it is on a trigger sobject
-			//}
-		}
-	} // end of addError
-	/**
-	 * @description On Before Insert - Override this to perform  processing
-	 * @param records the current records associated with the event
-	 **/
-	public virtual void onBeforeInsertChild(List<SObject> records) {
-		if ( accc_ApexConstants.UnitTestsRunning) {
-			accc_ApexUtilities.log('++++++++++++++On Before Insert' );
-		}
-	} // end of onBeforeInsertChild
-	/**
-	 * @description on Before Update - Override this to perform  processing
-	 * @param records the current records associated with the event
-	 * @param existingRecords the old records associated with the event
-	 **/
-	public virtual void onBeforeUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords) {
-		if ( accc_ApexConstants.UnitTestsRunning) {
-			accc_ApexUtilities.log('++++++++++++++On Before Update' );
-		}
-	}// end of onBeforeUpdateChild
-	/**
-	 * @description On After Insert - Override this to perform  processing
-	 * @param records the current records associated with the event
-	 **/
-	public virtual void onAfterInsertChild(List<SObject> records) {
-		if ( accc_ApexConstants.UnitTestsRunning) {
-			accc_ApexUtilities.log('++++++++++++++On After Insert' );
-		}
-	}// end of onAfterInsertChild
-	/**
-	 * @description On After Update - Override this to perform  processing
-	 * @param records the current records associated with the event
-	 * @param existingRecords the old records associated with the event
-	 **/
-	public virtual void onAfterUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords) {
-		if ( accc_ApexConstants.UnitTestsRunning) {
-			accc_ApexUtilities.log('++++++++++++++On After Update' );
-		}
-	}// end of onAfterUpdateChild
-	/**
-	 * @description On Before Delete - Override this to perform  processing
-	 * @param records the current records associated with the event
-	 *
-	 **/
-	public virtual void onBeforeDeleteChild(List<SObject> records) {
-		if ( accc_ApexConstants.UnitTestsRunning) {
-			accc_ApexUtilities.log('++++++++++++++On Before Delete' );
-		}
-	}// end of onBeforeDeleteChild
-	/**
-	 * @description On After Delete - Override this to perform  processing
-	 * @param records the current records associated with the event
-	 *
-	 **/
-	public virtual void onAfterDeleteChild(List<SObject> records) {
-		if ( accc_ApexConstants.UnitTestsRunning) {
-			accc_ApexUtilities.log('++++++++++++++On After Delete' );
-		}
-	}// end of onAfterDeleteChild
-	/**
-	 * @description On After Undelete - Override this to perform  processing
-	 * @param records the current records associated with the event
-	 **/
-	public virtual void onAfterUndeleteChild(List<SObject> records) {
-		if ( accc_ApexConstants.UnitTestsRunning) {
-			accc_ApexUtilities.log('++++++++++++++On After UnDelete' );
-		}
-	} // end of onAfterUndeleteChild
+    /**
+     * @description holds parameters passed between handlers
+     * @return accc_TriggerHandlerResources
+     **/
+    public accc_TriggerHandlerResources handlerResources() {
+        return this.theParameters;
+    }// end of handlerResources
+    /**
+     * @description add an error on the sobject. When used on Trigger.new
+     * in before insert and before update triggers, and on Trigger.old in
+     * before delete triggers, the error message is displayed in the application
+     * interface.
+     *
+     * @param triggerObject the salesforce object (from the trigger invocation) to see the error message
+     * @param errorMessage error message
+     */
+    public virtual void addError(SObject triggerObject, String errorMessage) {
+        // is this valid data
+        if ( triggerObject != null
+             && !string.isBlank(errorMessage)
+             ) {
+            // validate information coming in for test
+            if ( IS_UNIT_TESTING) {
+                this.for_testing = errorMessage;
+            }
 
-} // end of accc_TriggerHandlerBase
+            //try {
+            triggerObject.addError(errorMessage);
+            //} catch (Exception) {
+            // TBD -- ensure it is on a trigger sobject
+            //}
+        }
+    } // end of addError
+    /**
+     * @description On Before Insert - Override this to perform  processing
+     * @param records the current records associated with the event
+     **/
+    public virtual void onBeforeInsertChild(List<SObject> records) {
+        if ( IS_UNIT_TESTING) {
+            accc_ApexUtilities.log('++++++++++++++On Before Insert' );
+        }
+    } // end of onBeforeInsertChild
+    /**
+     * @description on Before Update - Override this to perform  processing
+     * @param records the current records associated with the event
+     * @param existingRecords the old records associated with the event
+     **/
+    public virtual void onBeforeUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords) {
+        if ( IS_UNIT_TESTING) {
+            accc_ApexUtilities.log('++++++++++++++On Before Update' );
+        }
+    }// end of onBeforeUpdateChild
+    /**
+     * @description On After Insert - Override this to perform  processing
+     * @param records the current records associated with the event
+     **/
+    public virtual void onAfterInsertChild(List<SObject> records) {
+        if ( IS_UNIT_TESTING) {
+            accc_ApexUtilities.log('++++++++++++++On After Insert' );
+        }
+    }// end of onAfterInsertChild
+    /**
+     * @description On After Update - Override this to perform  processing
+     * @param records the current records associated with the event
+     * @param existingRecords the old records associated with the event
+     **/
+    public virtual void onAfterUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords) {
+        if ( IS_UNIT_TESTING) {
+            accc_ApexUtilities.log('++++++++++++++On After Update' );
+        }
+    }// end of onAfterUpdateChild
+    /**
+     * @description On Before Delete - Override this to perform  processing
+     * @param records the current records associated with the event
+     *
+     **/
+    public virtual void onBeforeDeleteChild(List<SObject> records) {
+        if ( IS_UNIT_TESTING) {
+            accc_ApexUtilities.log('++++++++++++++On Before Delete' );
+        }
+    }// end of onBeforeDeleteChild
+    /**
+     * @description On After Delete - Override this to perform  processing
+     * @param records the current records associated with the event
+     *
+     **/
+    public virtual void onAfterDeleteChild(List<SObject> records) {
+        if ( IS_UNIT_TESTING) {
+            accc_ApexUtilities.log('++++++++++++++On After Delete' );
+        }
+    }// end of onAfterDeleteChild
+    /**
+     * @description On After Undelete - Override this to perform  processing
+     * @param records the current records associated with the event
+     **/
+    public virtual void onAfterUndeleteChild(List<SObject> records) {
+        if ( IS_UNIT_TESTING) {
+            accc_ApexUtilities.log('++++++++++++++On After UnDelete' );
+        }
+    } // end of onAfterUndeleteChild
+
+} // end of accc_TriggerHandlerBasev

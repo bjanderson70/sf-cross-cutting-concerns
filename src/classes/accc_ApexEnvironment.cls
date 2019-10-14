@@ -76,7 +76,7 @@ public without sharing class accc_ApexEnvironment {
 	public static string getEnvironment() {
 		string environment = accc_ApexConstants.PRODUCTION_CATEGORY;
 
-		if ( accc_ApexConstants.UnitTestsRunning  ) {
+		if ( accc_ApexConstants.UNIT_TEST_RUNNING  ) {
 			environment = accc_ApexConstants.TEST_CATEGORY;
 		} else if (accc_ApexUtilities.isSandbox() ) {
 			environment = accc_ApexConstants.DEBUG_CATEGORY;
@@ -122,7 +122,7 @@ public without sharing class accc_ApexEnvironment {
 	public static accc_IFallbackResources getRuntimeFallbackResources() {
 		if ( accc_ApexEnvironment.runtimeFallback == null ) {
 
-			if ( accc_ApexConstants.UnitTestsRunning ) {
+			if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
 				accc_ApexEnvironment.runtimeFallback = new accc_ApexTestJSONDataFallback();
 			} else {
 				accc_ApexEnvironment.runtimeFallback = new accc_ApexKnownCCConcernsFallback();

@@ -377,7 +377,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
         get {
             // special test condition : this class does not use EventBus.publish when processing
             // so we simulate
-            if ( accc_ApexConstants.UnitTestsRunning
+            if ( accc_ApexConstants.UNIT_TEST_RUNNING
                  && DO_NOT_SET_CHECKPOINT==true ) {
                 if (  this.m_opIds == null ) {
                     this.m_opIds  = new List<String>();
@@ -549,7 +549,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
             replayId = (String)event.get(REPLAY_ID_INDEX_NAME);
             if ( replayId != null ) {
                 this.replayIds.add(replayId);
-            } else if ( accc_ApexConstants.UnitTestsRunning ) {
+            } else if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
                 /*********************************************************************
                  * START OF TESTING
                  */
@@ -628,7 +628,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
         if ( string.isNotBlank(lastReplayId) ) {
             // set our new checkpoint
             // specal consideration for testing :-(  )
-            if ( accc_ApexConstants.UnitTestsRunning ) {
+            if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
                 /*********************************************************************
                  * START OF TESTING
                  */

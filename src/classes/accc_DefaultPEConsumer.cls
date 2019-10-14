@@ -331,7 +331,7 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
         // TBD -- Make Abstract
 
         // if we are here , we handled the events;
-        if ( accc_ApexConstants.UnitTestsRunning) {
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING) {
             // record process of save result -- LEAVE this in for testing
             super.addInstrumentation(super.willInstrument,
                                      new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: consumePlatformEvent result=true , collection size=' + collectionOfEvents.size())
@@ -359,7 +359,7 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
                                             , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData
                                             , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData
                                             , accc_PlatformEventAttrs attributes) {
-        if ( accc_ApexConstants.UnitTestsRunning) {
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING) {
             // NO-OP
             super.addInstrumentation(super.willInstrument,
                                      new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Consumer: handleCompletion result=true')

@@ -704,7 +704,7 @@ public without sharing class accc_ApexUtilities {
      * @description Log Information for testing
      */
     public static void logForTesting(String message) {
-        if ( message != null && accc_ApexConstants.UnitTestsRunning ) {
+        if ( message != null && accc_ApexConstants.UNIT_TEST_RUNNING ) {
             // used to test information sent from a test
             accc_ApexUtilities.writeDataForTesting(message);
         }
@@ -1267,7 +1267,7 @@ public without sharing class accc_ApexUtilities {
     @TestVisible
     private static void writeDataForTesting(String message) {
         // used to test information sent from a test
-        if ( accc_ApexConstants.UnitTestsRunning && message != null) {
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING && message != null) {
             // need to create out internal storage unit
             if ( accc_ApexUtilities.logTestData == null ) {
                 accc_ApexUtilities.logTestData = new List<String>();
@@ -1284,7 +1284,7 @@ public without sharing class accc_ApexUtilities {
     @TestVisible
     private static Boolean containsInTestLog(String lookFor) {
         Boolean found = false;
-        if ( accc_ApexConstants.UnitTestsRunning && accc_ApexUtilities.logTestData != null ) {
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING && accc_ApexUtilities.logTestData != null ) {
             for (String item : accc_ApexUtilities.logTestData) {
                 if ( (found = item.contains(lookFor)) == true) {
                     break;

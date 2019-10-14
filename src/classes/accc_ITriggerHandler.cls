@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2019, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -29,59 +29,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * @author Bill anderson 
+ * @author Bill anderson
  * @description Encapsulates all behaviour logic relating to trigger handling in
  * children of the Domains
  *
  * @group Domain Layer
  **/
 public interface accc_ITriggerHandler {
-	/**
-	 * @description add an error on the sobject. When used on Trigger.new
-	 * in before insert and before update triggers, and on Trigger.old in
-	 * before delete triggers, the error message is displayed in the application
-	 * interface.
-	 *
-	 * @param triggerObject the salesforce object (from the trigger invocation) to see the error message
-	 * @param errorMessage error message
-	 */
-	void addError(SObject triggerObject, String errorMessage);
-	/**
-	 * @description OnBefore Delete Event
-	 * @param records the current records associated with the event
-	 **/
-	void onBeforeDeleteChild(List<SObject> records);
-	/**
-	 * @description On After Delete Event
-	 * @param records the current records associated with the event
-	 **/
-	void onAfterDeleteChild(List<SObject> records);
-	/**
-	 * @description On Before Insert Event
-	 * @param records the current records associated with the event
-	 **/
-	void onBeforeInsertChild(List<SObject> records);
-	/**
-	 * @description on Before Update Event
-	 * @param records the current records associated with the event
-	 * @param existingRecords the old records associated with the event
-	 **/
-	void onBeforeUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords);
-	/**
-	 * @description On After Insert Event
-	 * @param records the current records associated with the event
-	 **/
-	void onAfterInsertChild(List<SObject> records);
-	/**
-	 * @description On After Update Event
-	 * @param records the current records associated with the event
-	 * @param existingRecords the old records associated with the event
-	 **/
-	void onAfterUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords);
-	/**
-	 * @description On After Undelete Event
-	 * @param records the current records associated with the event
-	 **/
-	void onAfterUndeleteChild(List<SObject> records);
+    /*
+     * Represents the data pass thru to subsequent calls
+     * Pay attention to #5 in this link ( https ://developer.salesforce.com/index.php?title=Apex_Code_Best_Practices&oldid=26951 )
+     */
+    accc_TriggerHandlerResources handlerResources();
+    /**
+     * @description add an error on the sobject. When used on Trigger.new
+     * in before insert and before update triggers, and on Trigger.old in
+     * before delete triggers, the error message is displayed in the application
+     * interface.
+     *
+     * @param triggerObject the salesforce object (from the trigger invocation) to see the error message
+     * @param errorMessage error message
+     */
+    void addError(SObject triggerObject, String errorMessage);
+    /**
+     * @description OnBefore Delete Event
+     * @param records the current records associated with the event
+     **/
+    void onBeforeDeleteChild(List<SObject> records);
+    /**
+     * @description On After Delete Event
+     * @param records the current records associated with the event
+     **/
+    void onAfterDeleteChild(List<SObject> records);
+    /**
+     * @description On Before Insert Event
+     * @param records the current records associated with the event
+     **/
+    void onBeforeInsertChild(List<SObject> records);
+    /**
+     * @description on Before Update Event
+     * @param records the current records associated with the event
+     * @param existingRecords the old records associated with the event
+     **/
+    void onBeforeUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords);
+    /**
+     * @description On After Insert Event
+     * @param records the current records associated with the event
+     **/
+    void onAfterInsertChild(List<SObject> records);
+    /**
+     * @description On After Update Event
+     * @param records the current records associated with the event
+     * @param existingRecords the old records associated with the event
+     **/
+    void onAfterUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords);
+    /**
+     * @description On After Undelete Event
+     * @param records the current records associated with the event
+     **/
+    void onAfterUndeleteChild(List<SObject> records);
 
 } // end of accc_ITriggerHandler

@@ -71,7 +71,7 @@ public virtual without sharing class accc_QueableBigObjects extends accc_Queable
 	@TestVisible
 	private static List<Database.SaveResult> getTestResultsForBigObject() {
 		List<Database.SaveResult> results = null;
-		if ( accc_ApexConstants.UnitTestsRunning ) {
+		if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
 			// SIMULATING RESULTS
 			results = new  List<Database.SaveResult> {
 				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000AAA","success":true,"errors":[]}', Database.SaveResult.class),

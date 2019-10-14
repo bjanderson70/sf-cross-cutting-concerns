@@ -154,7 +154,7 @@ public without sharing class accc_SyncAsyncWriter extends accc_SObjectBaseWriter
 		try {
 			integer size = this.entries.size();
 			// used for testing
-			if (accc_ApexConstants.UnitTestsRunning) {
+			if (accc_ApexConstants.UNIT_TEST_RUNNING) {
 				// testing async ??
 				if ( accc_SyncAsyncWriter.m_makeAsync) {
 					size = USE_FOR_TESTING_DATASIZE;

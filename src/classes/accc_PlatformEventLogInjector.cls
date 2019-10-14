@@ -108,7 +108,7 @@ public class accc_PlatformEventLogInjector {
             /*****************
             * TESTING
             *****************/
-            if ( mForceException && accc_ApexConstants.UnitTestsRunning) {
+            if ( mForceException && accc_ApexConstants.UNIT_TEST_RUNNING) {
                 throw new accc_PlatformEventLogInjectorException('Testing Exception');
 			 }
             // accc_PELogDataQueueHandler is an asynchronous queuable Apex class

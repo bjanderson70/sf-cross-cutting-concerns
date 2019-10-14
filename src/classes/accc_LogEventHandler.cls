@@ -72,7 +72,7 @@ public without sharing class accc_LogEventHandler extends accc_EventBase {
             /*******************************************************
              * START : FOR Testing
              */
-            if ( accc_ApexConstants.UnitTestsRunning ) {
+            if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
                 accc_ApexUtilities.log(TEST_MESSAGE);
                 if (useForTestingException ) {
                     throw new accc_ApexApplicationException(FOR_TESTING_EXCEPTION);
@@ -95,7 +95,7 @@ public without sharing class accc_LogEventHandler extends accc_EventBase {
             /*******************************************************
              * START : FOR Testing
              */
-            if ( useForTestingException && accc_ApexConstants.UnitTestsRunning ) {
+            if ( useForTestingException && accc_ApexConstants.UNIT_TEST_RUNNING ) {
                 // ensure we are write internally (static array)
                 accc_ApexUtilities.log(excp);
             }
