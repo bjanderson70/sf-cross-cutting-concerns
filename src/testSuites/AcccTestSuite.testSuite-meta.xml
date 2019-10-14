@@ -79,5 +79,4 @@
     <testClassName>accc_TriggerHandlerBaseTest</testClassName>
     <testClassName>accc_TriggerHelperClassTest</testClassName>
     <testClassName>accc_VirtualCustomSettingsTest</testClassName>
-    <testClassName>accc_TriggerHandlerBaseTest</testClassName>
 </ApexTestSuite>
