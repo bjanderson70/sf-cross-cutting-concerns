@@ -5,8 +5,21 @@ Cross cutting concerns for apex code. The previous [cross-cutting concerns](http
 
 See this highlevel [blog](https://developer.salesforce.com/blogs/2018/10/configuration-first-replacing-code-at-runtime.html) on this framework.
 
-This code designed to encapsulate common cross-cutting concerns (logging, exception handling, caching, etc.).Often times cross-cutting concerns are an after-thought; or, hastily injected without any ability to manage or control.This project was to encapsulate those concerns and provide a mechanism to change/augment. 
-Changing behaviour is a matter of inheritance and specifying choice via custom metadata. See the [Wiki](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki) for more informaiton.
+This code designed to encapsulate common cross-cutting concerns (logging, exception handling, **platform events**, caching, etc.).Often times cross-cutting concerns are an after-thought; or, hastily injected without any ability to manage or control.This package encapsulates those concerns and provide a mechanism to change/augment. 
+Changing behaviour is a matter of inheritance and specifying choice via custom metadata. See the [Wiki](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki) for more information.
+
+## :star2: Updates - Incorporated [Platform Events](https://github.com/bjanderson70/sf-platform-events) Consumer/Publisher
+Platform Events has been incorporated into this framework  (:point_right:**merge-pe** branch) . The overlap between the two was too much to ignore.
+
+It now includes a section on [Platform Events](https://github.com/bjanderson70/sf-cross-cutting-concerns/wiki/Platform-Events). The work is on-going and will be addressed in conjunction with requests. Currently, the updates for Platform Events includes:
+* Added Summer '19 features _AsyncOperationEvent_; however, this will tie this the package (merge-pe branch) to minimum version 46.
+* Updates include more data written into the BigObject (i.e. replayids and operation ids) for recovery on a queued high-volume event.
+* The template will be started but will probably not be done before the merge.
+* Incorporate Trigger Handling for Platform Events and CDC. There is a section that can tie in the [trigger handling framework](https://github.com/bjanderson70/sf-trigger-handling/wiki)
+* Control Event Batching Size (initially via attributes before moving into CMDT)
+
+## Caveat
+This package utilities a good deal of Object Oriented Principles (OOP) (as outlined in the blog linked). This [site](http://ootips.org/) provides information around OOP and elements therein. Without having a good Object Oriented base, you may be able to take advantage of the components within the package, but you will not fully realize the underlying benefits/intent.  
 
 ## Getting Started
 
@@ -15,7 +28,7 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-You will need to have Platform Cache enable; otherwise, caching WILL NOT work. Please note, if you are developing in a **Dev Org**, there is no caching and those **related unit tests will fail**.
+You will need to have Platform Cache enable; otherwise, caching WILL NOT work. Please note, if you are developing in a **Dev Org**, there is no caching and those **related unit tests will fail**. In addition, tests will fail if email deliverability is disabled.
 
 ## Running the tests
 
@@ -28,7 +41,17 @@ All code, files and objects related to Apex Cross-Cutting Concerns are prefixed 
 
 ## Deployment
 
-To deploy/install select the button below
+There are **TWO** repos now. One is the older version which does not have the Platform Events. The newer one incorporates Platform Events and Change Data Capture (CDC) into the cross-cutting concerns.
+
+Use the button below to install the **Platform Events version** (i.e. plus Platform Events)
+
+<a href="https://githubsfdeploy.herokuapp.com?owner=bjanderson70&repo=sf-cross-cutting-concerns&ref=merge-pe">
+  <img alt="Deploy to Salesforce"
+       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
+
+Use the button below to install the **older version**
+
 
 <a href="https://githubsfdeploy.herokuapp.com/app/githubdeploy/bjanderson70/sf-cross-cutting-concerns">
   <img alt="Deploy to Salesforce"
@@ -44,7 +67,7 @@ Please read [Contributing](Contributing) for details on our code of conduct, and
 
 ## Versioning
 
-version 0.9.6.1
+version 1.0.0.1
 
 ## Authors
 
@@ -55,6 +78,3 @@ version 0.9.6.1
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
-
-
-
