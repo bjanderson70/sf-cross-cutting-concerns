@@ -57,13 +57,6 @@ Use the button below to install the **Platform Events version** (i.e. plus Platf
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
-Use the button below to install the **older version**
-
-
-<a href="https://githubsfdeploy.herokuapp.com/app/githubdeploy/bjanderson70/sf-cross-cutting-concerns">
-  <img alt="Deploy to Salesforce"
-       src="imgs/deploy_to_sf.png">
-</a>
 
 ## Apex Docs
 If you download **CCCDocs** directory and navigate to _ApexDocumentation_ directory and bring up _index.htm_ in the browser you will get the JavaDoc-like information. The documentation will also link to the Wiki
