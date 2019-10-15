@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
-    <deploymentStatus>Deployed</deploymentStatus>
-    <description>Log Events generally capture information regarding SObjectcs. It provides a way to have audits of transactions (CDC) so that one may have history of the flow of information. Note, the &#39;Publish Behavior&#39; is &#39;Immediately&#39;. This is to ensure ANY action is NOT based on the atomic attribute of the transaction scope.</description>
-    <eventType>HighVolume</eventType>
-    <label>ACCC Log Event</label>
-    <pluralLabel>ACCC Log Events</pluralLabel>
-    <publishBehavior>PublishImmediately</publishBehavior>
-</CustomObject>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Cross-cutting concerns which holds event information for audit and retrieval</description>
+    <fields>
+        <fullName>Event_Date_Day__c</fullName>
+        <externalId>false</externalId>
+        <label>Event Day</label>
+        <precision>2</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Date_Month__c</fullName>
+        <externalId>false</externalId>
+        <label>Event Month</label>
+        <precision>2</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Date_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>Event Year</label>
+        <precision>4</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Event Date</label>
+        <required>true</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Event_Json__c</fullName>
+        <externalId>false</externalId>
+        <label>Event JSON</label>
+        <length>131072</length>
+        <type>LongTextArea</type>
+        <visibleLines>2</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Event Name</label>
+        <length>254</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Truncated__c</fullName>
+        <externalId>false</externalId>
+        <label>Event Truncated</label>
+        <precision>2</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_Of_Events__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Events</label>
+        <precision>10</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Operation_Ids__c</fullName>
+        <externalId>false</externalId>
+        <label>Operation Ids</label>
+        <length>131072</length>
+        <type>LongTextArea</type>
+        <visibleLines>2</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Replay_Ids__c</fullName>
+        <externalId>false</externalId>
+        <label>ReplayIds</label>
+        <length>131072</length>
+        <type>LongTextArea</type>
+        <visibleLines>2</visibleLines>
+    </fields>
+    <indexes>
+        <fullName>OrgEventIndex</fullName>
+        <fields>
+            <name>Event_Date__c</name>
+            <sortDirection>DESC</sortDirection>
+        </fields>
+        <fields>
+            <name>Event_Date_Year__c</name>
+            <sortDirection>DESC</sortDirection>
+        </fields>
+        <fields>
+            <name>Event_Date_Month__c</name>
+            <sortDirection>DESC</sortDirection>
+        </fields>
+        <fields>
+            <name>Event_Date_Day__c</name>
+            <sortDirection>DESC</sortDirection>
+        </fields>
+        <fields>
+            <name>Event_Truncated__c</name>
+            <sortDirection>DESC</sortDirection>
+        </fields>
+        <label>Org Event Index</label>
+    </indexes>
+    <label>Accc Org Event</label>
+    <pluralLabel>Accc Org Events</pluralLabel>
+</CustomObject>

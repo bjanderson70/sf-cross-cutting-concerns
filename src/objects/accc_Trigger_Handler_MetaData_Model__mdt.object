@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Holds the classes invoked during a trigger event (after/before). You can order the handlers as you see fit</description>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Is this Trigger Handler Active</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Is this Trigger Handler Active</inlineHelpText>
+        <label>Active</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Continue_If_Exception__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Continue if an exception occurs in a trigger handler. For example, if there are more than one trigger handler and the first one causes an exception, do you want to continue with the other handlers or stop. Checking this box will allow the exception to be caught so that you can continue to the next</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Continue if an exception occurs in a trigger handler. For example, if there are more than one trigger handler and the first one causes an exception, do you want to continue with the other handlers or stop. Checking this box will allow you to continue.</inlineHelpText>
+        <label>Continue If Exception</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Domain__c</fullName>
+        <description>Domain -- such as, Account, Contact, Lead, etc.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Domain -- such as, Account, Contact, Lead, etc.</inlineHelpText>
+        <label>Domain</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Environment__c</fullName>
+        <defaultValue>&quot;Test&quot;</defaultValue>
+        <description>The environment we are running in (production, test or debug)</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>The environment we are running in (production, test or debug)</inlineHelpText>
+        <label>Environment</label>
+        <required>true</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>production</fullName>
+                    <color>#FF0000</color>
+                    <default>false</default>
+                    <label>production</label>
+                </value>
+                <value>
+                    <fullName>Debug</fullName>
+                    <color>#FFFF66</color>
+                    <default>false</default>
+                    <label>Debug</label>
+                </value>
+                <value>
+                    <fullName>Test</fullName>
+                    <color>#33FF33</color>
+                    <default>true</default>
+                    <label>Test</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Performance_Metrics__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Performance Metrics of each handler (namely, running time in milliseconds)</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Performance Metrics of each handler (namely, running time in milliseconds)</inlineHelpText>
+        <label>Performance Metrics</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Trigger_Classes__c</fullName>
+        <description>The trigger classes (either comma or space separated)</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The trigger classes (either comma or space separated)</inlineHelpText>
+        <label>Trigger Classes</label>
+        <length>131072</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <label>accc Trigger Handler MetaData Model</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>DeveloperName</columns>
+        <columns>Active__c</columns>
+        <columns>Continue_If_Exception__c</columns>
+        <columns>Performance_Metrics__c</columns>
+        <columns>Domain__c</columns>
+        <columns>Environment__c</columns>
+        <columns>Trigger_Classes__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <pluralLabel>accc Trigger Handler MetaData Models</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>
