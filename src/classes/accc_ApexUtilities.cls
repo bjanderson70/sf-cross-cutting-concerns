@@ -494,7 +494,8 @@ public without sharing class accc_ApexUtilities {
             }
 
         } catch  (Exception excp) {
-            // ignored at this time
+            // process exception
+            accc_ApexUtilities.log(excp);
         }
         return result;
     } // end of getTypeFromSObject
@@ -524,7 +525,7 @@ public without sharing class accc_ApexUtilities {
                 }
             }
         } catch  (Exception excp) {
-            // ignored at this time
+            accc_ApexUtilities.log(excp);
         }
         return result;
     } // end of getTypeFromSObject
@@ -543,7 +544,7 @@ public without sharing class accc_ApexUtilities {
                 result= accc_ApexUtilities.getTypeFromSObject(new List<SObject>(theSObject));
             }
         } catch  (Exception excp) {
-            // ignored at this time
+             accc_ApexUtilities.log(excp);
         }
         return result;
     } // end of getTypeFromSObject
@@ -1127,7 +1128,7 @@ public without sharing class accc_ApexUtilities {
 
         return result;
 
-    }     // end of getClassInstance
+    }// end of getClassInstance
 
     /**
      * @brief get the Type from the SObject collection (does not handle MIXed SOBject)

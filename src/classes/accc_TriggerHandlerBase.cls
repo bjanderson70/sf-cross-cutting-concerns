@@ -59,9 +59,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
     private accc_TriggerHandlerResources m_parameters = null;
     @TestVisible
     private Object for_testing = null;
-    // make this call once! It adds up for bulk
-    @TestVisible
-    static final private Boolean IS_UNIT_TESTING =Test.isRunningTest();
+
     ////////////////////////////////////////////////////////////////////////////////
     /// Ctors
     ////////////////////////////////////////////////////////////////////////////////
@@ -71,7 +69,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      *
      */
     public accc_TriggerHandlerBase() {
-        this(null);
+        this((accc_TriggerHandlerResources)null);
     } // end of ctor
 
     /**
@@ -80,7 +78,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param parameters information for the children
      */
     public accc_TriggerHandlerBase(accc_TriggerHandlerResources parameters) {
-        this.theParameters = parameters == null ? new accc_TriggerHandlerResources() : parameters;
+        this.theParameters = parameters;
     }// end of ctor
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +91,12 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      */
     @TestVisible
     protected accc_TriggerHandlerResources theParameters {
-        get { return this.m_parameters;}
+        get {
+            if ( this.m_parameters == null ) {
+                this.m_parameters=new accc_TriggerHandlerResources();
+            }
+            return this.m_parameters;
+        }
         protected set {
             if ( value != null) {
                 this.m_parameters = value;
@@ -133,7 +136,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
              && !string.isBlank(errorMessage)
              ) {
             // validate information coming in for test
-            if ( IS_UNIT_TESTING) {
+            if ( System.Test.isRunningTest()) {
                 this.for_testing = errorMessage;
             }
 
@@ -149,7 +152,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param records the current records associated with the event
      **/
     public virtual void onBeforeInsertChild(List<SObject> records) {
-        if ( IS_UNIT_TESTING) {
+        if ( System.Test.isRunningTest()) {
             accc_ApexUtilities.log('++++++++++++++On Before Insert' );
         }
     } // end of onBeforeInsertChild
@@ -159,7 +162,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param existingRecords the old records associated with the event
      **/
     public virtual void onBeforeUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords) {
-        if ( IS_UNIT_TESTING) {
+        if ( System.Test.isRunningTest()) {
             accc_ApexUtilities.log('++++++++++++++On Before Update' );
         }
     }// end of onBeforeUpdateChild
@@ -168,7 +171,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param records the current records associated with the event
      **/
     public virtual void onAfterInsertChild(List<SObject> records) {
-        if ( IS_UNIT_TESTING) {
+        if ( System.Test.isRunningTest()) {
             accc_ApexUtilities.log('++++++++++++++On After Insert' );
         }
     }// end of onAfterInsertChild
@@ -178,7 +181,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param existingRecords the old records associated with the event
      **/
     public virtual void onAfterUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords) {
-        if ( IS_UNIT_TESTING) {
+        if ( System.Test.isRunningTest()) {
             accc_ApexUtilities.log('++++++++++++++On After Update' );
         }
     }// end of onAfterUpdateChild
@@ -188,7 +191,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      *
      **/
     public virtual void onBeforeDeleteChild(List<SObject> records) {
-        if ( IS_UNIT_TESTING) {
+        if ( System.Test.isRunningTest()) {
             accc_ApexUtilities.log('++++++++++++++On Before Delete' );
         }
     }// end of onBeforeDeleteChild
@@ -198,7 +201,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      *
      **/
     public virtual void onAfterDeleteChild(List<SObject> records) {
-        if ( IS_UNIT_TESTING) {
+        if ( System.Test.isRunningTest()) {
             accc_ApexUtilities.log('++++++++++++++On After Delete' );
         }
     }// end of onAfterDeleteChild
@@ -207,9 +210,9 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param records the current records associated with the event
      **/
     public virtual void onAfterUndeleteChild(List<SObject> records) {
-        if ( IS_UNIT_TESTING) {
+        if ( System.Test.isRunningTest()) {
             accc_ApexUtilities.log('++++++++++++++On After UnDelete' );
         }
     } // end of onAfterUndeleteChild
 
-} // end of accc_TriggerHandlerBasev
+} // end of accc_TriggerHandlerBase

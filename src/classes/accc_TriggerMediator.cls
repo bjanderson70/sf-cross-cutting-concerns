@@ -57,8 +57,7 @@ public virtual without sharing class accc_TriggerMediator {
     private static final String EXCEPTION_ON_BAD_HANDLER_CHAIN = ' had a bad handler in chain - ';
     @TestVisible
     static final String USED_FOR_EXCEPTION_MSG = 'Testing accc_TriggerMediator';
-    @TestVisible
-    static final Boolean IS_UNIT_TESTING = System.Test.isRunningTest();
+
     /*
      * Current new Records
      */
@@ -139,6 +138,7 @@ public virtual without sharing class accc_TriggerMediator {
                                 String environment,
                                 List<Sobject> theRecords,
                                 Map<Id, SObject> existing) {
+
         if ( sobjectType == null ) {
             throw new accc_ApexApplicationException('Null Type passed to accc_TriggerMediator');
         }
@@ -149,7 +149,6 @@ public virtual without sharing class accc_TriggerMediator {
         this.theEnvironment = environment;
         this.records = theRecords;
         this.existingRecords = existing;
-
     }// end of ctor
 
     //==============================================================
@@ -243,9 +242,11 @@ public virtual without sharing class accc_TriggerMediator {
      * @return return the chain based on the domain; we already have a manager in the right environment
      */
     public accc_IHandlerChain theTriggerChain() {
+        accc_IHandlerChain chain=null;
+
         String typeName = this.triggerType.getName();
         // check cached value
-        accc_IHandlerChain chain = accc_TriggerMediator.mTriggerChain.get(typeName);
+        chain = accc_TriggerMediator.mTriggerChain.get(typeName);
         // if not in cache, get it then add
         if ( chain == null ) {
             chain = this.theTriggerManager().createHandlerChainByDomain(typeName);
@@ -254,6 +255,7 @@ public virtual without sharing class accc_TriggerMediator {
                 accc_TriggerMediator.mTriggerChain.put(typeName, chain);
             }
         }
+
         return chain;
     } // end of theTriggerChain
     //==============================================================
@@ -337,7 +339,7 @@ public virtual without sharing class accc_TriggerMediator {
                 // incorrectly entered by name )
                 accc_ApexUtilities.log(excpMsg + chain);
                 // we DO NOT break at this point (as someone may have put in a bad handler name)
-            }    // end if handler
+            }     // end if handler
             // get the next trigger handler in the chain
             chain = chain.getNext();
 
@@ -390,8 +392,7 @@ public virtual without sharing class accc_TriggerMediator {
             }
 
             // ***************** START use for testing
-            if ( accc_TriggerMediator.mCauseException == true
-                 && IS_UNIT_TESTING ) {
+            if ( accc_TriggerMediator.mCauseException == true ) {
                 throw new accc_ApexApplicationException(USED_FOR_EXCEPTION_MSG);
             }
             // ***************** END use for testing

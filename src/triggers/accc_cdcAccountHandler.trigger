@@ -36,5 +36,7 @@
  * @group CDC Layer
  */
 trigger accc_cdcAccountHandler on AccountChangeEvent (after insert) {
+    // if you are not using the accc_TriggerMediator (hook it up with you domain)
     accc_ApexPlatformEventDispatcher.run(new accc_CDCEventBase( ) );
+    //accc_ApexPlatformEventDispatcher.run(AccountChangeEvent.class );
 }

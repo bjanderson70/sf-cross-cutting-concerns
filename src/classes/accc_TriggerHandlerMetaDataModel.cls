@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -195,7 +195,7 @@ public virtual without sharing class accc_TriggerHandlerMetaDataModel extends ac
 				this.setValues((accc_BaseMdtDataModel.BaseDataModelInformation)result, cmdt.Label, cmdt.NamespacePrefix, cmdt.DeveloperName);
 
 				/* Set Data from the custom metadata type */
-				result.environment = accc_ApexUtilities.normalizeString(cmdt.Environment__c, true);
+				result.environment = accc_ApexUtilities.normalizeString(cmdt.Environment__c, true).toLowerCase();
 				classes = accc_ApexUtilities.normalizeString(cmdt.Trigger_Classes__c, true);
 				result.domain = accc_ApexUtilities.normalizeString(cmdt.Domain__c, true);
 				result.isActive = cmdt.Active__c == null ? false : cmdt.Active__c;
