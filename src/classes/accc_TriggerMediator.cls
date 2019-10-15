@@ -326,7 +326,7 @@ public virtual without sharing class accc_TriggerMediator {
                 // set internal handler's  resource state ( handlers in the following chain can determine state better, if continuing)
                 // as the handler that follows (should we continue) can determine corrective measures
                 handler.handlerResources().add(accc_TriggerHandlerResources.EXCEPTION_KEY,
-                                               new accc_TriggerHandlerResources.PassThruResourceDAO(null,hasException));
+                                               hasException);
                 // do we continue after and exception
                 if ( !successful && !continueIfException ) {
                     return successful;

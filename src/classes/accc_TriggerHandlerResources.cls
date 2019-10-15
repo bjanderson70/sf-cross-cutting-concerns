@@ -33,7 +33,7 @@
  * @description Encapsulates all behaviour logic relating to the management of Trigger Resources
  * @group Trigger Layer
  */
-public without sharing class accc_TriggerHandlerResources {
+public without sharing class accc_TriggerHandlerResources implements accc_ITriggerHandlerResources {
 
     //==============================================================
     // Data Members
@@ -128,7 +128,7 @@ public without sharing class accc_TriggerHandlerResources {
     /**
      * @description remove the list collection by name
      * @param name resource name
-     * @return void
+     * @return boolean
      **/
     public boolean remove(String name){
         return string.isEmpty(name) ? false : this.removeItem(name);
