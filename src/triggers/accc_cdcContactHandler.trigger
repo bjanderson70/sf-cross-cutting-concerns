@@ -37,7 +37,7 @@
  */
 trigger accc_cdcContactHandler on ContactChangeEvent (after insert) {
     // if you are not using the accc_TriggerMediator (hook it up with you domain)
-    accc_ApexPlatformEventDispatcher.run(new accc_CDCEventBase( ) );
-    // else 
+    // otherwise, to hook into trigger handler
+    //
     //accc_ApexPlatformEventDispatcher.run(ContactChangeEvent.class );
 }
