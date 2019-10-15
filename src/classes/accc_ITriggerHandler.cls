@@ -40,7 +40,7 @@ public interface accc_ITriggerHandler {
      * Represents the data pass thru to subsequent calls
      * Pay attention to #5 in this link ( https ://developer.salesforce.com/index.php?title=Apex_Code_Best_Practices&oldid=26951 )
      */
-    accc_TriggerHandlerResources handlerResources();
+    accc_ITriggerHandlerResources handlerResources();
 	/**
 	 * @description add an error on the sobject. When used on Trigger.new
 	 * in before insert and before update triggers, and on Trigger.old in

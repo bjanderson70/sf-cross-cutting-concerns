@@ -9,6 +9,6 @@
     <testClassName>accc_TriggerHandlerMetaDataModelTest</testClassName>
     <testClassName>accc_TriggerHandlerResourcesTest</testClassName>
     <testClassName>accc_TriggerHelperClassTest</testClassName>
-    <testClassName>accc_TriggerMediatorTest</testClassName>
     <testClassName>accc_VirtualTriggerHandlerChainTest</testClassName>
+    <testClassName>accc_TriggerMediatorTest</testClassName>
 </ApexTestSuite>

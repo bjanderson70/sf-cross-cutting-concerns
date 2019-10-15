@@ -1,6 +1,5 @@
 /**
- * Copyright (c) 2016-2019, Bill Anderson.
- * All rights reserved.
+ * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -14,7 +13,7 @@
  *     the documentation and/or other materials provided with the
  *     distribution.
  *
- *   * Neither the name of Bill Anderson nor the names of its
+ *   * Neither the name of Bill anderson nor the names of its
  *     contributors may be used to endorse or promote products derived
  *     from this software without specific prior written permission.
  *
@@ -30,14 +29,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *
- * @author Bill Anderson
- * @description test  CDC for Account
- * @group CDC Layer
- */
-trigger accc_cdcAccountHandler on AccountChangeEvent (after insert) {
-    // if you are not using the accc_TriggerMediator (hook it up with you domain)
-    // otherwise, to hook into trigger handler
-    //accc_ApexPlatformEventDispatcher.run(AccountChangeEvent.class );
-    //
-}
+ * @author Bill anderson
+ * @description Encapsulates all behaviour logic relating to trigger resources
+ * @group Interface Layer
+ **/
+public interface accc_ITriggerHandlerResources {
+
+
+    /**
+     * @description add the list collection by name
+     * @param name resource name
+     * @param data the data (list)
+     * @return void
+     **/
+    void add(String name,  Object data);
+    /**
+     * @description remove the list collection by name
+     * @param name resource name
+     * @return boolean
+     **/
+    boolean remove(String name);
+
+    /**
+     * @description get the list count
+     * @return Integer
+     **/
+    Integer count();
+    /**
+     * @description get the collection of keys
+     * @return Integer
+     **/
+    Set<String> keys();
+    /**
+     * @description reset collection to empty
+     * @return Integer
+     **/
+    void reset();
+
+}// end of accc_ITriggerHandlerResources
