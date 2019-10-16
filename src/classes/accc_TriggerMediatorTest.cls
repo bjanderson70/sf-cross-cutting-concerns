@@ -168,8 +168,43 @@ private class accc_TriggerMediatorTest {
         accc_TriggerMediator ctor = new accc_TriggerMediator(Account.class);
         Boolean result = ctor.execute(accc_TriggerHelperClass.TriggerState.BeforeInsert);
         // assert
-        system.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_TestTriggerHandlerForAccount.OBIC));
+        system.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_TriggerHandlerBase.OBIC));
         system.assertEquals(true, result);
+    }
+
+    @isTest
+    static void testonAllEventsChild() {
+        // arrange/assign
+        accc_TriggerMediator ctor = new accc_TriggerMediator(Account.class);
+        Map<accc_TriggerHelperClass.TriggerState,Boolean> events = new  Map<accc_TriggerHelperClass.TriggerState,Boolean> {
+            accc_TriggerHelperClass.TriggerState.BeforeInsert=>true,
+            accc_TriggerHelperClass.TriggerState.BeforeUpdate=>true,
+            accc_TriggerHelperClass.TriggerState.BeforeDelete=>true,
+            accc_TriggerHelperClass.TriggerState.AfterInsert=>true,
+            accc_TriggerHelperClass.TriggerState.AfterUpdate=>true,
+            accc_TriggerHelperClass.TriggerState.AfterDelete=>true,
+            accc_TriggerHelperClass.TriggerState.AfterUndelete=>true
+
+        };
+
+        Map<accc_TriggerHelperClass.TriggerState,String> stringMsgs = new  Map<accc_TriggerHelperClass.TriggerState,String> {
+            accc_TriggerHelperClass.TriggerState.BeforeInsert=>accc_TriggerHandlerBase.OBIC,
+            accc_TriggerHelperClass.TriggerState.BeforeUpdate=>accc_TriggerHandlerBase.OBUC,
+            accc_TriggerHelperClass.TriggerState.BeforeDelete=>accc_TriggerHandlerBase.OBDC,
+            accc_TriggerHelperClass.TriggerState.AfterInsert=>accc_TriggerHandlerBase.OAIC,
+            accc_TriggerHelperClass.TriggerState.AfterUpdate=>accc_TriggerHandlerBase.OAUC,
+            accc_TriggerHelperClass.TriggerState.AfterDelete=>accc_TriggerHandlerBase.OADC,
+            accc_TriggerHelperClass.TriggerState.AfterUndelete=>accc_TriggerHandlerBase.OAUDC
+
+        };
+        // act
+        Boolean result = false;
+        for (accc_TriggerHelperClass.TriggerState state: events.keySet()) {
+            result=ctor.execute(state);
+            // assert
+            system.assertEquals(true, accc_ApexUtilities.containsInTestLog(stringMsgs.get(state)));
+            system.assertEquals(true, events.get(state));
+        }
     }
 
     @isTest
@@ -182,7 +217,7 @@ private class accc_TriggerMediatorTest {
         Boolean result = ctor.execute(accc_TriggerHelperClass.TriggerState.BeforeInsert);
 
         // assert
-        system.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_TestTriggerHandlerForAccount.OBIC));
+        system.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_TriggerHandlerBase.OBIC));
         system.assertEquals(false, result);
     }
 } // end of accc_TriggerMediatorTest

@@ -37,50 +37,50 @@
  **/
 @isTest
 private class accc_CDCEventBaseTest {
-   
-    // Used for testing
-   public with sharing class myCDCEventTestClass extends accc_CDCEventBase {
-       @TestVisible
-       Boolean afterCalled = false;
-       @TestVisible
-       Integer numOfItems = 0;
-       @TestVisible
-       Boolean useParent = false;
-       @TestVisible
-       Boolean handleEventMethodResult=false;
-       @TestVisible
-       Boolean causeHandleEventMethodException=false;
-       
-       public myCDCEventTestClass(List<SObject> incoming, Type theEventType){
-           super(incoming,theEventType);
-       }
-       public  override void onAfterInsertChild(List<SObject> newItems) {
-           this.afterCalled=true;
-           this.numOfItems = newItems == null ? 0 : newItems.size();
-           super.onAfterInsertChild(newItems);
-       }
-       protected override Boolean  handleEventMethod(SObject event){
-           this.handleEventMethodResult = true;
-           if ( this.useParent){
-               handleEventMethodResult= super.handleEventMethod(event);
-           } else if ( this.causeHandleEventMethodException == true){
-               handleEventMethodResult= super.handleEventMethod(event);
-           }
-           return this.handleEventMethodResult;
-       }
-   }
 
-   @isTest
-   static void testaccc_CDCEventBaseDefaultCtor(){
+    // Used for testing
+    public with sharing class myCDCEventTestClass extends accc_CDCEventBase {
+        @TestVisible
+        Boolean afterCalled = false;
+        @TestVisible
+        Integer numOfItems = 0;
+        @TestVisible
+        Boolean useParent = false;
+        @TestVisible
+        Boolean handleEventMethodResult=false;
+        @TestVisible
+        Boolean causeHandleEventMethodException=false;
+
+        public myCDCEventTestClass(List<SObject> incoming, Type theEventType){
+            super(incoming,theEventType);
+        }
+        public override void onAfterInsertChild(List<SObject> newItems) {
+            this.afterCalled=true;
+            this.numOfItems = newItems == null ? 0 : newItems.size();
+            super.onAfterInsertChild(newItems);
+        }
+        protected override Boolean  handleEventMethod(SObject event){
+            this.handleEventMethodResult = true;
+            if ( this.useParent) {
+                handleEventMethodResult= super.handleEventMethod(event);
+            } else if ( this.causeHandleEventMethodException == true) {
+                handleEventMethodResult= super.handleEventMethod(event);
+            }
+            return this.handleEventMethodResult;
+        }
+    }
+
+    @isTest
+    static void testaccc_CDCEventBaseDefaultCtor(){
         // arrange / act
         accc_CDCEventBase ctor = new accc_CDCEventBase();
         // assert
         system.assertEquals(true, ctor != null);
         system.assertEquals(true, ctor.records()==null);
         system.assertEquals(true, ctor.eventType==null);
-   }
+    }
     @isTest
-   static void testaccc_CDCEventBaseCtorWithType(){
+    static void testaccc_CDCEventBaseCtorWithType(){
         // arrange / act
         Type theExpectedType = AccountChangeEvent.class;
         accc_CDCEventBase ctor = new accc_CDCEventBase(theExpectedType);
@@ -88,9 +88,9 @@ private class accc_CDCEventBaseTest {
         system.assertEquals(true, ctor != null);
         system.assertEquals(true, ctor.records()==null);
         system.assertEquals(true, ctor.eventType==theExpectedType);
-   }
+    }
     @isTest
-   static void testaccc_CDCEventBaseCtorWithRecords(){
+    static void testaccc_CDCEventBaseCtorWithRecords(){
         // arrange / act
         Type theExpectedType = AccountChangeEvent.class;
         List<AccountChangeEvent > theRecords = new List<AccountChangeEvent > {
@@ -102,10 +102,10 @@ private class accc_CDCEventBaseTest {
         system.assertEquals(true, ctor != null);
         system.assertEquals(true, ctor.records().size()==theRecords.size());
         system.assertEquals(true, ctor.eventType==theExpectedType);
-   }
+    }
     @isTest
-   static void testaccc_CDCEventBaseCtorWithRecordsAndType(){
-       // arrange / act
+    static void testaccc_CDCEventBaseCtorWithRecordsAndType(){
+        // arrange / act
         Type theExpectedType = AccountChangeEvent.class;
         List<AccountChangeEvent > theRecords = new List<AccountChangeEvent > {
             new AccountChangeEvent (),
@@ -116,17 +116,17 @@ private class accc_CDCEventBaseTest {
         system.assertEquals(true, ctor != null);
         system.assertEquals(true, ctor.records().size()==theRecords.size());
         system.assertEquals(true, ctor.eventType==theExpectedType);
-   }
-     @isTest
-   static void testaccc_CDCEventBaseOnAfter(){
-       // arrange / act
+    }
+    @isTest
+    static void testaccc_CDCEventBaseOnAfter(){
+        // arrange / act
         Type theExpectedType = AccountChangeEvent.class;
         List<AccountChangeEvent > theRecords = new List<AccountChangeEvent > {
             new AccountChangeEvent (),
             new AccountChangeEvent ()
         };
         myCDCEventTestClass ctor = new myCDCEventTestClass(theRecords,theExpectedType);
-        
+
         // assert
         system.assertEquals(true, ctor != null);
         system.assertEquals(true, ctor.records().size()==theRecords.size());
@@ -138,12 +138,34 @@ private class accc_CDCEventBaseTest {
         // assert
         system.assertEquals(true, ctor.afterCalled);
         system.assertEquals(true, ctor.numOfItems==theRecords.size());
-   }
+        // act
+        ctor.onAfterInsertChild(null);
+        system.assertEquals(0, ctor.numOfItems);
+    }
+    @isTest
+    static void testaccc_CDCEventBaseCauseExceptionOnAfter(){
+        // arrange / act
+        Type theExpectedType = AccountChangeEvent.class;
+        List<AccountChangeEvent > theRecords = new List<AccountChangeEvent > {
+            new AccountChangeEvent (),
+            new AccountChangeEvent ()
+        };
+        myCDCEventTestClass ctor = new myCDCEventTestClass(theRecords,theExpectedType);
+        accc_CDCEventBase.forceExceptionInUnitTest=true;
+        // assert before
+        system.assertEquals(true, ctor.processException == null);
+        // act
+        ctor.onAfterInsertChild(theRecords);
+        // assert after
+        system.assertEquals(true, ctor.afterCalled);
+        system.assertEquals(true, ctor.processException!= null);
+
+    }
 
     @isTest
-   static void testaccc_CDCEventBaseHeader(){
-       // arrange / act
-        Type theExpectedType = AccountChangeEvent.class, 
+    static void testaccc_CDCEventBaseHeader(){
+        // arrange / act
+        Type theExpectedType = AccountChangeEvent.class,
              processingType = Account.class;
 
         List<AccountChangeEvent > theRecords = new List<AccountChangeEvent > {
@@ -162,13 +184,13 @@ private class accc_CDCEventBaseTest {
         system.assertEquals(true, ctor.commituser()==UserInfo.getUserId());
         system.assertEquals(true, ctor.transactionkey()!= null);
         system.assertEquals(true, ctor.recordids().size() >= 1);
-        
-   }
 
-     @isTest
-   static void testaccc_CDCEventBaseOnAfterAndMethods(){
-       
-       // arrange / act
+    }
+
+    @isTest
+    static void testaccc_CDCEventBaseOnAfterAndMethods(){
+
+        // arrange / act
         Type theExpectedType = AccountChangeEvent.class;
         List<AccountChangeEvent > theRecords = new List<AccountChangeEvent > {
             new AccountChangeEvent (),
@@ -191,34 +213,34 @@ private class accc_CDCEventBaseTest {
         system.assertEquals(true, ctor.afterCalled);
         system.assertEquals(true, ctor.numOfItems==theRecords.size());
         system.assertEquals(true, ctor.handleEventMethodResult);
-        
-        // +act 
+
+        // +act
         ctor.useParent = true;
         ctor.onAfterInsertChild(theRecords);
         // assert
         system.assertEquals(true, ctor.handleEventMethodResult);
         system.assertEquals(true, accc_ApexUtilities.containsInTestLog('handleCreate'));
         system.assertEquals(true, ctor.processException == null);
-   }
+    }
 
     @isTest
-   static void testhandleEventMethodBadData(){
-       
-       // arrange 
+    static void testhandleEventMethodBadData(){
+
+        // arrange
         accc_CDCEventBase basector = new accc_CDCEventBase();
-        // act 
+        // act
         Boolean result = basector.handleEventMethod(null);
 
         // assert
         system.assertEquals(false, result);
         system.assertEquals(true, basector.processException != null);
-   }
+    }
 
     @isTest
-   static void testgetHeaderByType(){
-    
-        // arrange 
-              
+    static void testgetHeaderByType(){
+
+        // arrange
+
         // known types
         Map<Type,Boolean> types = new  Map<Type,Boolean>  {
             AccountChangeEvent.class=>true,
@@ -227,52 +249,61 @@ private class accc_CDCEventBaseTest {
             CaseChangeEvent.class=>true,
             Account.class=>false,
             Contact.class=>false
+        };
+        Map<Type,SObject > theRecords = new Map<Type,SObject > {
+            AccountChangeEvent.class=>new AccountChangeEvent (),
+            ContactChangeEvent.class=>new ContactChangeEvent (),
+            LeadChangeEvent.class=>new LeadChangeEvent(),
+            CaseChangeEvent.class=>new CaseChangeEvent(),
+            Account.class=>new Account(),
+            Contact.class=>new Contact()
         };
         accc_CDCEventBase basector = new accc_CDCEventBase();
-        // act 
-        for ( Type cdcType: types.keySet()){
+        Integer count=0;
+        // act
+        for ( Type cdcType: types.keySet()) {
             // act
-            Object result = basector.getHeaderByType(cdcType);
+            Object result = basector.getHeaderByType(cdcType,theRecords.get(cdcType));
             Boolean expectedResult=result != null;
-           
-            if ( types.get(cdcType) == false ){
+
+            if ( types.get(cdcType) == false ) {
                 expectedResult = result == null;
             }
-             // assert
+            // assert
             system.assertEquals(true,expectedResult );
         }
-   }
+    }
 
     @isTest
-   static void testhandleEventMethodWithAllVariations(){
-    
-        // arrange 
-              
+    static void testhandleEventMethodWithAllVariations(){
+
+        // arrange
+
         // known types
         Map<Type,Boolean> types = new  Map<Type,Boolean>  {
-            AccountChangeEvent.class=>true,
-            ContactChangeEvent.class=>true,
-            LeadChangeEvent.class=>true,
-            CaseChangeEvent.class=>true,
+            AccountChangeEvent.class=>false,
+            ContactChangeEvent.class=>false,
+            LeadChangeEvent.class=>false,
+            CaseChangeEvent.class=>false,
             Account.class=>false,
             Contact.class=>false
         };
-        
 
-        for ( Type cdcType: types.keySet()){
-            // act
+
+        for ( Type cdcType: types.keySet()) {
+            // act ( there is no events, so all should be false as we cannot get event info)
             accc_CDCEventBase basector = new accc_CDCEventBase(cdcType);
             Boolean result = basector.handleEventMethod(null);
-             // assert
+            // assert
             system.assertEquals(types.get(cdcType),result );
         }
-   }
+    }
 
-     @isTest
-   static void testhandleEventMethodWithChangeTypeVariations(){
-    
-        // arrange 
-              
+    @isTest
+    static void testhandleEventMethodWithChangeTypeVariations(){
+
+        // arrange
+
         // known types
         Map<Type,Boolean> types = new  Map<Type,Boolean>  {
             AccountChangeEvent.class=>true,
@@ -284,7 +315,7 @@ private class accc_CDCEventBaseTest {
             Lead.class=>true,
             Task.class=>true
         };
-         Map<Type,String> cType = new  Map<Type,String>  {
+        Map<Type,String> cType = new  Map<Type,String>  {
             AccountChangeEvent.class=>accc_CDCEventBase.CDC_UPDATE_CHANGE_TYPE,
             ContactChangeEvent.class=>accc_CDCEventBase.CDC_DELETE_CHANGE_TYPE,
             LeadChangeEvent.class=>accc_CDCEventBase.CDC_GAPCREATE_CHANGE_TYPE,
@@ -294,20 +325,20 @@ private class accc_CDCEventBaseTest {
             Lead.class=>accc_CDCEventBase.CDC_GAPUNDELETE_CHANGE_TYPE,
             Task.class=>accc_CDCEventBase.CDC_CREATE_CHANGE_TYPE
         };
-        
 
-        for ( Type cdcType: types.keySet()){
+
+        for ( Type cdcType: types.keySet()) {
             // act
             accc_CDCEventBase basector = new accc_CDCEventBase(cdcType);
             basector.header( accc_CDCEventBaseTest.createEventBase(cType.get(cdcType),cdcType.getName() ));
             Boolean result = basector.handleEventMethod(null);
-  
-             // assert
+
+            // assert
             system.assertEquals(types.get(cdcType),result );
             system.assertEquals(true,basector.getChildHeaderByType(null)==null);
         }
-        
-   }
+
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
     // Private Testing

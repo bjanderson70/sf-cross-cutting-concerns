@@ -53,7 +53,7 @@ public virtual with sharing class accc_EventBase extends accc_TriggerHandlerBase
     //==============================================================
     // Data members
     //==============================================================
-    public static final String UNKNOWN_HEADER_INFO = 'Header NOT initialized';
+    public static final String UNKNOWN_HEADER_INFO = 'CDC Platform Event Header NOT initialized';
     public static final String UNKNOWN_INFO = 'Unknown';
     public static final Long UNKNOWN_HEADER_VALUE_INFO = -1;
 

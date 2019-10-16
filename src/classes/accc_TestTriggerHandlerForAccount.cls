@@ -38,23 +38,22 @@
  **/
 
 public with sharing class accc_TestTriggerHandlerForAccount extends accc_TriggerHandlerBase {
-	public static final String OBIC = '++++++++++++++ OBIC - accc_TestTriggerHandlerForAccount';
+  
+    //////////////////////////////////////////////////////////////////
+    //
+    // We are ONLY overriding the one method for testing. You override
+    // any trigger event you are interested ( and NO MORE)
+    //
+    //////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////
-	//
-	// We are ONLY overriding the one method for testing. You override
-	// any trigger event you are interested ( and NO MORE)
-	//
-	//////////////////////////////////////////////////////////////////
-
-	/**
-	 * @description On Before Insert - We override this to perform  processing
-	 * @param records the current records associated with the event
-	 **/
-	public override void onBeforeInsertChild(List<SObject> records) {
-		if ( Test.isRunningTest()) {
-			accc_ApexUtilities.log(OBIC);
-		}
-	} // end of onBeforeInsertChild
+    /**
+     * @description On Before Insert - We override this to perform  processing
+     * @param records the current records associated with the event
+     **/
+    public override void onBeforeInsertChild(List<SObject> records) {
+        if ( accc_TriggerHandlerBase.UNIT_TESTING) {
+            accc_ApexUtilities.log(accc_TriggerHandlerBase.OBIC);
+        }
+    } // end of onBeforeInsertChild
 
 } // end of accc_TestTriggerHandlerForAccount

@@ -82,6 +82,13 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      */
     @TestVisible
     private EventBus.ChangeEventHeader mHeader= null;
+    /*
+     * @description force exception in unit test
+     */
+    @TestVisible
+    private static Boolean forceExceptionInUnitTest= false;
+    @TestVisible
+    private static final String EXCEPTION_MSG_FOR_UNIT_TEST = 'CDCEventBase: Exception';
     //==============================================================
     // Ctors
     //==============================================================
@@ -138,7 +145,15 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
         this.records(newItems);
 
         try {
-
+            /*********************************************************
+             * START USE FOR TESTING
+             */
+            if ( accc_CDCEventBase.forceExceptionInUnitTest ) {
+                throw new accc_ApexApplicationException(EXCEPTION_MSG_FOR_UNIT_TEST);
+            }
+            /*
+             * END USE FOR TESTING
+             *********************************************************/
             // iterate over the events
             for (SObject event : super.records() ) {
                 // determine the header information of event
@@ -166,13 +181,17 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     public virtual EventBus.ChangeEventHeader header() {
 
         // do this if we have no header and we can discern from the records
-        if ( this.mHeader == null &&
-             (this.records() != null || this.eventType != null )
-             ) {
-            if ( this.eventType == null ) {
-                this.eventType= accc_ApexUtilities.getTypeFromSObject(this.records());
+        if ( this.mHeader == null ) {
+            List<SObject> slist = this.records();
+            integer size = slist != null ? slist.size() : 0;
+            this.eventType= accc_ApexUtilities.getTypeFromSObject(slist);
+
+            if  (size > 0 && this.eventType != null ) {
+                // take the first one
+                SObject event = slist[0];
+                this.eventType= accc_ApexUtilities.getTypeFromSObject(event);
+                this.header((EventBus.ChangeEventHeader) this.getHeaderByType(this.eventType,event) );
             }
-            this.header((EventBus.ChangeEventHeader) this.getHeaderByType(this.eventType) );
         }
         return this.mHeader;
     } // end of header
@@ -240,7 +259,8 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      * @return EventBus.ChangeEventHeader
      */
     public EventBus.ChangeEventHeader  getHeaderByType(){
-        return this.getHeaderByType(accc_ApexUtilities.getTypeFromSObject(this.records()));
+        SObject event = this.records().size()>0 ? this.records()[0] : null;
+        return this.getHeaderByType(accc_ApexUtilities.getTypeFromSObject(this.records()),event);
     } // end of getHeaderByType
 
     //==============================================================
@@ -263,38 +283,39 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
       */
     @TestVisible
     protected virtual EventBus.ChangeEventHeader  getHeaderByType(SObject record){
-        return this.getHeaderByType(accc_ApexUtilities.getTypeFromSObject(record));
+        return this.getHeaderByType(accc_ApexUtilities.getTypeFromSObject(record),record);
     } // end of getHeaderByType
     /**
      * @description get the event header from the type ( this is UGLY!!)
      * @param Type recordType
+     * @param Event
      * @return EventBus.ChangeEventHeader
      */
     @TestVisible
-    protected virtual EventBus.ChangeEventHeader  getHeaderByType(Type recordType){
+    protected virtual EventBus.ChangeEventHeader  getHeaderByType(Type recordType,SObject event){
         EventBus.ChangeEventHeader result=null;
 
         // so that we may test w/o a trigger
-        if ( recordType != null ) {
-            List<SObject> recordList = this.records();
-            if ( recordList != null && recordList.size() > 0 ) {
-                SObject event=recordList[0];
+        if ( recordType != null && event != null ) {
+            //List<SObject> recordList = this.records();
+            // if ( recordList != null && recordList.size() > 0 ) {
+            //    SObject event=recordList[0];
 
-                if ( recordType == AccountChangeEvent.class) {
-                    result =  ((AccountChangeEvent)event).ChangeEventHeader;
-                } else if ( recordType == ContactChangeEvent.class) {
-                    result=  ((ContactChangeEvent)event).ChangeEventHeader;
-                    // NOTE: Lead is NOT yet available
-                } else if ( recordType == LeadChangeEvent.class) {
-                    result=  ((LeadChangeEvent)event).ChangeEventHeader;
-                } else if ( recordType == CaseChangeEvent.class) {
-                    result=  ((CaseChangeEvent)event).ChangeEventHeader;
-                } else {
-                    // call child to get the change header based on the type
-                    // This is THE METHOD CHILDREN SHOULD OVERRIDE (may change to ABSTRACT)
-                    result= this.getChildHeaderByType(recordType);
-                }
+            if ( recordType == AccountChangeEvent.class) {
+                result =  ((AccountChangeEvent)event).ChangeEventHeader;
+            } else if ( recordType == ContactChangeEvent.class) {
+                result=  ((ContactChangeEvent)event).ChangeEventHeader;
+                // NOTE: Lead is NOT yet available
+            } else if ( recordType == LeadChangeEvent.class) {
+                result=  ((LeadChangeEvent)event).ChangeEventHeader;
+            } else if ( recordType == CaseChangeEvent.class) {
+                result=  ((CaseChangeEvent)event).ChangeEventHeader;
+            } else {
+                // call child to get the change header based on the type
+                // This is THE METHOD CHILDREN SHOULD OVERRIDE (may change to ABSTRACT)
+                result= this.getChildHeaderByType(recordType);
             }
+            //}
         }
         // TESTING ONLY!
         //
@@ -352,7 +373,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
             } else if ( CDC_GAPUNDELETE_CHANGE_TYPE.equalsIgnoreCase(action) ) {
                 this.handleGAPUndelete(event);
             } else {
-                throw new accc_ApexApplicationException('accc_CDCEventBase :"changeType" is Not Known; check incoming typew or records');
+                throw new accc_ApexApplicationException('accc_CDCEventBase :"changeType" is Not Known; check incoming type or records');
             }
         } catch (Exception excp) {
             super.processException = excp;

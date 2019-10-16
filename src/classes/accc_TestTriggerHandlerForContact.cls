@@ -39,8 +39,8 @@
 
 public with sharing class accc_TestTriggerHandlerForContact extends accc_TriggerHandlerBase {
 	
-	public static final String OBIC = '++++++++++++++ OBIC - accc_TestTriggerHandlerForContact';
-	public static final String OAUC = '++++++++++++++ OAUC - accc_TestTriggerHandlerForContact';
+	public static final String OBIC = accc_TriggerHandlerBase.OBIC + '- accc_TestTriggerHandlerForContact';
+	public static final String OAUC = accc_TriggerHandlerBase.OAUC + '- accc_TestTriggerHandlerForContact';
 
 	//////////////////////////////////////////////////////////////////
 	//
@@ -54,7 +54,7 @@ public with sharing class accc_TestTriggerHandlerForContact extends accc_Trigger
 	 * @param records the current records associated with the event
 	 **/
 	public override void onBeforeInsertChild(List<SObject> records) {
-		if ( Test.isRunningTest()) {
+		if ( accc_TriggerHandlerBase.UNIT_TESTING) {
 			accc_ApexUtilities.log(OBIC);
 		}
 	} // end of onBeforeInsertChild
@@ -64,7 +64,7 @@ public with sharing class accc_TestTriggerHandlerForContact extends accc_Trigger
 	 * @param existingRecords the old records associated with the event
 	 **/
 	public override void onAfterUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords) {
-		if ( Test.isRunningTest()) {
+		if ( accc_TriggerHandlerBase.UNIT_TESTING) {
 			accc_ApexUtilities.log(OAUC);
 		}
 	}// end of onAfterUpdateChild

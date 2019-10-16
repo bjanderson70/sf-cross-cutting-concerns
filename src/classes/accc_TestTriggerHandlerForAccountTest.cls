@@ -39,7 +39,7 @@
 
 @isTest
 private class accc_TestTriggerHandlerForAccountTest  {
-	public static final String OBIC_TEST = accc_TestTriggerHandlerForAccount.OBIC;
+	public static final String OBIC_TEST = accc_TriggerHandlerBase.OBIC;
 
 	// IF TESTS FAIL HERE ... did you add 'accc_TestTriggerHandlerForAccount'
 	// into the custom metadata under 'Test' and made Active

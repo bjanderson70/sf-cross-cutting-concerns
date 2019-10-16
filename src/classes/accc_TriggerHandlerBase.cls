@@ -57,9 +57,21 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
 
     @TestVisible
     private accc_TriggerHandlerResources m_parameters = null;
+
     @TestVisible
     private Object for_testing = null;
-
+    /*
+     * Used for testing
+     */
+    public static final String OBIC ='++++++++++++++On Before Insert';
+    public static final String OBUC ='++++++++++++++On Before Update';
+    public static final String OAIC ='++++++++++++++On After Insert';
+    public static final String OAUC ='++++++++++++++On After Update';
+    public static final String OBDC='++++++++++++++On Before Delete';    
+    public static final String OADC = '++++++++++++++On After Delete';
+    public static final String OAUDC ='++++++++++++++On After UnDelete';
+    public static final Boolean UNIT_TESTING = System.Test.isRunningTest();
+    
     ////////////////////////////////////////////////////////////////////////////////
     /// Ctors
     ////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +148,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
              && !string.isBlank(errorMessage)
              ) {
             // validate information coming in for test
-            if ( System.Test.isRunningTest()) {
+            if ( UNIT_TESTING) {
                 this.for_testing = errorMessage;
             }
 
@@ -152,8 +164,8 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param records the current records associated with the event
      **/
     public virtual void onBeforeInsertChild(List<SObject> records) {
-        if ( System.Test.isRunningTest()) {
-            accc_ApexUtilities.log('++++++++++++++On Before Insert' );
+        if ( UNIT_TESTING) {
+            accc_ApexUtilities.log(OBIC );
         }
     } // end of onBeforeInsertChild
     /**
@@ -162,8 +174,8 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param existingRecords the old records associated with the event
      **/
     public virtual void onBeforeUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords) {
-        if ( System.Test.isRunningTest()) {
-            accc_ApexUtilities.log('++++++++++++++On Before Update' );
+        if ( UNIT_TESTING) {
+            accc_ApexUtilities.log(OBUC );
         }
     }// end of onBeforeUpdateChild
     /**
@@ -171,8 +183,8 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param records the current records associated with the event
      **/
     public virtual void onAfterInsertChild(List<SObject> records) {
-        if ( System.Test.isRunningTest()) {
-            accc_ApexUtilities.log('++++++++++++++On After Insert' );
+        if ( UNIT_TESTING) {
+            accc_ApexUtilities.log(OAIC );
         }
     }// end of onAfterInsertChild
     /**
@@ -181,8 +193,8 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param existingRecords the old records associated with the event
      **/
     public virtual void onAfterUpdateChild(List<SObject> records, Map<Id, SObject> existingRecords) {
-        if ( System.Test.isRunningTest()) {
-            accc_ApexUtilities.log('++++++++++++++On After Update' );
+        if ( UNIT_TESTING) {
+            accc_ApexUtilities.log(OAUC );
         }
     }// end of onAfterUpdateChild
     /**
@@ -191,8 +203,8 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      *
      **/
     public virtual void onBeforeDeleteChild(List<SObject> records) {
-        if ( System.Test.isRunningTest()) {
-            accc_ApexUtilities.log('++++++++++++++On Before Delete' );
+        if ( UNIT_TESTING) {
+            accc_ApexUtilities.log(OBDC );
         }
     }// end of onBeforeDeleteChild
     /**
@@ -201,8 +213,8 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      *
      **/
     public virtual void onAfterDeleteChild(List<SObject> records) {
-        if ( System.Test.isRunningTest()) {
-            accc_ApexUtilities.log('++++++++++++++On After Delete' );
+        if ( UNIT_TESTING) {
+            accc_ApexUtilities.log(OADC );
         }
     }// end of onAfterDeleteChild
     /**
@@ -210,8 +222,8 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * @param records the current records associated with the event
      **/
     public virtual void onAfterUndeleteChild(List<SObject> records) {
-        if ( System.Test.isRunningTest()) {
-            accc_ApexUtilities.log('++++++++++++++On After UnDelete' );
+        if ( UNIT_TESTING) {
+            accc_ApexUtilities.log(OAUDC );
         }
     } // end of onAfterUndeleteChild
 
