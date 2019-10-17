@@ -340,6 +340,45 @@ private class accc_CDCEventBaseTest {
 
     }
 
+    @isTest
+    static void testgetFieldsChangedInUpdate(){
+
+        // arrange
+        Type theExpectedType = AccountChangeEvent.class;
+        List<AccountChangeEvent > theRecords = new List<AccountChangeEvent > {
+            new AccountChangeEvent (),
+            new AccountChangeEvent (),
+            new AccountChangeEvent ()
+        };
+        Integer inx=0;
+        Map<String, Map<String,accc_CDCEventBase.FieldUpdateState> > expectedResults = new Map<String, Map<String,accc_CDCEventBase.FieldUpdateState> > {
+            accc_CDCEventBase.CDC_UPDATE_CHANGE_TYPE=>new Map<String,accc_CDCEventBase.FieldUpdateState> { 'Name'=>accc_CDCEventBase.FieldUpdateState.DELETED},
+            accc_CDCEventBase.CDC_DELETE_CHANGE_TYPE=>new Map<String,accc_CDCEventBase.FieldUpdateState>(),
+            accc_CDCEventBase.CDC_GAPUPDATE_CHANGE_TYPE=>new Map<String,accc_CDCEventBase.FieldUpdateState> { 'Site'=>accc_CDCEventBase.FieldUpdateState.DELETED}
+
+        };
+
+        Map<String,Type> cType = new  Map<String,Type>  {
+            accc_CDCEventBase.CDC_UPDATE_CHANGE_TYPE=>AccountChangeEvent.class,
+            accc_CDCEventBase.CDC_DELETE_CHANGE_TYPE=>AccountChangeEvent.class,
+            accc_CDCEventBase.CDC_GAPUPDATE_CHANGE_TYPE=>AccountChangeEvent.class
+        };
+        myCDCEventTestClass ctor = new myCDCEventTestClass(theRecords,theExpectedType);
+        ctor.useParent=true;
+        SObject event = null;
+
+        for ( String cdcType: cType.keySet()) {
+            event = theRecords[inx++];
+            // act
+            ctor.header( accc_CDCEventBaseTest.createEventBase(cdcType,cType.get(cdcType).getName() ));
+            Boolean result = ctor.handleEventMethod(event);
+            // assert
+            system.assertEquals(true,result );
+            system.assertEquals(expectedResults.get(cdcType),ctor.getFieldsChangedInUpdate(event));
+        }
+
+    }// end of testgetFieldsChangedInUpdate
+
     ////////////////////////////////////////////////////////////////////////////////////////
     // Private Testing
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -347,7 +386,7 @@ private class accc_CDCEventBaseTest {
     static EventBus.ChangeEventHeader createEventBase(String changetype, string entityname) {
         EventBus.ChangeEventHeader result = new EventBus.ChangeEventHeader();
         result.changeOrigin = accc_CDCEventBase.FOR_TEST_CHANGE_ORIGIN_NAME;
-        result.changeType = changetype;
+        result.setChangeType(changetype);
         result.commitnumber = 1;
         result.committimestamp = DateTime.now().getTime();
         result.commituser = UserInfo.getUserId();
@@ -356,8 +395,14 @@ private class accc_CDCEventBaseTest {
             '001000200000001',
             '001000200000002'
         };
+        if ( changetype == accc_CDCEventBase.CDC_UPDATE_CHANGE_TYPE ) {
+            result.changedFields = new List<String> { 'Name'};
+        } else if ( changetype == accc_CDCEventBase.CDC_GAPUPDATE_CHANGE_TYPE ) {
+            result.changedFields = new List<String> { 'Site'};
+        }
         result.sequencenumber = 1;
         result.transactionkey = accc_ApexUtilities.newGuid();
         return result;
-    }
+    } // end of createEventBase
+    
 } // end of accc_CDCEventBaseTest

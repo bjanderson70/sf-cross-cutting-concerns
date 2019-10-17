@@ -75,8 +75,19 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
         CDC_GAPDELETE_CHANGE_TYPE,
         CDC_GAPUNDELETE_CHANGE_TYPE
     };
+    /*
+     * Field state for Updated fields ONLY
+     */
+    public enum FieldUpdateState {
+        DELETED,
+        UPDATED
+    }// end of FieldUpdateState
+     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+     //+ Private Data Members
+     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     @TestVisible
-    static final String FOR_TEST_CHANGE_ORIGIN_NAME = 'com/salesforce/api/soap/46.0;client=Astro';
+    private static final String FOR_TEST_CHANGE_ORIGIN_NAME = 'com/salesforce/api/soap/46.0;client=Astro';
     /*
      * @description Header information on the event
      */
@@ -201,6 +212,13 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     public String entityName() {
         return this.header() != null ? this.header().entityName : UNKNOWN_HEADER_INFO;
     }// end of entityName
+
+    /**
+     * @description get the CDC Changed fields
+     */
+    public List<String> changedFields() {
+        return this.header() != null ? this.header().changedFields : new List<String>();
+    }   // end of changedFields
     /**
      * @description get the CDC Operation (i.e. CREATE, UPDATE, etc.)
      */
@@ -346,6 +364,36 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     } // end of getChildHeaderByType
 
     /**
+     * @description get the mapping of Fields that have Changed from an Update action (deleted or updated)
+     * @param SObject the event
+     * @return Map<String,FieldUpdateState> fields that changed (only for UPDATE)
+     */
+    @TestVisible
+    protected virtual Map<String,FieldUpdateState> getFieldsChangedInUpdate(SObject event){
+        String action = this.changeType();
+        Map<String,FieldUpdateState> changedFields = new Map<String,FieldUpdateState>();
+
+        // dealing with changed fields in an Update
+        if (CDC_UPDATE_CHANGE_TYPE.equalsIgnoreCase(action) ||
+            CDC_GAPUPDATE_CHANGE_TYPE.equalsIgnoreCase(action) ) {
+            for (String field : this.changedFields() ) {
+                // pull the field value from the sobject/event
+                try {
+                    if (null != event.get(field)) {
+                        changedFields.put(field,FieldUpdateState.UPDATED);
+                    } else {
+                        changedFields.put(field,FieldUpdateState.DELETED);
+                    }
+                } catch (Exception excp) {
+                    super.processException = excp;
+                    accc_ApexUtilities.log(excp);
+                }
+            }
+        }
+        return changedFields;
+
+    }// end of getFieldsChangedInUpdate
+    /**
      * @description Determine which handler to call for the event on the SObject event
      * @return Boolean, true is change type was found and handler called
      */
@@ -353,7 +401,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     protected virtual Boolean  handleEventMethod(SObject event){
         String action = this.changeType();
         Boolean handled = true;
-
+       
         try
         {
             if ( CDC_CREATE_CHANGE_TYPE.equalsIgnoreCase(action)) {
@@ -381,7 +429,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
             accc_ApexUtilities.log(excp);
         }
         return handled;
-    } // end of handleEventMethod
+    }     // end of handleEventMethod
 
     ////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -396,7 +444,8 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     @TestVisible
     protected virtual void handleUpdate(SObject event){
         accc_ApexUtilities.log('handleUpdate: event=' +event);
-    } // end of handleUpdate
+        accc_ApexUtilities.log ('handleUpdate: fields changed:' + this.getFieldsChangedInUpdate(event));
+    }// end of handleUpdate
 
     /**
      * @description child handle create
@@ -406,7 +455,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     @TestVisible
     protected virtual void handleCreate(SObject event){
         accc_ApexUtilities.log('handleCreate: event=' +event);
-    } // end of handleCreate
+    }// end of handleCreate
 
     /**
      * @description child to handle delete
@@ -416,7 +465,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     @TestVisible
     protected virtual void handleDelete(SObject event){
         accc_ApexUtilities.log('handleDelete: event=' +event);
-    } // end of handleDelete
+    }// end of handleDelete
 
     /**
      * @description child handle undelete
@@ -426,7 +475,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     @TestVisible
     protected virtual void handleUndelete(SObject event){
         accc_ApexUtilities.log('handleUndelete: event=' +event);
-    } // end of handleUndelete
+    }// end of handleUndelete
 
     /**
      * @description child handle GAP update
@@ -436,7 +485,9 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     @TestVisible
     protected virtual void handleGAPUpdate(SObject event){
         accc_ApexUtilities.log('handleGAPUpdate: event=' +event);
-    } // end of handleGAPUpdate
+        accc_ApexUtilities.log ('handleGAPUpdate: fields changed:' + this.getFieldsChangedInUpdate(event));
+
+    }// end of handleGAPUpdate
 
     /**
      * @description child handle GAP create
@@ -446,7 +497,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     @TestVisible
     protected virtual void handleGAPCreate(SObject event){
         accc_ApexUtilities.log('handleGAPCreate: event=' +event);
-    } // end of handleGAPCreate
+    }// end of handleGAPCreate
 
     /**
      * @description child to handle GAP delete
@@ -456,7 +507,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     @TestVisible
     protected virtual void handleGAPDelete(SObject event){
         accc_ApexUtilities.log('handleGAPDelete: event=' +event);
-    } // end of handleGAPDelete
+    }// end of handleGAPDelete
 
     /**
      * @description child handle GAP undelete
@@ -466,7 +517,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     @TestVisible
     protected virtual void handleGAPUndelete(SObject event){
         accc_ApexUtilities.log('handleGAPUndelete: event=' +event);
-    } // end of handleGAPUndelete
+    }// end of handleGAPUndelete
 
     //==============================================================
     // Private Methods
@@ -490,5 +541,5 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
             result.transactionkey = accc_ApexUtilities.newGuid();
         }
         return result;
-    }// end of getChangeEventHeaderForTesting
-}  // end of accc_CDCEventBase
+    }    // end of getChangeEventHeaderForTesting
+}     // end of accc_CDCEventBase
