@@ -504,4 +504,21 @@ public without sharing class accc_StringUtilities {
         }
         return val;
     }// end of convertStringToInt
+     /**
+      *
+      * @description Method Name of the caller
+      *
+      * @param thisClass the object
+      * @return String - Method name
+      */
+    public static String getClassName(Object thisClass) {
+        String currentClassName = accc_ApexConstants.EmptyString;
+        if ( thisClass != null ) {
+            List<String> items = String.valueOf(thisClass).split(accc_ApexConstants.ColonDelimiter);
+            if ( items != null && items.size() > 0 ) {
+                currentClassName = items[0];
+            }
+        }
+        return currentClassName;
+    }  // end of getClassName
 }// end of accc_StringUtilities

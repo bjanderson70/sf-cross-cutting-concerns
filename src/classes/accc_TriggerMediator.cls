@@ -54,7 +54,7 @@ public virtual without sharing class accc_TriggerMediator {
     // Data members
     //==============================================================
     @TestVisible
-    private static final String EXCEPTION_ON_BAD_HANDLER_CHAIN = ' had a bad handler in chain - ';
+    private static final String EXCEPTION_ON_BAD_HANDLER_CHAIN = ' had a bad handler in chain ';
     @TestVisible
     static final String USED_FOR_EXCEPTION_MSG = 'Testing accc_TriggerMediator';
 
@@ -255,7 +255,10 @@ public virtual without sharing class accc_TriggerMediator {
                 accc_TriggerMediator.mTriggerChain.put(typeName, chain);
             }
         }
-
+        // informational regarding chain ( means, type not found in the metadata)
+        if ( chain == null ) {
+            accc_ApexUtilities.log('Warning: Unable to find chain for type ( ' + typeName +' )');
+        }
         return chain;
     } // end of theTriggerChain
     //==============================================================
@@ -265,7 +268,7 @@ public virtual without sharing class accc_TriggerMediator {
      * @description Call the trigger handlers in the chain
      * @details Call the trigger handlers in the chain
      *
-     * @param chain the trigger handler chain chain
+     * @param chain the trigger handler chain
      * @param state which trigger event
      * @param existingRecords existing records, if any
      * @param continueIfException continue if trigger handler exception
@@ -276,14 +279,19 @@ public virtual without sharing class accc_TriggerMediator {
                                                        Map<Id, SObject> existingRecords,
                                                        Boolean continueIfException,
                                                        Boolean performanceMetrics ) {
+        Boolean status=false;
 
-        // invoke
-        return this.triggerHandlerInvocation(chain,
-                                             state,
-                                             existingRecords,
-                                             continueIfException,
-                                             performanceMetrics,
-                                             EXCEPTION_ON_BAD_HANDLER_CHAIN);
+        // was a chain found ( we do not log information as it is done elsewhere)
+        if ( chain != null ) {
+            // invoke
+            status= this.triggerHandlerInvocation(chain,
+                                                  state,
+                                                  existingRecords,
+                                                  continueIfException,
+                                                  performanceMetrics,
+                                                  EXCEPTION_ON_BAD_HANDLER_CHAIN);
+        }
+        return status;
     } // end of triggerHandlerInvocation
 
     /**
@@ -327,7 +335,7 @@ public virtual without sharing class accc_TriggerMediator {
                 // as the handler that follows (should we continue) can determine corrective measures
                 handler.handlerResources().add(accc_TriggerHandlerResources.EXCEPTION_KEY,
                                                hasException);
-                // do we continue after and exception
+                // do we continue after an exception
                 if ( !successful && !continueIfException ) {
                     return successful;
                 }
@@ -336,10 +344,10 @@ public virtual without sharing class accc_TriggerMediator {
                 // we have no handler
                 successful = false;
                 // our handler was bad ( probably inherited from the wrong type or
-                // incorrectly entered by name )
-                accc_ApexUtilities.log(excpMsg + chain);
+                // incorrectly entered by name ). This is why we TEST
+                accc_ApexUtilities.log(excpMsg + '-' + chain);
                 // we DO NOT break at this point (as someone may have put in a bad handler name)
-            }     // end if handler
+            }// end if handler
             // get the next trigger handler in the chain
             chain = chain.getNext();
 
@@ -360,8 +368,8 @@ public virtual without sharing class accc_TriggerMediator {
                                              accc_TriggerHelperClass.TriggerState state,
                                              Map<Id, SObject> existingRecords,
                                              Boolean performanceMetrics) {
-
-        accc_ApexPerformanceMetrics metrics = performanceMetrics ? new accc_ApexPerformanceMetrics('Start') : null;
+        String className = accc_StringUtilities.getClassName(handler);
+        accc_ApexPerformanceMetrics metrics = performanceMetrics ? new accc_ApexPerformanceMetrics('Start :' + className) : null;
         Exception handlerException = null;
 
         // log start of our handler's performance
@@ -407,7 +415,7 @@ public virtual without sharing class accc_TriggerMediator {
         } finally {
             // log the end of the handlers' performance
             if ( performanceMetrics) {
-                metrics.message ='End';
+                metrics.message ='End :' +className;
                 accc_ApexUtilities.log(metrics.toString());
             }
         }

@@ -374,8 +374,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
         Map<String,FieldUpdateState> changedFields = new Map<String,FieldUpdateState>();
 
         // dealing with changed fields in an Update
-        if (CDC_UPDATE_CHANGE_TYPE.equalsIgnoreCase(action) ||
-            CDC_GAPUPDATE_CHANGE_TYPE.equalsIgnoreCase(action) ) {
+        if (CDC_UPDATE_CHANGE_TYPE.equalsIgnoreCase(action)  ) {
             for (String field : this.changedFields() ) {
                 // pull the field value from the sobject/event
                 try {

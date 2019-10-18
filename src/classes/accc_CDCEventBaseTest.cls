@@ -347,21 +347,22 @@ private class accc_CDCEventBaseTest {
         Type theExpectedType = AccountChangeEvent.class;
         List<AccountChangeEvent > theRecords = new List<AccountChangeEvent > {
             new AccountChangeEvent (),
+            /**
+             * AccountChangeEvent description
+             * @return   return description
+             */
             new AccountChangeEvent (),
             new AccountChangeEvent ()
         };
         Integer inx=0;
         Map<String, Map<String,accc_CDCEventBase.FieldUpdateState> > expectedResults = new Map<String, Map<String,accc_CDCEventBase.FieldUpdateState> > {
             accc_CDCEventBase.CDC_UPDATE_CHANGE_TYPE=>new Map<String,accc_CDCEventBase.FieldUpdateState> { 'Name'=>accc_CDCEventBase.FieldUpdateState.DELETED},
-            accc_CDCEventBase.CDC_DELETE_CHANGE_TYPE=>new Map<String,accc_CDCEventBase.FieldUpdateState>(),
-            accc_CDCEventBase.CDC_GAPUPDATE_CHANGE_TYPE=>new Map<String,accc_CDCEventBase.FieldUpdateState> { 'Site'=>accc_CDCEventBase.FieldUpdateState.DELETED}
-
+            accc_CDCEventBase.CDC_DELETE_CHANGE_TYPE=>new Map<String,accc_CDCEventBase.FieldUpdateState>()
         };
 
         Map<String,Type> cType = new  Map<String,Type>  {
             accc_CDCEventBase.CDC_UPDATE_CHANGE_TYPE=>AccountChangeEvent.class,
-            accc_CDCEventBase.CDC_DELETE_CHANGE_TYPE=>AccountChangeEvent.class,
-            accc_CDCEventBase.CDC_GAPUPDATE_CHANGE_TYPE=>AccountChangeEvent.class
+            accc_CDCEventBase.CDC_DELETE_CHANGE_TYPE=>AccountChangeEvent.class
         };
         myCDCEventTestClass ctor = new myCDCEventTestClass(theRecords,theExpectedType);
         ctor.useParent=true;
@@ -397,9 +398,7 @@ private class accc_CDCEventBaseTest {
         };
         if ( changetype == accc_CDCEventBase.CDC_UPDATE_CHANGE_TYPE ) {
             result.changedFields = new List<String> { 'Name'};
-        } else if ( changetype == accc_CDCEventBase.CDC_GAPUPDATE_CHANGE_TYPE ) {
-            result.changedFields = new List<String> { 'Site'};
-        }
+        } 
         result.sequencenumber = 1;
         result.transactionkey = accc_ApexUtilities.newGuid();
         return result;

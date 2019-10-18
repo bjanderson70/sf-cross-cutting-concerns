@@ -363,8 +363,8 @@ private class accc_StringUtilitiesTest {
 
 
     /**
-    * @description test toString
-    */
+     * @description test toString
+     */
     @isTest static void testtoString() {
         //assign
         Boolean expected = true;
@@ -374,8 +374,8 @@ private class accc_StringUtilitiesTest {
         System.assertEquals(expected, result);
     } // end of testtoString
     /**
-    * @description test empty toString
-    */
+     * @description test empty toString
+     */
     @isTest static void testtoStringNull() {
         //assign
         String expected =  accc_ApexConstants.EmptyString;
@@ -384,4 +384,16 @@ private class accc_StringUtilitiesTest {
         // assert
         System.assertEquals(expected, result);
     } // end of testtoStringNull
+      /**
+       * @description Test a valid class name
+       */
+    @isTest static void testgetClassName() {
+        //assign
+        String expected = 'accc_StringUtilities';
+        accc_StringUtilities obj = new accc_StringUtilities();
+
+        String result = accc_StringUtilities.getClassName(obj);
+        // assert
+        System.assertEquals(expected, result);
+    }   // end of testgetClassName
 }// end of accc_StringUtilitiesTest
