@@ -37,92 +37,92 @@
  */
 global virtual without sharing class accc_ApexBigObjectLogger extends accc_ApexObjectLogger {
 
-	@TestVisible
-	static Boolean m_forceException = false;
-	@TestVisible
-	static final string EXCEPTION_MSG_FOR_TEST = 'accc_ApexBigObjectLogger:TESTING FORCED EXCEPTION';
+    @TestVisible
+    static Boolean m_forceException = false;
+    @TestVisible
+    static final string EXCEPTION_MSG_FOR_TEST = 'accc_ApexBigObjectLogger:TESTING FORCED EXCEPTION';
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// CTORS
-	///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // CTORS
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * @description default ctor of accc_ApexBigObjectLogger -- set the default LoggingLevel to DEBUG
-	 */
-	public accc_ApexBigObjectLogger() {
-		super(LoggingLevel.DEBUG);
-	} // end of ctor
+    /**
+     * @description default ctor of accc_ApexBigObjectLogger -- set the default LoggingLevel to DEBUG
+     */
+    public accc_ApexBigObjectLogger() {
+        super(accc_ApexUtilities.logLevel());
+    } // end of ctor
 
-	/**
-	 * @description ctor of accc_ApexBigObjectLogger Logger
-	 *
-	 * @param level LoggingLevel to use for 'write'
-	 */
-	public accc_ApexBigObjectLogger(LoggingLevel level) {
-		super(level);
-	} // end of ctor
+    /**
+     * @description ctor of accc_ApexBigObjectLogger Logger
+     *
+     * @param level LoggingLevel to use for 'write'
+     */
+    public accc_ApexBigObjectLogger(LoggingLevel level) {
+        super(level);
+    } // end of ctor
 
-	////////////////////////////////////////////////////////////////////////////////
-	/// Protected methods
-	////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    /// Protected methods
+    ////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * @description write output to log
-	 *
-	 * @param LoggingLevel log level
-	 * @param List<Object> data output
-	 * @param Boolean true to send out
-	 */
-	@TestVisible
-	protected override List<AcccApplicationLog__c>  writeOutput(LoggingLevel level, List<Object> result, boolean sendToLogger) {
+    /**
+     * @description write output to log
+     *
+     * @param LoggingLevel log level
+     * @param List<Object> data output
+     * @param Boolean true to send out
+     */
+    @TestVisible
+    protected override List<AcccApplicationLog__c>  writeOutput(LoggingLevel level, List<Object> result, boolean sendToLogger) {
 
-		// write data to the application log object and Big Object
-		List<AcccApplicationLog__c> entries = null;
-		try {
+        // write data to the application log object and Big Object
+        List<AcccApplicationLog__c> entries = null;
+        try {
 
-			if ( accc_ApexConstants.UNIT_TEST_RUNNING 
-				&& accc_ApexBigObjectLogger.m_forceException==true){
-				throw new accc_ApexApplicationException(EXCEPTION_MSG_FOR_TEST);
-			}
-			// here we get back what the parent sent -
-			// and use to create the outgoing big object
-			entries = super.writeOutput(level, result, sendToLogger);
+            if ( accc_ApexBigObjectLogger.m_forceException==true
+                 && accc_ApexConstants.UNIT_TEST_RUNNING) {
+                throw new accc_ApexApplicationException(EXCEPTION_MSG_FOR_TEST);
+            }
+            // here we get back what the parent sent -
+            // and use to create the outgoing big object
+            entries = super.writeOutput(level, result, sendToLogger);
 
-			// if all went well, we have the data sent to the custom object
-			if ( sendToLogger && null != entries ) {
-				// now, we have to  convert/translate to new entries (right now this is 2(O(n)) in perf!!.
-				// Perhaps, another iteration/refactoring this will be changed
-				List<accc_PlatformEventDAOLog> daoBO = accc_MessageTransformation.translateFromAppLog(entries);
-				List<accc_Org_Events__b> bigObjects = accc_PlatformEventDAOLog.mapFrom(daoBO);
-				// get a writer to a big object. At some point this too should be changed
-				// to use a factory!!! (REFACTOR)
-				this.getWriter(bigObjects).execute();
+            // if all went well, we have the data sent to the custom object
+            if ( sendToLogger && null != entries ) {
+                // now, we have to  convert/translate to new entries (right now this is 2(O(n)) in perf!!.
+                // Perhaps, another iteration/refactoring this will be changed
+                List<accc_PlatformEventDAOLog> daoBO = accc_MessageTransformation.translateFromAppLog(entries);
+                List<accc_Org_Events__b> bigObjects = accc_PlatformEventDAOLog.mapFrom(daoBO);
+                // get a writer to a big object. At some point this too should be changed
+                // to use a factory!!! (REFACTOR)
+                this.getWriter(bigObjects).execute();
 
-			}
+            }
 
-		} catch (Exception excp) {
-			// Exception occurred, output the exception message
-			accc_ApexUtilities.log(excp);
-		}
+        } catch (Exception excp) {
+            // Exception occurred, output the exception message
+            accc_ApexUtilities.log(excp);
+        }
 
-		return entries;
-	} // end of writeOutput
+        return entries;
+    } // end of writeOutput
 
-	/**
-	 * @description get our Big Object Data writer, We want async and denote it is Big Object
-	 *
-	 * @param entries our SObjects to write
-	 * @return accc_SObjectBaseWriter
-	 */
-	@TestVisible
-	protected virtual accc_SObjectBaseWriter getWriter(List<SObject> entries) {
-		return  new accc_SyncAsyncWriter(entries,
-		                                 false,// Do NOT Delete these items (upsert)
-		                                 false,// Is Synchronous Only (grandfathered in)
-		                                 true, // Is Big Object
-		                                 true  // Force Async
-		                                );
-	} // end of getWriter
+    /**
+     * @description get our Big Object Data writer, We want async and denote it is Big Object
+     *
+     * @param entries our SObjects to write
+     * @return accc_SObjectBaseWriter
+     */
+    @TestVisible
+    protected virtual accc_SObjectBaseWriter getWriter(List<SObject> entries) {
+        return new accc_SyncAsyncWriter(entries,
+                                        false, // Do NOT Delete these items (upsert)
+                                        false, // Is Synchronous Only (grandfathered in)
+                                        true,  // Is Big Object
+                                        true   // Force Async
+                                        );
+    } // end of getWriter
 
 } // end of accc_ApexBigObjectLogger

@@ -65,7 +65,7 @@ private class accc_StopWatchTest {
 		sw.reset();
 		// assert
 		system.assertEquals(true, sw != null);
-		system.assertEquals(true, sw.startTime == 0);
+		system.assertEquals(false, sw.startTime == 0);
 	} // end of testreset
 
 	@isTest
@@ -74,7 +74,7 @@ private class accc_StopWatchTest {
 		accc_StopWatch sw = new accc_StopWatch();
 		system.assertEquals(false, sw.startTime == 0);
 		for (integer inx = 0; inx < 100000; inx++) {
-			// passig time
+			// passing time
 		}
 		// act
 		long duration = sw.getDuration();

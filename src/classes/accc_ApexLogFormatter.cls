@@ -65,8 +65,7 @@ public virtual without sharing class accc_ApexLogFormatter implements accc_IData
         // need a data model (minimal information), if null then it did not
         // come from one of the ILogger classes
         if (  dataModel == null ) {
-            system.debug('Formatter level: null');
-            dataModel = new accc_ApexLogDataModel(accc_CustomSettings.traceLogLevel());
+           dataModel = new accc_ApexLogDataModel(accc_ApexUtilities.logLevel());
         }
         //
         // more detail information

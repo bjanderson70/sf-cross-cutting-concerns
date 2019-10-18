@@ -443,7 +443,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     @TestVisible
     protected virtual void handleUpdate(SObject event){
         accc_ApexUtilities.log('handleUpdate: event=' +event);
-        accc_ApexUtilities.log ('handleUpdate: fields changed:' + this.getFieldsChangedInUpdate(event));
+        accc_ApexUtilities.log('handleUpdate: fields changed:' + this.getFieldsChangedInUpdate(event));
     }// end of handleUpdate
 
     /**

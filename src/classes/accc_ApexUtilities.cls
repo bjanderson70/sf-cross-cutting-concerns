@@ -1104,6 +1104,21 @@ public without sharing class accc_ApexUtilities {
     }// end of splitStringOnExpression
 
     /**
+     * @description syntactic sugar to get the user defined logging level
+     * @return LoggingLevel
+     **/
+    public static LoggingLevel logLevel() {
+        LoggingLevel userLogLevel;
+        try{
+            userLogLevel= (LoggingLevel)accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
+        } catch(Exception excp) {
+            // TBD
+            userLogLevel = LoggingLevel.DEBUG;
+        }
+        return userLogLevel;
+    }// end of logLevel
+
+    /**
      * @description get month string
      * [deprecating to accc_StringUtilities]
      *

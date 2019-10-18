@@ -54,11 +54,12 @@ private class accc_ApexLogFormatterTest {
     static void testformatBadParams() {
         // assign
         String result;
+        LoggingLevel expected=(LoggingLevel)accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
         accc_IDataFormat dataFmt = new accc_ApexLogFormatter();
         // act
         result = (String) dataFmt.format(null);
         // assert
-        system.assertEquals(true, result.contains(LoggingLevel.INFO.name()));
+        system.assertEquals(true, result.contains(expected.name()));
 
     } // end of testformatBadParams
 
