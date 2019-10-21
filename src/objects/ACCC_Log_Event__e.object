@@ -42,7 +42,6 @@
     </fields>
     <fields>
         <fullName>External_Id__c</fullName>
-        <defaultValue>&apos;&apos;</defaultValue>
         <description>An external Id of the main object, if known;otherwise, null or empty</description>
         <externalId>false</externalId>
         <isFilteringDisabled>false</isFilteringDisabled>
@@ -146,7 +145,7 @@
     </fields>
     <fields>
         <fullName>Version__c</fullName>
-        <defaultValue>&apos;1.0.0.0&apos;</defaultValue>
+        <defaultValue>&quot;1.0.0.0&quot;</defaultValue>
         <description>Version of the message event</description>
         <externalId>false</externalId>
         <isFilteringDisabled>false</isFilteringDisabled>
