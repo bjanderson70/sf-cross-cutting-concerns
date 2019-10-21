@@ -36,5 +36,5 @@
  * @group Platform Events Handling
  */
 trigger accc_AsyncOperationEventHandler on AsyncOperationEvent(after insert) {
-	accc_ApexPlatformEventDispatcher.run(new accc_AsyncOperationEventHandler());
+    //accc_ApexPlatformEventDispatcher.run(new accc_AsyncOperationEventHandler());
 }
