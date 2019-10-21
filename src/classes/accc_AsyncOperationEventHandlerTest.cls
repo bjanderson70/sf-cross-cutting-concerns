@@ -53,7 +53,7 @@ private class accc_AsyncOperationEventHandlerTest {
 
     @isTest
     static void testTriggerClassExplicitlyWithException(){
-         accc_EventBase handler = new accc_AsyncOperationEventHandler();
+        accc_EventBase handler = new accc_AsyncOperationEventHandler();
         accc_AsyncOperationEventHandler.useForTestingException=true;
         Test.startTest();
         List<AsyncOperationEvent> events = accc_AsyncOperationEventHandlerTest.createLogEvents(10);
@@ -78,6 +78,25 @@ private class accc_AsyncOperationEventHandlerTest {
         // check the log
         System.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_AsyncOperationEventHandler.TEST_MESSAGE));
     }
+    @IsTest
+    private static void whenJobExceptionThenLogGeneratedAndHandlerCalled() {
+
+        // Given
+        Account testAccount = accc_AsyncOperationEventHandlerTest.createNewAccount(accc_TestBatchableErrorTestJob.CAUSE_BAD_ASYNC_FLOW_NAME);
+
+        List<Account> testRecords = new List<Account> { testAccount };
+        accc_TestBatchableErrorTestJob job = new accc_TestBatchableErrorTestJob(testRecords);
+   
+        // When
+        Test.startTest();
+        Id jobId = Database.executeBatch(job);
+        Test.stopTest();
+
+        // check the log
+        System.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_AsyncOperationEventHandler.TEST_MESSAGE));
+
+    } // end of whenJobExceptionThenLogGeneratedAndHandlerCalled
+
     ////////////////////////////////////////////////////////////////////////////////
     // Private Methods
     ////////////////////////////////////////////////////////////////////////////////
@@ -90,4 +109,12 @@ private class accc_AsyncOperationEventHandlerTest {
         return events;
     }// end of createLogEvents
 
+    static Account createNewAccount(String name) {
+        Account account = new Account();
+        account.Name = name;
+
+        insert account;
+        return account;
+
+    } // end of createNewAccount
 }// end of accc_AsyncOperationEventHandlerTest
