@@ -41,19 +41,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Environment__c</fullName>
-        <defaultValue>&apos;test&apos;</defaultValue>
-        <description>Define the environment this event information applies to. Note, if you desire three different behaviors for the an event, i.e., pe_test__e, then you MUST define one for &apos;test&apos;, &apos;production&apos; and &apos;debug&apos;</description>
-        <externalId>false</externalId>
-        <fieldManageability>DeveloperControlled</fieldManageability>
-        <inlineHelpText>Define the environment this event information applies to. Note, if you desire three different behaviors for the an event, i.e., pe_test__e, then you MUST define one for &apos;test&apos;, &apos;production&apos; and &apos;debug&apos;</inlineHelpText>
-        <label>Environment</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Error_Handler__c</fullName>
         <defaultValue>&apos;accc_DefaultProcessHandler&apos;</defaultValue>
         <externalId>false</externalId>
@@ -85,6 +72,38 @@
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Runtime_Environment__c</fullName>
+        <defaultValue>&quot;test&quot;</defaultValue>
+        <description>run time environment</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>run time environment</inlineHelpText>
+        <label>Runtime Environment</label>
+        <required>true</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>test</fullName>
+                    <default>true</default>
+                    <label>test</label>
+                </value>
+                <value>
+                    <fullName>debug</fullName>
+                    <default>false</default>
+                    <label>debug</label>
+                </value>
+                <value>
+                    <fullName>production</fullName>
+                    <default>false</default>
+                    <label>production</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Serialize_Event__c</fullName>
@@ -124,12 +143,11 @@
     <listViews>
         <fullName>All</fullName>
         <columns>MasterLabel</columns>
-        <columns>DeveloperName</columns>
         <columns>Active__c</columns>
+        <columns>Runtime_Environment__c</columns>
         <columns>Alert_Handler__c</columns>
         <columns>Allow_Consumer_Retry__c</columns>
         <columns>Consumer__c</columns>
-        <columns>Environment__c</columns>
         <columns>Error_Handler__c</columns>
         <columns>Log_Handler__c</columns>
         <columns>Publisher__c</columns>

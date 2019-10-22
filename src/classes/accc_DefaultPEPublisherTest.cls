@@ -36,225 +36,237 @@
  */
 @isTest
 private class accc_DefaultPEPublisherTest {
-	static final String ExceptedEventLabelInCustomMDT = 'pe_test__e';
+    static final String ExceptedEventLabelInCustomMDT = 'pe_test__e';
 
-	//
-	// test class used to excercise the default behavior
-	//
-	public class accc_PublisherTest extends accc_DefaultPEPublisher {
-		public Boolean didHandle = false;
-		public Boolean causeException = false;
+    //
+    // test class used to excercise the default behavior
+    //
+    public class accc_PublisherTest extends accc_DefaultPEPublisher {
+        public Boolean didHandle = false;
+        public Boolean causeException = false;
+        public Boolean useParentProcessResults=false;
 
-		public accc_PublisherTest() {
-			super(null);
-		}
-		public accc_PublisherTest(string evt) {
+        public accc_PublisherTest() {
+            super(null);
+        }
+        public accc_PublisherTest(string evt) {
 
-			super(evt);
+            super(evt);
 
-		}
-		public accc_PublisherTest(string evt, Boolean serialize) {
+        }
+        public accc_PublisherTest(string evt, Boolean serialize) {
 
-			super(evt, serialize);
+            super(evt, serialize);
 
-		}
-		protected override void handleCompletion(Object event
-		        , Boolean state
-		        , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult
-		        , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData
-		        , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData
-		        , accc_PlatformEventAttrs attributes) {
-			didHandle = true;
-		}
-		protected override integer processResults(List<Database.SaveResult> results,
-		        List<SObject>  collectionOfEvents,
-		        List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult) {
-			integer count = results.size();
-			if ( causeException ) {
-				throw new accc_PlatformEventException('For Testing');
-			}
-			return count;
-		}
+        }
+        protected override void handleCompletion(Object event
+                                                 , Boolean state
+                                                 , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult
+                                                 , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData
+                                                 , List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theLogData
+                                                 , accc_PlatformEventAttrs attributes) {
+            didHandle = true;
+        }
+        protected override integer processResults(List<Database.SaveResult> results,
+                                                  List<SObject>  collectionOfEvents,
+                                                  List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult,
+                                                  List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData) {
+            if ( !useParentProcessResults ) {
+                integer count = results.size();
+                if ( causeException ) {
+                    throw new accc_PlatformEventException('For Testing');
+                }
+                return count;
+            } else {
+                return super.processResults(results, collectionOfEvents, errResult, theData);
+            }
+        }
 
-	}
-	@isTest
-	static void testBasicPublisherCtor() {
-		// assign / act
-		accc_PublisherTest publisher = new accc_PublisherTest();
-		// assert
-		System.assertEquals(true, publisher.handlerEventName() == null);
+    }
+    @isTest
+    static void testBasicPublisherCtor() {
+        // assign / act
+        accc_PublisherTest publisher = new accc_PublisherTest();
+        // assert
+        System.assertEquals(true, publisher.handlerEventName() == null);
 
-	}
-	@isTest
-	static void testBasicPublisherCtorWithTwoArguments() {
-		// assign / act
-		accc_PublisherTest publisher = new accc_PublisherTest(ExceptedEventLabelInCustomMDT, true);
-		// assert
-		System.assertEquals(true, publisher.handlerEventName() == ExceptedEventLabelInCustomMDT);
-		System.assertEquals(true, publisher.serializeEvent);
+    }
+    @isTest
+    static void testBasicPublisherCtorWithTwoArguments() {
+        // assign / act
+        accc_PublisherTest publisher = new accc_PublisherTest(ExceptedEventLabelInCustomMDT, true);
+        // assert
+        System.assertEquals(true, publisher.handlerEventName() == ExceptedEventLabelInCustomMDT);
+        System.assertEquals(true, publisher.serializeEvent);
 
-	}
-	@isTest
-	static void testBasicPublisher() {
-		// assign
-		final String eventName = ExceptedEventLabelInCustomMDT;
-		Boolean result;
-		accc_PlatformEvtBuilder ctor = new accc_PlatformEvtBuilder(eventName,accc_ApexConstants.TEST_CATEGORY);
-		accc_IEventHandler publisher = ctor.buildPublisher();
-		List<SObject> evt = new List<SObject> { new pe_test__e()};
-		accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+    }
+    @isTest
+    static void testBasicPublisher() {
+        // assign
+        final String eventName = ExceptedEventLabelInCustomMDT;
+        Boolean result;
+        accc_PlatformEvtBuilder ctor = new accc_PlatformEvtBuilder(eventName,accc_ApexConstants.TEST_CATEGORY);
+        accc_IEventHandler publisher = ctor.buildPublisher();
+        List<SObject> evt = new List<SObject> { new pe_test__e()};
+        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
 
-		Test.startTest();
-		// act
-		// Publish test event
-		result = publisher.process(evt, handlers, attrs);
-		Test.getEventBus().deliver();
-		Test.stopTest();
+        Test.startTest();
+        // act
+        // Publish test event
+        result = publisher.process(evt, handlers, attrs);
+        Test.getEventBus().deliver();
+        Test.stopTest();
 
-		// assert Verify results value
-		System.assertEquals(true, result);
-		System.assertEquals(true, publisher.handlerException() == null);
-		System.assertEquals(true, publisher.handlerEventName() != null);
+        // assert Verify results value
+        System.assertEquals(true, result);
+        System.assertEquals(true, publisher.handlerException() == null);
+        System.assertEquals(true, publisher.handlerEventName() != null);
 
-	} // end of testBasicPublisher
+    } // end of testBasicPublisher
 
-	@isTest
-	static void testPublisherTest() {
-		// assign
-		final String eventName = ExceptedEventLabelInCustomMDT;
-		Boolean result;
-		accc_PublisherTest publisher = new accc_PublisherTest(eventName);
-		accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
-		List<SObject> evt = new List<SObject> { new pe_test__e()};
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+    @isTest
+    static void testPublisherTest() {
+        // assign
+        final String eventName = ExceptedEventLabelInCustomMDT;
+        Boolean result;
+        accc_PublisherTest publisher = new accc_PublisherTest(eventName);
+        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
+        List<SObject> evt = new List<SObject> { new pe_test__e()};
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+        publisher.useParentProcessResults=true;
+		
+        Test.startTest();
+        // act - Publish test event
+        result = publisher.process(evt, handlers, attrs);
+        Test.getEventBus().deliver();
+        Test.stopTest();
 
-		Test.startTest();
-		// act - Publish test event
-		result = publisher.process(evt, handlers, attrs);
-		Test.getEventBus().deliver();
-		Test.stopTest();
+        // assert -- Verify SaveResult value
+        System.assertEquals(true, result);
+        System.assertEquals(true, publisher.eventName == eventName);
+        System.assertEquals(true, publisher.didHandle);
+        System.assertEquals(true, publisher.theException == null);
+        System.assertEquals(evt.size(), publisher.operationIds.size());
 
-		// assert -- Verify SaveResult value
-		System.assertEquals(true, result);
-		System.assertEquals(true, publisher.eventName == eventName);
-		System.assertEquals(true, publisher.didHandle);
-		System.assertEquals(true, publisher.theException == null);
-	} // end of testPublisherTest
+    } // end of testPublisherTest
 
-	@isTest
-	static void testPublisherTestNoEvent() {
-		// assign
-		final String eventName = ExceptedEventLabelInCustomMDT;
-		Boolean result;
-		accc_PublisherTest publisher = new accc_PublisherTest(eventName);
-		accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
-		List<SObject> evt = new List<SObject> { };
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+    @isTest
+    static void testPublisherTestNoEvent() {
+        // assign
+        final String eventName = ExceptedEventLabelInCustomMDT;
+        Boolean result;
+        accc_PublisherTest publisher = new accc_PublisherTest(eventName);
+        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
+        List<SObject> evt = new List<SObject> { };
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
 
-		Test.startTest();
-		try {
-			// act -- Publish test event
-			result = publisher.process(evt, handlers, attrs);
-			Test.getEventBus().deliver();
-		} catch (Exception excp) {
-			result = false;
-		}
-		Test.stopTest();
+        Test.startTest();
+        try {
+            // act -- Publish test event
+            result = publisher.process(evt, handlers, attrs);
+            Test.getEventBus().deliver();
+        } catch (Exception excp) {
+            result = false;
+        }
+        Test.stopTest();
 
-		// assert --Verify results
-		System.assertEquals(false, result);
-		System.assertEquals(true, publisher.eventName == eventName);
-		System.assertEquals(true, publisher.theException != null);
-		System.assertEquals(false, publisher.didHandle);
-	}// end of testPublisherTestNoEvent
+        // assert --Verify results
+        System.assertEquals(false, result);
+        System.assertEquals(true, publisher.eventName == eventName);
+        System.assertEquals(true, publisher.theException != null);
+        System.assertEquals(false, publisher.didHandle);
+    }// end of testPublisherTestNoEvent
 
-	@isTest
-	static void testPublisherTestEventButDifferentName() {
-		// assign
-		final String eventName = 'junk';
-		Boolean result = true;
-		accc_PublisherTest publisher = new accc_PublisherTest(eventName);
-		accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
-		List<SObject> evt = new List<SObject> { new pe_test__e()};
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+    @isTest
+    static void testPublisherTestEventButDifferentName() {
+        // assign
+        final String eventName = 'junk';
+        Boolean result = true;
+        accc_PublisherTest publisher = new accc_PublisherTest(eventName);
+        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
+        List<SObject> evt = new List<SObject> { new pe_test__e()};
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
 
-		Test.startTest();
-		try {
-			// act -- Publish test event
-			result = publisher.process(evt, handlers, attrs);
-			Test.getEventBus().deliver();
-		} catch (Exception excp) {
-			result = false;
-		}
-		Test.stopTest();
+        Test.startTest();
+        try {
+            // act -- Publish test event
+            result = publisher.process(evt, handlers, attrs);
+            Test.getEventBus().deliver();
+        } catch (Exception excp) {
+            result = false;
+        }
+        Test.stopTest();
 
-		// assert -- Verify results
-		System.assertEquals(false, result); 
-		System.assertEquals(true, publisher.eventName == eventName);
-		System.assertEquals(false, publisher.theException == null);
-		System.assertEquals(false, publisher.didHandle);
-	} // end of testPublisherTestEventButDifferentName
+        // assert -- Verify results
+        System.assertEquals(false, result);
+        System.assertEquals(true, publisher.eventName == eventName);
+        System.assertEquals(false, publisher.theException == null);
+        System.assertEquals(false, publisher.didHandle);
 
-	@isTest
-	static void testPublisherTestWithException() {
-		// assign
-		final String eventName = ExceptedEventLabelInCustomMDT;
-		Boolean result = true, exceptionOccurred = false;
-		accc_PublisherTest publisher = new accc_PublisherTest(eventName);
+    } // end of testPublisherTestEventButDifferentName
 
-		accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
-		List<SObject> evt = new List<SObject> { new pe_test__e()};
-		accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
+    @isTest
+    static void testPublisherTestWithException() {
+        // assign
+        final String eventName = ExceptedEventLabelInCustomMDT;
+        Boolean result = true, exceptionOccurred = false;
+        accc_PublisherTest publisher = new accc_PublisherTest(eventName);
 
-		Test.startTest();
-		try {
-			publisher.causeException = true;
-			// act -- Publish test event
-			result = publisher.process(evt, handlers, attrs);
-			Test.getEventBus().deliver();
-		} catch (accc_PlatformEventException pexcp) {
-			exceptionOccurred = true;
-		} catch (Exception excp) {
-			result = false;
-		}
-		Test.stopTest();
+        accc_DefaultProcessEventHandlers handlers = new accc_DefaultProcessEventHandlers();
+        List<SObject> evt = new List<SObject> { new pe_test__e()};
+        accc_PlatformEventAttrs attrs = new accc_PlatformEventAttrs();
 
-		// assert -- Verify results
-		System.assertEquals(true, result);
-		System.assertEquals(true, publisher.eventName == eventName);
-		System.assertEquals(true, publisher.theException != null);
-		System.assertEquals(true, exceptionOccurred);
-	} // end of testPublisherTestWithException
+        Test.startTest();
+        try {
+            publisher.causeException = true;
+            // act -- Publish test event
+            result = publisher.process(evt, handlers, attrs);
+            Test.getEventBus().deliver();
+        } catch (accc_PlatformEventException pexcp) {
+            exceptionOccurred = true;
+        } catch (Exception excp) {
+            result = false;
+        }
+        Test.stopTest();
 
-	@isTest
-	static void testprocessResults() {
-		// assign
-		final String eventName = ExceptedEventLabelInCustomMDT;
-		Boolean result = true, exceptionOccurred = false;
-		integer expected = 1;
-		List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult = new  List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC>();
-		// Create two accounts, assuming the NAME is all that is required;
-		// otherwise, this db insert is incorrect.
+        // assert -- Verify results
+        System.assertEquals(true, result);
+        System.assertEquals(true, publisher.eventName == eventName);
+        System.assertEquals(true, publisher.theException != null);
+        System.assertEquals(true, exceptionOccurred);
+        System.assertEquals(null, publisher.operationIds);
 
-		accc_DefaultPEPublisher publisher = new accc_DefaultPEPublisher(eventName);
+    } // end of testPublisherTestWithException
 
-		// the goal is to have success and the count be equl to the results size (2) [as no errors]
-		List<Account> sobjects = new List<Account> {
-			new Account(Name = 'we'),
-			new Account()
-		};
+    @isTest
+    static void testprocessResults() {
+        // assign
+        final String eventName = ExceptedEventLabelInCustomMDT;
+        Boolean result = true, exceptionOccurred = false;
+        integer expected = 1;
+        List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData = new  List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC>();
+        List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult = new  List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC>();
+        // Create two accounts, assuming the NAME is all that is required;
+        // otherwise, this db insert is incorrect.
 
-		Database.SaveResult[] db_results = Database.insert(sobjects, false);
+        accc_DefaultPEPublisher publisher = new accc_DefaultPEPublisher(eventName);
 
-		integer count = publisher.processResults(db_results,sobjects, errResult);
+        // the goal is to have success and the count be equl to the results size (2) [as no errors]
+        List<Account> sobjects = new List<Account> {
+            new Account(Name = 'we'),
+            new Account()
+        };
 
-		System.assertEquals(expected, count);
-		count = publisher.processResults(db_results,sobjects, null);
+        Database.SaveResult[] db_results = Database.insert(sobjects, false);
 
-		System.assertEquals(expected, count);
+        integer count = publisher.processResults(db_results,sobjects, errResult, theData);
+
+        System.assertEquals(expected, count);
+        count = publisher.processResults(db_results,sobjects, null,theData);
+        System.assertEquals(expected, count);
 
 
-	} // end of testprocessResults
+    } // end of testprocessResults
 
 }

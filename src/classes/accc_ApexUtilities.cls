@@ -1190,6 +1190,7 @@ public without sharing class accc_ApexUtilities {
         Boolean found = false;
         if ( accc_ApexConstants.UNIT_TEST_RUNNING && accc_ApexUtilities.logTestData != null ) {
             for (String item : accc_ApexUtilities.logTestData) {
+                system.debug('++++ item:'+item);
                 if ( (found = item.contains(lookFor)) == true) {
                     break;
                 }

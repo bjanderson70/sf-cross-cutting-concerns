@@ -34,6 +34,17 @@
  * @author Bill Anderson
  * @description Handles AsyncOperationEvent errors. This simple mechanism just logs the data.
  *
+ * Notes:
+ *  If logging into the Big Object was not done, then this will NOT WORK.
+ *  In order to log to Big Object for publishing platform events, you must
+ *  either use the default settings for PlatformEventAttrs 'getDefaultAttributes' )
+ *  or ensure the following:
+ *
+ *     1). event storing is true
+ *     2). serialization is true
+ *
+ * Logging to Big Object allows us to retrieve the Operation Ids.
+ *
  * @group Platform Events Handling
  */
 public with sharing class accc_AsyncOperationEventHandler extends accc_EventBase {
@@ -77,9 +88,24 @@ public with sharing class accc_AsyncOperationEventHandler extends accc_EventBase
             /*
              * END: FOR Testing
              *******************************************************/
-        
-			// TBD !!!!!!
-			
+
+            // We have events that did not get published ( though, enqueued).
+            //
+            // If logging into the Big Object was not done, then this will NOT WORK.
+            // In order to log to Big Object for publishing platform events, you must
+            // either use the default settings for PlatformEventAttrs 'getDefaultAttributes' )
+            // or ensure the following:
+            //
+            //     1). event storing is true [Attributes]
+            //     2). serialization is true [Attributes]
+            //     3) platform event binding for the event 
+            //         a) correct run time environment
+            //         b) Using the accc_DefaultProcessStoreHandler for the Store Handlere
+            // TBD
+            // for ( SObject event : newItems) {
+            //
+            // }
+
         } catch (Exception excp) {
             // process exception, handle w/ care
             accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);

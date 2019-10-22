@@ -92,7 +92,7 @@ public virtual without sharing class accc_PlatformEvtMdtDataModel {
     // Step 1a. Add field name here, ie. 'LogFormatter__c'
     @TestVisible
     static private final List<String> FieldList = new List<String> {
-        'Environment__c'
+        'Runtime_Environment__c'
         , 'Consumer__c'
         , 'Publisher__c'
         , 'Alert_Handler__c'
@@ -109,7 +109,7 @@ public virtual without sharing class accc_PlatformEvtMdtDataModel {
     @TestVisible
     static final Map<String, Object> l1Cache = new  Map<String, Object> ();
     // acts as the environment
-    static final String CUSTOM_MDT_ENVIRONMENT = 'Environment__c';
+    static final String CUSTOM_MDT_ENVIRONMENT = 'Runtime_Environment__c';
     // custom mdt name
     @TestVisible
     static final String CUSTOM_MDT_NAME = 'DeveloperName';
@@ -247,7 +247,7 @@ public virtual without sharing class accc_PlatformEvtMdtDataModel {
                 result.alertHandlerClass = accc_PlatformEvtMdtDataModel.defaultProcessHandler(cmdt.Alert_Handler__c, accc_PlatformEvtMdtDataModel.DefaultProcessHandlerClass);
                 result.consumerClass = accc_PlatformEvtMdtDataModel.defaultProcessHandler(cmdt.Consumer__c, accc_PlatformEvtMdtDataModel.DefaultConsumerClass);
                 result.publisherClass = accc_PlatformEvtMdtDataModel.defaultProcessHandler(cmdt.Publisher__c, accc_PlatformEvtMdtDataModel.DefaultPublisherClass);
-                result.environment = accc_ApexUtilities.normalizeString(cmdt.Environment__c, true);
+                result.environment = accc_ApexUtilities.normalizeString(cmdt.Runtime_Environment__c, true);
                 result.errorHandlerClass = accc_PlatformEvtMdtDataModel.defaultProcessHandler(cmdt.Error_Handler__c, accc_PlatformEvtMdtDataModel.DefaultProcessHandlerClass);
                 result.logHandlerClass = accc_PlatformEvtMdtDataModel.defaultProcessHandler(cmdt.Log_Handler__c, accc_PlatformEvtMdtDataModel.DefaultProcessHandlerClass);
                 result.successHandlerClass = accc_PlatformEvtMdtDataModel.defaultProcessHandler(cmdt.Success_Handler__c, accc_PlatformEvtMdtDataModel.DefaultProcessHandlerClass);

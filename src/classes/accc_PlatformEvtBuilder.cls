@@ -86,10 +86,13 @@ public without sharing class accc_PlatformEvtBuilder {
         this.eventEnvironment = accc_ApexEnvironment.ensureEnviromentIsCorrectOtherwiseDebug(enviroment);
         // here we go read the custom metadata information
         this.m_elements =  (new accc_PlatformEvtMdtDataModel()).findByEnvironmentAndLabel(this.m_environment, this.m_eventName);
+
         // check for later
         this.validEventName = accc_ApexUtilities.validEventName(this.m_eventName) == false;
         // is this event active
         this.eventActive = accc_PlatformEvtBuilder.isEventActive(this.m_elements);
+        // for tracing (if needed)
+        accc_ApexUtilities.trace('Event Builder: eventActive:' + this.eventActive + ',validEventName: ' + this.validEventName + ', Elements:' + this.m_elements);
     } // end of ctor
 
     /////////////////////////////////////////////////////////////////////////////////////////

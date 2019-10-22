@@ -30,6 +30,7 @@
     </fields>
     <fields>
         <fullName>Exception__c</fullName>
+        <defaultValue>&quot;&quot;</defaultValue>
         <description>If any exception is known</description>
         <externalId>false</externalId>
         <isFilteringDisabled>false</isFilteringDisabled>

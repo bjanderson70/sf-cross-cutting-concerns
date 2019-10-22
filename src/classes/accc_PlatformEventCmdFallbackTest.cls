@@ -46,7 +46,7 @@ private class accc_PlatformEventCmdFallbackTest {
 		// assert
 		system.assertEquals(true, mdt.size() > 0);
 		system.assertEquals(true, mdt[0].DeveloperName == name);
-		system.assertEquals(true, mdt[0].Environment__c == accc_ApexConstants.TEST_CATEGORY);
+		system.assertEquals(true, mdt[0].Runtime_Environment__c == accc_ApexConstants.TEST_CATEGORY);
 
 	}
 	@isTest
@@ -60,7 +60,7 @@ private class accc_PlatformEventCmdFallbackTest {
 		// assert
 		system.assertEquals(true, mdt.size() > 0);
 		system.assertEquals(true, mdt[0].DeveloperName == name);
-		system.assertEquals(true, mdt[0].Environment__c == accc_ApexConstants.PRODUCTION_CATEGORY);
+		system.assertEquals(true, mdt[0].Runtime_Environment__c == accc_ApexConstants.PRODUCTION_CATEGORY);
 
 	}
 } // end of accc_PlatformEventCmdFallbackTest

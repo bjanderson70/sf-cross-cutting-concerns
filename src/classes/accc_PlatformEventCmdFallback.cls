@@ -66,7 +66,7 @@ public with sharing class accc_PlatformEventCmdFallback {
 		defaultMDT.Alert_Handler__c = accc_PlatformEvtMdtDataModel.DefaultProcessHandlerClass;
 		defaultMDT.Consumer__c = accc_PlatformEvtMdtDataModel.DefaultConsumerClass;
 		defaultMDT.Publisher__c = accc_PlatformEvtMdtDataModel.DefaultPublisherClass;
-		defaultMDT.Environment__c = string.isBlank(environment) ? accc_ApexConstants.TEST_CATEGORY: environment;
+		defaultMDT.Runtime_Environment__c = string.isBlank(environment) ? accc_ApexConstants.TEST_CATEGORY: environment;
 		defaultMDT.Error_Handler__c = accc_PlatformEvtMdtDataModel.DefaultProcessHandlerClass;
 		defaultMDT.Log_Handler__c = accc_PlatformEvtMdtDataModel.DefaultProcessHandlerClass;
 		defaultMDT.Success_Handler__c = accc_PlatformEvtMdtDataModel.DefaultProcessHandlerClass;
