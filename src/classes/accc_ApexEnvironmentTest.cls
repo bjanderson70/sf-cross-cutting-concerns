@@ -32,7 +32,7 @@
  *
  * @author Bill Anderson
  * @description Test environment class
- * 
+ *
  * @modifications: BJA added ensure
  * @group Common Test Layer
  */
@@ -40,48 +40,51 @@
 private class accc_ApexEnvironmentTest {
 
 
-	@isTest
-	static void testgetEnvironment() {
-		// assign act
-		String env = accc_ApexEnvironment.getEnvironment();
-		// assert
-		system.assertEquals(true, accc_ApexConstants.SUPPORTED_CATEGORY_SET.contains(env));
+    @isTest
+    static void testgetEnvironment() {
+        // assign act
+        String env = accc_ApexEnvironment.getEnvironment();
+        // assert
+        system.assertEquals(true, accc_ApexConstants.SUPPORTED_CATEGORY_SET.contains(env));
 
-	} // end of testgetEnvironment
+    } // end of testgetEnvironment
 
-	@isTest
-	static void testgetRuntimeEnvironment() {
-		// assign/ act
-		accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment() ;
-		String rType = null,
-		       expected = String.valueOf(runtime).split(':')[0];
-		// TBD there is a Test runtime, accc_TestEnvironmentSingleton, but will exclude for now
-		rType = String.valueOf(accc_ApexRunEnvironmentSingleton.class).split(':')[0];
+    @isTest
+    static void testgetRuntimeEnvironment() {
+        // assign/ act
+        accc_IApexRunEnvironment runtime = accc_ApexEnvironment.getRuntimeEnvironment();
+        String rType = null,
+               expected = String.valueOf(runtime).split(':')[0];
+        // TBD there is a Test runtime, accc_TestEnvironmentSingleton, but will exclude for now
+        rType = String.valueOf(accc_ApexRunEnvironmentSingleton.class).split(':')[0];
 
-		// assert
-		system.assertEquals(expected, rType);
-	} // end of testgetRuntimeEnvironment
+        // assert
+        system.assertEquals(expected, rType);
+    } // end of testgetRuntimeEnvironment
 
-	@isTest
+    @isTest
     static void testensureEnviromentIsCorrectOtherwiseDebug() {
         String env = accc_ApexEnvironment.ensureEnviromentIsCorrectOtherwiseDebug('accc_ApexEnvironment');
-        System.assertEquals( accc_ApexConstants.DEBUG_CATEGORY == env , true);
+        System.assertEquals( accc_ApexConstants.DEBUG_CATEGORY == env, true);
         env = accc_ApexEnvironment.ensureEnviromentIsCorrectOtherwiseDebug(accc_ApexConstants.TEST_CATEGORY);
-        System.assertEquals( accc_ApexConstants.TEST_CATEGORY == env , true);
+        System.assertEquals( accc_ApexConstants.TEST_CATEGORY == env, true);
+        env = accc_ApexEnvironment.ensureEnviromentIsCorrectOtherwiseDebug(null);
+        System.assertEquals( accc_ApexConstants.DEBUG_CATEGORY == env, true);
+
     } // end of testensureEnviromentIsCorrectOtherwiseDebug
-	@isTest
-	static void testgetRuntimeFallbackExceptionHandler() {
-		system.assertNotEquals(null, accc_ApexEnvironment.getRuntimeFallbackExceptionHandler());
-	} // end of testgetRuntimeFallbackExceptionHandler
+    @isTest
+    static void testgetRuntimeFallbackExceptionHandler() {
+        system.assertNotEquals(null, accc_ApexEnvironment.getRuntimeFallbackExceptionHandler());
+    } // end of testgetRuntimeFallbackExceptionHandler
 
-	@isTest
-	static void testgetRuntimeFallbackResources() {
-		system.assertNotEquals(null, accc_ApexEnvironment.getRuntimeFallbackResources());
-	} // end of testgetRuntimeFallbackResources
+    @isTest
+    static void testgetRuntimeFallbackResources() {
+        system.assertNotEquals(null, accc_ApexEnvironment.getRuntimeFallbackResources());
+    } // end of testgetRuntimeFallbackResources
 
-	@isTest
-	static void testgetVersion() {
-		system.assertEquals(accc_ApexConstants.CURRENT_VERSION, accc_ApexEnvironment.getVersion());
-	} // end of testgetVersion
+    @isTest
+    static void testgetVersion() {
+        system.assertEquals(accc_ApexConstants.CURRENT_VERSION, accc_ApexEnvironment.getVersion());
+    } // end of testgetVersion
 //
 } // end of accc_ApexEnvironmentTest

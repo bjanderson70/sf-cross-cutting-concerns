@@ -30,6 +30,7 @@
     </fields>
     <fields>
         <fullName>Exception__c</fullName>
+        <defaultValue>&quot;&quot;</defaultValue>
         <description>If any exception is known</description>
         <externalId>false</externalId>
         <isFilteringDisabled>false</isFilteringDisabled>
@@ -42,7 +43,6 @@
     </fields>
     <fields>
         <fullName>External_Id__c</fullName>
-        <defaultValue>&apos;&apos;</defaultValue>
         <description>An external Id of the main object, if known;otherwise, null or empty</description>
         <externalId>false</externalId>
         <isFilteringDisabled>false</isFilteringDisabled>
@@ -51,6 +51,19 @@
         <label>External Id</label>
         <length>255</length>
         <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MessageId__c</fullName>
+        <description>Message Id</description>
+        <externalId>false</externalId>
+        <isFilteringDisabled>false</isFilteringDisabled>
+        <isNameField>false</isNameField>
+        <isSortingDisabled>false</isSortingDisabled>
+        <label>MessageId</label>
+        <length>255</length>
+        <required>true</required>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -106,19 +119,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>MessageId__c</fullName>
-        <description>Message Id</description>
-        <externalId>false</externalId>
-        <isFilteringDisabled>false</isFilteringDisabled>
-        <isNameField>false</isNameField>
-        <isSortingDisabled>false</isSortingDisabled>
-        <label>MessageId</label>
-        <length>255</length>
-        <required>true</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>TransactionId__c</fullName>
         <description>Transaction Id</description>
         <externalId>false</externalId>
@@ -146,7 +146,7 @@
     </fields>
     <fields>
         <fullName>Version__c</fullName>
-        <defaultValue>&apos;1.0.0.0&apos;</defaultValue>
+        <defaultValue>&quot;1.0.0.0&quot;</defaultValue>
         <description>Version of the message event</description>
         <externalId>false</externalId>
         <isFilteringDisabled>false</isFilteringDisabled>

@@ -38,50 +38,63 @@
 @isTest
 public class accc_TestBatchableErrorTestJob implements Database.Batchable<SObject>, Database.RaisesPlatformEvents {
 
-	public static final String EXCEPTION_MESSAGE = 'Test exception';
-	public static final String CAUSE_BAD_FLOW_NAME = 'Bad';
-	public static final String CAUSE_GOOD_FLOW_NAME = 'All good';
+    public static final String EXCEPTION_MESSAGE = 'Test exception';
+    public static final String CAUSE_BAD_FLOW_NAME = 'Bad-Batch';
+    public static final String CAUSE_BAD_ASYNC_FLOW_NAME = 'Bad-Async';
+    public static final String CAUSE_GOOD_FLOW_NAME = 'All good';
 
-	private List<Account> accounts;
+    private List<Account> accounts;
+    private Boolean IS_BATCH_EXCEPTION = false;
 
+    public accc_TestBatchableErrorTestJob(List<Account> accounts) {
+        this.accounts = accounts;
+    }
 
-	public accc_TestBatchableErrorTestJob(List<Account> accounts) {
-		this.accounts = accounts;
-	}
+    public List<Account> start(Database.BatchableContext ctx) {
+        return accounts;
+    }
 
-	public List<Account> start(Database.BatchableContext ctx) {
-		return accounts;
-	}
+    public void execute(Database.BatchableContext ctx, List<Account> scope) {
+        try {
+            // Query accounts
+            Set<Id> accountIds = new Map<Id, Account>(scope).keySet();
+            List<Account> accounts = [select Id, Name from Account where id in :accountIds];
 
-	public void execute(Database.BatchableContext ctx, List<Account> scope) {
-		try {
-			// Query accounts
-			Set<Id> accountIds = new Map<Id, Account>(scope).keySet();
-			List<Account> accounts = [select Id, Name from Account where id in :accountIds];
-			 
-			// Throw a test exception?
-			if (accounts[0].Name == CAUSE_BAD_FLOW_NAME) {
-				throw new TestJobException(EXCEPTION_MESSAGE);
-			}
-			// Update account if all good
-			for (Account account : accounts) {
-				account.Name = CAUSE_GOOD_FLOW_NAME;
-			}
-			update accounts;
-		} catch (Exception excp) {
-			// We emulate BatchApexErrorEvent firing if running in test mode (subject to change once the feature GA's)
-			BatchApexErrorEvent event = new BatchApexErrorEvent();
-			event.AsyncApexJobId = ctx.getJobId();
-			event.DoesExceedJobScopeMaxLength = false;
-			event.ExceptionType =  'Error';
-			event.JobScope = String.join((Iterable<Id>) new Map<Id, SObject>(scope).keySet(), ',');
-			event.Message = excp.getMessage();
-			event.RequestId = null; // Not currently acccessibe via Apex
-			event.StackTrace = excp.getStackTraceString();
-			EventBus.publish(event);
-		}
-	}
+            // Throw a test exception?
+            if (accounts[0].Name == CAUSE_BAD_FLOW_NAME) {
+                IS_BATCH_EXCEPTION = true;
+                throw new TestJobException(EXCEPTION_MESSAGE);
+            } else if ( accounts[0].Name == CAUSE_BAD_ASYNC_FLOW_NAME ) {
+                throw new TestJobException(EXCEPTION_MESSAGE);
+            }
+            // Update account if all good
+            for (Account account : accounts) {
+                account.Name = CAUSE_GOOD_FLOW_NAME;
+            }
+            update accounts;
+        } catch (Exception excp) {
+            SObject event = null;
+            if ( !IS_BATCH_EXCEPTION ) {
+                AsyncOperationEvent aevent = new AsyncOperationEvent();
+                aevent.OperationId = '12345';
+                event = aevent;
+            } else {
+                // We emulate BatchApexErrorEvent firing if running in test mode (subject to change once the feature GA's)
+                BatchApexErrorEvent bevent = new BatchApexErrorEvent();
+                bevent.AsyncApexJobId = ctx.getJobId();
+                bevent.DoesExceedJobScopeMaxLength = false;
+                bevent.ExceptionType =  'Error';
+                bevent.JobScope = String.join((Iterable<Id>) new Map<Id, SObject>(scope).keySet(), ',');
+                bevent.Message = excp.getMessage();
+                bevent.RequestId = null; // Not currently acccessibe via Apex
+                bevent.StackTrace = excp.getStackTraceString();
+                event = bevent;
+            }
+            EventBus.publish(event);
+        }
+    }
 
-	public void finish(Database.BatchableContext ctx) { }
-	public class TestJobException extends Exception { }
+    public void finish(Database.BatchableContext ctx) {
+    }
+    public class TestJobException extends Exception { }
 }// end of accc_TestBatchableErrorTestJob

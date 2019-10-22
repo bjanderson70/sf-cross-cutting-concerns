@@ -31,6 +31,7 @@
     <testClassName>accc_ApexTestUtilities</testClassName>
     <testClassName>accc_ApexUtilitiesTest</testClassName>
     <testClassName>accc_ApplicationLogTest</testClassName>
+    <testClassName>accc_AsyncOperationEventHandlerTest</testClassName>
     <testClassName>accc_BaseMdtDataModelTest</testClassName>
     <testClassName>accc_BatchApexErrorEventHandlerTest</testClassName>
     <testClassName>accc_CDCEventBaseTest</testClassName>
@@ -50,7 +51,9 @@
     <testClassName>accc_DefaultProcessStoreHandlerTest</testClassName>
     <testClassName>accc_EventBaseTest</testClassName>
     <testClassName>accc_ExceptionFormatterTest</testClassName>
+    <testClassName>accc_ForTestingOnlyPEEventHandlerTest</testClassName>
     <testClassName>accc_GenericDbResultHandlerTest</testClassName>
+    <testClassName>accc_LogEventHandlerTest</testClassName>
     <testClassName>accc_LogPlatformEventHandlerTest</testClassName>
     <testClassName>accc_MessageTransformationTest</testClassName>
     <testClassName>accc_MockPlatformEventServiceUtil</testClassName>
@@ -69,6 +72,7 @@
     <testClassName>accc_SendPlatformEventNotificationTest</testClassName>
     <testClassName>accc_SObjectBaseWriterTest</testClassName>
     <testClassName>accc_StopWatchTest</testClassName>
+    <testClassName>accc_StringUtilitiesTest</testClassName>
     <testClassName>accc_SyncAsyncWriterTest</testClassName>
     <testClassName>accc_TestBatchableErrorTestJob</testClassName>
     <testClassName>accc_TestEnvironmentSingletonTest</testClassName>
@@ -76,7 +80,7 @@
     <testClassName>accc_TestPlatformEventMock</testClassName>
     <testClassName>accc_TestUtility</testClassName>
     <testClassName>accc_TriggerHandlerBaseTest</testClassName>
+    <testClassName>accc_TriggerHandlerResourcesTest</testClassName>
     <testClassName>accc_TriggerHelperClassTest</testClassName>
     <testClassName>accc_VirtualCustomSettingsTest</testClassName>
-   
 </ApexTestSuite>

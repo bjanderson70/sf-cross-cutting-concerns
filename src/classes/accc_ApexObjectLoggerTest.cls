@@ -38,9 +38,10 @@ private class accc_ApexObjectLoggerTest {
     @isTest
     static void testDefaultCtor() {
         final String value = 'data';
+        LoggingLevel expected =accc_ApexUtilities.logLevel();
         accc_ApexObjectLogger logger = new accc_ApexObjectLogger();
 
-        System.assertEquals(LoggingLevel.DEBUG, logger.logLevel());
+        System.assertEquals(expected, logger.logLevel());
         System.assertEquals(null, logger.lastMessage());
 
     } // end of testDefaultCtor

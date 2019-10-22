@@ -104,19 +104,12 @@ public without sharing class accc_ApexUtilities {
     /**
      *
      * @description Method Name of the caller
-     *
+     * (deprecating)
      * @param thisClass the object
      * @return String - Method name
      */
     public static String getClassName(Object thisClass) {
-        String currentClassName = accc_ApexConstants.EmptyString;
-        if ( thisClass != null ) {
-            List<String> items = String.valueOf(thisClass).split(accc_ApexConstants.ColonDelimiter);
-            if ( items.size() > 0 ) {
-                currentClassName = items[0];
-            }
-        }
-        return currentClassName;
+        return accc_StringUtilities.getClassName(thisClass);
     } // end of getClassName
     /**
      *
@@ -165,100 +158,86 @@ public without sharing class accc_ApexUtilities {
 
     /**
      *  @description form the provder name for entity access
-     *
+     * [deprecating to accc_StringUtilities]
      * @param namespace String
      * @param section String
      *
      * @return String -- 'ns:section'
      */
     public static String formProviderNameAccess(String namespace, String section) {
-        String ns = namespace == null ? accc_ApexConstants.EmptyString : namespace;
-        String sct = section == null ? accc_ApexConstants.EmptyString : section;
-
-        return ns + accc_ApexConstants.ColonDelimiter + sct;
+        return accc_StringUtilities.formProviderNameAccess(namespace, section);
     } // end of formProviderNameAccess
     /**
      *  @description get namespace  ( w/ delimiter of ':')
-     *
+     * [deprecating to accc_StringUtilities]
      * @param value String
      * @return String namespace
      */
     public static String getNamespace(String value) {
-        return accc_ApexUtilities.getNamespace(value, accc_ApexConstants.ColonDelimiter);
+        return accc_StringUtilities.getNamespace(value);
     } // end of getNamespace
 
     /**
      *  @description get namespace
-     *
+     * [deprecating to accc_StringUtilities]
      * @param value String
      * @param delimiter String
      *
      * @return String namespace
      */
     public static String getNamespace(String value, String delimiter) {
-        return accc_ApexUtilities.getSection(value, delimiter, 0);
+        return accc_StringUtilities.getNamespace(value, delimiter);
     } // end of getNamespace
 
     /**
      *  @description get section ( w/ delimiter of ':')
-     *
+     * [deprecating to accc_StringUtilities]
      * @param value String
      * @return String
      */
     public static String getSection(String value) {
-        return accc_ApexUtilities.getSection(value, accc_ApexConstants.ColonDelimiter, 1);
+        return accc_StringUtilities.getSection(value, accc_ApexConstants.ColonDelimiter, 1);
     } // end of getSection
     /**
      * @description get section
-     *
+     * [deprecating to accc_StringUtilities]
      * @param value String
      * @param delimiter String
      *
      * @return string section
      */
     public static String getSection(String value, String delimiter, Integer index) {
-        String result = null;
-        if ( !String.isBlank(value) ) {
-            List<String> items = value.split(delimiter);
-            if ( items.size() > index ) {
-                result = items[index];
-            }
-        }
-        return result;
+        return accc_StringUtilities.getSection(value, delimiter, index);
     } // end of getSection
     /**
      * @description Unique Guid
+     * [deprecating to accc_StringUtilities]
      * @return String unique
      */
     public static String newGuid() {
-
-        Blob crytoBlob = Crypto.GenerateAESKey(128);
-        return EncodingUtil.ConvertTohex(crytoBlob);
+        return accc_StringUtilities.newGuid();
     } // end of newGuid
     /**
      * @description get the string of the value
+     * [deprecating to accc_StringUtilities]
      *
      * @param obj object you want the string value
      * @return string value of object
      */
     public static String toString(Object obj) {
-
-        return accc_ApexUtilities.toString(obj, accc_ApexConstants.EmptyString);
+        return accc_StringUtilities.toString(obj);
     } // end of toString
 
     /**
      * @description get the string of the value
+     * [deprecating to accc_StringUtilities]
      *
      * @param obj object you want the string value
      * @param defaultValue default string value
      * @return string value of object
      */
     public static String toString(Object obj, String defaultValue) {
-        String result = defaultValue;
-        if ( obj != null ) {
-            result = String.valueOf(obj);
-        }
-        return result == null ? accc_ApexConstants.EmptyString : result;
+        return accc_StringUtilities.toString(obj, defaultValue);
     } // end of toString
 
     /**
@@ -350,6 +329,7 @@ public without sharing class accc_ApexUtilities {
     }// end of userProfileName
     /**
      * @description create the cache identifier
+     * [deprecating to accc_StringUtilities]
      *
      * @param category category of the cache entry, if any ( can be null or empty)
      * @param label label of the cache entry
@@ -357,16 +337,7 @@ public without sharing class accc_ApexUtilities {
      * @return a formatted string for the cach entry identifier
      */
     public static String makeCacheIdentifier(String category, String label) {
-        string identifier = category == null ? accc_ApexConstants.EmptyString : category,
-               normalizeLbl  = label == null ? accc_ApexConstants.EmptyString : label;
-
-        if (normalizeLbl.length() > 0 ) {
-            if (identifier.length() > 0 ) {
-                identifier += accc_ApexConstants.Period;
-            }
-            identifier += normalizeLbl;
-        }
-        return identifier;
+        return accc_StringUtilities.makeCacheIdentifier(category, label);
 
     } // end of makeCacheIdentifier
     /**
@@ -457,25 +428,15 @@ public without sharing class accc_ApexUtilities {
 
     } // end of getRecordByName
       /**
-       *
        * @description use to generate a random number/string by size
+       * [deprecating to accc_StringUtilities]
        *
        * @param sizeOfString size of string returned
        * @return string by size 'sizeOfString'
        */
 
     public static String generateRandomNumberString(integer sizeOfString) {
-
-        final string characters = '0123456789';
-        final integer charactersLen = characters.length();
-        string randonString = accc_ApexConstants.EmptyString;
-        integer index = 0;
-
-        while ( randonString.length() < sizeOfString) {
-            index = Math.Mod(Math.abs(Crypto.getRandomInteger()), charactersLen);
-            randonString += characters.substring(index, index + 1);
-        }
-        return randonString;
+        return accc_StringUtilities.generateRandomNumberString(sizeOfString);
     } // end of generateRandomNumberString
 
     /**
@@ -494,7 +455,8 @@ public without sharing class accc_ApexUtilities {
             }
 
         } catch  (Exception excp) {
-            // ignored at this time
+            // process exception
+            accc_ApexUtilities.log(excp);
         }
         return result;
     } // end of getTypeFromSObject
@@ -524,7 +486,7 @@ public without sharing class accc_ApexUtilities {
                 }
             }
         } catch  (Exception excp) {
-            // ignored at this time
+            accc_ApexUtilities.log(excp);
         }
         return result;
     } // end of getTypeFromSObject
@@ -543,7 +505,7 @@ public without sharing class accc_ApexUtilities {
                 result= accc_ApexUtilities.getTypeFromSObject(new List<SObject>(theSObject));
             }
         } catch  (Exception excp) {
-            // ignored at this time
+            accc_ApexUtilities.log(excp);
         }
         return result;
     } // end of getTypeFromSObject
@@ -712,6 +674,7 @@ public without sharing class accc_ApexUtilities {
 
     /**
      *  @description convert string of numbers to telephone #
+     * [deprecating to accc_StringUtilities]
      *
      * @param phone string of numbers '1111111111' or '(111) 111-1111'
      * @return converted to telephone (111) 111-1111
@@ -730,74 +693,46 @@ public without sharing class accc_ApexUtilities {
     } // end of formatNumberIntoUSTelephone
     /**
      *  @description convert string of numbers to telephone #
+     * [deprecating to accc_StringUtilities]
      *
      * @param stringOfNums string of numbers '1111111111'
      * @return converted to telephone (111) 111-1111
      */
     public static String convertStringOfNumbersIntoUSTelephone(String stringOfNums) {
-
-        if (stringOfNums != null &&
-            stringOfNums.length() == accc_ApexConstants.US_TELEPHONE_SIZE) {
-            stringOfNums = '('
-                           + stringOfNums.substring(0, 3)
-                           + ') '
-                           + stringOfNums.substring(3, 6)
-                           + '-'
-                           + stringOfNums.substring(6);
-        }
-        return stringOfNums;
-
+        return accc_StringUtilities.convertStringOfNumbersIntoUSTelephone(stringOfNums);
     } // end of convertStringOfNumbersIntoUSTelephone
 
     /**
      *  @description  Is this incoming number a valid telephone number
+     * [deprecating to accc_StringUtilities]
      *
      * @param phoneNumber what is considered a telephone
      * @return true if valid us or international #
      */
     public static Boolean isValidTelephoneUSorInternational(string phoneNumber) {
-        return accc_ApexUtilities.isStringOfNumbersValidTelephoneWithRegex(phoneNumber, accc_ApexConstants.ALL_TELEPHONE_REGEX);
+        return accc_StringUtilities.isStringOfNumbersValidTelephoneWithRegex(phoneNumber, accc_ApexConstants.ALL_TELEPHONE_REGEX);
     } // end of isValidTelephoneUSorInternational
     /**
      *
      * @description convert string of numbers to  us or international telephone #
+     * [deprecating to accc_StringUtilities]
      *
      * @param stringOfNums string of numbers '1111111111'
      * @param userRegex regular expression
      * @return Boolean true, if valid
      */
     public static Boolean isStringOfNumbersValidTelephoneWithRegex(String stringOfNums, String userRegex) {
-
-        Boolean results = false;
-        if ( !string.IsBlank(stringOfNums)
-             && !string.isBlank(userRegex)) {
-            Pattern phoneFormatPattern = Pattern.compile(userRegex);
-            Matcher myFormatMatcher = phoneFormatPattern.matcher(stringOfNums);
-            results = myFormatMatcher.matches();
-
-        }
-        return results;
-
+        return accc_StringUtilities.isStringOfNumbersValidTelephoneWithRegex(stringOfNums, userRegex);
     } // end of isStringOfNumbersValidTelephoneWithRegex
     /**
      *  @description split a string on whitespace, comma or semi-colon
+     * [deprecating to accc_StringUtilities]
      *
      * @param input string to split
      * @return collection of split strings or empty collection
      */
     public static List<String> splitStringOnWhitespacesCommaOrSemiColon(String input) {
-        List<String> result = null;
-        // this regex will treat pre/post whitespace as a single whitespace; thus,
-        // '   a  ,  b ;c' ==> returns collection size of 3 [a,b,c]
-        if ( input != null && input.length() > 0 ) {
-            // replace ALL expressions with a single whitespace (' ')
-            string extraneous = input.replaceAll('[,;\\s+]', accc_ApexConstants.WhitespaceString);
-            // now all we have to do is split on a single whitespace
-            result = accc_ApexUtilities.splitStringOnExpression(extraneous, '\\s+');
-        } else {
-            result = new List<String>();
-        }
-        return result;
+        return accc_StringUtilities.splitStringOnWhitespacesCommaOrSemiColon(input);
     } // end of splitStringOnWhitespacesCommaOrSemiColon
 
 
@@ -837,6 +772,7 @@ public without sharing class accc_ApexUtilities {
 
     /**
      *  @description convert string to integer
+     * [deprecating to accc_StringUtilities]
      *
      * @param value string to convert
      * @param defaultValue default value in the event the value string is bad
@@ -895,46 +831,35 @@ public without sharing class accc_ApexUtilities {
      * @return string, normalize string
      */
     public static string normalizeString(String datum) {
-        return accc_ApexUtilities.normalizeString(datum, false);
+        return accc_StringUtilities.normalizeString(datum);
     } // end of normalizeString
     /**
      *
      * @description normalize the data and trim
+     * [deprecating to accc_StringUtilities]
      *
      * @param string data to inspect
      * @param boolean, true if trim
      * @return string, normalize string
      */
     public static string normalizeString(String datum, Boolean dotrim) {
-        string result = accc_ApexConstants.EmptyString;
-        if ( !string.isBlank(datum) ) {
-            if ( dotrim ) {
-                result = datum.trim();
-            } else {
-                result = datum;
-            }
-        }
-
-        return result;
+        return accc_StringUtilities.normalizeString(datum, dotrim);
     } // end of normalizeString
     /**
      *
      * @description normalize the data
+     * [deprecating to accc_StringUtilities]
      *
      * @param datum string to inspect
      * @return string, normalize string
      */
     public static string normalizeString(String datum, integer maxSize) {
-        integer maxSz = maxSize <= -1 ? 1 : maxSize;
-        String result = string.isBlank(datum) ? accc_ApexConstants.EmptyString : datum;
-        if ( result.length() > maxSize ) {
-            result = result.substring(0, maxSz);
-        }
-        return result;
+        return accc_StringUtilities.normalizeString(datum, maxSize);
     } // end of normalizeString
 
     /**
      * @description normalize the string (trim and size accordingly)
+     * [deprecating to accc_StringUtilities]
      *
      * @param datum string to normalize
      * @param dotrim true, if need to trim
@@ -943,17 +868,7 @@ public without sharing class accc_ApexUtilities {
      * @return normalize string
      */
     public static string normalizeString(String datum, Boolean dotrim, integer size) {
-        string result = '';
-
-        if ( !string.isBlank(datum) ) {
-            if ( dotrim ) {
-                result = datum.trim();
-            } else {
-                result = datum;
-            }
-            result = accc_ApexUtilities.normalizeString(result, size);
-        }
-        return result;
+        return accc_StringUtilities.normalizeString(datum, dotrim, size);
     } // end of normalizeString
     /**
      * @description DML limits in string form for output
@@ -973,6 +888,7 @@ public without sharing class accc_ApexUtilities {
     } // end of getDMLLimitsInStringForm
     /**
      * @description convert a list into a max. string, delimiter by some value
+     * [deprecating to accc_StringUtilities]
      *
      * @param theList the list to convert
      * @param theMaxSize maximum size ( if <= 0, do not shrink)
@@ -982,21 +898,12 @@ public without sharing class accc_ApexUtilities {
     public static String convertListCollectionIntoString(List<String> theList,
                                                          Integer theMaxSize,
                                                          String theDelimiter) {
-        String result = accc_ApexConstants.EmptyString,
-               delimiter = theDelimiter == null ? accc_ApexConstants.CommaDelimiter : theDelimiter;
-        // any data to convert
-        if (theList != null && theList.size() > 0 ) {
-            result =  string.join(theList, delimiter);
-            if ( theMaxSize > 1
-                 && result.length() > theMaxSize) {
-                result = result.Substring(0, theMaxSize - 1);
-            }
-        }
-        return result;
+        return accc_StringUtilities.convertListCollectionIntoString(theList, theMaxSize, theDelimiter);
     } // end of convertListCollectionIntoString
 
     /**
      * @description make the local cache key
+     * [deprecating to accc_StringUtilities]
      *
      * @param String local cache category
      * @param String local cache label
@@ -1004,15 +911,7 @@ public without sharing class accc_ApexUtilities {
      * @return string local cache key
      */
     public static string makeLocalCacheKey(String category, String label) {
-        String partition = string.isBlank(category) ? '' : category;
-        if ( !string.isBlank(label) ) {
-            if (!string.isBlank(partition) ) {
-                partition = partition + '.' + label;
-            } else {
-                partition = label;
-            }
-        }
-        return partition;
+        return accc_StringUtilities.makeLocalCacheKey(category, label);
     } // end of makeLocalCacheKey
 
     /**
@@ -1127,7 +1026,7 @@ public without sharing class accc_ApexUtilities {
 
         return result;
 
-    }     // end of getClassInstance
+    }// end of getClassInstance
 
     /**
      * @brief get the Type from the SObject collection (does not handle MIXed SOBject)
@@ -1155,7 +1054,7 @@ public without sharing class accc_ApexUtilities {
         }
 
         return sType;
-    }     // end of getSobjectTypeFromSObject
+    }// end of getSobjectTypeFromSObject
 
     /**
      * @brief get the Type from the SObject collection
@@ -1176,7 +1075,7 @@ public without sharing class accc_ApexUtilities {
         }
 
         return sType;
-    }     // end of getSobjectTypeFromSObject
+    } // end of getSobjectTypeFromSObject
     /**
      * @description have we exceeded our governor limts?
      *
@@ -1190,9 +1089,10 @@ public without sharing class accc_ApexUtilities {
                excp instanceof AsyncException ||
                excp instanceof CalloutException;
 
-    }     // end of exceededGovernorLimits
+    }// end of exceededGovernorLimits
     /**
      *  @description split a string based on expression ( ie. whitespace \s)
+     * [deprecating to accc_StringUtilities]
      *
      * @param input string to split
      * @param expression expressions (i.e., \s | , | ;)
@@ -1200,41 +1100,45 @@ public without sharing class accc_ApexUtilities {
      * @return collection of strings split by expression
      */
     public static List<String> splitStringOnExpression(string input, string expression) {
+        return accc_StringUtilities.splitStringOnExpression(input, expression);
+    }// end of splitStringOnExpression
 
-        List<String> result = null;
-        // we split on whitespace, comma or semi-colon
-        if ( !string.isBlank(input)
-             && !string.isBlank(expression)
-             && input.length() > 0
-             && expression.length() > 0) {
-            result = input.split(expression);
-        } else {
-            result = new List<String>();
+    /**
+     * @description syntactic sugar to get the user defined logging level
+     * @return LoggingLevel
+     **/
+    public static LoggingLevel logLevel() {
+        LoggingLevel userLogLevel;
+        try{
+            userLogLevel= (LoggingLevel)accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
+        } catch(Exception excp) {
+            // TBD
+            userLogLevel = LoggingLevel.DEBUG;
         }
-        return result;
-    }     // end of splitStringOnExpression
+        return userLogLevel;
+    }// end of logLevel
 
     /**
      * @description get month string
+     * [deprecating to accc_StringUtilities]
      *
      * @param value month values 1 to 12
      * @return two char string, 1 == '01'
      */
     public static String convertMonthToString(integer value) {
-        integer index = value <= 0 ?  1 : value > MAX_NUM_OF_MONTH ? MAX_NUM_OF_MONTH : value;
-        return MonthIndex.get(index);
-    }     // end of convertMonthToString
+        return accc_StringUtilities.convertMonthToString(value);
+    }// end of convertMonthToString
 
     /**
      * @description get month string
+     * [deprecating to accc_StringUtilities]
      *
      * @param value month values 1 to 31
      * @return two char string, 1 == '01'
      */
     public static String convertDayToString(integer value) {
-        integer index = value <= 0 ?  1 : value > MAX_DAY_IN_MONTH ? MAX_DAY_IN_MONTH : value;
-        return DayIndex.get(index);
-    }     // end of convertDayToString
+        return accc_StringUtilities.convertDayToString(value);
+    }// end of convertDayToString
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Private Static Methods
@@ -1286,6 +1190,7 @@ public without sharing class accc_ApexUtilities {
         Boolean found = false;
         if ( accc_ApexConstants.UNIT_TEST_RUNNING && accc_ApexUtilities.logTestData != null ) {
             for (String item : accc_ApexUtilities.logTestData) {
+                system.debug('++++ item:'+item);
                 if ( (found = item.contains(lookFor)) == true) {
                     break;
                 }

@@ -191,56 +191,31 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
 
     } // end of publish
 
-    /**
-     * @description record the operation and replay ids
-     *
-     * @param theData , place to store operation and replay ids
-     *
-     */
-    @TestVisible
-    protected virtual void recordOperationAndReplayIds(List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData) {
-
-        if ( theData != null ) {
-            // look for the event name and add information there
-            for ( accc_DefaultPlatformEvent.PlatformEvtResultPOAC item : theData ) {
-                if ( item.Name == this.eventName) {
-                    // if there are operation ids
-                    if ( super.operationIds != null ) {
-                        item.operationIds = super.operationIds.clone();
-                    }
-                    // if there are replay ids
-                    if ( super.replayIds != null ) {
-                        item.replayIds = super.replayIds.clone();
-                    }
-                    break;
-                }
-            }
-        }
-    } // end of recordOperationAndReplayIds
-
+  
     /**
      * @description process the results from the publish
      *
      * @param the results of the save
      * @param collection of events
      * @param errResult logs any errors -- it is a virtual in the event it needs to be overriden
+     * @param theData holds operation ids, etc.
      * @return integer number of successful records saved
      */
     @TestVisible
     protected virtual integer processResults(List<Database.SaveResult> results,
                                              List<SObject>  collectionOfEvents,
-                                             List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult) {
+                                             List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> errResult,
+                                             List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData) {
         integer count = results != null ? results.size() : 0;
 
         // any work
         if ( count > 0 ) {
             Integer inx = 0;
             String excpMessage='';
+            // set the operation ids
+            this.setOperationIds(results);
             // Inspect publishing result for each event
             for (Database.SaveResult sr : results) {
-
-                // set the operation ids
-                this.setOperationIds(sr);
                 // if error
                 if (false == sr.isSuccess() ) {
                     count--;
@@ -266,6 +241,9 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
                     }
                 }
             }
+            // record the operation ids and replay ids in case of
+            // an AsyncOperationEvent failure
+            super.recordOperationAndReplayIds(theData);
         }
         return count;
     } // end of processResults
@@ -321,10 +299,7 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
                               , attributes);
         // Call method to publish events
         List<Database.SaveResult> results = this.publish(collectionOfEvents);
-         
-        // record the operation ids and replay ids in case of
-        // an AsyncOperationEvent failure
-        this.recordOperationAndReplayIds(theData);
+
         // record event publish time
         super.addInstrumentation(super.willInstrument,
                                  new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Publisher: Event Published')
@@ -337,7 +312,7 @@ public virtual without sharing class accc_DefaultPEPublisher extends accc_Defaul
         // remember the number of results
         count = results.size();
         // Inspect publishing result for each event, return the decremented errors from the initial size
-        processed = this.processResults(results, collectionOfEvents, errResult);
+        processed = this.processResults(results, collectionOfEvents, errResult, theData);
         // record process of save result
         super.addInstrumentation(super.willInstrument,
                                  new accc_DefaultPlatformEvent.PlatformEvtResultPOAC('Publisher: SaveResult Processed')

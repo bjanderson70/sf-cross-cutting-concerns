@@ -48,21 +48,15 @@
  *
  * @group Common Layer
  **/
-public virtual with sharing class accc_EventBase  extends accc_TriggerHandlerBase  {
+public virtual with sharing class accc_EventBase extends accc_TriggerHandlerBase  {
 
     //==============================================================
     // Data members
     //==============================================================
-    public static final String UNKNOWN_HEADER_INFO = 'Header NOT initialized';
+    public static final String UNKNOWN_HEADER_INFO = 'CDC Platform Event Header NOT initialized';
     public static final String UNKNOWN_INFO = 'Unknown';
     public static final Long UNKNOWN_HEADER_VALUE_INFO = -1;
 
-     /*
-     * @description Type of event
-     */  
-    @TestVisible
-    private Type mTypeOfEvent;
- 
     /*
      * @description Keep a local reference in order to help on testing
      */
@@ -102,7 +96,7 @@ public virtual with sharing class accc_EventBase  extends accc_TriggerHandlerBas
      */
     public accc_EventBase(List<SObject> incoming, Type theEventType) {
         this.records(incoming);
-        if ( theEventType == null ){
+        if ( theEventType == null ) {
             theEventType=accc_ApexUtilities.getTypeFromSObject(incoming);
         }
         this.eventType = theEventType;
@@ -113,25 +107,24 @@ public virtual with sharing class accc_EventBase  extends accc_TriggerHandlerBas
     // Public Properties
     //==============================================================
     /**
-    * @description getter/setter for the Type of Event
-    * @return Type
-    */
+     * @description getter/setter for the Type of Event
+     * @return Type
+     */
     @TestVisible
     public Type eventType {
         get;
         protected set;
     } // end of eventType
       /**
-    * @description getter/setter for the Type of Event
-    * @author Bill Anderson 
-    * @return Type
-    */
+       * @description getter/setter for the Type of Event
+       * @return Type
+       */
     @TestVisible
     public Exception processException {
         get;
         protected set;
     } // end of processException
-     //==============================================================
+      //==============================================================
     // Public Methods
     //==============================================================
     /**
@@ -141,37 +134,35 @@ public virtual with sharing class accc_EventBase  extends accc_TriggerHandlerBas
      */
     public virtual override void onAfterInsertChild(List<SObject> newItems) {
         // we do this to ensure the header is set (at least once);
-        // Normally, this will already be set; but if we are testing [non-trigger] 
+        // Normally, this will already be set; but if we are testing [non-trigger]
         // it provides more robustness :-)
         this.records(newItems);
     } // end of onAfterInsertChild
 
     /**
-    * @description get the trigger records (trigger.new)
-    * @author Bill Anderson 
-    * @return List<SObject> 
-    */
+     * @description get the trigger records (trigger.new)
+     * @return List<SObject>
+     */
     public List<SObject> records() {
         // note, 'Trigger.New' can be Null if called from a non-trigger (i.e. testing)
-         return this.mRecords==null ? Trigger.New : this.mRecords; 
+        return this.mRecords==null ? Trigger.New : this.mRecords;
     }// end of records
-    //==============================================================
-    // Protected Methods
-    //==============================================================
- 
+     //==============================================================
+     // Protected Methods
+     //==============================================================
+
     /**
-    * @description setter of sobject records
-    * @author Bill Anderson 
-    * @param List<SObject> value
-    * @return void
-    */
+     * @description setter of sobject records
+     * @param List<SObject> value
+     * @return void
+     */
     @TestVisible
     protected void records(List<SObject>  value){
         this.mRecords = value;
     }// end of records
-   
+
     //==============================================================
-    // Private Methods 
+    // Private Methods
     //==============================================================
 
- } // end of accc_EventBase
+}  // end of accc_EventBase

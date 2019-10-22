@@ -26,7 +26,11 @@
     </types>
     <types>
         <members>*</members>
+        <name>ListView</name>
+    </types>
+    <types>
+        <members>*</members>
         <name>PermissionSet</name>
     </types>
-    <version>46.0</version>
+    <version>47.0</version>
 </Package>

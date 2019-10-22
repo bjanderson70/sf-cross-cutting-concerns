@@ -654,10 +654,11 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
      * @description get the operation ids from the save result
      *
      * @param srx single save results
-     * @return collection of Operation Ids (List<String>; if null, there may have been an exception
+     * @return Operation Id or empty if not valid
      */
     @TestVisible
-    protected List<String> setOperationIds(Database.SaveResult srx) {
+    protected String setOperationIds(Database.SaveResult srx) {
+        String operationId = accc_ApexConstants.EmptyString;
         // is there a collection, if not create
         if (  this.operationIds == null ) {
             this.operationIds  = new List<String>();
@@ -665,12 +666,13 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
         try {
             // is there a save result to get the operation id from
             if ( srx != null) {
-                this.operationIds.add(System.EventBus.getOperationId(srx));
+                operationId = System.EventBus.getOperationId(srx);
+                this.operationIds.add(operationId);
             }
         } catch (Exception excp ) {
             this.theException = excp;
         }
-        return this.operationIds;
+        return operationId;
     } // end of setOperationIds
     /**
      * @description get the operation ids from the save result
@@ -699,6 +701,7 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
                 accc_Apexutilities.log(excp);
             }
         }
+
         return this.operationIds;
     } // end of setOperationIds
     /**
@@ -915,6 +918,32 @@ public virtual without sharing class accc_DefaultPlatformEvent implements accc_I
         return result;
     } // end of serializeEventData
 
+    /**
+     * @description record the operation and replay ids
+     *
+     * @param theData , place to store operation and replay ids
+     *
+     */
+    @TestVisible
+    protected virtual void recordOperationAndReplayIds(List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> theData) {
+
+        if ( theData != null ) {
+            // look for the event name and add information there
+            for ( accc_DefaultPlatformEvent.PlatformEvtResultPOAC item : theData ) {
+                if ( item.Name == this.eventName) {
+                    // if there are operation ids
+                    if ( this.operationIds != null ) {
+                        item.operationIds = this.operationIds.clone();
+                    }
+                    // if there are replay ids
+                    if ( this.replayIds != null ) {
+                        item.replayIds = this.replayIds.clone();
+                    }
+                    break;
+                }
+            }
+        }
+    }    // end of recordOperationAndReplayIds
 
     /**
      * @description perform the set resume checkpoint

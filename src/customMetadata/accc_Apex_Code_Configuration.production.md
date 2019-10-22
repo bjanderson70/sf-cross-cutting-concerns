@@ -44,7 +44,7 @@
     </values>
     <values>
         <field>Logger__c</field>
-        <value xsi:type="xsd:string">accc_ApexNoOpLogger</value>
+        <value xsi:type="xsd:string">accc_ApexLogger</value>
     </values>
     <values>
         <field>PreviousTransactionResultResource__c</field>

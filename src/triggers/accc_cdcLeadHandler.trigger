@@ -36,5 +36,8 @@
  * @group CDC Layer
  */
 trigger accc_cdcLeadHandler on LeadChangeEvent (after insert) {
-     accc_ApexPlatformEventDispatcher.run(new accc_CDCEventBase( ) );
+    // if you are not using the accc_TriggerMediator (hook it up with you domain)
+    //
+    //
+    //accc_ApexPlatformEventDispatcher.run(LeadChangeEvent.class );
 }

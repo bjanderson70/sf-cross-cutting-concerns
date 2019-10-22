@@ -4,4 +4,5 @@
     <eventType>HighVolume</eventType>
     <label>pe test</label>
     <pluralLabel>pe tests</pluralLabel>
+    <publishBehavior>PublishImmediately</publishBehavior>
 </CustomObject>

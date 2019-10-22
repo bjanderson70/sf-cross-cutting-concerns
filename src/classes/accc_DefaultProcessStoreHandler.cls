@@ -43,134 +43,136 @@
  *
  * @group Common Layer
  */
-public with sharing class accc_DefaultProcessStoreHandler  extends accc_DefaultProcessHandler {
+public with sharing class accc_DefaultProcessStoreHandler extends accc_DefaultProcessHandler {
 
 
-	/////////////////////////////////////////////////////////////////////////////////////////
-	// Data Members
-	/////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Data Members
+    /////////////////////////////////////////////////////////////////////////////////////////
 
-	/////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Ctors
-	//
-	/////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Ctors
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * @brief ctor
-	 * @description ctor
-	 *
-	 */
-	public accc_DefaultProcessStoreHandler() {
-		super(accc_DefaultProcessHandler.DEFAULT_STORE_NAME);
-	} // end of ctor
+    /**
+     * @brief ctor
+     * @description ctor
+     *
+     */
+    public accc_DefaultProcessStoreHandler() {
+        super(accc_DefaultProcessHandler.DEFAULT_STORE_NAME);
+    } // end of ctor
 
-	/**
-	 * @brief ctor
-	 * @description ctor
-	 *
-	 */
-	public accc_DefaultProcessStoreHandler(string name) {
-		super(name);
-	} // end of ctor
-	/////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Public Methods
-	//
-	/////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * @description override to String to show contents
-	 * @return string of accc_DefaultProcessHandler contents
-	 */
-	public  override String toString() {
+    /**
+     * @brief ctor
+     * @description ctor
+     *
+     */
+    public accc_DefaultProcessStoreHandler(string name) {
+        super(name);
+    } // end of ctor
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Public Methods
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * @description override to String to show contents
+     * @return string of accc_DefaultProcessHandler contents
+     */
+    public override String toString() {
 
-		return
-		    super.toString() + '\n' +
-		    'accc_DefaultProcessStoreHandler\n' +
-		    '{' +
-		    '\n' +
-		    '}';
-	} //  end of toString
-	/////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Protected Methods
-	//
-	/////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * @description Override this method if needed
-	 *
-	 * @param parameter data to the log,error, success, alert, etc.
-	 * @param attributes  platform attributes
-	 *
-	 * @return object information
-	 */
-	@TestVisible
-	protected override Object childProcess(Object parameter, accc_PlatformEventAttrs attributes) {
+        return
+            super.toString() + '\n' +
+            'accc_DefaultProcessStoreHandler\n' +
+            '{' +
+            '\n' +
+            '}';
+    } //  end of toString
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Protected Methods
+    //
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * @description Override this method if needed
+     *
+     * @param parameter data to the log,error, success, alert, etc.
+     * @param attributes  platform attributes
+     *
+     * @return object information
+     */
+    @TestVisible
+    protected override Object childProcess(Object parameter, accc_PlatformEventAttrs attributes) {
 
-		// are we storing ?? check the attributes to control
-		if ( attributes != null
-		        && attributes.storeEvent() == false ) {
-			// no work to perform
-			return null;
-		}
-		List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> data = (List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> )parameter;
-		String results = accc_DefaultProcessHandler.makeResultsFromList(data);
-		String placeholder = '++++ MESSAGE ++++ [{0}] : accc_DefaultProcessStoreHandler.childProcess called\n {1}';
-		List<String> fillers = new String[] { this.handlerName(),  results };
-		String result = String.format(placeholder, fillers);
+        // are we storing ?? check the attributes to control
+        if ( attributes != null
+             && attributes.storeEvent() == false ) {
+            // no work to perform
+            return null;
+        }
+        List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> data = (List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> )parameter;
+        String results = accc_DefaultProcessHandler.makeResultsFromList(data);
+        String placeholder = '++++ MESSAGE ++++ [{0}] : accc_DefaultProcessStoreHandler.childProcess called\n {1}';
+        List<String> fillers = new String[] { this.handlerName(),  results };
+        String result = String.format(placeholder, fillers);
 
-		accc_ApexUtilities.log(result);
-		// reset our exception
-		this.caughtException = null;
+        accc_ApexUtilities.log(result);
+        // reset our exception
+        this.caughtException = null;
 
-		try {
-			if ( parameter == null ) {
-				throw new NullPointerException();
-			}
-			List<accc_PlatformEventDAOLog> dbData = accc_DefaultProcessStoreHandler.getEventInformation(data);
-			result = string.valueOf(dbData);
-			// get the injector to store the data
-			accc_PlatformEventLogInjector injector = new accc_PlatformEventLogInjector(dbData);
-			// injector can throw an exception
-			injector.store();
+        try {
+            if ( parameter == null ) {
+                throw new NullPointerException();
+            }
 
-		} catch (Exception excp) {
-			this.caughtException = excp;
-			result = excp.getMessage();
-			accc_ApexUtilities.log(excp);
-		}
+            List<accc_PlatformEventDAOLog> dbData = accc_DefaultProcessStoreHandler.getEventInformation(data);
+            result = string.valueOf(dbData);
+            // get the injector to store the data
+            accc_PlatformEventLogInjector injector = new accc_PlatformEventLogInjector(dbData);
+            // injector can throw an exception
+            injector.store();
 
-		return result;
-	} // end of childProcess
-	/**
-	 * @description get the event information
-	 *
-	 * @param data collection of various data information on the event
-	 * @return String, serialized event
-	 */
-	@TestVisible
-	static List<accc_PlatformEventDAOLog> getEventInformation(List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> data) {
-		List<accc_PlatformEventDAOLog> result = new List<accc_PlatformEventDAOLog>();
-		// any data to process
-		if ( data != null) {
+        } catch (Exception excp) {
+            this.caughtException = excp;
+            result = excp.getMessage();
+            accc_ApexUtilities.log(excp);
+        }
 
-			for ( accc_DefaultPlatformEvent.PlatformEvtResultPOAC item : data) {
-				// event, should only be one and ends in '__e'
-				// Note, the 'Misc' contains the # of events that were sent
-				if ( !string.isBlank(item.Name) &&
-				        item.Name.endsWith(accc_ApexConstants.EVENT_TYPE_TAG_s) ) {
-					result.add(new accc_PlatformEventDAOLog(item.Name,
-					                                       item.Datum,
-					                                       Datetime.Now(),
-					                                       (integer)item.Misc,
-					                                       item.replayIds,
-					                                       item.operationIds)
-					          );
-				}
+        return result;
+    } // end of childProcess
+    /**
+     * @description get the event information
+     *
+     * @param data collection of various data information on the event
+     * @return String, serialized event
+     */
+    @TestVisible
+    static List<accc_PlatformEventDAOLog> getEventInformation(List<accc_DefaultPlatformEvent.PlatformEvtResultPOAC> data) {
+        List<accc_PlatformEventDAOLog> result = new List<accc_PlatformEventDAOLog>();
+        // any data to process
+        if ( data != null) {
 
-			}
-		}
-		return result;
-	} // end of getEventInformation
+            for ( accc_DefaultPlatformEvent.PlatformEvtResultPOAC item : data) {
+                // event, should only be one and ends in '__e'
+                // Note, the 'Misc' contains the # of events that were sent
+                if ( !string.isBlank(item.Name) &&
+                     item.Name.endsWith(accc_ApexConstants.EVENT_TYPE_TAG_s) ) {
+
+                    result.add(new accc_PlatformEventDAOLog(item.Name,
+                                                            item.Datum,
+                                                            Datetime.Now(),
+                                                            (integer)item.Misc,
+                                                            item.replayIds,
+                                                            item.operationIds)
+                               );
+                }
+
+            }
+        }
+        return result;
+    } // end of getEventInformation
 
 } // end of accc_DefaultProcessStoreHandler

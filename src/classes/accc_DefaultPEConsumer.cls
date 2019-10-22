@@ -160,15 +160,15 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
 
             // for test reference
             this.numberOfEventsProcessed =collectionSize;
-            // When the Batch limit is specified we DO NOT throw; instead, we slice and 
+            // When the Batch limit is specified we DO NOT throw; instead, we slice and
             // set last replayid processed
             //
             // do we need to slice the data
-           if (willNeedRetryDueToBatchSize ) {
-               collectionOfEventsByAttribute= (List<SObject>)accc_ApexUtilities.slice(collectionOfEvents,0,eventBatchSize);
+            if (willNeedRetryDueToBatchSize ) {
+                collectionOfEventsByAttribute= (List<SObject>)accc_ApexUtilities.slice(collectionOfEvents,0,eventBatchSize);
                 this.numberOfEventsProcessed = eventBatchSize;
             }
-            
+
             // let's remember our replay ids ( just remembering)
             super.setReplayIds(collectionOfEventsByAttribute);
             // reset the retry (in case of re-entrance)
@@ -258,6 +258,9 @@ public virtual without sharing class accc_DefaultPEConsumer extends accc_Default
             errResult.add(new accc_DefaultPlatformEvent.PlatformEvtResultPOAC(new accc_DefaultPlatformEvent.ErrorResultPOAC(StatusCode.INVALID_STATUS, super.theException.getMessage())));
         }
 
+        // record the operation ids and replay ids in case of
+        // an AsyncOperationEvent failure
+        super.recordOperationAndReplayIds(theData);
         // here we do some house-keeping so the child does not have to
         this.preludeBeforeChildOverridingConsumption(collectionOfEvents, theLogData);
         // Here is where we ensure that the Batch Size requested is processed correctly.
