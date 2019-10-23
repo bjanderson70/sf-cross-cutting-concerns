@@ -67,7 +67,7 @@ Please read [Contributing](Contributing) for details on our code of conduct, and
 
 ## Versioning
 
-version 1.0.0.1
+version 1.0.1.1
 
 ## Authors
 
