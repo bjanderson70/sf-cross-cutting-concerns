@@ -17,7 +17,7 @@ It now includes a section on [Platform Events](https://github.com/bjanderson70/s
 * The template will be started but will probably not be done before the merge.
 * Incorporate Trigger Handling for Platform Events and CDC. There is a section that can tie in the [trigger handling framework](https://github.com/bjanderson70/sf-trigger-handling/wiki)
 * Control Event Batching Size (initially via attributes before moving into CMDT)
-
+* _AsyncOperationEvent_ is being deprecated; I have no feedback yet on how enqueued high-volume events that have not be committed will notify users. I have added Operation Ids (into the Big Object) for cross-reference (and auditing). This is TBD
 ## Caveat
 This package utilities a good deal of Object Oriented Principles (OOP) (as outlined in the blog linked). This [site](http://ootips.org/) provides information around OOP and elements therein. Without having a good Object Oriented base, you may be able to take advantage of the components within the package, but you will not fully realize the underlying benefits/intent.  
 
