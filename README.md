@@ -19,7 +19,7 @@ It now includes a section on [Platform Events](https://github.com/bjanderson70/s
 * Control Event Batching Size (initially via attributes before moving into CMDT)
 * _AsyncOperationEvent_ is being deprecated; I have no feedback yet on how enqueued high-volume events that have not be committed will notify users. I have added Operation Ids (into the Big Object) for cross-reference (and auditing). This is TBD
 ## Caveat
-This package utilities a good deal of Object Oriented Principles (OOP) (as outlined in the blog linked). This [site](http://ootips.org/) provides information around OOP and elements therein. Without having a good Object Oriented base, you may be able to take advantage of the components within the package, but you will not fully realize the underlying benefits/intent.  
+This package utilizes a good deal of Object Oriented Principles (OOP) (as outlined in the blog linked). This [site](http://ootips.org/) provides information around OOP and elements therein. Without having a good Object Oriented base, you may be able to take advantage of the components within the package, but you will not fully realize the underlying benefits/intent.  
 
 ## Getting Started
 
@@ -33,8 +33,8 @@ To enable email delivery, go to Setup->Email Administration->Deliverability, and
 
 ## Running the tests
 
-The unit tests have a minimum of 90% code coverage. Tests can be invoked from favortite case tool.
-In Salesforce Org, navigate to **Setup->Apex Classes** and run all tests
+The unit tests have a minimum of 95% code coverage. Tests can be invoked from favortite case tool.
+In Salesforce Org, navigate to **Setup->Apex Classes** and run all tests. There are test suite(s) prefixed with **accc_**
 
 ### And coding style tests
 
