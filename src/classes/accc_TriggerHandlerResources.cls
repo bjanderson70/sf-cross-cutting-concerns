@@ -48,7 +48,7 @@ public without sharing class accc_TriggerHandlerResources implements accc_ITrigg
      * This provides the container and manager of Pass Thru data betw/ handlers.
      * Thus, the data is freely available going from one handler to the next.
      *
-     * The trigger resource allows passing information from one handler (in the chain) 
+     * The trigger resource allows passing information from one handler (in the chain)
      * to another.
      */
     public class PassThruResourceDAO {
@@ -93,7 +93,7 @@ public without sharing class accc_TriggerHandlerResources implements accc_ITrigg
     public accc_TriggerHandlerResources() {
 
     }// end of ctor
-    
+
 
     //==============================================================
     // Properties
@@ -164,7 +164,24 @@ public without sharing class accc_TriggerHandlerResources implements accc_ITrigg
     public void reset() {
         this.getLazyResource().clear();
     }
-
+    /**
+     * @description get whatever data is store by resource name
+     * @param name resource name
+     * @return Object
+     **/
+    public Object getData(String name){
+        PassThruResourceDAO data = string.isEmpty(name) ? null : this.getItem(name);
+        return data != null ? data.triggerData : null;
+    }
+    /**
+     * @description get the exception by resource name
+     * @param name resource name
+     * @return Exception
+     **/
+    public Exception getException(String name){
+        PassThruResourceDAO data = string.isEmpty(name) ? null : this.getItem(name);
+        return data != null ? data.triggerException : null;
+    }
     //==============================================================
     // Private Members
     //==============================================================
@@ -177,7 +194,6 @@ public without sharing class accc_TriggerHandlerResources implements accc_ITrigg
     @TestVisible
     private boolean removeItem(String key){
         boolean result= this.getLazyResource().containsKey(key);
-        // MapKey key = new MapKey(name,DataType.DataList);
         if ( result) {
             this.getLazyResource().remove(key);
         }
@@ -195,7 +211,7 @@ public without sharing class accc_TriggerHandlerResources implements accc_ITrigg
     } // end of getItem
 
     /**
-     * @description get ours list by key
+     * @description add our data by key
      * @return void
      **/
     @TestVisible
@@ -204,7 +220,7 @@ public without sharing class accc_TriggerHandlerResources implements accc_ITrigg
     }// end of addMap
 
     /**
-     * @description get ours list by key
+     * @description add our data by key
      * @return void
      **/
     @TestVisible

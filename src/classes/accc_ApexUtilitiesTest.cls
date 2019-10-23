@@ -72,6 +72,17 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(expected, result);
     } // end of testgetSobjectName
 
+
+    @isTest static void testloglevel() {
+        //assign
+       LoggingLevel expected= (LoggingLevel)accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.TraceLogLevel_r);
+
+        // act
+        LoggingLevel result = accc_ApexUtilities.loglevel();
+        // assert
+        System.assertEquals(expected, result);
+    } // end of testloglevel
+
     @isTest
     static void testgetSobjectNameWithSet() {
         //assign

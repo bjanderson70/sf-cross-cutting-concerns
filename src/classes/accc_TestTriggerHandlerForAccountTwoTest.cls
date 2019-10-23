@@ -38,41 +38,23 @@
  **/
 
 @isTest
-private class accc_TestTriggerHandlerForAccountTwoTest  {
-	public static final String OBDC_TEST = accc_TestTriggerHandlerForAccountTwo.OBDC;
+private class accc_TestTriggerHandlerForAccountTwoTest {
+    public static final String OBDC_TEST = accc_TestTriggerHandlerForAccountTwo.OBDC;
+    final static String DOMAIN_NAME = 'Account';
+	
+    // IF TESTS FAIL HERE ... did you add 'accc_TestTriggerHandlerForAccountTwo'
+    // into the custom metadata under 'Test' and made Active
 
-	// IF TESTS FAIL HERE ... did you add 'accc_TestTriggerHandlerForAccountTwo'
-	// into the custom metadata under 'Test' and made Active
+    //
+    // This is ALL we overroad in accc_TestTriggerHandlerForAccountTwo, and so we test
+    // that method we wrote as follows:
+    @isTest
+    static void testonBeforeDeleteChild() {
+        // arrange/assign
+        accc_TestUtilityForTriggerHandler.cannotAssumeWeAreWireIntoTriggerHandler(DOMAIN_NAME);
+        // assert
+        system.assertEquals(true, accc_ApexUtilities.containsInTestLog(OBDC_TEST));
+    }
 
-	//
-	// This is ALL we overroad in accc_TestTriggerHandlerForAccountTwo, and so we test
-	// that method we wrote as follows:
-	@isTest
-	static void testonBeforeDeleteChild() {
-		// arrange/assign
-		cannotAssumeWeAreWireIntoTriggerHandler('Account');
-		
-		// assert
-		system.assertEquals(true, accc_ApexUtilities.containsInTestLog(OBDC_TEST));
-	}
 
-	/**
-	 * @description used to fire the trigger handler. Normally,
-	 * this is fire when the handler function is wired into your trigger framework
-	 * 
-	 * @param domain name
-	 */
-	static void cannotAssumeWeAreWireIntoTriggerHandler(String domain) {
-		accc_TriggerHandlerChainManager mgr = new accc_TriggerHandlerChainManager(accc_ApexEnvironment.getEnvironment());
-		accc_IHandlerChain chain = mgr.createHandlerChainByDomain(domain);
-
-		while (chain != null ) {
-			// invoke the event we want
-			accc_ITriggerHandler handler = chain.getHandler();
-			handler.onBeforeDeleteChild(null);
-
-			// get next handler in the chain
-			chain = chain.getNext();
-		}
-	}
 } // end of accc_TestTriggerHandlerForAccountTwoTest

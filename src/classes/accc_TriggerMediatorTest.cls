@@ -36,7 +36,67 @@
 @isTest
 private class accc_TriggerMediatorTest {
 
+    ////////////////////////////////////////////////////////////////////////////////////
+    // DATA MEMBERS
+    ////////////////////////////////////////////////////////////////////////////////////
     static final String ExpectedTHEnvironmentCustomMDT = accc_ApexConstants.TEST_CATEGORY;
+    static final String KEY = 'testing';
+    static final String DATA_AT_KEY ='success';
+
+    // subclass ( checking out the resources being passed thru)
+    public class accc_TriggerMediatorTester extends accc_TriggerMediator {
+        public Boolean isCorrectResources = false;
+
+
+        public accc_TriggerMediatorTester(Type sobjectType, List<SObject> theRecords) {
+            super(sobjectType,theRecords);
+        } // end of ctor
+        protected override Boolean triggerHandlerInvocation(accc_IHandlerChain chain,
+                                                            accc_TriggerHelperClass.TriggerState state,
+                                                            Map<Id, SObject> existingRecords,
+                                                            Boolean continueIfException,
+                                                            Boolean performanceMetrics ) {
+            Boolean status=false;
+
+            // was a chain found ( we do not log information as it is done elsewhere)
+            if ( chain != null ) {
+                // invoke
+                status= super.triggerHandlerInvocation(chain,
+                                                       state,
+                                                       existingRecords,
+                                                       continueIfException,
+                                                       performanceMetrics,
+                                                       EXCEPTION_ON_BAD_HANDLER_CHAIN);
+            }
+            // get our current handler
+            accc_ITriggerHandler handler = (accc_ITriggerHandler) chain.getHandler();
+            // check that our resource passed thru
+            isCorrectResources = DATA_AT_KEY == (String)handler.handlerResources().getData(KEY) &&
+                                 null == handler.handlerResources().getException(KEY);
+            return status;
+        } // end of triggerHandlerInvocation
+        protected override Boolean performHandlerWork(accc_IHandlerChain chain,
+                                                      accc_ITriggerHandler handler,
+                                                      accc_TriggerHelperClass.TriggerState state,
+                                                      Map<Id, SObject> existingRecords,
+                                                      Boolean continueIfException,
+                                                      Boolean performanceMetrics,
+                                                      String exceptionMessage){
+            handler.handlerResources().add(KEY,DATA_AT_KEY);
+            return super.performHandlerWork(chain,
+                                            handler,
+                                            state,
+                                            existingRecords,
+                                            continueIfException,
+                                            performanceMetrics,
+                                            exceptionMessage);
+
+
+        }
+    }// end of accc_TriggerMediatorTester
+    ////////////////////////////////////////////////////////////////////////////////////
+    // TEST MEMBERS
+    ////////////////////////////////////////////////////////////////////////////////////
 
     @isTest
     static void testCtorWithBadType() {
@@ -99,14 +159,15 @@ private class accc_TriggerMediatorTest {
             new Account(),
             new Account()
         };
+        // we set the records but the type is INCORRECT
         accc_TriggerMediator ctor = new accc_TriggerMediator(Contact.class,records);
         // assert
         System.assertEquals(Contact.class, ctor.triggerType);
         // default is test
         System.assertEquals(ExpectedTHEnvironmentCustomMDT, ctor.theEnvironment);
-        // no records
+        // no records (as the type is different from the records)
         System.assertEquals(records.size(), ctor.records.size());
-        // no existing records
+        // no existing records (as the type is different from the records)
         System.assertEquals(null, ctor.existingRecords);
 
     }
@@ -220,4 +281,24 @@ private class accc_TriggerMediatorTest {
         system.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_TriggerHandlerBase.OBIC));
         system.assertEquals(false, result);
     }
-} // end of accc_TriggerMediatorTest
+
+    @isTest
+    static void testCtorHandlerResources() {
+        // arrange/act
+        List<SObject> records = new List<SObject> {
+            new Account(),
+            new Account()
+        };
+        // we set the records
+        accc_TriggerMediatorTester ctor = new accc_TriggerMediatorTester(Account.class,records);
+        // act
+        ctor.execute(accc_TriggerHelperClass.TriggerState.BeforeInsert);
+        // assert
+        // no existing records (as the type is different from the records)
+        System.assertEquals(true, ctor.isCorrectResources);
+
+    }
+    ////////////////////////////////////////////////////////////////////////////////////
+    // PRIVATE MEMBERS
+    ////////////////////////////////////////////////////////////////////////////////////
+}// end of accc_TriggerMediatorTest

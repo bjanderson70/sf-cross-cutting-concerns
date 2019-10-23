@@ -41,6 +41,10 @@
  */
 @isTest
 private class accc_TriggerHandlerBaseTest {
+    //////////////////////////////////////////////////////////////////////////////
+    // DATA MEMBERS
+    //////////////////////////////////////////////////////////////////////////////
+
     // our messages posted per trigger event
     static final List<String> logMsgs = new List<String> {
         'On Before Insert',
@@ -70,19 +74,19 @@ private class accc_TriggerHandlerBaseTest {
         accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
         ctor.handlerResources().add('test',theData);
         // assert
-        system.assertEquals(MYDATA, (String)ctor.theParameters.get('test').triggerData);
+        system.assertEquals(MYDATA, ((accc_TriggerHandlerResources.PassThruResourceDAO)ctor.theParameters.getData('test')).triggerData);
 
     }// end of testaccc_TriggerHandlerBaseWithParams
 
     @isTest
     static void testaccc_TriggerHandlerBaseMessages() {
         // assign
-       final String MYDATA='this is argument';
-       final accc_TriggerHandlerResources.PassThruResourceDAO theData = new accc_TriggerHandlerResources.PassThruResourceDAO(MYDATA);
-       accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
-       ctor.handlerResources().add('test',theData);
+        final String MYDATA='this is argument';
+        final accc_TriggerHandlerResources.PassThruResourceDAO theData = new accc_TriggerHandlerResources.PassThruResourceDAO(MYDATA);
+        accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
+        ctor.handlerResources().add('test',theData);
         // act
-        system.assertEquals(MYDATA, (String)ctor.theParameters.get('test').triggerData);
+        system.assertEquals(MYDATA, ((accc_TriggerHandlerResources.PassThruResourceDAO)ctor.theParameters.getData('test')).triggerData);
         ctor.onAfterUndeleteChild(null);
         ctor.onAfterDeleteChild(null);
         ctor.onBeforeDeleteChild(null);
@@ -106,7 +110,7 @@ private class accc_TriggerHandlerBaseTest {
         final String param = 'this is argument again';
         Boolean expectedExceptionThrown = false;
         accc_TriggerHandlerBase ctor = new accc_TriggerHandlerBase();
-        Contact myContact = insertNewContactToFireTriggers();
+        Contact myContact = accc_TriggerHandlerBaseTest.insertNewContactToFireTriggers();
         // act
         ctor.addError(myContact, param);
         // assert
@@ -115,6 +119,10 @@ private class accc_TriggerHandlerBaseTest {
 
     }// end of testaccc_TriggerHandlerBaseMessages
 
+
+    //////////////////////////////////////////////////////////////////////////////
+    // PRIVATE MEMBERS
+    //////////////////////////////////////////////////////////////////////////////
 
     static Contact insertNewContactToFireTriggers() {
         Contact newContact = new Contact(LastName = 'testlastname',

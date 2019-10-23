@@ -40,7 +40,7 @@
 @isTest
 private class accc_TestTriggerHandlerForAccountTest  {
 	public static final String OBIC_TEST = accc_TriggerHandlerBase.OBIC;
-
+	final static String DOMAIN_NAME = 'Account';
 	// IF TESTS FAIL HERE ... did you add 'accc_TestTriggerHandlerForAccount'
 	// into the custom metadata under 'Test' and made Active
 	//
@@ -49,28 +49,9 @@ private class accc_TestTriggerHandlerForAccountTest  {
 	@isTest
 	static void testonBeforeInsertChild() {
 		// arrange/assign/act
-		accc_TestTriggerHandlerForAccountTest.cannotAssumeWeAreWireIntoTriggerHandler('Account');
+		accc_TestUtilityForTriggerHandler.cannotAssumeWeAreWireIntoTriggerHandler(DOMAIN_NAME);
 		// assert
 		system.assertEquals(true, accc_ApexUtilities.containsInTestLog(OBIC_TEST));
 	}
-
-	/**
-	 * @description used to fire the trigger handler. Normally,
-	 * this is fire when the handler function is wired into your trigger framework
-	 * 
-	 * @param domain name
-	 */
-	static void cannotAssumeWeAreWireIntoTriggerHandler(String domain) {
-		accc_TriggerHandlerChainManager mgr = new accc_TriggerHandlerChainManager(accc_ApexEnvironment.getEnvironment());
-		accc_IHandlerChain chain = mgr.createHandlerChainByDomain(domain);
-
-		while (chain != null ) {
-			// invoke the event we want
-			chain.getHandler().onBeforeInsertChild(null);
-			// get next handler in the chain
-			chain = chain.getNext();
-		}
-	}
-	
 
 } // end of accc_TestTriggerHandlerForAccountTest

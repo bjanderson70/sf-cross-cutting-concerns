@@ -56,7 +56,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
     ////////////////////////////////////////////////////////////////////////////////
 
     @TestVisible
-    private accc_TriggerHandlerResources m_parameters = null;
+    private accc_ITriggerHandlerResources m_parameters = null;
 
     @TestVisible
     private Object for_testing = null;
@@ -67,11 +67,11 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
     public static final String OBUC ='++++++++++++++On Before Update';
     public static final String OAIC ='++++++++++++++On After Insert';
     public static final String OAUC ='++++++++++++++On After Update';
-    public static final String OBDC='++++++++++++++On Before Delete';    
+    public static final String OBDC='++++++++++++++On Before Delete';
     public static final String OADC = '++++++++++++++On After Delete';
     public static final String OAUDC ='++++++++++++++On After UnDelete';
     public static final Boolean UNIT_TESTING = System.Test.isRunningTest();
-    
+
     ////////////////////////////////////////////////////////////////////////////////
     /// Ctors
     ////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      *
      */
     public accc_TriggerHandlerBase() {
-        this((accc_TriggerHandlerResources)null);
+        this((accc_ITriggerHandlerResources)null);
     } // end of ctor
 
     /**
@@ -89,7 +89,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      *
      * @param parameters information for the children
      */
-    public accc_TriggerHandlerBase(accc_TriggerHandlerResources parameters) {
+    public accc_TriggerHandlerBase(accc_ITriggerHandlerResources parameters) {
         this.theParameters = parameters;
     }// end of ctor
 
@@ -102,7 +102,7 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
      * Used to pass information between handlers
      */
     @TestVisible
-    protected accc_TriggerHandlerResources theParameters {
+    protected accc_ITriggerHandlerResources theParameters {
         get {
             if ( this.m_parameters == null ) {
                 this.m_parameters=new accc_TriggerHandlerResources();
@@ -128,11 +128,19 @@ public virtual with sharing class accc_TriggerHandlerBase implements accc_ITrigg
 
     /**
      * @description holds parameters passed between handlers
-     * @return accc_TriggerHandlerResources
+     * @return accc_ITriggerHandlerResources
      **/
-    public accc_TriggerHandlerResources handlerResources() {
+    public accc_ITriggerHandlerResources handlerResources() {
         return this.theParameters;
     }// end of handlerResources
+
+    /**
+     * @description setter to allow resources to passed between handlers
+     * @return void
+     **/
+    public void handlerResources(accc_ITriggerHandlerResources resources) {
+        this.theParameters=resources;
+    } // end of handlerResources
     /**
      * @description add an error on the sobject. When used on Trigger.new
      * in before insert and before update triggers, and on Trigger.old in

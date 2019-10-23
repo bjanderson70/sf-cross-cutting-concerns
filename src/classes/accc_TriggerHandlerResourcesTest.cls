@@ -94,13 +94,22 @@ private class accc_TriggerHandlerResourcesTest {
         System.assertEquals(slist,listRes);
         System.assertEquals('test',stringRes);
 
+        // assert other interface methods
+        accc_ITriggerHandlerResources ires=res;
+        System.assertEquals(sset,(Set<String>)ires.getData('set'));
+        System.assertEquals(slist,(List<String>)ires.getData('list'));
+        System.assertEquals('test', (String)ires.getData('string'));
+        System.assertEquals(null,ires.getException('set'));
+        System.assertEquals(null,ires.getException('list'));
+        System.assertEquals(null,ires.getException('string'));
+
         res.remove('list');
         res.remove('set');
         res.remove('string');
 
         accc_TriggerHandlerResources.PassThruResourceDAO setResDAO = res.get('set'),
-                            listResDAO = res.get('list'),
-                            stringResDAO = res.get('string');
+                                                         listResDAO = res.get('list'),
+                                                         stringResDAO = res.get('string');
 
 
         System.assertEquals(null,setResDAO);
@@ -110,14 +119,14 @@ private class accc_TriggerHandlerResourcesTest {
 
     @isTest
     static void testCollectonActivities(){
-        accc_TriggerHandlerResources res = new accc_TriggerHandlerResources();
+        accc_ITriggerHandlerResources res = new accc_TriggerHandlerResources();
         final Integer count = 30;
 
         for ( integer inx=0; inx < count; inx++) {
             res.add(''+inx,inx);
         }
         for ( integer jnx=0; jnx < count; jnx++) {
-            System.assertEquals (jnx,(integer)res.get(''+jnx).triggerData);
+            System.assertEquals (jnx,(integer)res.getData(''+jnx));
         }
 
         System.assertEquals(count,res.count());
