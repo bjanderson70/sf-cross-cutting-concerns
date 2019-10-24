@@ -1,7 +1,7 @@
 
 ![logo](https://github.com/bjanderson70/sf-cross-cutting-concerns/blob/master/imgs/logo.png)
 # sf-cross-cutting-concerns
-Cross cutting concerns for apex code. The previous [cross-cutting concerns](https://github.com/bjanderson70/Apex-Cross-Cutting-Concerns) is NO LONGER supported. Use the merge of CCC _ PE or CCC + PE + TH ( see the deployments below)
+Cross cutting concerns for apex code. The previous [cross-cutting concerns](https://github.com/bjanderson70/Apex-Cross-Cutting-Concerns) is NO LONGER supported. Use the merge of **CCC + PE or CCC + PE + TH **( see the deployments below)
 
 See this highlevel [blog](https://developer.salesforce.com/blogs/2018/10/configuration-first-replacing-code-at-runtime.html) on this framework.
 
