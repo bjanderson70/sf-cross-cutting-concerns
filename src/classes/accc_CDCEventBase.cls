@@ -86,8 +86,15 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      //+ Private Data Members
      //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+    /*
+     * For Testing
+     */
     @TestVisible
     private static final String FOR_TEST_CHANGE_ORIGIN_NAME = 'com/salesforce/api/soap/46.0;client=Astro';
+    @TestVisible
+    private static final String FOR_TEST_AFTER_CHILD = 'afterOnAfterInsertChild';
+    @TestVisible
+    private static final String FOR_TEST_BEFORE_CHILD = 'beforeOnAfterInsertChild';
     /*
      * @description Header information on the event
      */
@@ -154,6 +161,8 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
         }
 
         this.records(newItems);
+        // allow child to do some processing before we iterate
+        this.beforeOnAfterInsertChild();
 
         try {
             /*********************************************************
@@ -181,6 +190,9 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
             super.processException = excp;
             accc_ApexUtilities.log(excp);
         }
+        // allow child to do some processing after we iterate
+        this.afterOnAfterInsertChild();
+
     } // end of onAfterInsertChild
 
 
@@ -286,6 +298,36 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     //==============================================================
 
     /**
+     * @description call before we iterate over the events in the on after insert child.
+     * Child SHOULD OVERRIDE if needed to perform setup
+     * @return virtual
+     **/
+    @TestVisible
+    protected virtual void beforeOnAfterInsertChild() {
+        // TESTING ONLY!
+        //
+        // for testing
+        //
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            accc_ApexUtilities.log(FOR_TEST_BEFORE_CHILD );
+        }
+    } // end of beforeOnAfterInsertChild
+    /**
+     * @description call after we finish iterating over the events in the on after insert child.
+     * Child SHOULD OVERRIDE if needed to perform completion
+     * @return virtual
+     **/
+    @TestVisible
+    protected virtual void afterOnAfterInsertChild() {
+        // TESTING ONLY!
+        //
+        // for testing
+        //
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            accc_ApexUtilities.log(FOR_TEST_AFTER_CHILD );
+        }
+    }   // end of afterOnAfterInsertChild
+    /**
      * @description set the header for CDC
      * @param EventBus.ChangeEventHeader value
      * @return void
@@ -315,9 +357,6 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
 
         // so that we may test w/o a trigger
         if ( recordType != null && event != null ) {
-            //List<SObject> recordList = this.records();
-            // if ( recordList != null && recordList.size() > 0 ) {
-            //    SObject event=recordList[0];
 
             if ( recordType == AccountChangeEvent.class) {
                 result =  ((AccountChangeEvent)event).ChangeEventHeader;
@@ -400,7 +439,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
     protected virtual Boolean  handleEventMethod(SObject event){
         String action = this.changeType();
         Boolean handled = true;
-       
+
         try
         {
             if ( CDC_CREATE_CHANGE_TYPE.equalsIgnoreCase(action)) {
@@ -428,7 +467,7 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
             accc_ApexUtilities.log(excp);
         }
         return handled;
-    }     // end of handleEventMethod
+    }// end of handleEventMethod
 
     ////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -442,8 +481,9 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      */
     @TestVisible
     protected virtual void handleUpdate(SObject event){
-        accc_ApexUtilities.log('handleUpdate: event=' +event);
-        accc_ApexUtilities.log('handleUpdate: fields changed:' + this.getFieldsChangedInUpdate(event));
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            accc_ApexUtilities.log('handleUpdate: event=' +event);
+        }
     }// end of handleUpdate
 
     /**
@@ -453,7 +493,9 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      */
     @TestVisible
     protected virtual void handleCreate(SObject event){
-        accc_ApexUtilities.log('handleCreate: event=' +event);
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            accc_ApexUtilities.log('handleCreate: event=' +event);
+        }
     }// end of handleCreate
 
     /**
@@ -463,7 +505,9 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      */
     @TestVisible
     protected virtual void handleDelete(SObject event){
-        accc_ApexUtilities.log('handleDelete: event=' +event);
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            accc_ApexUtilities.log('handleDelete: event=' +event);
+        }
     }// end of handleDelete
 
     /**
@@ -473,7 +517,9 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      */
     @TestVisible
     protected virtual void handleUndelete(SObject event){
-        accc_ApexUtilities.log('handleUndelete: event=' +event);
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            accc_ApexUtilities.log('handleUndelete: event=' +event);
+        }
     }// end of handleUndelete
 
     /**
@@ -483,10 +529,10 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      */
     @TestVisible
     protected virtual void handleGAPUpdate(SObject event){
-        accc_ApexUtilities.log('handleGAPUpdate: event=' +event);
-        accc_ApexUtilities.log ('handleGAPUpdate: fields changed:' + this.getFieldsChangedInUpdate(event));
-
-    }// end of handleGAPUpdate
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            accc_ApexUtilities.log('handleGAPUpdate: event=' +event);
+        }
+    }  // end of handleGAPUpdate
 
     /**
      * @description child handle GAP create
@@ -495,7 +541,9 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      */
     @TestVisible
     protected virtual void handleGAPCreate(SObject event){
-        accc_ApexUtilities.log('handleGAPCreate: event=' +event);
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            accc_ApexUtilities.log('handleGAPCreate: event=' +event);
+        }
     }// end of handleGAPCreate
 
     /**
@@ -505,7 +553,9 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      */
     @TestVisible
     protected virtual void handleGAPDelete(SObject event){
-        accc_ApexUtilities.log('handleGAPDelete: event=' +event);
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            accc_ApexUtilities.log('handleGAPDelete: event=' +event);
+        }
     }// end of handleGAPDelete
 
     /**
@@ -515,7 +565,9 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
      */
     @TestVisible
     protected virtual void handleGAPUndelete(SObject event){
-        accc_ApexUtilities.log('handleGAPUndelete: event=' +event);
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            accc_ApexUtilities.log('handleGAPUndelete: event=' +event);
+        }
     }// end of handleGAPUndelete
 
     //==============================================================
@@ -541,4 +593,4 @@ public virtual with sharing class accc_CDCEventBase extends accc_EventBase  {
         }
         return result;
     }    // end of getChangeEventHeaderForTesting
-}     // end of accc_CDCEventBase
+}// end of accc_CDCEventBase

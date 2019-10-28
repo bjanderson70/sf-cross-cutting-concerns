@@ -38,7 +38,7 @@
 private class accc_ApexLoggerTest {
 
     /**
-     * @description [Check message validity]
+     * @description [Check message validity
      */
     @isTest static void testMessages() {
         // arrange & act

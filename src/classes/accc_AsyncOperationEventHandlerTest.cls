@@ -79,7 +79,7 @@ private class accc_AsyncOperationEventHandlerTest {
         System.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_AsyncOperationEventHandler.TEST_MESSAGE));
     }
     @IsTest
-    static void whenJobExceptionThenLogGeneratedAndHandlerCalled() {
+    private static void whenJobExceptionThenLogGeneratedAndHandlerCalled() {
 
         // Given
         Account testAccount = accc_AsyncOperationEventHandlerTest.createNewAccount(accc_TestBatchableErrorTestJob.CAUSE_BAD_ASYNC_FLOW_NAME);
