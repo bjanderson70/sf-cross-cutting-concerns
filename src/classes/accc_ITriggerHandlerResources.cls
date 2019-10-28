@@ -49,7 +49,18 @@ public interface accc_ITriggerHandlerResources {
      * @return boolean
      **/
     boolean remove(String name);
-
+    /**
+     * @description get whatever is store by resource name
+     * @param name resource name
+     * @return Object
+     **/
+    Object getData(String name);
+    /**
+     * @description get the exception by resource name
+     * @param name resource name
+     * @return Exception
+     **/
+    Exception getException(String name);
     /**
      * @description get the list count
      * @return Integer

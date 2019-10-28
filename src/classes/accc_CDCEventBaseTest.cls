@@ -237,6 +237,24 @@ private class accc_CDCEventBaseTest {
     }
 
     @isTest
+    static void testafterOnAfterInsertChild() {
+        // arrange
+        accc_CDCEventBase basector = new accc_CDCEventBase();
+        // act
+        basector.afterOnAfterInsertChild();
+        // assert
+        system.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_CDCEventBase.FOR_TEST_AFTER_CHILD));
+    }
+    @isTest
+    static void testbeforeOnAfterInsertChild() {
+        // arrange
+        accc_CDCEventBase basector = new accc_CDCEventBase();
+        // act
+        basector.beforeOnAfterInsertChild();
+        // assert
+        system.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_CDCEventBase.FOR_TEST_BEFORE_CHILD));
+    }
+    @isTest
     static void testgetHeaderByType(){
 
         // arrange
@@ -398,10 +416,10 @@ private class accc_CDCEventBaseTest {
         };
         if ( changetype == accc_CDCEventBase.CDC_UPDATE_CHANGE_TYPE ) {
             result.changedFields = new List<String> { 'Name'};
-        } 
+        }
         result.sequencenumber = 1;
         result.transactionkey = accc_ApexUtilities.newGuid();
         return result;
     } // end of createEventBase
-    
+
 } // end of accc_CDCEventBaseTest
