@@ -41,192 +41,215 @@
  * Instead of using all the different cache mechanisms, this class manages most
  * of those aspect for you. Whether to cache or not, simply call the following:
  *
- * 	accc_ApexCacheMgr mgr = new accc_ApexCacheMgr() ; // default ctor, uses caching strategy
- * 	SomeData data= new SomeData();
- * 	Boolean wasCached = mgr.cache('Data',data); // cache data
- * 	   :
- * 	   :
- * 	// assuming the data 'wasCached' == true
- * 	//
- * 	data = mgr.cache('Data','somedata');
+ *  accc_ApexCacheMgr mgr = new accc_ApexCacheMgr() ; // default ctor, uses caching strategy
+ *  SomeData data= new SomeData();
+ *  Boolean wasCached = mgr.cache('Data',data); // cache data
+ *     :
+ *     :
+ *  // assuming the data 'wasCached' == true
+ *  //
+ *  data = mgr.cache('Data','somedata');
  *
  * @group Common Test Layer
  */
 @isTest
 private class accc_ApexCacheMgrTest {
+
+    static Boolean isCacheAvailableAndEnabled = false;
 	
-	@isTest
-	static void testctorWithParam() {
-		// assign
-		Boolean expected = true;
-		// act
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(expected);
-		// assert
-		system.assertEquals(true, mgr.useCacheStrategy);
-	} // end of testctorWithParam
+    @isTest
+    static void testctorWithParam() {
+        // assign
+        Boolean expected = true;
+        // act
+        accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(expected);
+        // assert
+        system.assertEquals(true, mgr.useCacheStrategy);
+    } // end of testctorWithParam
 
-	@isTest
-	static void testctorNoParam() {
-		// assign
-		Boolean expected =  (Boolean) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.UseCachingStrategy_r);
-		// act
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
-		// assert
-		system.assertEquals(true, mgr.useCacheStrategy);
-	} // end of testctorNoParam
+    @isTest
+    static void testctorNoParam() {
+        // assign
+        Boolean expected =  (Boolean) accc_ApexEnvironment.getRuntimeEnvironment().provider().get(accc_ApexConstants.UseCachingStrategy_r);
+        // act
+        accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
+        // assert
+        system.assertEquals(true, mgr.useCacheStrategy);
+    } // end of testctorNoParam
 
-	@isTest
-	static void testctorNoParamTestProperties() {
-		// assign/act
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
-		// assert
-		system.assertNotEquals(null, mgr.theCache);
-		system.assertNotEquals(null, mgr.theCacheStrategy);
-		system.assertNotEquals(null, mgr.theCacheStrategyInvocation);
+    @isTest
+    static void testctorNoParamTestProperties() {
+        // assign/act
+        accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
+        // assert
+        system.assertNotEquals(null, mgr.theCache);
+        system.assertNotEquals(null, mgr.theCacheStrategy);
+        system.assertNotEquals(null, mgr.theCacheStrategyInvocation);
 
-	} // end of testctorNoParamTestProperties
+    } // end of testctorNoParamTestProperties
 
-	@isTest
-	static void testcache() {
-		// assign
-		Object result = null;
+    @isTest
+    static void testcache() {
+        // assign
+        Object result = null;
+        // CACHE MUST BE SETUP !!!
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+            accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
+            //act
+            result = mgr.cache('mydata');
+            // assert
+            system.assertEquals(null, result);
+        }
+    } // end of testcache
 
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
-		//act
-		result = mgr.cache('mydata');
-		// assert
-		system.assertEquals(null, result);
+    @isTest
+    static void testcacheWithNoCacheStrategyAndDataThatIsPresent() {
+        // assign
+        String label = 'mylabel';
+        Object result = 'mydata';
+        final String expected = 'mydata';
+        // CACHE MUST BE SETUP !!!
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+            // do not use caching strategy as nothing is set
+            accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
+            //act
+            Boolean wasCached = mgr.cache(label, result);
+            result = mgr.cache(label);
+            // assert
+            system.assertEquals(true, wasCached);
+            system.assertEquals(expected, (String)result);
+        }
 
-	} // end of testcache
+    } // end of testcacheWithNoCacheStrategyAndDataThatIsPresent
 
-	@isTest
-	static void testcacheWithNoCacheStrategyAndDataThatIsPresent() {
-		// assign
-		String label = 'mylabel';
-		Object result = 'mydata';
-		final String expected = 'mydata';
-		// do not use caching startegy as nothing is set
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
-		//act
-		Boolean wasCached = mgr.cache(label, result);
-		result = mgr.cache(label);
-		// assert
-		system.assertEquals(true, wasCached);
-		system.assertEquals(expected, (String)result);
+    @isTest
+    static void testcacheWithNoCacheStrategyAndDataThatIsPresentBadLabel() {
+        // assign
+        String label = 'mylabel';
+        Object result = 'mydata';
+        final String expected = null;
+        // CACHE MUST BE SETUP !!!
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+            // do not use caching strategy as nothing is set
+            accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
+            //act
+            Boolean wasCached = mgr.cache(label, result);
+            result = mgr.cache('label');
+            // assert
+            system.assertEquals(true, wasCached);
+            system.assertEquals(expected, (String)result);
+        }
+    } // end of testcacheWithNoCacheStrategyAndDataThatIsPresentBadLabel
 
+    @isTest
+    static void testcacheWithCacheStrategyAndDataThatIsPresentWithTestLabel() {
+        // assign
+        final String label = accc_DataCachingDataModel.TestLabel2018;
+        Object result = 'mydata';
+        final String expected = null;
+        // CACHE MUST BE SETUP !!!
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+            // DO use caching strategy as this is set for testing (default is true)
+            accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
+            //act
+            Boolean wasCached = mgr.cache(accc_DataCachingDataModel.TestCategory,
+                                          label,
+                                          result);
+            result = mgr.cache(label);
+            // assert
+            system.assertEquals(true, wasCached);
+            system.assertEquals(expected, (String)result);
+        }
+    } // end of testcacheWithCacheStrategyAndDataThatIsPresentWithTestLabel
 
-	} // end of testcacheWithNoCacheStrategyAndDataThatIsPresent
+    @isTest
+    static void testcacheWithNoCacheStrategyAndDataThatIsPresentWithTestLabel() {
+        // assign
+        final String label = accc_DataCachingDataModel.TestLabel2018;
+        Object result = 'mydata';
+        final String expected = null;
+        // CACHE MUST BE SETUP !!!
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+            // DO use caching strategy as this is set for testing (default is true)
+            accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
+            //act
+            Boolean wasCached = mgr.cache(accc_DataCachingDataModel.TestCategory,
+                                          label,
+                                          result);
+            result = mgr.cache(label);
+            // assert
+            system.assertEquals(true, wasCached);
+            system.assertEquals(expected, (String)result);
+        }
+    } // end of testcacheWithNoCacheStrategyAndDataThatIsPresentWithTestLabel
 
-	@isTest
-	static void testcacheWithNoCacheStrategyAndDataThatIsPresentBadLabel() {
-		// assign
-		String label = 'mylabel';
-		Object result = 'mydata';
-		final String expected = null;
-		// do not use caching strategy as nothing is set
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
-		//act
-		Boolean wasCached = mgr.cache(label, result);
-		result = mgr.cache('label');
-		// assert
-		system.assertEquals(true, wasCached);
-		system.assertEquals(expected, (String)result);
+    @isTest
+    static void testcacheWithCacheStrategyAndSoqlAndDataThatIsPresentWithTestLabel() {
+        // assign
+        final String label = accc_DataCachingDataModel.TestLabel2018;
+        final String soql = 'select id from account';
+        Object result = 'mydata';
+        final String expected = null;
+        // CACHE MUST BE SETUP !!!
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+            // DO use caching strategy as this is set for testing (default is true)
+            accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
+            //act
+            Boolean wasCached = mgr.cache(accc_DataCachingDataModel.TestCategory,
+                                          label,
+                                          soql,
+                                          result);
+            result = mgr.cache(label);
+            // assert
+            system.assertEquals(true, wasCached);
+            system.assertEquals(expected, (String)result);
+        }
+    } // end of testcacheWithCacheStrategyAndSoqlAndDataThatIsPresentWithTestLabel
 
-	} // end of testcacheWithNoCacheStrategyAndDataThatIsPresentBadLabel
+    @isTest
+    static void testcacheInformation() {
+        // assign
+        final String label = accc_DataCachingDataModel.TestLabel2018;
+        // DO use caching strategy as this is set for testing (default is true)
+        accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
+        //act
 
-	@isTest
-	static void testcacheWithCacheStrategyAndDataThatIsPresentWithTestLabel() {
-		// assign
-		final String label = accc_DataCachingDataModel.TestLabel2018;
-		Object result = 'mydata';
-		final String expected = null;
-		// DO use caching strategy as this is set for testing (default is true)
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
-		//act
-		Boolean wasCached = mgr.cache(accc_DataCachingDataModel.TestCategory,
-		                              label,
-		                              result);
-		result = mgr.cache(label);
-		// assert
-		system.assertEquals(true, wasCached);
-		system.assertEquals(expected, (String)result);
+        accc_DataCachingDataModel.CacheInformation datum = mgr.cacheInformation(label);
 
-	} // end of testcacheWithCacheStrategyAndDataThatIsPresentWithTestLabel
+        // assert
+        system.assertNotEquals(null, datum);
+        system.assertEquals( accc_DataCachingDataModel.TestCategory, datum.category);
+        system.assertEquals(accc_DataCachingDataModel.TestName2018, datum.developerName);
+        system.assertEquals(true, datum.isCachingEnabled);
 
-	@isTest
-	static void testcacheWithNoCacheStrategyAndDataThatIsPresentWithTestLabel() {
-		// assign
-		final String label = accc_DataCachingDataModel.TestLabel2018;
-		Object result = 'mydata';
-		final String expected = null;
-		// DO use caching strategy as this is set for testing (default is true)
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
-		//act
-		Boolean wasCached = mgr.cache(accc_DataCachingDataModel.TestCategory,
-		                              label,
-		                              result);
-		result = mgr.cache(label);
-		// assert
-		system.assertEquals(true, wasCached);
-		system.assertEquals(expected, (String)result);
+    } // end of testcacheInformation
 
-	} // end of testcacheWithNoCacheStrategyAndDataThatIsPresentWithTestLabel
+    @isTest
+    static void testcacheInformationWithCategoryAndLabel() {
+        // assign
+        final String label = accc_DataCachingDataModel.TestLabel2018;
+        final String category = accc_DataCachingDataModel.TestCategory;
+        // DO use caching strategy as this is set for testing (default is true)
+        accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
+        //act
+        accc_DataCachingDataModel.CacheInformation datum = mgr.cacheInformation(category, label);
 
-	@isTest
-	static void testcacheWithCacheStrategyAndSoqlAndDataThatIsPresentWithTestLabel() {
-		// assign
-		final String label = accc_DataCachingDataModel.TestLabel2018;
-		final String soql = 'select id from account';
-		Object result = 'mydata';
-		final String expected = null;
-		// DO use caching strategy as this is set for testing (default is true)
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
-		//act
-		Boolean wasCached = mgr.cache(accc_DataCachingDataModel.TestCategory,
-		                              label,
-		                              soql,
-		                              result);
-		result = mgr.cache(label);
-		// assert
-		system.assertEquals(true, wasCached);
-		system.assertEquals(expected, (String)result);
+        // assert
+        system.assertNotEquals(null, datum);
+        system.assertEquals( accc_DataCachingDataModel.TestCategory, datum.category);
+        system.assertEquals(accc_DataCachingDataModel.TestName2018, datum.developerName);
+        system.assertEquals(true, datum.isCachingEnabled);
 
-	} // end of testcacheWithCacheStrategyAndSoqlAndDataThatIsPresentWithTestLabel
+    } // end of testcacheInformationWithCategoryAndLabel
 
-	@isTest
-	static void testcacheInformation() {
-		// assign
-		final String label = accc_DataCachingDataModel.TestLabel2018;
-		// DO use caching strategy as this is set for testing (default is true)
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
-		//act
- 
-		accc_DataCachingDataModel.CacheInformation datum = mgr.cacheInformation(label);
-
-		// assert
-		system.assertNotEquals(null, datum);
-		system.assertEquals( accc_DataCachingDataModel.TestCategory, datum.category);
-		system.assertEquals(accc_DataCachingDataModel.TestName2018, datum.developerName);
-		system.assertEquals(true, datum.isCachingEnabled);
-
-	} // end of testcacheInformation
-
-	@isTest
-	static void testcacheInformationWithCategoryAndLabel() {
-		// assign
-		final String label = accc_DataCachingDataModel.TestLabel2018;
-		final String category = accc_DataCachingDataModel.TestCategory;
-		// DO use caching strategy as this is set for testing (default is true)
-		accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
-		//act
-		accc_DataCachingDataModel.CacheInformation datum = mgr.cacheInformation(category, label);
-
-		// assert
-		system.assertNotEquals(null, datum);
-		system.assertEquals( accc_DataCachingDataModel.TestCategory, datum.category);
-		system.assertEquals(accc_DataCachingDataModel.TestName2018, datum.developerName);
-		system.assertEquals(true, datum.isCachingEnabled);
-
-	} // end of testcacheInformationWithCategoryAndLabel
-
+	/*
+	 * We ensure that Cache is ENABLED with the right partition. Otherwise,
+	 * is is pointless to test. Event is no unit test is run on cache ( due to no setup)
+	 * the ACCC unit tests have 96% code coverage
+	 */
+    @TestSetup
+    static void makeData(){
+        accc_ICache mcache = new accc_ApexCache();
+        accc_ApexCacheMgrTest.isCacheAvailableAndEnabled  =mcache.isAvailable();
+    }
 } // end of accc_ApexCacheMgrTest

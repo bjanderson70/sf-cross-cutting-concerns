@@ -110,7 +110,7 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
 
         // now go check that this partition is already created ( setup->cache in the Org)
         // Note, this is normally the Default cache partition ('local.work')
-        this.cacheIsAvailable = this.getPartition(this.cacheNamespace, this.cachePartition) != null ;
+        this.cacheIsAvailable = this.getPartition(this.cacheNamespace, this.cachePartition) != null;
 
         accc_ApexEnvironment.getRuntimeEnvironment().logger().trace('Entered partition=' + partition + ', this.cacheIsAvailable=' + this.cacheIsAvailable );
     } // end of ctor
@@ -129,9 +129,9 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-    * @description cache partition
-    * @return the cache partition, generally, 'work'
-    */
+     * @description cache partition
+     * @return the cache partition, generally, 'work'
+     */
     public String theCachePartition() {
         return this.cachePartition;
     } // end of theCachePartition
@@ -164,11 +164,11 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
      * @return Boolean true, if available
      */
     public Boolean isAvailable() {
-        if ( !this.cacheIsAvailable ) {
+
+        if ( !this.cacheIsAvailable  ) {
             return false;
         }
-
-        return this.getPartition().isAvailable();
+        return true;
     } // end of isAvailable
 
     /**
@@ -179,23 +179,25 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
         Object results = null;
 
         if ( !string.isBlank(key) && this.isAvailable()  ) {
-            results = this.getPartition().get(key);
+            results =  this.getPartition().get(key);
         }
 
         return results;
     } // end of get
 
     /**
-    * @description get an item from cache
-    * @param string the partition
-    * @param string the key
-    * @return Object
-    */
+     * @description get an item from cache
+     * @param string the partition
+     * @param string the key
+     * @return Object
+     */
     public Object get(String partition, String key) {
         Object results = null;
 
-        if ( !string.isBlank(key) && !string.isBlank(partition)   ) {
-            results = this.getPartition(this.cacheNamespace, partition).get(key);
+        if ( !string.isBlank(key)
+             && !string.isBlank(partition)
+             && this.isAvailable()  ) {
+            results=this.getPartition(this.cacheNamespace, partition).get(key);
         }
 
         return results;
@@ -225,8 +227,10 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
     public Boolean contains(String partition, String key) {
         Boolean results = false;
 
-        if ( !string.isBlank(key) && !string.isBlank(partition) ) {
-            results = this.getPartition(this.cacheNamespace, partition).contains(key);
+        if ( !string.isBlank(key)
+             && !string.isBlank(partition)
+             && this.isAvailable() ) {
+            results=  this.getPartition(this.cacheNamespace, partition).contains(key);
         }
 
         return results;
@@ -244,19 +248,18 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
     } // end of getKeys
 
     /**
-    * @description get cache keys
-    * @param string the cache partition
-    * @return Boolean
-    */
+     * @description get cache keys
+     * @param string the cache partition
+     * @return Boolean
+     */
     public Set<String> getKeys(String partition) {
         Set<String> data = null;
 
-        if (  !string.isBlank(partition) ) {
+        if (  !string.isBlank(partition)  && this.isAvailable() ) {
             data = this.getPartition(this.cacheNamespace, partition).getKeys();
         }
-
         return data;
-    } // end of getKeys
+    }// end of getKeys
 
     /**
      * @description put value into cache
@@ -264,7 +267,7 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
      */
     public void put(String key, Object value) {
         this.put(key, value, DEFAULT_TTL_IN_SECS);
-    } // end of put
+    }// end of put
 
     /**
      * @description put value into cache
@@ -278,7 +281,7 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
             Integer ttl = ttlSecs < DEFAULT_MIN_TTL_IN_SECS ? DEFAULT_MIN_TTL_IN_SECS : ttlSecs;
             this.getPartition().put(key, value, ttl);
         }
-    } // end of put
+    }// end of put
 
     /**
      * @description put value into cache (by partition)
@@ -290,8 +293,7 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
      */
     public void put(String partition, String key, Object value) {
         this.put(partition, key, value, DEFAULT_TTL_IN_SECS);
-
-    } // end of put
+    }// end of put
 
     /**
      * @description put value into cache
@@ -302,11 +304,13 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
      * @param ttlSecstime to live in seconds (max. in 8 hrs == 28,800 secs - min is 300 secs) MAX_TTL_SECS
      */
     public void put(String partition, String key, Object value, Integer ttlSecs) {
-        if ( !string.isBlank(key) && value != null && !string.isBlank(partition)) {
+        if ( !string.isBlank(key) && value != null
+             && !string.isBlank(partition)
+             &&  this.isAvailable()) {
             Integer ttl = ttlSecs < DEFAULT_MIN_TTL_IN_SECS ? DEFAULT_MIN_TTL_IN_SECS : ttlSecs;
             this.getPartition(this.cacheNamespace, partition).put(key, value, ttl);
         }
-    } // end of put
+    }// end of put
     /**
      * @description remove case sensitive key value from cache
      *
@@ -321,39 +325,41 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
         }
 
         return results;
-    } // end of remove
+    }// end of remove
 
     /**
-    * @description remove case sensitive key value from cache by partition
-    *
-    * @param partition
-    * @param key case sensitive string name
-    * @return Boolean true if removed
-    */
+     * @description remove case sensitive key value from cache by partition
+     *
+     * @param partition
+     * @param key case sensitive string name
+     * @return Boolean true if removed
+     */
     public Boolean remove(String partition, String key) {
         Boolean results = false;
 
-        if ( !string.isBlank(partition) && !string.isBlank(key) ) {
+        if ( !string.isBlank(partition)
+             && !string.isBlank(key)
+             &&  this.isAvailable() ) {
             results = this.getPartition(this.cacheNamespace, partition).remove(key);
         }
 
         return results;
-    } // end of remove
+    }// end of remove
 
     /**
-    * @description create a cache partition name from ns and partition
-    *
-    * @param string cache namespace
-    * @param string cache partition
-    *
-    * @return string cache partition name
-    */
+     * @description create a cache partition name from ns and partition
+     *
+     * @param string cache namespace
+     * @param string cache partition
+     *
+     * @return string cache partition name
+     */
     public static string getCachePartitionName(string namespace, string partition) {
         string thePartition = string.isBlank(partition) ? accc_ApexConstants.DefaultCachePartitionName_s : partition;
         String nsInput = String.isBlank(namespace) ? CACHE_NS : namespace;
 
         return nsInput + accc_ApexConstants.Period + thePartition;
-    } // end of getCachePartitionName
+    }// end of getCachePartitionName
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Private Methods
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -365,16 +371,16 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
     @TestVisible
     private Cache.OrgPartition getPartition() {
         return this.getPartition(this.cacheNamespace, this.cachePartition);
-    } // end of getPartition
+    }// end of getPartition
 
     /**
-    * @description Get/Create the Org partition based on namespace and partition.
-    * Note, the  namespace and partition must already exists in SF Platform Cache :-0
-    *
-    * @param String cache namespace
-    * @param String cache partition
-    * @return Cache.OrgPartition
-    */
+     * @description Get/Create the Org partition based on namespace and partition.
+     * Note, the  namespace and partition must already exists in SF Platform Cache :-0
+     *
+     * @param String cache namespace
+     * @param String cache partition
+     * @return Cache.OrgPartition
+     */
     @TestVisible
     private Cache.OrgPartition getPartition(String namespace, String partition) {
         Cache.OrgPartition result = null;
@@ -397,6 +403,6 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
         }
         return result;
 
-    } // end of getPartition
+    }// end of getPartition
 
-} // end of accc_ApexCache
+}// end of accc_ApexCache
