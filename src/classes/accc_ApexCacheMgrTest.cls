@@ -55,8 +55,7 @@
 @isTest
 private class accc_ApexCacheMgrTest {
 
-    static Boolean isCacheAvailableAndEnabled = false;
-	
+
     @isTest
     static void testctorWithParam() {
         // assign
@@ -93,7 +92,7 @@ private class accc_ApexCacheMgrTest {
         // assign
         Object result = null;
         // CACHE MUST BE SETUP !!!
-        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled() ) {
             accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
             //act
             result = mgr.cache('mydata');
@@ -109,7 +108,7 @@ private class accc_ApexCacheMgrTest {
         Object result = 'mydata';
         final String expected = 'mydata';
         // CACHE MUST BE SETUP !!!
-        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled() ) {
             // do not use caching strategy as nothing is set
             accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
             //act
@@ -129,7 +128,7 @@ private class accc_ApexCacheMgrTest {
         Object result = 'mydata';
         final String expected = null;
         // CACHE MUST BE SETUP !!!
-        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled() ) {
             // do not use caching strategy as nothing is set
             accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
             //act
@@ -148,7 +147,7 @@ private class accc_ApexCacheMgrTest {
         Object result = 'mydata';
         final String expected = null;
         // CACHE MUST BE SETUP !!!
-        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled() ) {
             // DO use caching strategy as this is set for testing (default is true)
             accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
             //act
@@ -169,7 +168,7 @@ private class accc_ApexCacheMgrTest {
         Object result = 'mydata';
         final String expected = null;
         // CACHE MUST BE SETUP !!!
-        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled() ) {
             // DO use caching strategy as this is set for testing (default is true)
             accc_ApexCacheMgr mgr = new accc_ApexCacheMgr(false);
             //act
@@ -191,7 +190,7 @@ private class accc_ApexCacheMgrTest {
         Object result = 'mydata';
         final String expected = null;
         // CACHE MUST BE SETUP !!!
-        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled ) {
+        if ( accc_ApexCacheMgrTest.isCacheAvailableAndEnabled() ) {
             // DO use caching strategy as this is set for testing (default is true)
             accc_ApexCacheMgr mgr = new accc_ApexCacheMgr();
             //act
@@ -242,14 +241,13 @@ private class accc_ApexCacheMgrTest {
 
     } // end of testcacheInformationWithCategoryAndLabel
 
-	/*
-	 * We ensure that Cache is ENABLED with the right partition. Otherwise,
-	 * is is pointless to test. Event is no unit test is run on cache ( due to no setup)
-	 * the ACCC unit tests have 96% code coverage
-	 */
-    @TestSetup
-    static void makeData(){
+    /*
+     * We ensure that Cache is ENABLED with the right partition. Otherwise,
+     * is is pointless to test.
+     */
+
+    static Boolean isCacheAvailableAndEnabled(){
         accc_ICache mcache = new accc_ApexCache();
-        accc_ApexCacheMgrTest.isCacheAvailableAndEnabled  =mcache.isAvailable();
+        return mcache.isAvailable();
     }
 } // end of accc_ApexCacheMgrTest
