@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <layoutSections>
-        <customLabel>false</customLabel>
+        <customLabel>true</customLabel>
         <detailHeading>false</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Information</label>
+        <editHeading>false</editHeading>
+        <label>Fields</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -16,46 +16,50 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Category__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>CachingEnabled__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>IsProtected</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>NamespacePrefix</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>CachePartition__c</field>
+                <field>Performance_Metrics__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>TimeToLiveMS__c</field>
+                <field>Active__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>ContainFields__c</field>
+                <field>Continue_If_Exception__c</field>
             </layoutItems>
         </layoutColumns>
-        <style>TwoColumnsTopToBottom</style>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Environment__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Domain__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Trigger_Classes__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
-        <customLabel>false</customLabel>
-        <detailHeading>false</detailHeading>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>System Information</label>
+        <label>System</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>CreatedById</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>IsProtected</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -64,7 +68,7 @@
                 <field>LastModifiedById</field>
             </layoutItems>
         </layoutColumns>
-        <style>TwoColumnsTopToBottom</style>
+        <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -82,7 +86,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h6A000003t5XL</masterLabel>
+        <masterLabel>00h4B000000KEpw</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
