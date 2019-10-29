@@ -304,10 +304,12 @@ public virtual without sharing class accc_ApexCache implements accc_ICache {
      * @param ttlSecstime to live in seconds (max. in 8 hrs == 28,800 secs - min is 300 secs) MAX_TTL_SECS
      */
     public void put(String partition, String key, Object value, Integer ttlSecs) {
+
         if ( !string.isBlank(key) && value != null
              && !string.isBlank(partition)
              &&  this.isAvailable()) {
             Integer ttl = ttlSecs < DEFAULT_MIN_TTL_IN_SECS ? DEFAULT_MIN_TTL_IN_SECS : ttlSecs;
+            // NOTE: If you are using a Developer Sandbox there is NO Available Cache (0)
             this.getPartition(this.cacheNamespace, partition).put(key, value, ttl);
         }
     }// end of put
