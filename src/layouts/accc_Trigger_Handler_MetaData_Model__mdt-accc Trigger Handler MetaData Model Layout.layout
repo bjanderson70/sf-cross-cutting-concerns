@@ -34,7 +34,7 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Environment__c</field>
+                <field>RuntimeEnvironment__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
