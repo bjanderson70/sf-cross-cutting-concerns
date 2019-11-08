@@ -34,244 +34,264 @@
  *
  * @group Common Layer
  **/
-public virtual without sharing class accc_SObjectBaseWriter implements  Database.RaisesPlatformEvents  {
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Data Members
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	@TestVisible
-	static final String EXCEPTION_MESG_FOR_TEST = 'accc_SObjectBaseWriter caused Exception';
+public virtual without sharing class accc_SObjectBaseWriter implements Database.RaisesPlatformEvents  {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Members
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	@TestVisible
-	private List<SObject> m_entries;
-	@TestVisible
-	private Boolean m_removeAction = false;
-	@TestVisible
-	private Boolean m_isBigObject = false;
-	@TestVisible
-	private Exception m_exception = null;
-	@TestVisible
-	static Boolean m_testToCaseException = false;
+    @TestVisible
+    static final String EXCEPTION_MESG_FOR_TEST = 'accc_SObjectBaseWriter caused Exception';
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	// Ctors
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
+    @TestVisible
+    private static String FIELD_NAME_ID = 'id';
+    @TestVisible
+    private List<SObject> m_entries;
+    @TestVisible
+    private Boolean m_removeAction = false;
+    @TestVisible
+    private Boolean m_isBigObject = false;
+    @TestVisible
+    private Exception m_exception = null;
+    @TestVisible
+    static Boolean m_testToCaseException = false;
 
-	/**
-	* @description ctor to insert/or remove SObjects
-	*
-	* @param sentries data entries
-	*/
-	public accc_SObjectBaseWriter(List<SObject> sentries) {
-		this(sentries, false);
-	}// end ctor
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Ctors
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * @description ctor to insert/or remove items/sobjects
-	 *
-	 * @param entries data entries
-	 * @param remove true if to remove data; otherwise insert
-	 *
-	 */
-	public accc_SObjectBaseWriter(List<SObject> sentries, boolean remove) {
-		this.entries = sentries;
-		this.actions = remove;
-	}// end ctor
+    /**
+     * @description ctor to insert/or remove SObjects
+     *
+     * @param sentries data entries
+     */
+    public accc_SObjectBaseWriter(List<SObject> sentries) {
+        this(sentries, false);
+    }// end ctor
 
-	/////////////////////////////////////////////////////////////////////////
-	// Public Properties
-	/////////////////////////////////////////////////////////////////////////
-	/**
-	 * Getter/sSetter for the exception, if any
-	 */
-	@TestVisible
-	public Exception theException {
-		get { return this.m_exception;}
-		protected set { this.m_exception = value;}
-	} // end of theException
+    /**
+     * @description ctor to insert/or remove items/sobjects
+     *
+     * @param entries data entries
+     * @param remove true if to remove data; otherwise insert
+     *
+     */
+    public accc_SObjectBaseWriter(List<SObject> sentries, boolean remove) {
+        this.entries = sentries;
+        this.actions = remove;
+    }// end ctor
 
-	/**
-	 * Getter/sSetter of SObject collection
-	 */
-	@TestVisible
-	public  List<SObject> entries {
-		get { return this.m_entries;}
-		protected set { this.m_entries = value;}
-	} // end of entries
+    /////////////////////////////////////////////////////////////////////////
+    // Public Properties
+    /////////////////////////////////////////////////////////////////////////
+    /**
+     * Getter/sSetter for the exception, if any
+     */
+    @TestVisible
+    public Exception theException {
+        get { return this.m_exception;}
+        protected set { this.m_exception = value;}
+    } // end of theException
 
-	/**
-	 * Getter/sSetter of the action ( add/remove)
-	 */
-	@TestVisible
-	public  Boolean actions {
-		get { return this.m_removeAction;}
-		set { this.m_removeAction = value;}
-	} // end of actions
+    /**
+     * Getter/sSetter of SObject collection
+     */
+    @TestVisible
+    public List<SObject> entries {
+        get { return this.m_entries;}
+        protected set { this.m_entries = value;}
+    } // end of entries
 
-	/**
-	* Indicatator on whether to perform I/O with Big Object
-	*/
-	@TestVisible
-	public Boolean isBigObject {
-		get { return this.m_isBigObject;}
-		set { this.m_isBigObject = value;}
-	} // end of isBigObject
-	/////////////////////////////////////////////////////////////////////////
-	// Public Methods
-	/////////////////////////////////////////////////////////////////////////
+    /**
+     * Getter/sSetter of the action ( add/remove)
+     */
+    @TestVisible
+    public Boolean actions {
+        get { return this.m_removeAction;}
+        set { this.m_removeAction = value;}
+    } // end of actions
 
-	/*
-	* Here we insert/remove records,
-	* or log an error if insertion fails.
-	*/
-	public virtual void execute() {
+    /**
+     * Indicatator on whether to perform I/O with Big Object
+     */
+    @TestVisible
+    public Boolean isBigObject {
+        get { return this.m_isBigObject;}
+        set { this.m_isBigObject = value;}
+    } // end of isBigObject
+    /////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    /////////////////////////////////////////////////////////////////////////
 
-		if ( this.entries == null || this.entries.size() == 0 ) {
-			return;
-		}
-		// all checks out, go process
-		this.process();
+    /*
+     * Here we insert/remove records,
+     * or log an error if insertion fails.
+     */
+    public virtual void execute() {
 
-	} // end of execute
+        if ( this.entries == null || this.entries.size() == 0 ) {
+            return;
+        }
+        // all checks out, go process
+        this.process();
 
-	/**
-	 * @description create a queuable writer based on settings
-	 * @param entries data entries
-	 * @param remove true if to remove data; otherwise insert
-	 * @param isThisABigObject is a big object type
-	 *
-	 * @return either a Big Object writer or regular SObject writer
-	 */
-	public static accc_SObjectBaseWriter queuableWriter(List<SObject> sentries,
-	        boolean remove,
-	        Boolean isThisABigObject) {
-		accc_SObjectBaseWriter writer = null;
-		// have to treat operations differently ... REFACTOR in order to avoid the 'if'
-		if ( isThisABigObject ) {
-			writer = new accc_QueableBigObjects(sentries, remove);
-		} else {
-			writer = new accc_QueableSObjects(sentries, remove);
-		}
-		return writer;
-	} // end of queuableWriter
+    } // end of execute
 
-	/////////////////////////////////////////////////////////////////////////
-	// Protcted Methods
-	/////////////////////////////////////////////////////////////////////////
-	/**
-	 * @description process the db operation
-	 */
-	@TestVisible
-	protected virtual void process() {
+    /**
+     * @description create a queuable writer based on settings
+     * @param entries data entries
+     * @param remove true if to remove data; otherwise insert
+     * @param isThisABigObject is a big object type
+     *
+     * @return either a Big Object writer or regular SObject writer
+     */
+    public static accc_SObjectBaseWriter queuableWriter(List<SObject> sentries,
+                                                        boolean remove,
+                                                        Boolean isThisABigObject) {
+        accc_SObjectBaseWriter writer = null;
+        // have to treat operations differently ... REFACTOR in order to avoid the 'if'
+        if ( isThisABigObject ) {
+            writer = new accc_QueableBigObjects(sentries, remove);
+        } else {
+            writer = new accc_QueableSObjects(sentries, remove);
+        }
+        return writer;
+    } // end of queuableWriter
 
-		try {
-			// used for testing
-			if (accc_ApexConstants.UNIT_TEST_RUNNING) {
-				// testing -- cause an exception
-				if ( accc_SObjectBaseWriter.m_testToCaseException) {
-					throw new accc_ApexApplicationException(EXCEPTION_MESG_FOR_TEST);
-				}
-			}
-			// perform the sobject action ( add/remove) and process errors, if any
-			// we catch the exception and process , if necessary
-			this.performDatabaseOperation();
+    /////////////////////////////////////////////////////////////////////////
+    // Protcted Methods
+    /////////////////////////////////////////////////////////////////////////
+    /**
+     * @description process the db operation
+     */
+    @TestVisible
+    protected virtual void process() {
 
-		} catch (Exception excp) {
-			this.theException = excp;
-			// Exception occurred, output the exception message
-			accc_ApexUtilities.log(excp);
-		}
-		//return this.theException == null;
-	} // end of process
-	/**
-	 * @description perform the db op
-	 * @return db handler accc_GenericDbResultHandler
-	 */
-	@TestVisible
-	protected virtual accc_GenericDbResultHandler  performDatabaseOperation() {
-		accc_GenericDbResultHandler result =  this.isBigObject ? this.dataIOBigObject(this.actions) : this.dataIOSObject(this.actions);
+        try {
+            // used for testing
+            if (accc_ApexConstants.UNIT_TEST_RUNNING) {
+                // testing -- cause an exception
+                if ( accc_SObjectBaseWriter.m_testToCaseException) {
+                    throw new accc_ApexApplicationException(EXCEPTION_MESG_FOR_TEST);
+                }
+            }
+            // perform the sobject action ( add/remove) and process errors, if any
+            // we catch the exception and process , if necessary
+            this.performDatabaseOperation();
 
-		// process errors, if any
-		if ( result != null && result.hasErrors() ) {
-			List<String> errors = result.processErrors();
-			errors.remove(null);
-			this.theException = new accc_ApexApplicationException( string.join(errors, ','));
-		}
+        } catch (Exception excp) {
+            this.theException = excp;
+            // Exception occurred, output the exception message
+            accc_ApexUtilities.log(excp);
+        }
+        //return this.theException == null;
+    } // end of process
+    /**
+     * @description perform the db op
+     * @return db handler accc_GenericDbResultHandler
+     */
+    @TestVisible
+    protected virtual accc_GenericDbResultHandler  performDatabaseOperation() {
+        accc_GenericDbResultHandler result =  this.isBigObject ? this.dataIOBigObject(this.actions) : this.dataIOSObject(this.actions);
+        // process errors, if any
+        if ( result != null && result.hasErrors() ) {
+            List<String> errors = result.processErrors();
+            errors.remove(null);
+            this.theException = new accc_ApexApplicationException( string.join(errors, ','));
+        }
 
-		return result;
-	} // end of performDatabaseOperation
-	/**
-	 * @description data io for SObject
-	 *
-	 * @param action if true, remove otherwise insert
-	 * @return accc_GenericDbResultHandler Db Result
-	 */
-	@TestVisible
-	protected virtual accc_GenericDbResultHandler dataIOSObject(boolean action) {
-		accc_GenericDbResultHandler result = null;
-		if ( !this.isBigObject ) {
-			// ++++ Inserting
-			if ( action == false ) {
-				// We upsert, this way we cover insert or update.
-				result = new accc_GenericDbResultHandler( Database.upsert(this.entries));
-				// Deleting
-			} else {
-				// Use appropriate function for BO
-				result = new accc_GenericDbResultHandler( Database.delete(this.entries));
-			}
-		}
-		return result;
-	} // end of dataIOSObject
-	/**
-	 * @description data io for BigObject
-	 *
-	 * @param action if true, remove otherwise insert
-	 * @return accc_GenericDbResultHandler Db Result
-	 */
-	@TestVisible
-	protected virtual accc_GenericDbResultHandler dataIOBigObject(boolean action) {
-		accc_GenericDbResultHandler result = null;
-		// ensure we are dealing with Big Object
-		if ( this.isBigObject ) {
-			// are we testing
-			if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
-				result = getTestResultsForBigObject();
-			} else {
-				// ++++ Inserting
-				if ( action == false ) {
-					result = new accc_GenericDbResultHandler( Database.insertImmediate(this.entries));
-					// Deleting
-				} else {
-					// Use appropriate function for BO
-					result = new accc_GenericDbResultHandler( Database.deleteImmediate(this.entries));
-				}
-			}
-		}
+        return result;
+    } // end of performDatabaseOperation
+    /**
+     * @description data io for SObject
+     *
+     * @param action if true, remove otherwise insert
+     * @return accc_GenericDbResultHandler Db Result
+     */
+    @TestVisible
+    protected virtual accc_GenericDbResultHandler dataIOSObject(boolean action) {
+        accc_GenericDbResultHandler result = null;
+        if ( !this.isBigObject ) {
+            // ++++ Inserting/Updating
+            if ( action == false ) {
+                // only look at the first one
+                if ( false == this.hasId() ) {
+                    result=new accc_GenericDbResultHandler (Database.insert(this.entries));
+                } else {
+                    // We cannot use upsert for generic!!!
+                    result = new accc_GenericDbResultHandler( Database.update(this.entries));
+                }
+            } else {
+                // Deleting
+                // Use appropriate function for BO
+                result = new accc_GenericDbResultHandler( Database.delete(this.entries));
+            }
+        }
+        return result;
+    } // end of dataIOSObject
+    /**
+     * @description data io for BigObject
+     *
+     * @param action if true, remove otherwise insert
+     * @return accc_GenericDbResultHandler Db Result
+     */
+    @TestVisible
+    protected virtual accc_GenericDbResultHandler dataIOBigObject(boolean action) {
+        accc_GenericDbResultHandler result = null;
+        // ensure we are dealing with Big Object
+        if ( this.isBigObject ) {
+            // are we testing
+            if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+                result = getTestResultsForBigObject();
+            } else {
+                // ++++ Inserting
+                if ( action == false ) {
+                    result = new accc_GenericDbResultHandler( Database.insertImmediate(this.entries));
+                    // Deleting
+                } else {
+                    // Use appropriate function for BO
+                    result = new accc_GenericDbResultHandler( Database.deleteImmediate(this.entries));
+                }
+            }
+        }
 
-		return result;
-	} // end of dataIOBigObject
+        return result;
+    } // end of dataIOBigObject
 
-	/**
-	 * @description used for testing big objects results
-	 *
-	 * @return  accc_GenericDbResultHandler Db Results
-	 */
-	@TestVisible
-	private static accc_GenericDbResultHandler getTestResultsForBigObject() {
-		accc_GenericDbResultHandler results = null;
-		if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
-			// SIMULATING RESULTS
-			results = new accc_GenericDbResultHandler( new  List<Database.SaveResult> {
-				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000AAA","success":true,"errors":[]}', Database.SaveResult.class),
-				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000BAA","success":true,"errors":[]}', Database.SaveResult.class),
-				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000CAA","success":true,"errors":[]}', Database.SaveResult.class)
 
-			});
-		}
-		return results;
+    /////////////////////////////////////////////////////////////////////////
+    // Private Methods
+    /////////////////////////////////////////////////////////////////////////
 
-	}// end of getTestResultsForBigObject
+    /**
+     * @description check top entry field for ID; as we cannot use upsert ( either insert or update) for SObject!!
+     * @return boolean , true, if id present
+     **/
+    @TestVisible
+    private boolean hasID() {
+        // if we are here we KNOW we have data
+        return string.isNotBlank(accc_ApexUtilities.getFieldFromSObjectSafe(this.entries[0],FIELD_NAME_ID));
+    }// end of hasID
+    /**
+     * @description used for testing big objects results
+     *
+     * @return  accc_GenericDbResultHandler Db Results
+     */
+    @TestVisible
+    private static accc_GenericDbResultHandler getTestResultsForBigObject() {
+        accc_GenericDbResultHandler results = null;
+        if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
+            // SIMULATING RESULTS
+            results = new accc_GenericDbResultHandler( new  List<Database.SaveResult> {
+                (Database.SaveResult)JSON.deserialize('{"id":"000000000000000AAA","success":true,"errors":[]}', Database.SaveResult.class),
+                (Database.SaveResult)JSON.deserialize('{"id":"000000000000000BAA","success":true,"errors":[]}', Database.SaveResult.class),
+                (Database.SaveResult)JSON.deserialize('{"id":"000000000000000CAA","success":true,"errors":[]}', Database.SaveResult.class)
+
+            });
+        }
+        return results;
+
+    }// end of getTestResultsForBigObject
 
 } // end of accc_SObjectBaseWriter
