@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -39,27 +39,46 @@
  *
  * @group Log Aspects
  */
-public without sharing class accc_LogPlatformEventHandler implements accc_IApexPlatformEventHandler {
+public without sharing class accc_LogPlatformEventHandler extends accc_EventBase {
 
+    /////////////////////////////////////////////////////////////////////////
+    // Data Members
+    /////////////////////////////////////////////////////////////////////////
+    // use for testing exception
+    @TestVisible
+    static Boolean useForTestingException=false;
+    @TestVisible
+    static final string FOR_TESTING_EXCEPTION = 'accc_LogPlatformEventHandler:accc_ApexApplicationException';
+
+    /////////////////////////////////////////////////////////////////////////
+    // Public Methods
+    /////////////////////////////////////////////////////////////////////////
     /**
      * @description Platform events only supports after insert
      *
      * @param List<SObject> list of new sobjects
      */
-    public void afterInsert(List<SObject> newItems) {
+    public override void onAfterInsertChild(List<SObject> newItems) {
 
         try {
             List<accc_Log__e> elogs = (List<accc_Log__e>)newItems;
             List<AcccApplicationLog__c> theApplicationLogs = accc_MessageTransformation.translate(elogs);
+            //
+            // are we causing an exception during testing
+            //
+            if ( true == accc_LogPlatformEventHandler.useForTestingException && accc_ApexConstants.UNIT_TEST_RUNNING ) {
+                throw new accc_ApexApplicationException(FOR_TESTING_EXCEPTION);
+            }
             // any data to add
             if ( theApplicationLogs != null && theApplicationLogs.size() > 0) {
-                insert theApplicationLogs;
+                accc_SObjectBaseWriter writer = new accc_QueableSObjects(theApplicationLogs);
+                writer.execute();
             }
         } catch (Exception excp) {
             // process exception, handle w/ care
-            accc_ApexEnvironment.getRuntimeEnvironment().exceptionHandler().process(excp, true);
+            accc_ApexUtilities.log(excp);
         }
 
-    } // end of afterInsert
+    } // end of onAfterInsertChild
 
 } // end of accc_LogPlatformEventHandler

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -69,7 +69,7 @@ private class accc_PlatformEventDAOLogTest {
 		accc_PlatformEventDAOLog ctor = new accc_PlatformEventDAOLog(name);
 		// assert
 		System.assertEquals(true, ctor.name == name);
-		System.assertEquals(true, ctor.json == accc_PlatformEventDAOLog.EMPTY_JSON_s);
+		System.assertEquals(true, ctor.json == accc_ApexConstants.EMPTY_JSON_s);
 		System.assertEquals(0, ctor.truncated);
 		System.assertEquals(true, ctor.timestamp != null);
 		System.assertEquals(1, ctor.count);
@@ -114,7 +114,7 @@ private class accc_PlatformEventDAOLogTest {
 		accc_PlatformEventDAOLog ctor = new accc_PlatformEventDAOLog(name, json);
 		// assert
 		System.assertEquals(true, ctor.name == name);
-		System.assertEquals(true, ctor.json == accc_PlatformEventDAOLog.EMPTY_JSON_s);
+		System.assertEquals(true, ctor.json == accc_ApexConstants.EMPTY_JSON_s);
 		System.assertEquals(0, ctor.truncated);
 		System.assertEquals(true, ctor.timestamp != null);
 		System.assertEquals(1, ctor.count);
@@ -197,7 +197,7 @@ private class accc_PlatformEventDAOLogTest {
 		// assign
 		DateTime now = DateTime.Now();
 		String name = 'pe_test';
-		String json = accc_PlatformEventDAOLogTest.generateLargeString(accc_PlatformEventDAOLog.MAX_JSON_SIZE + 10);
+		String json = accc_PlatformEventDAOLogTest.generateLargeString(accc_ApexConstants.MAX_JSON_SIZE + 10);
 		// act
 		accc_PlatformEventDAOLog ctor = new accc_PlatformEventDAOLog(name, json, 1);
 		// assert
@@ -227,12 +227,12 @@ private class accc_PlatformEventDAOLogTest {
 			                                 Event_Truncated__c = 0,
 			                                 Event_Date_Year__c = year,
 			                                 Number_Of_Events__c = 1,
-			                                 Replay_Ids__c =  accc_PlatformEventDAOLog.convertListCollectionIntoString(replayIds,
-			                                         accc_PlatformEventDAOLog.MAX_TEXT_LONG_SIZE,
-			                                         accc_PlatformEventDAOLog.DEFAULT_DELIMITER ),
-			                                 Operation_Ids__c = accc_PlatformEventDAOLog.convertListCollectionIntoString(operationIds,
-			                                         accc_PlatformEventDAOLog.MAX_TEXT_LONG_SIZE,
-			                                         accc_PlatformEventDAOLog.DEFAULT_DELIMITER )
+			                                 Replay_Ids__c =  accc_ApexUtilities.convertListCollectionIntoString(replayIds,
+			                                         accc_ApexConstants.MAX_TEXT_LONG_SIZE,
+			                                         accc_ApexConstants.CommaDelimiter ),
+			                                 Operation_Ids__c = accc_ApexUtilities.convertListCollectionIntoString(operationIds,
+			                                         accc_ApexConstants.MAX_TEXT_LONG_SIZE,
+			                                         accc_ApexConstants.CommaDelimiter )
 			                                )
 			         );
 
@@ -244,8 +244,8 @@ private class accc_PlatformEventDAOLogTest {
 		for ( integer inx = 0; inx < result.size(); inx++) {
 			System.assertEquals(items[inx].Number_Of_Events__c , result[inx].count);
 			System.assertEquals(items[inx].Event_Name__c , result[inx].name);
-			System.assertEquals(true, (new Set<String>(items[inx].Replay_Ids__c.split(accc_PlatformEventDAOLog.DEFAULT_DELIMITER))).containsAll(replayIds));
-			System.assertEquals(true, (new Set<String>(items[inx].Operation_Ids__c.split(accc_PlatformEventDAOLog.DEFAULT_DELIMITER))).containsAll(operationIds));
+			System.assertEquals(true, (new Set<String>(items[inx].Replay_Ids__c.split(accc_ApexConstants.CommaDelimiter))).containsAll(replayIds));
+			System.assertEquals(true, (new Set<String>(items[inx].Operation_Ids__c.split(accc_ApexConstants.CommaDelimiter))).containsAll(operationIds));
 		}
 
 	}// end of testmapFromBigObject

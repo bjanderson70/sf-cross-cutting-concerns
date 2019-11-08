@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -36,25 +36,40 @@
  */
 @isTest
 private class accc_LogPlatformEventHandlerTest {
-	@isTest
-	static void testafterInsert() {
-		integer inx = 0;
-		List<accc_Log__e> elogs = new List<accc_Log__e> {
-			new accc_Log__e(Message__c = '1'),
-			new accc_Log__e(Message__c = '2'),
-			new accc_Log__e(Message__c = '3')
-		};
-		accc_IApexPlatformEventHandler evtHndlr = new accc_LogPlatformEventHandler();
+    @isTest
+    static void testafterInsert() {
+        integer inx = 0;
+        List<accc_Log__e> elogs = new List<accc_Log__e> {
+            new accc_Log__e(Message__c = '1'),
+            new accc_Log__e(Message__c = '2'),
+            new accc_Log__e(Message__c = '3')
+        };
+        accc_ITriggerHandler evtHndlr = new accc_LogPlatformEventHandler();
+        Test.startTest();
+        evtHndlr.onAfterInsertChild(elogs);
+        List<AcccApplicationLog__c> logs = [select Message__c from AcccApplicationLog__c];
+        for (AcccApplicationLog__c item : logs ) {
+            if ( item.Message__c == '1' ||
+                 item.Message__c == '2' ||
+                 item.Message__c == '3') {
+                inx++;
+            }
+        }
+        Test.stopTest();
+        system.assertEquals(3, inx);
+    } // end of testafterInsert
 
-		evtHndlr.afterInsert(elogs);
-		List<AcccApplicationLog__c> logs = [select Message__c from AcccApplicationLog__c];
-		for (AcccApplicationLog__c item : logs ) {
-			if ( item.Message__c == '1' ||
-			        item.Message__c == '2' ||
-			        item.Message__c == '3') {
-				inx++;
-			}
-		}
-		system.assertEquals(3, inx);
-	} // end of testafterInsert
+    @isTest
+    static void testafterInsertWithException(){
+        // arrange
+       
+        List<accc_Log__e> elogs = new List<accc_Log__e>();
+        accc_LogPlatformEventHandler.useForTestingException=true;
+        accc_ITriggerHandler evtHndlr = new accc_LogPlatformEventHandler();
+
+        evtHndlr.onAfterInsertChild(elogs);
+
+        system.assertEquals(true, accc_ApexUtilities.containsInTestLog(accc_LogPlatformEventHandler.FOR_TESTING_EXCEPTION));
+    }// end of testafterInsertWithException
+
 } // end of accc_LogPlatformEventHandlerTest

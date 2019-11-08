@@ -5,7 +5,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -13,7 +33,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -21,7 +61,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -29,7 +89,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -37,7 +117,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <allowInChatterGroups>true</allowInChatterGroups>
@@ -46,10 +146,10 @@
     <description>The application log is used to store information around the underlying code. Also, provides a way to trace and monitor applications</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>true</enableChangeDataCapture>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
@@ -126,6 +226,7 @@
     </fields>
     <fields>
         <fullName>Exception__c</fullName>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <label>Exception</label>
         <length>32768</length>
@@ -137,6 +238,7 @@
     <fields>
         <fullName>IntegrationPayload__c</fullName>
         <description>If log is integration related show payload</description>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <inlineHelpText>If log is integration related show payload</inlineHelpText>
         <label>IntegrationPayload</label>
@@ -149,6 +251,7 @@
     <fields>
         <fullName>InvocationType__c</fullName>
         <description>invoc)ation type ( batch, future, etc</description>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <label>InvocationType</label>
         <length>255</length>
@@ -161,6 +264,7 @@
     <fields>
         <fullName>LogCode__c</fullName>
         <description>Either the exception error code of custom org code for record</description>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <inlineHelpText>Either the exception error code of custom org code for record</inlineHelpText>
         <label>LogCode</label>
@@ -174,6 +278,7 @@
     <fields>
         <fullName>Message__c</fullName>
         <description>Message to log</description>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <inlineHelpText>Message to log</inlineHelpText>
         <label>Message</label>
@@ -186,6 +291,7 @@
     <fields>
         <fullName>ReferenceId__c</fullName>
         <description>The related record id</description>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <inlineHelpText>The related record id</inlineHelpText>
         <label>ReferenceId</label>
@@ -199,6 +305,7 @@
     <fields>
         <fullName>ReferenceInfo__c</fullName>
         <description>The related record info (e.g. Apex Batch Job Id, Contact etc)</description>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <inlineHelpText>The related record info (e.g. Apex Batch Job Id, Contact etc)</inlineHelpText>
         <label>ReferenceInfo</label>
@@ -211,6 +318,7 @@
     </fields>
     <fields>
         <fullName>SourceFunction__c</fullName>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <label>SourceFunction</label>
         <length>255</length>
@@ -223,6 +331,7 @@
     <fields>
         <fullName>Source__c</fullName>
         <description>Source (i.e. class name)</description>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <inlineHelpText>Source (i.e. class name)</inlineHelpText>
         <label>Source</label>
@@ -236,6 +345,7 @@
     <fields>
         <fullName>StackTrace__c</fullName>
         <description>Raw exception stack trace for unhandled errors</description>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <inlineHelpText>Raw exception stack trace for unhandled errors</inlineHelpText>
         <label>StackTrace</label>
@@ -247,6 +357,7 @@
     </fields>
     <fields>
         <fullName>Statistics__c</fullName>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <label>Statistics</label>
         <length>32768</length>
@@ -271,6 +382,7 @@
     </fields>
     <fields>
         <fullName>UserRoleId__c</fullName>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <label>UserRoleId</label>
         <length>255</length>
@@ -283,6 +395,7 @@
     <fields>
         <fullName>Username__c</fullName>
         <description>user name</description>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <label>Username</label>
         <length>150</length>
@@ -295,6 +408,7 @@
     <fields>
         <fullName>profileId__c</fullName>
         <description>profile id</description>
+        <encryptionScheme>None</encryptionScheme>
         <externalId>false</externalId>
         <label>profileId</label>
         <length>255</length>

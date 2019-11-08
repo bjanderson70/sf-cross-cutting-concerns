@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -106,7 +106,7 @@ public class accc_PlatformEventLogSelector {
 	private static List<accc_PlatformEventDAOLog> getBigObjectInformation(string query) {
 		List<accc_Org_Events__b> items = null;
 
-		if ( !Test.isRunningTest() ) {
+		if ( !accc_ApexConstants.UNIT_TEST_RUNNING ) {
 			items = Database.query(String.escapeSingleQuotes(query));
 			accc_ApexUtilities.log('++++++++ getBigObjectInformation.query=' + query);
 

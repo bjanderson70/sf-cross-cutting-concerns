@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -124,18 +124,18 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
         }
     } // end of add
     /**
-    * @description Add an instance creator
-    * @param accc_ApexClassInstanceMgr, the instance creator
-    */
+     * @description Add an instance creator
+     * @param accc_ApexClassInstanceMgr, the instance creator
+     */
     public virtual void add(accc_ApexClassInstanceMgr creator) {
         if ( creator != null ) {
             this.addToCollection(creator);
         }
     } // end of add
     /**
-    * @description Add an instance creator
-    * @param accc_IApexObjectGetter, the instance creator
-    */
+     * @description Add an instance creator
+     * @param accc_IApexObjectGetter, the instance creator
+     */
     public virtual void add(accc_IApexObjectGetter creator) {
         if ( creator != null ) {
             this.addToCollection(creator.name(), creator);
@@ -150,15 +150,15 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
     } // end of keys
 
     /**
-    * @description find the instance creator by name (case insensitive)
-    * @param String instance creator by name
-    * @return accc_IApexObjectGetter the instance creator
-    */
+     * @description find the instance creator by name (case insensitive)
+     * @param String instance creator by name
+     * @return accc_IApexObjectGetter the instance creator
+     */
     public accc_IApexObjectGetter findByName(string creatorName) {
         accc_IApexObjectGetter result = null;
 
         if ( !string.isBlank(creatorName) &&
-                accc_ApexObjectFactory.theObjectCollection.size() > 0) {
+             accc_ApexObjectFactory.theObjectCollection.size() > 0) {
             string key = creatorName.toLowerCase();
             result = accc_ApexObjectFactory.theObjectCollection.get(key);
         }
@@ -180,7 +180,7 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
     protected virtual void addToCollection(String name, Type classType) {
         // valid data
         if ( !string.isBlank(name) &&
-                classType != null ) {
+             classType != null ) {
             String key = name.toLowerCase();
             accc_ApexObjectFactory.theObjectCollection.put(key, new accc_ApexClassInstanceMgr(classType));
         }
@@ -203,20 +203,20 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
         }
     } // end of addToCollection
     /**
-    * @description add look up and type to the known classes we create  (case insensitive)
-    *
-    *  Note: We use reference name here as 'initializeBase' expects this. If
-    *  you need to have it use classname, then assign class name to reference name
-    *
-    * @param accc_ApexClassInstanceMgr instance used to invoke the creator
-    */
+     * @description add look up and type to the known classes we create  (case insensitive)
+     *
+     *  Note: We use reference name here as 'initializeBase' expects this. If
+     *  you need to have it use classname, then assign class name to reference name
+     *
+     * @param accc_ApexClassInstanceMgr instance used to invoke the creator
+     */
     @TestVisible
     protected virtual void addToCollection( accc_ApexClassInstanceMgr classInstance) {
         // valid data
         if ( classInstance != null ) {
             // the names from 'accc_ApexClassInstanceMgr' are never null
-            String  refKey = classInstance.referenceName.toLowerCase(),
-                    classKey = classInstance.className.toLowerCase() ;
+            String refKey = classInstance.referenceName.toLowerCase(),
+                   classKey = classInstance.className.toLowerCase();
             // add by reference
             accc_ApexObjectFactory.theObjectCollection.put(refKey, classInstance);
             //
@@ -224,7 +224,7 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
             // reference name and class name do NOT need to be the same
             //
             if ( classKey != refKey &&
-                    !accc_ApexObjectFactory.theObjectCollection.containsKey(classKey)) {
+                 !accc_ApexObjectFactory.theObjectCollection.containsKey(classKey)) {
                 accc_ApexObjectFactory.theObjectCollection.put(classKey, classInstance);
             }
         }
@@ -240,7 +240,7 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
     @TestVisible
     protected virtual Object createFromType(Type foundType, String name) {
         Object result = null;
-        boolean validToProcessOnName = foundType == null && !string.isBlank(name) ;
+        boolean validToProcessOnName = foundType == null && !string.isBlank(name);
 
         // we check the name if NO type
         if ( validToProcessOnName ) {
@@ -268,7 +268,7 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
      * @return Map<String, accc_IApexObjectGetter>, the list of creators
      */
     @TestVisible
-    protected  Map<String, accc_IApexObjectGetter> objectCollection() {
+    protected Map<String, accc_IApexObjectGetter> objectCollection() {
         return accc_ApexObjectFactory.theObjectCollection;
     } // end of objectCollection
 
@@ -284,14 +284,23 @@ public virtual without sharing class accc_ApexObjectFactory implements accc_IApe
 
         // this is static data, grab it ONCE
         if (  accc_ApexObjectFactory.theObjectCollection.size() == 0 ) {
+            Integer count=1;
+            // bec/ we can get into an infinite loop, we explicitly use system.debug
+            if ( accc_CustomSettings.showCCTraceInfo() ) {
+                system.debug('ACCC Factory Class Initialization Called');
+            }
             // what environment we are working in ('debug','production',etc)
             String environment = accc_ApexEnvironment.getEnvironment();
             // don't use singleton, 'accc_ApexRunEnvironmentSingleton' chicken-egg issue
             accc_CrossCuttingConfigMgr configMgr =  new accc_CrossCuttingConfigMgr(environment);
             // if we have the cc configuration manager, let us get all the creators
-            List<accc_ApexClassInstanceMgr> items = configMgr.getInstanceCreators() ;
+            List<accc_ApexClassInstanceMgr> items = configMgr.getInstanceCreators();
             // add these creators to our static lookup
             for (accc_ApexClassInstanceMgr classInstance : items) {
+                // bec/ we can get into an infinite loop, we explicitly use system.debug ( and not .log)
+                if ( accc_CustomSettings.showCCTraceInfo() ) {
+                    system.debug('\t' + (count++) +') ACCC Factory Class Creators:'+classInstance);
+                }
                 this.addToCollection(classInstance);
             }
 

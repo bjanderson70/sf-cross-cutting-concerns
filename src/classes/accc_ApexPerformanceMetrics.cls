@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -37,62 +37,78 @@
  *
  * @group Common Layer
  **/
-public without sharing class accc_ApexPerformanceMetrics {
+public virtual without sharing class accc_ApexPerformanceMetrics {
 
-	// our default user message
-	public static final String PERF_MESSAGE = 'PerformanceMetrics';
+    // our default user message
+    public static final String PERF_MESSAGE = 'PerformanceMetrics';
 
-	// our simple stop watch
-	@TestVisible
-	accc_StopWatch m_watch = new accc_StopWatch();
-	// user message
-	@TestVisible
-	String m_message = null;
+    // our simple stop watch
+    @TestVisible
+    accc_StopWatch m_watch = new accc_StopWatch();
+    // user message
+    @TestVisible
+    String m_message = null;
 
-	public accc_ApexPerformanceMetrics() {
-		this(PERF_MESSAGE);
-	} // end of ctor
+    public accc_ApexPerformanceMetrics() {
+        this(PERF_MESSAGE);
+    } // end of ctor
+    /**
+     * @description ctor passing in the message to display along with the metrics
+     *
+     */
+    public accc_ApexPerformanceMetrics(String userMessage) {
+        this.message = userMessage;
+    }// end of ctor
+    /**
+     * @description get/set the message to display to the user upon calling toString
+     *
+     * @return message string
+     */
+    public String message {
+        get {
+            return this.m_message;
+        }
+        set {
+            this.m_message = !string.isBlank(value) ? value : PERF_MESSAGE;
+        }
+    } // end of message
+    /**
+     * @description override the toString operation to get the result
+     *
+     * @return string of limits
+     */
+    public virtual override String toString() {
+        String data = this.getLimits();
+        this.reset();
+        return data;
+    }// end of toString()
+
+    /**
+    * @description reset the stopwatch
+    * @return void 
+    **/
+    public void reset() {
+        this.m_watch.reset();
+	}// end of reset
 	/**
-	 * @description ctor passing in the message to display along with the metrics
-	 *
-	 */
-	public accc_ApexPerformanceMetrics(String userMessage) {
-		this.message = userMessage;
-	}// end of ctor
-	/**
-	 * @description get/set the message to display to the user upon calling toString
-	 *
-	 * @return message string
-	 */
-	public String message {
-		get {
-			return this.m_message;
-		}
-		set {
-			this.m_message = !string.isBlank(value) ? value : PERF_MESSAGE;
-		}
-	} // end of message
-	/**
-	 * @description override the toString operation to get the result
-	 *
-	 * @return string of limits
-	 */
-	public override String toString() {
-		String data = '++++ ' + this.message + ' ++++' + accc_ApexConstants.NewLine +
-		              'Limits.getDMLRows:' + Limits.getDMLRows() + accc_ApexConstants.NewLine +
-		              'Limits.getDMLStatements:' + Limits.getDMLStatements() + accc_ApexConstants.NewLine +
-		              'Limits.getEmailInvocations:' + Limits.getEmailInvocations() + accc_ApexConstants.NewLine +
-		              'Limits.getFutureCalls:' + Limits.getFutureCalls() + accc_ApexConstants.NewLine +
-		              'Limits.getMobilePushApexCalls:' + Limits.getMobilePushApexCalls() + accc_ApexConstants.NewLine +
-		              'Limits.getQueries:' + Limits.getQueries() + accc_ApexConstants.NewLine +
-		              'Limits.getQueryLocatorRows: ' + Limits.getQueryLocatorRows() + accc_ApexConstants.NewLine +
-		              'Limits.getQueryRows: ' + Limits.getQueryRows() +  accc_ApexConstants.NewLine +
-		              'Limits.getQueueableJobs: ' + Limits.getQueueableJobs() + accc_ApexConstants.NewLine +
-		              'Limits.getSoslQueries:' + Limits.getSoslQueries() + accc_ApexConstants.NewLine +
-		              'Limits.getHeapSize:' + Limits.getHeapSize() + accc_ApexConstants.NewLine +
-		              'Limits.getCpuTime:' + Limits.getCpuTime() + accc_ApexConstants.NewLine +
-		              'Duration: ' + m_watch.toString();
-		m_watch.reset();
-		return data;
-	}
+	* @description get limits ( virtual ) to allow change and reformatting
+	* @return String 
+	**/
+	protected virtual String getLimits() {
+		return '++++ ' + this.message + ' ++++' + accc_ApexConstants.NewLine +
+              'Limits.getDMLRows:' + Limits.getDMLRows() + accc_ApexConstants.NewLine +
+              'Limits.getDMLStatements:' + Limits.getDMLStatements() + accc_ApexConstants.NewLine +
+              'Limits.getEmailInvocations:' + Limits.getEmailInvocations() + accc_ApexConstants.NewLine +
+              'Limits.getFutureCalls:' + Limits.getFutureCalls() + accc_ApexConstants.NewLine +
+              'Limits.getMobilePushApexCalls:' + Limits.getMobilePushApexCalls() + accc_ApexConstants.NewLine +
+              'Limits.getQueries:' + Limits.getQueries() + accc_ApexConstants.NewLine +
+              'Limits.getQueryLocatorRows: ' + Limits.getQueryLocatorRows() + accc_ApexConstants.NewLine +
+              'Limits.getQueryRows: ' + Limits.getQueryRows() +  accc_ApexConstants.NewLine +
+              'Limits.getQueueableJobs: ' + Limits.getQueueableJobs() + accc_ApexConstants.NewLine +
+              'Limits.getSoslQueries:' + Limits.getSoslQueries() + accc_ApexConstants.NewLine +
+              'Limits.getHeapSize:' + Limits.getHeapSize() + accc_ApexConstants.NewLine +
+              'Limits.getCpuTime:' + Limits.getCpuTime() + accc_ApexConstants.NewLine +
+              'Duration: ' + m_watch.toString();
+
+	} // end of getLimits
 } // end of accc_ApexPerformanceMetrics

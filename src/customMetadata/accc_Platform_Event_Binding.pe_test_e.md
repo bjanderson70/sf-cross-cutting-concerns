@@ -19,10 +19,6 @@
         <value xsi:type="xsd:string">accc_DefaultPEConsumer</value>
     </values>
     <values>
-        <field>Environment__c</field>
-        <value xsi:type="xsd:string">test</value>
-    </values>
-    <values>
         <field>Error_Handler__c</field>
         <value xsi:type="xsd:string">accc_DefaultProcessHandler</value>
     </values>
@@ -33,6 +29,10 @@
     <values>
         <field>Publisher__c</field>
         <value xsi:type="xsd:string">accc_DefaultPEPublisher</value>
+    </values>
+    <values>
+        <field>Runtime_Environment__c</field>
+        <value xsi:type="xsd:string">test</value>
     </values>
     <values>
         <field>Serialize_Event__c</field>

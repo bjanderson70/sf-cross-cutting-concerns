@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.
+ * Copyright (c) 2016-2019, Bill Anderson.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,14 +70,19 @@ public abstract without sharing class accc_BaseMdtDataModel {
     } // end of accc_ControlPolicySearchEnum
 
     // for caching locally, stored in section 'accc_BaseMdtDataModel'
+    @TestVisible
     static final accc_ApexLocalL1Cache l1Cache = new  accc_ApexLocalL1Cache('accc_BaseMdtDataModel');
     // acts as the category
+    @TestVisible
     static final String CUSTOM_MDT_CATEGORY = 'Category__c';
     // custom mdt select fields for common custom mdt fields
+    @TestVisible
     static final String CUSTOM_MDT_FIELDS = 'DeveloperName, Id, Label, MasterLabel, NamespacePrefix, QualifiedApiName';
     // the selected fields query
+    @TestVisible
     static final String SELECT_FIELDS = accc_ApexConstants.SELECT_s + CUSTOM_MDT_FIELDS;
     // category field ( which could be environment , depends upon the child class)
+    @TestVisible
     String m_categoryField = CUSTOM_MDT_CATEGORY;
     /////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -226,13 +231,13 @@ public abstract without sharing class accc_BaseMdtDataModel {
     //
     /////////////////////////////////////////////////////////////////////////////////////////
 
-    ///**
-    // * Expose the L1 cache to children
-    // */
-    //@TestVisible
-    //protected accc_ApexLocalL1Cache getL1Cache {
-    //    get { return accc_BaseMdtDataModel.l1Cache;}
-    //}// end of getL1Cache
+    /**
+    * Expose the L1 cache to children
+    */
+    @TestVisible
+    protected accc_ApexLocalL1Cache getL1Cache {
+       get { return accc_BaseMdtDataModel.l1Cache;}
+    }// end of getL1Cache
     /**
      * @description find the custom mdt
      *
@@ -272,7 +277,6 @@ public abstract without sharing class accc_BaseMdtDataModel {
     @TestVisible
     protected virtual List<BaseDataModelInformation> getInformationByLookup(String category, String lookup, accc_ControlPolicySearchEnum controlType) {
         List<SObject> cmdt = null;
-        String selector = this.makeSoqlSelect();
         string key = this.makeCacheKey(category, lookup);
 
         // check out local cache to save some time
@@ -280,8 +284,9 @@ public abstract without sharing class accc_BaseMdtDataModel {
         try {
             // still no data?
             if ( result == null ) {
+                String selector = this.makeSoqlSelect();
                 String theQueryType = this.getQueryBy(controlType);
-                // preform query
+                // perform query
                 cmdt = this.queryCustomMDT(selector, theQueryType, lookup, category);
                 // any data to process
                 if ( cmdt != null && cmdt.size() > 0) {
@@ -323,7 +328,9 @@ public abstract without sharing class accc_BaseMdtDataModel {
     protected String makeSoqlSelect() {
         String result =  SELECT_FIELDS;
 
-        List<String> childList = this.getSelectFields();
+        // when users inherit from the base, they may insert
+        // an empty column which gets include in the soql params ( which we do not want)
+        List<String> childList = this.getValidChildList(this.getSelectFields());
         if ( childList != null && childList.size() > 0) {
             result += accc_ApexConstants.CommaDelimiter + String.join( childList, accc_ApexConstants.CommaDelimiter);
         }
@@ -362,11 +369,13 @@ public abstract without sharing class accc_BaseMdtDataModel {
 
         String myValue = theValue;
         String clause = selectClause + accc_ApexConstants.FROM_s + this.customMDTName;
+        Boolean validCategory = !string.IsBlank(category) && category != accc_ApexConstants.All_s,
+                validMyValue = !string.IsBlank(myValue) && myValue != accc_ApexConstants.All_s ;
 
-        if ( !string.isBlank(category) ) {
+        if ( !string.isBlank(selectClause) ) {
 
-            if (  !string.isBlank(myValue)) {
-                if ( category != accc_ApexConstants.All_s) {
+            if ( validMyValue ) {
+                if ( validCategory ) {
                     clause +=  accc_ApexConstants.WHERE_s
                                + byValue + ' = :myValue '
                                + accc_ApexConstants.ANDString + ' '
@@ -375,13 +384,13 @@ public abstract without sharing class accc_BaseMdtDataModel {
                     clause +=  accc_ApexConstants.WHERE_s
                                + byValue + ' = :myValue ';
                 }
-            } else if ( category != accc_ApexConstants.All_s) {
+            } else if ( validCategory ) {
                 clause +=  accc_ApexConstants.WHERE_s
                            +  this.categoryField  + ' = :category';
             }
 
             // are we getting ALL items or not
-        } else if ( myValue != accc_ApexConstants.All_s ) {
+        } else if (validMyValue ) {
             clause +=  accc_ApexConstants.WHERE_s
                        + byValue + ' = : myValue';
         }
@@ -403,7 +412,29 @@ public abstract without sharing class accc_BaseMdtDataModel {
         return accc_ApexUtilities.makeLocalCacheKey(this.CustomMDTName , accc_ApexUtilities.makeLocalCacheKey(category, lookup));
     } // end of makeCacheKey
 
+    /**
+    * @description get a valid soql parameter list from the child
+    * @param incomingChildList incoming child list
+    * @return valid soql parameter list from the child
+    */
+    @TestVisible
+    protected  List<String>  getValidChildList(List<String> incomingChildList) {
 
+        List<String> childList = incomingChildList;
+        // when users inherit from the base, they may insert
+        // an empty column which gets include in the soql params ( which we do not want)
+        if ( childList != null && childList.size() > 0) {
+            integer size = childList.size();
+            // reconstitute the list, could use set but will not pick up  '\s+ '
+            childList = new  List<String> () ;
+            for ( integer inx = 0; inx < size; inx++ ) {
+                if ( !string.IsBlank(incomingChildList[inx]) ) {
+                    childList.add(incomingChildList[inx]);
+                }
+            }
+        }
+        return childList;
+    } // end of getValidChildList
     /////////////////////////////////////////////////////////////////////////////////////////
     //
     // PRIVATE METHODS

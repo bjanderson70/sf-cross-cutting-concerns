@@ -39,6 +39,9 @@ public virtual without sharing class accc_SObjectBaseWriter implements  Database
 	//
 	// Data Members
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@TestVisible
+	static final String EXCEPTION_MESG_FOR_TEST = 'accc_SObjectBaseWriter caused Exception';
 
 	@TestVisible
 	private List<SObject> m_entries;
@@ -165,10 +168,10 @@ public virtual without sharing class accc_SObjectBaseWriter implements  Database
 
 		try {
 			// used for testing
-			if (Test.isRunningTest()) {
+			if (accc_ApexConstants.UNIT_TEST_RUNNING) {
 				// testing -- cause an exception
 				if ( accc_SObjectBaseWriter.m_testToCaseException) {
-					throw new accc_ApexApplicationException('accc_SObjectBaseWriter caused Exception');
+					throw new accc_ApexApplicationException(EXCEPTION_MESG_FOR_TEST);
 				}
 			}
 			// perform the sobject action ( add/remove) and process errors, if any
@@ -233,7 +236,7 @@ public virtual without sharing class accc_SObjectBaseWriter implements  Database
 		// ensure we are dealing with Big Object
 		if ( this.isBigObject ) {
 			// are we testing
-			if ( Test.isRunningTest() ) {
+			if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
 				result = getTestResultsForBigObject();
 			} else {
 				// ++++ Inserting
@@ -258,7 +261,7 @@ public virtual without sharing class accc_SObjectBaseWriter implements  Database
 	@TestVisible
 	private static accc_GenericDbResultHandler getTestResultsForBigObject() {
 		accc_GenericDbResultHandler results = null;
-		if ( Test.isRunningTest() ) {
+		if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
 			// SIMULATING RESULTS
 			results = new accc_GenericDbResultHandler( new  List<Database.SaveResult> {
 				(Database.SaveResult)JSON.deserialize('{"id":"000000000000000AAA","success":true,"errors":[]}', Database.SaveResult.class),

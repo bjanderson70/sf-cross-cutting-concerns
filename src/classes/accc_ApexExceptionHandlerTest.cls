@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -108,6 +108,20 @@ private class accc_ApexExceptionHandlerTest {
 
     } // end of testRethrow
 
+    @isTest static void testRethrowWithException() {
+        // assign
+        TestException excp = new TestException ('accc_ApexExceptionHandlerTest:testRethrow');
+        // act
+        accc_ApexExceptionHandler excpHandler = new accc_ApexExceptionHandler();
+        accc_ApexExceptionHandler.mForceException = true;
+
+        Exception result = excpHandler.rethrow(excp);
+        // assert
+        system.assertEquals(result.getTypeName(), excp.getTypeName());
+        system.assertEquals(true, accc_ApexUtilities.containsInTestLog('Exception Testing'));
+
+    }// end of testRethrowWithException
+
     @isTest static void testhandleException() {
         // assign
         accc_ILogger logger = new accc_ApexLogger(LoggingLevel.ERROR);
@@ -131,6 +145,18 @@ private class accc_ApexExceptionHandlerTest {
 
     } // end of testgetLogger
 
+
+    @isTest static void testgetLoggerWithException() {
+        // assign
+        accc_ApexExceptionHandler excpHandler = new accc_ApexExceptionHandler();
+        accc_ApexExceptionHandler.mForceException = true;
+        // act
+        accc_ILogger logger = excpHandler.getLogger();
+        // assert
+        system.assertEquals(true, logger instanceof accc_ApexLogger);
+
+    } // end of testgetLoggerWithException
+
     @isTest static void testgetDataFormatter() {
         // assign
         accc_ApexExceptionHandler excpHandler = new accc_ApexExceptionHandler();
@@ -141,6 +167,18 @@ private class accc_ApexExceptionHandlerTest {
         system.assertEquals(true, formatter instanceof accc_ExceptionFormatter);
 
     } // end of testgetDataFormatter
+
+
+    @isTest static void testgetDataFormatterWithException() {
+        // assign
+        accc_ApexExceptionHandler excpHandler = new accc_ApexExceptionHandler();
+        accc_ApexExceptionHandler.mForceException = true;
+        // act
+        accc_IDataFormat formatter = excpHandler.getDataFormatter();
+        // assert
+        system.assertEquals(true, formatter instanceof accc_ExceptionFormatter);
+
+    } // end of testgetDataFormatterWithException
 
     @isTest
     static void testwriteExceptionToLogger() {

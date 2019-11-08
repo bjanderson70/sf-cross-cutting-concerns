@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -70,10 +70,10 @@ public without sharing class accc_StopWatch {
 		return System.currentTimeMillis() - this.startTime;
 	}// end of getDuration
 	/**
-	 * @description reset the time to 0
+	 * @description reset the time to System.currentTimeMillis()
 	 */
 	public void reset() {
-		this.startTime = 0;
+		this.startTime = System.currentTimeMillis();
 	} // end of reset
 	/**
 	 * @description string version of the duration time

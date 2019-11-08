@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -34,15 +34,18 @@
  * @description Common Constants
  * @group Miscellaneous
  *
- * To Added New Resouce classes  :Step 5a: Ensure Fallback Resources have the Resource Name ( i.e. LogFormatter)
+ * Added New Resouce classes  :Step 5a: Ensure Fallback Resources have the Resource Name ( i.e. LogFormatter)
  *
  */
 public class accc_ApexConstants {
 
     // MAX JSON Size (in Big Object)
     public static final integer MAX_JSON_SIZE = 131072;
+    public static final string EMPTY_JSON_s = '{}';
+    public static final integer MAX_TEXT_LONG_SIZE = 131072;
     // Max Text Size
     public static final integer MAX_STRING_SIZE = 254;
+    public static final integer MIN_STRING_SIZE = 1;
     // use by the custom MDT for configuration categories
     public static final string DEBUG_CATEGORY = 'debug';
     public static final string PRODUCTION_CATEGORY = 'production';
@@ -55,9 +58,9 @@ public class accc_ApexConstants {
     };
 
     /************************************************************************************
-     *
-     * Object Factory Identifiers
-     ************************************************************************************/
+    *
+    * Object Factory Identifiers
+    ************************************************************************************/
     //
     // These names are used by the Object Factory as well-known types to create
     // [the names are self-explanatory]
@@ -102,9 +105,9 @@ public class accc_ApexConstants {
         , PreviousTransactionResultResource
     };
     /************************************************************************************
-     *
-     * Resource Identifiers
-     ************************************************************************************/
+    *
+    * Resource Identifiers
+    ************************************************************************************/
     // Cache Partition Name
     public static final String DefaultCachePartitionName_s = 'work';
 
@@ -157,9 +160,9 @@ public class accc_ApexConstants {
     public static final String CrossCuttingUtility_r = CategorySystem_s + accc_ApexConstants.ColonDelimiter + 'CrossCuttingUtility';
 
     /************************************************************************************
-     *
-     * Special Name values
-     ************************************************************************************/
+    *
+    * Special Name values
+    ************************************************************************************/
     public static final String All_s = 'All';
     public static final string Delete_s = 'Delete';
     public static final String FROM_s = ' FROM ';
@@ -167,9 +170,15 @@ public class accc_ApexConstants {
     public static final String SELECT_s = ' SELECT ';
 
     /************************************************************************************
-     *
-     * Misc Strings
-     ************************************************************************************/
+    *
+    * Names for Platform Events Consumter and Publisher Strings
+    ************************************************************************************/
+    public static final String DEFAULT_PUBLISHER_NAME = 'accc_DefaultPEPublisher';
+    public static final String DEFAULT_CONSUMER_NAME = 'accc_DefaultPEConsumer';
+    /************************************************************************************
+    *
+    * Misc Strings
+    ************************************************************************************/
     public static final String Unknown = 'Unknown';
     public static final String EmptyString = '';
     public static final String WhitespaceString = ' ';
@@ -180,11 +189,12 @@ public class accc_ApexConstants {
     public static final String CommaDelimiter = ',';
     public static final string TabDelimiter = '\t';
     public static final string NewLine = '\n';
+    public static final String EVENT_TYPE_TAG_s = '__e';
 
     /************************************************************************************
-     *
-     * REGEX
-     ************************************************************************************/
+    *
+    * REGEX
+    ************************************************************************************/
     // Matches US Only ... (111) 222-3333 | 1112223333 | 111-222-3333 |
     public static final string TELEPHONE_REGEX = '^\\D?(\\d{3})\\D?\\D?(\\d{3})\\D?(\\d{4})$';
     // Matches a range of international and local telephone numbers:
@@ -196,13 +206,19 @@ public class accc_ApexConstants {
     public static final integer US_TELEPHONE_SIZE = 10;
 
     /************************************************************************************
-     *
-     * Default Max. number of items/records in a chunk ( sent via Apex Batch)
-     ************************************************************************************/
+    *
+    * Default Max. number of items/records in a chunk ( sent via Apex Batch)
+    ************************************************************************************/
     public static final integer DEFAULT_MAX_NUMBER_OF_ITEMS_IN_CHUNK = 100;
     /************************************************************************************
-     *
-     * Current Version
-     ************************************************************************************/
-     public static final String CURRENT_VERSION = '0.9.6';
+    *
+    * Current Version
+    ************************************************************************************/
+    public static final String CURRENT_VERSION = '1.0.1.1';
+
+    /************************************************************************************
+    *
+    * Set the is test running ( instead of checking multiple times in code -- waste of a function call)
+    ************************************************************************************/
+    public final static Boolean UNIT_TEST_RUNNING = Test.isRunningTest();
 } // end of accc_ApexConstants

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -48,7 +48,7 @@ global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogg
      * @description default ctor of accc_ApexObjectLogger -- set the LoggingLevel to DEBUG
      */
     public accc_ApexObjectLogger() {
-        super(LoggingLevel.DEBUG);
+        super(accc_ApexUtilities.logLevel());
     } // end of ctor
 
     /**
@@ -65,14 +65,27 @@ global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogg
     ////////////////////////////////////////////////////////////////////////////////
 
     /**
-    *
-    * @description get the Apex Object Logger; for children
-    *
-    */
+     *
+     * @description get the Apex Object Logger; for children
+     *
+     */
     @TestVisible
-    protected  virtual accc_ApplicationLog theObjectLogger() {
+    protected virtual accc_ApplicationLog theObjectLogger() {
         return accc_ApexObjectLogger.theAppLog;
     }// end of theObjectLogger
+
+
+    /**
+     *
+     * @description write message
+     *
+     * @param level log-level
+     * @param message the message
+     */
+    @TestVisible
+    protected override void write(LoggingLevel level, Object message) {
+        this.write(level, message, true);
+    }
     /**
      *
      * @description write message
@@ -88,27 +101,39 @@ global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogg
             return;
         }
         this.write(level,new List<Object> { message}, sendToLogger);
-    
+
     } // end of write
+      /**
+       *
+       * @description write message
+       *
+       * @param LoggingLevel level log-level
+       * @param List<Object> messages the messages
+       * @return void
+       */
+    @TestVisible
+    protected override void write(LoggingLevel level, List<Object> messages) {
+        this.write(level, messages, true);
+    }
     /**
-      *
-      * @description write message
-      *
-      * @param LoggingLevel level log-level
-      * @param List<Object> messages the messages
-      * @param sendToLogger, true it write to the application log
-      * @return string of decomposed value
-      */
+     *
+     * @description write message
+     *
+     * @param LoggingLevel level log-level
+     * @param List<Object> messages the messages
+     * @param sendToLogger, true it write to the application log
+     * @return void
+     */
     @TestVisible
     protected override void write(LoggingLevel level, List<Object> messages, boolean sendToLogger) {
-
+   
         // any messsages
         if ( messages == null || messages.size() == 0 ) {
             return;
         }
 
         // toString returns a '' value if null
-        String result = accc_ApexUtilities.toString(messages[ messages.size() - 1]);
+        String result = string.valueOf(messages);
         // remember last value
         this.setLastMessage(level, result);
         // write it
@@ -144,7 +169,7 @@ global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogg
         // check again due to inheritance on result being null;
         List<AcccApplicationLog__c> appLogs = new List<AcccApplicationLog__c>();
         integer size = result != null ? result.size() : 0;
-
+       
         // create  log
         for ( integer inx = 0; inx < size; ++inx) {
             appLogs.add(accc_MessageTransformation.translate(level, result[inx]));
@@ -152,7 +177,7 @@ global virtual without sharing class accc_ApexObjectLogger extends accc_ApexLogg
 
         // write data to the application log object
         if ( sendToLogger
-                && !this.theObjectLogger().log(appLogs) ) {
+             && !this.theObjectLogger().log(appLogs) ) {
             // let parent handle it as we could not
             super.write(level, result, true);
         }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -107,4 +107,38 @@ private class accc_MessageTransformationTest {
 		system.assertEquals(true, loge == null);
 	} // end of testtranslateToListLogEWithNull
 
+	@isTest
+	static void testtranslateLogEntry() {
+
+		List<ACCC_Log_Event__e> apl = generateLogEvent(10);
+		List<AcccApplicationLog__c> loge = accc_MessageTransformation.translate(apl);
+		system.assertEquals(true, loge.size() == apl.size());
+	} // end of testtranslateLogEntry
+
+	static List<ACCC_Log_Event__e> generateLogEvent(integer count){
+		List<ACCC_Log_Event__e> entries = new List<ACCC_Log_Event__e>();
+		ACCC_Log_Event__e datum;
+		Integer ctSize = accc_CDCEventBase.CDC_KNOWN_CHANGE_TYPES.size()-1, 
+		index=0;
+		Id userId = UserInfo.getUserId();
+		String uname = UserInfo.getName();
+		Account acct= new Account();
+ 
+		for ( integer inx=0; inx < count; inx++){
+			entries.add( new ACCC_Log_Event__e(	Action__c= accc_CDCEventBase.CDC_KNOWN_CHANGE_TYPES[index++],
+                                      	External_Id__c=accc_ApexUtilities.newGuid(),
+                                      	TransactionId__c = accc_ApexUtilities.newGuid(),
+                                      	Exception__c = (index == 3) ? 'accc_ApexApplicationException {}' : '',
+                                      	Payload__c = JSON.serialize(acct),
+                                    	UserId__c = userId,
+									 	Version__c = '1.0.0.0',
+										Sequence_Number__c = 1,
+										Total_Number__c=1,
+										DateTime__c = DateTime.now()
+									)
+						);
+			index = index > ctSize ? 0 : index;
+		}
+		return entries;
+	}
 } // end of accc_MessageTransformationTest

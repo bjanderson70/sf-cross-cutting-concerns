@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill Anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill Anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -37,6 +37,7 @@
 @isTest
 private class accc_ApexUtilitiesTest {
 
+    static final String ExceptedEventLabelInCustomMDT = 'pe_test__e';
 
     /**
      * @description Test is sandbox
@@ -71,6 +72,39 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(expected, result);
     } // end of testgetSobjectName
 
+    @isTest
+    static void testgetSobjectNameWithSet() {
+        //assign
+        String expected = 'Account';
+        Set<SObject> accounts = new Set<SObject>();
+        accounts.add(new Account());
+        // act
+        String result = accc_ApexUtilities.getSobjectName(accounts);
+        // assert
+        System.assertEquals(expected, result);
+    } // end of testgetSobjectNameWithSet
+    @isTest
+    static void testgetTypeFromSObjectCollectionWithNoContacts() {
+        //assign
+        List<SObject> sob = new List<Contact>();
+        Type expected = Contact.class;
+        // act
+        Type ns = accc_ApexUtilities.getTypeFromSObject(sob);
+        // assert
+        System.assertEquals(expected, ns);
+    } // end of testgetTypeFromSObjectCollectionContact
+    @isTest
+    static void testgetTypeFromSObjectSet() {
+        //assign
+        Set<SObject> sob = new Set<SObject>();
+        sob.add(new Contact());
+        Type expected = Contact.class;
+        // act
+        Type ns = accc_ApexUtilities.getTypeFromSObject(sob);
+        // assert
+        System.assertEquals(expected, ns);
+    } // end of testgetTypeFromSObjectCollectionContact
+
     @isTest static void testgetSobjectNameWithBadParams() {
         //assign
         String expected = accc_ApexConstants.EmptyString;
@@ -94,7 +128,7 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(expected, result);
     } // end of testgetSobjectName
 
-      @isTest static void testgetSobjectNameWithNullList() {
+    @isTest static void testgetSobjectNameWithNullList() {
         //assign
         String expected = accc_ApexConstants.EmptyString;
         List<SObject> alist = null;
@@ -106,28 +140,6 @@ private class accc_ApexUtilitiesTest {
 
 
     /**
-     * @description test toString
-     */
-    @isTest static void testtoString() {
-        //assign
-        Boolean expected = true;
-        // act
-        Boolean result = accc_ApexUtilities.toString(new accc_ApexUtilities()).contains('accc_ApexUtilities');
-        // assert
-        System.assertEquals(expected, result);
-    } // end of testtoString
-    /**
-     * @description test empty toString
-     */
-    @isTest static void testtoStringNull() {
-        //assign
-        String expected =  accc_ApexConstants.EmptyString;
-        // act
-        String result = accc_ApexUtilities.toString(null, expected);
-        // assert
-        System.assertEquals(expected, result);
-    } // end of testtoStringNull
-    /**
      * @description Try a bad/invalid name
      */
     @isTest static void testgetClassNameNull() {
@@ -137,25 +149,7 @@ private class accc_ApexUtilitiesTest {
         // assert
         System.assertEquals(expected, result);
     } // end of testgetClassNameNull
-    /**
-     * @description Try a bad/invalid name
-     */
-    @isTest static void testnewGuid() {
-        //assign
-        String expected = accc_ApexUtilities.newGuid();
-        String result = accc_ApexUtilities.newGuid();
-        // assert
-        System.assertNotEquals(expected, result);
-    } // end of testnewGuid
 
-    @isTest static void testgetSection() {
-        //assign
-        String known = 'DataCaching.All';
-        // act
-        String ns = accc_ApexUtilities.getSection(known);
-        // assert
-        System.assertNotEquals(accc_ApexConstants.All_s, ns);
-    } // end of testgetSection
     @isTest static void testgetTypeFromSObjectCollection() {
         //assign
         List<SObject> sob = new List<Contact>();
@@ -251,14 +245,6 @@ private class accc_ApexUtilitiesTest {
 
     } // end of testconvertMapOfValuesToListOfValues
 
-    @isTest static void testgenerateRandomNumberString() {
-        //assign
-        integer size = 10;
-        string value = accc_ApexUtilities.generateRandomNumberString(size);
-        // assert
-        System.assertNotEquals(value, null);
-        System.assertEquals(value.length(), size);
-    }
     @isTest static void testconvertListToMapOfValues() {
         //assign
         List<SObject> sObjectsList = new List<SObject> {
@@ -408,22 +394,40 @@ private class accc_ApexUtilitiesTest {
         System.assertEquals(accc_ApexUtilities.getExecutingMethod(), 'testgetExecutingMethod');
 
     }// end of testgetExecutingMethod
-    @isTest
-    static void testformatNumberIntoUSTelephone() {
-        String expected = '(111) 111-1111',
-               converted = '1111111111';
-        // assign/act/assert
-        System.assertEquals(accc_ApexUtilities.formatNumberIntoUSTelephone(converted), expected);
-        System.assertEquals(accc_ApexConstants.EmptyString, accc_ApexUtilities.formatNumberIntoUSTelephone(null));
 
-    }// end of testformatNumberIntoUSTelephone
     @isTest
-    static void testconvertStringOfNumbersIntoUSTelephone() {
-        String expected = '(111) 111-1111',
-               converted = '1111111111';
-        // assign/act/assert
-        System.assertEquals(accc_ApexUtilities.convertStringOfNumbersIntoUSTelephone(converted), expected);
-    }// end of testconvertStringOfNumbersIntoUSTelephone
+    static void testvalidEventName() {
+        Boolean result = accc_ApexUtilities.validEventName('accc_ApexUtilities');
+        System.assertEquals(false, result);
+        result = accc_ApexUtilities.validEventName(ExceptedEventLabelInCustomMDT);
+        System.assertEquals( true, result );
+        result = accc_ApexUtilities.validEventName(null);
+        System.assertEquals(false, result);
+    } // end of testvalidEventName
+
+    @isTest
+    static void testiterateOverFieldNamesInSObject() {
+        final List<SObject> myObjects = new List<SObject> {
+            new account(Name = 'Acme-0', Description = 'Acme Account'),
+            new account(Name = 'Acme-2', Description = 'Acme Account2'),
+            new account(Name = 'Acme-3', Description = 'Acme Account3')
+
+        };
+
+        for (SObject item : myObjects) {
+            system.assertEquals(((Account)item).Name, accc_ApexUtilities.iterateOverFieldNamesInSObject(item, 'Name') );
+        }
+
+    } // end of testiterateOverFieldNamesInSObject
+
+    @isTest
+    static void testpopStack() {
+        // assign
+        string trace = new DmlException().getStackTraceString(),
+               theClass =  accc_ApexConstants.EmptyString;
+        // act / assert
+        system.assertNotEquals(theClass, accc_ApexUtilities.popStack(trace));
+    } // end of testpopStack
 
     @isTest
     static void testreturnDelimiterSeparatedStringOfIds() {
@@ -441,7 +445,7 @@ private class accc_ApexUtilitiesTest {
 
         // assert ( there are three values, 2 commas)
         system.assertEquals(3, splitList.size());
-    } // end of testreturnDelimiterSeparatedStringOfIds
+    }     // end of testreturnDelimiterSeparatedStringOfIds
 
     @isTest
     static void testreturnDelimiterSeparatedStringOfIdsViaSObject() {
@@ -463,235 +467,7 @@ private class accc_ApexUtilitiesTest {
 
         // assert ( there are three values, 2 commas)
         system.assertEquals(3, splitList.size());
-    } // end of testreturnDelimiterSeparatedStringOfIdsViaSObject
-
-    @isTest
-    static void testsplitStringOnWhitespacesCommaOrSemiColon() {
-        // assign
-        Map<String, Integer> testOracle = new Map<String, Integer> {
-            'a b;c    d, e' => 5,
-            'a' => 1,
-            'a; b' => 2,
-            'sadsadasd     ;    b,    f' => 3,
-            's@sa.com, asd@as.com;asd@awww.com' => 3
-        };
-        //  act
-        for ( string input : testOracle.keyset() ) {
-            List<String> result = accc_ApexUtilities.splitStringOnWhitespacesCommaOrSemiColon(input);
-            // assert
-            system.assertNotEquals(null, result);
-            system.assertEquals(testOracle.get(input), result.size());
-        }
-        List<String> result = accc_ApexUtilities.splitStringOnWhitespacesCommaOrSemiColon(null);
-        // assert
-        system.assertEquals(0, result.size());
-    } // end of testsplitStringOnWhitespacesCommaOrSemiColon
-
-    @isTest
-    static void testsplitStringOnExpression() {
-        // assign
-        Map<String, Integer> testOracle = new Map<String, Integer> {
-            'a b c d e' => 5,
-            'a ' => 1,
-            'a;b' => 2,
-            'sadsadasd;b,f' => 3,
-            's@sa.com,asd@as.com,asd@awww.com' => 3
-        };
-        Map< Integer, String> expresion = new Map<Integer, String>  {
-            0 => '\\s+',
-            1 => '\\s+',
-            2 => '\\s+|;|,',
-            3 => '\\s+|;|,',
-            4 => ','
-        };
-        integer inx = 0;
-        //  act
-        for ( string input : testOracle.keyset() ) {
-
-            List<String> result = accc_ApexUtilities.splitStringOnExpression(input, expresion.get(inx));
-            // assert
-            system.assertEquals(testOracle.get(input), result.size());
-            inx++;
-        }
-    } // end of testsplitStringOnExpression
-
-    @isTest
-    static void testsplitStringOnExpressionWithBadParams() {
-        // assign
-        integer inx = 0;
-        //  act
-
-        List<String> result = accc_ApexUtilities.splitStringOnExpression(null, null);
-        // assert
-        system.assertNotEquals(null, result);
-        system.assertEquals(0, result.size());
-
-    } // end of testsplitStringOnExpressionWithBadParams
-
-
-    // 0689912549, +33698912549, +33 6 79 91 25 49,+33-6-79-91-25-49 ,(555)-555-5555
-    // 555-555-5555, +1-238 6 79 91 25 49, +1-555-532-3455, +15555323455, 55555555555555555555555555
-    // +7 06 79 91 25 49
-    @isTest
-    static void testAllTelephoneNumbers() {
-        // assign
-        Map<String, Boolean> testOracle = new Map<String, Boolean> {
-            '+33698912549' => true,
-            '+33 6 79 91 25 49' => true,
-            '+33-6-79-91-25-49' => true,
-            '(555)-555-5555' => true,
-            '555-555-5555' => true,
-            '+1-238 6 79 91 25 49' => true,
-            '+1-555-532-3455' => true,
-            '+15555323455' => true,
-            '0689912549' => true,
-            '-1-238 6 79 91 25 49' => false,
-            '+1-555-532-' => false,
-            '+1555' => false,
-            '+155' => false,
-            '+15' => false,
-            '+1' => false,
-            '+' => false
-        };
-        integer inx = 0;
-        //  act
-        for ( string input : testOracle.keyset() ) {
-            Boolean result = accc_ApexUtilities.isValidTelephoneUSorInternational(input);
-            // assert
-            system.assertEquals(testOracle.get(input), result, 'error at ' + inx);
-            inx++;
-        }
-    } // end of testAllTelephoneNumbers
-
-
-    @isTest
-    static void testconvertStringToInt() {
-        String val = '100';
-        Integer result = accc_ApexUtilities.convertStringToInt(val, -1);
-        system.assertEquals(true, 100 == result);
-    } // end of testconvertStringToInt
-
-
-    @isTest
-    static void testconvertStringToIntWithBadValue() {
-
-        Integer result = accc_ApexUtilities.convertStringToInt(null, -1);
-        system.assertEquals(true, -1 == result);
-    } // end of testconvertStringToIntWithBadValue
-
-    @isTest
-    static void testconvertStringToIntWithBadValueString() {
-        string val = 'hello';
-        Integer result = accc_ApexUtilities.convertStringToInt(val, -1);
-        system.assertEquals(true, -1 == result);
-    } // end of testconvertStringToIntWithBadValueString
-
-    @isTest
-    static void testnormalizeString() {
-        string val = null;
-        string result = accc_ApexUtilities.normalizeString(val);
-        system.assertEquals(true, accc_ApexConstants.EmptyString == result);
-    } // end of testnormalizeString
-
-    @isTest
-    static void testnormalizeStringWithFalse() {
-        final string val = ' 123 ';
-        string result = accc_ApexUtilities.normalizeString(val, false);
-        system.assertEquals(val, result);
-    } // end of testnormalizeStringWithFalse
-
-    @isTest
-    static void testnormalizeStringWithTrue() {
-        final string val = ' 123 ';
-        final string expected = '123';
-        string result = accc_ApexUtilities.normalizeString(val, true);
-        system.assertEquals(expected, result);
-    } // end of testnormalizeStringWithTrue
-
-    @isTest
-    static void testnormalizeStringValidString() {
-        final string expected = 'hello';
-        string result = accc_ApexUtilities.normalizeString(expected);
-        system.assertEquals(true, expected == result);
-    } // end of testnormalizeStringValidString
-
-    @isTest
-    static void testnormalizeStringValidStringWithSize() {
-        final string expected = 'hello';
-        string result = accc_ApexUtilities.normalizeString(expected, 1);
-        system.assertEquals(true, 'h' == result);
-    } // end of testnormalizeStringValidStringWithSize
-
-    @isTest
-    static void testgetNamespace() {
-        string ns = 'highlevel',
-               section = 'caching',
-               hier = accc_ApexUtilities.formProviderNameAccess (ns, section);
-        string result = accc_ApexUtilities.getNamespace(hier);
-        system.assertEquals(ns, result);
-
-    } // end of testgetNamespace
-
-    @isTest
-    static void testsection() {
-        string ns = 'highlevel',
-               section = 'caching',
-               hier =  accc_ApexUtilities.formProviderNameAccess (ns, section);
-        string result = accc_ApexUtilities.getSection(hier);
-        system.assertEquals(section, result );
-
-    } // end of testsection
-
-    @isTest
-    static void testmakeLocalCacheKey() {
-        final string cat = 'highlevel',
-                     label = 'caching';
-        string result = cat + '.' + label;
-
-        system.assertEquals(result, accc_ApexUtilities.makeLocalCacheKey (cat, label) );
-        system.assertEquals(cat, accc_ApexUtilities.makeLocalCacheKey (cat, null) );
-        system.assertEquals(label, accc_ApexUtilities.makeLocalCacheKey (null, label) );
-    } // end of testmakeLocalCacheKey
-
-    @isTest
-    static void testiterateOverFieldNamesInSObject() {
-        final List<SObject> myObjects = new List<SObject> {
-            new account(Name = 'Acme-0', Description = 'Acme Account'),
-            new account(Name = 'Acme-2', Description = 'Acme Account2'),
-            new account(Name = 'Acme-3', Description = 'Acme Account3')
-
-        };
-
-        for (SObject item : myObjects) {
-            system.assertEquals(((Account)item).Name, accc_ApexUtilities.iterateOverFieldNamesInSObject(item, 'Name') );
-        }
-
-    } // end of testiterateOverFieldNamesInSObject
-
-    @isTest
-    static void testmakeCacheIdentifier() {
-        final String label = 'label',
-                     category = 'category';
-        List<String> expected = new List<String> {
-            category +  accc_ApexConstants.Period + label,
-            category,
-            label
-        };
-
-        system.assertEquals(expected[0], accc_ApexUtilities.makeCacheIdentifier(category, label));
-        system.assertEquals(expected[1], accc_ApexUtilities.makeCacheIdentifier(category, null));
-        system.assertEquals(expected[2], accc_ApexUtilities.makeCacheIdentifier(null, label));
-
-    } // end of testmakeCacheIdentifier
-
-    @isTest
-    static void testpopStack() {
-        // assign
-        string trace = new DmlException().getStackTraceString(),
-        theClass =  accc_ApexConstants.EmptyString;
-        // act / assert
-        system.assertNotEquals(theClass, accc_ApexUtilities.popStack(trace));
-    } // end of testpopStack
+    }// end of testreturnDelimiterSeparatedStringOfIdsViaSObject
 
     @isTest
     static void testvalidDomainName() {
@@ -755,42 +531,9 @@ private class accc_ApexUtilitiesTest {
         Schema.SObjectType ns = accc_ApexUtilities.getSobjectTypeFromSObject(sob);
         // assert
         System.assertEquals(expected, ns);
-        System.assertEquals(expected, accc_ApexUtilities.getSobjectTypeFromSObject(new List<SObject>{sob}));
+        System.assertEquals(expected, accc_ApexUtilities.getSobjectTypeFromSObject(new List<SObject> {sob}));
         System.assertEquals(null, accc_ApexUtilities.getSobjectTypeFromSObject((SObject)null));
     } // end of testgetSobjectTypeFromSObject
-
-    
-    @isTest
-    static void testconvertDayToString() {
-        //assign
-        // act
-        // assert
-        System.assertEquals('01', accc_ApexUtilities.convertDayToString(1));
-        System.assertEquals('01', accc_ApexUtilities.convertDayToString(0));
-        System.assertEquals('31', accc_ApexUtilities.convertDayToString(32));
-        System.assertEquals('31', accc_ApexUtilities.convertDayToString(31));
-        System.assertEquals('30', accc_ApexUtilities.convertDayToString(30));
-        System.assertEquals('10', accc_ApexUtilities.convertDayToString(10));
-        System.assertEquals('12', accc_ApexUtilities.convertDayToString(12));
-        System.assertEquals('21', accc_ApexUtilities.convertDayToString(21));
-        System.assertEquals('15', accc_ApexUtilities.convertDayToString(15));
-    }// end of testconvertDayToString
-
-    @isTest
-    static void testconvertMonthToString() {
-        //assign
-        // act
-        // assert
-        System.assertEquals('01', accc_ApexUtilities.convertMonthToString(1));
-        System.assertEquals('01', accc_ApexUtilities.convertMonthToString(0));
-        System.assertEquals('12', accc_ApexUtilities.convertMonthToString(32));
-        System.assertEquals('12', accc_ApexUtilities.convertMonthToString(12));
-
-        System.assertEquals('10', accc_ApexUtilities.convertMonthToString(10));
-        System.assertEquals('01', accc_ApexUtilities.convertMonthToString(-1));
-        System.assertEquals('02', accc_ApexUtilities.convertMonthToString(2));
-        System.assertEquals('10', accc_ApexUtilities.convertMonthToString(10));
-    }// end of convertMonthToString
 
     @isTest
     static void testexceededGovernorLimits() {
@@ -813,7 +556,7 @@ private class accc_ApexUtilitiesTest {
                             accc_ApexUtilities.exceededGovernorLimits(new JSONException()));
     } // end of testexceededGovernorLimits
 
-     @isTest static void testTrace() {
+    @isTest static void testTrace() {
         // assign
         String result = 'This is a Test';
         // assign/act
@@ -821,5 +564,398 @@ private class accc_ApexUtilitiesTest {
         // assert
         System.assertEquals(accc_ApexUtilities.containsInTestLog(result), true);
     } // end of testTrace
-    
+    @isTest
+    static void testgetDMLLimitsInStringForm() {
+        //assign
+        // act
+        // assert
+        System.assertEquals(true, accc_ApexUtilities.getDMLLimitsInStringForm() != null);
+    }// end of testgetDMLLimitsInStringForm
+
+    @isTest
+    static void testslice(){
+        // assign
+        List<String> data = new List<String> { 'John', 'Mary', 'Susie', 'Igor', 'Jake' };
+        List<String> sliced = (List<String>)accc_ApexUtilities.slice(data, 1, 3);
+        // act /assert
+        system.assertEquals (2, sliced.size()); // 2
+        system.assertEquals ('Mary', (String)sliced[0]);
+        system.assertEquals ('Susie', (String)sliced[1]);
+        // act
+        sliced = (List<String>)accc_ApexUtilities.slice(data, 0, 1);
+        // assert
+        system.assertEquals(1,sliced.size());
+        system.assertEquals('John',(String)sliced[0]);
+        // act
+        sliced = (List<String>)accc_ApexUtilities.slice(data, 2);
+        // assert
+        system.assertEquals(3,sliced.size());
+        system.assertEquals('Susie',(String)sliced[0]);
+        system.assertEquals('Igor',(String)sliced[1]);
+        system.assertEquals('Jake',(String)sliced[2]);
+        // act
+        sliced = (List<String>)accc_ApexUtilities.slice(null, 2);
+        // assert
+        system.assertEquals(null,sliced);
+    } // end of testslice
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //+ START
+    // These tests below will be deprecated once the delegated fuctionality is moved out of
+    // accc_ApexUtilities and rest completely in accc_ApexUtilities
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+    @isTest
+    static void testconvertListCollectionIntoString () {
+        List<String> operationIds = new List<String> {
+        };
+        List<String> expectedStrings = new List<String> {
+        };
+        // assert
+        for (String item : expectedStrings) {
+            System.assertEquals(item,
+                                accc_ApexUtilities.convertListCollectionIntoString(operationIds, item.length() + 1, accc_ApexConstants.CommaDelimiter)
+                                );
+            System.assertEquals(item,
+                                accc_ApexUtilities.convertListCollectionIntoString(operationIds, item.length() + 1, null)
+                                );
+            System.assertEquals(expectedStrings[0],
+                                accc_ApexUtilities.convertListCollectionIntoString(operationIds, -1, null)
+                                );
+        }
+        System.assertEquals(accc_ApexConstants.EmptyString,
+                            accc_ApexUtilities.convertListCollectionIntoString(null, 1, null)
+                            );
+        System.assertEquals(accc_ApexConstants.EmptyString,
+                            accc_ApexUtilities.convertListCollectionIntoString(new List<String>(), 1, null)
+                            );
+        System.assertEquals(accc_ApexConstants.EmptyString,
+                            accc_ApexUtilities.convertListCollectionIntoString(new List<String> {accc_ApexConstants.EmptyString}, 1000, null)
+                            );
+    } // end of testconvertListCollectionIntoString
+
+
+    @isTest
+    static void testconvertDayToString() {
+        //assign
+        // act
+        // assert
+        System.assertEquals('01', accc_ApexUtilities.convertDayToString(1));
+        System.assertEquals('01', accc_ApexUtilities.convertDayToString(0));
+        System.assertEquals('31', accc_ApexUtilities.convertDayToString(32));
+        System.assertEquals('31', accc_ApexUtilities.convertDayToString(31));
+        System.assertEquals('30', accc_ApexUtilities.convertDayToString(30));
+        System.assertEquals('10', accc_ApexUtilities.convertDayToString(10));
+        System.assertEquals('12', accc_ApexUtilities.convertDayToString(12));
+        System.assertEquals('21', accc_ApexUtilities.convertDayToString(21));
+        System.assertEquals('15', accc_ApexUtilities.convertDayToString(15));
+    } // end of testconvertDayToString
+
+    @isTest
+    static void testconvertMonthToString() {
+        //assign
+        // act
+        // assert
+        System.assertEquals('01', accc_ApexUtilities.convertMonthToString(1));
+        System.assertEquals('01', accc_ApexUtilities.convertMonthToString(0));
+        System.assertEquals('12', accc_ApexUtilities.convertMonthToString(32));
+        System.assertEquals('12', accc_ApexUtilities.convertMonthToString(12));
+
+        System.assertEquals('10', accc_ApexUtilities.convertMonthToString(10));
+        System.assertEquals('01', accc_ApexUtilities.convertMonthToString(-1));
+        System.assertEquals('02', accc_ApexUtilities.convertMonthToString(2));
+        System.assertEquals('10', accc_ApexUtilities.convertMonthToString(10));
+    } // end of convertMonthToString
+
+    @isTest
+    static void testmakeCacheIdentifier() {
+        final String label = 'label',
+                     category = 'category';
+        List<String> expected = new List<String> {
+            category +  accc_ApexConstants.Period + label,
+            category,
+            label
+        };
+
+        system.assertEquals(expected[0], accc_ApexUtilities.makeCacheIdentifier(category, label));
+        system.assertEquals(expected[1], accc_ApexUtilities.makeCacheIdentifier(category, null));
+        system.assertEquals(expected[2], accc_ApexUtilities.makeCacheIdentifier(null, label));
+
+    } // end of testmakeCacheIdentifier
+    @isTest
+    static void testgetNamespace() {
+        string ns = 'highlevel',
+               section = 'caching',
+               hier = accc_ApexUtilities.formProviderNameAccess (ns, section);
+        string result = accc_ApexUtilities.getNamespace(hier);
+        system.assertEquals(ns, result);
+
+    }     // end of testgetNamespace
+
+    @isTest
+    static void testsection() {
+        string ns = 'highlevel',
+               section = 'caching',
+               hier =  accc_ApexUtilities.formProviderNameAccess (ns, section);
+        string result = accc_ApexUtilities.getSection(hier);
+        system.assertEquals(section, result );
+
+    }     // end of testsection
+
+    @isTest
+    static void testmakeLocalCacheKey() {
+        final string cat = 'highlevel',
+                     label = 'caching';
+        string result = cat + '.' + label;
+
+        system.assertEquals(result, accc_ApexUtilities.makeLocalCacheKey (cat, label) );
+        system.assertEquals(cat, accc_ApexUtilities.makeLocalCacheKey (cat, null) );
+        system.assertEquals(label, accc_ApexUtilities.makeLocalCacheKey (null, label) );
+    }     // end of testmakeLocalCacheKey
+    @isTest
+    static void testformatNumberIntoUSTelephone() {
+        String expected = '(111) 111-1111',
+               converted = '1111111111';
+        // assign/act/assert
+        System.assertEquals(accc_ApexUtilities.formatNumberIntoUSTelephone(converted), expected);
+        System.assertEquals(accc_ApexConstants.EmptyString, accc_ApexUtilities.formatNumberIntoUSTelephone(null));
+
+    }    // end of testformatNumberIntoUSTelephone
+    @isTest
+    static void testconvertStringOfNumbersIntoUSTelephone() {
+        String expected = '(111) 111-1111',
+               converted = '1111111111';
+        // assign/act/assert
+        System.assertEquals(accc_ApexUtilities.convertStringOfNumbersIntoUSTelephone(converted), expected);
+    }    // end of testconvertStringOfNumbersIntoUSTelephone
+
+    @isTest
+    static void testsplitStringOnWhitespacesCommaOrSemiColon() {
+        // assign
+        Map<String, Integer> testOracle = new Map<String, Integer> {
+            'a b;c    d, e' => 5,
+            'a' => 1,
+            'a; b' => 2,
+            'sadsadasd     ;    b,    f' => 3,
+            's@sa.com, asd@as.com;asd@awww.com' => 3
+        };
+        //  act
+        for ( string input : testOracle.keyset() ) {
+            List<String> result = accc_ApexUtilities.splitStringOnWhitespacesCommaOrSemiColon(input);
+            // assert
+            system.assertNotEquals(null, result);
+            system.assertEquals(testOracle.get(input), result.size());
+        }
+        List<String> result = accc_ApexUtilities.splitStringOnWhitespacesCommaOrSemiColon(null);
+        // assert
+        system.assertEquals(0, result.size());
+    } // end of testsplitStringOnWhitespacesCommaOrSemiColon
+
+    @isTest static void testgenerateRandomNumberString() {
+        //assign
+        integer size = 10;
+        string value = accc_ApexUtilities.generateRandomNumberString(size);
+        // assert
+        System.assertNotEquals(value, null);
+        System.assertEquals(value.length(), size);
+    }
+    @isTest
+    static void testsplitStringOnExpression() {
+        // assign
+        Map<String, Integer> testOracle = new Map<String, Integer> {
+            'a b c d e' => 5,
+            'a ' => 1,
+            'a;b' => 2,
+            'sadsadasd;b,f' => 3,
+            's@sa.com,asd@as.com,asd@awww.com' => 3
+        };
+        Map< Integer, String> expresion = new Map<Integer, String>  {
+            0 => '\\s+',
+            1 => '\\s+',
+            2 => '\\s+|;|,',
+            3 => '\\s+|;|,',
+            4 => ','
+        };
+        integer inx = 0;
+        //  act
+        for ( string input : testOracle.keyset() ) {
+
+            List<String> result = accc_ApexUtilities.splitStringOnExpression(input, expresion.get(inx));
+            // assert
+            system.assertEquals(testOracle.get(input), result.size());
+            inx++;
+        }
+    }     // end of testsplitStringOnExpression
+    /**
+     * @description Try a bad/invalid name
+     */
+    @isTest static void testnewGuid() {
+        //assign
+        String expected = accc_ApexUtilities.newGuid();
+        String result = accc_ApexUtilities.newGuid();
+        // assert
+        System.assertNotEquals(expected, result);
+    }    // end of testnewGuid
+
+    @isTest static void testgetSection() {
+        //assign
+        String known = 'DataCaching.All';
+        // act
+        String ns = accc_ApexUtilities.getSection(known);
+        // assert
+        System.assertNotEquals(accc_ApexConstants.All_s, ns);
+    }    // end of testgetSection
+    @isTest
+    static void testsplitStringOnExpressionWithBadParams() {
+        // assign
+        integer inx = 0;
+        //  act
+
+        List<String> result = accc_ApexUtilities.splitStringOnExpression(null, null);
+        // assert
+        system.assertNotEquals(null, result);
+        system.assertEquals(0, result.size());
+
+    }     // end of testsplitStringOnExpressionWithBadParams
+
+
+    // 0689912549, +33698912549, +33 6 79 91 25 49,+33-6-79-91-25-49 ,(555)-555-5555
+    // 555-555-5555, +1-238 6 79 91 25 49, +1-555-532-3455, +15555323455, 55555555555555555555555555
+    // +7 06 79 91 25 49
+    @isTest
+    static void testAllTelephoneNumbers() {
+        // assign
+        Map<String, Boolean> testOracle = new Map<String, Boolean> {
+            '+33698912549' => true,
+            '+33 6 79 91 25 49' => true,
+            '+33-6-79-91-25-49' => true,
+            '(555)-555-5555' => true,
+            '555-555-5555' => true,
+            '+1-238 6 79 91 25 49' => true,
+            '+1-555-532-3455' => true,
+            '+15555323455' => true,
+            '0689912549' => true,
+            '-1-238 6 79 91 25 49' => false,
+            '+1-555-532-' => false,
+            '+1555' => false,
+            '+155' => false,
+            '+15' => false,
+            '+1' => false,
+            '+' => false
+        };
+        integer inx = 0;
+        //  act
+        for ( string input : testOracle.keyset() ) {
+            Boolean result = accc_ApexUtilities.isValidTelephoneUSorInternational(input);
+            // assert
+            system.assertEquals(testOracle.get(input), result, 'error at ' + inx);
+            inx++;
+        }
+    }     // end of testAllTelephoneNumbers
+
+
+    @isTest
+    static void testconvertStringToInt() {
+        String val = '100';
+        Integer result = accc_ApexUtilities.convertStringToInt(val, -1);
+        system.assertEquals(true, 100 == result);
+    }     // end of testconvertStringToInt
+
+
+    @isTest
+    static void testconvertStringToIntWithBadValue() {
+
+        Integer result = accc_ApexUtilities.convertStringToInt(null, -1);
+        system.assertEquals(true, -1 == result);
+    }     // end of testconvertStringToIntWithBadValue
+
+    @isTest
+    static void testconvertStringToIntWithBadValueString() {
+        string val = 'hello';
+        Integer result = accc_ApexUtilities.convertStringToInt(val, -1);
+        system.assertEquals(true, -1 == result);
+    }     // end of testconvertStringToIntWithBadValueString
+
+    @isTest
+    static void testnormalizeString() {
+        string val = null;
+        string result = accc_ApexUtilities.normalizeString(val);
+        system.assertEquals(true, accc_ApexConstants.EmptyString == result);
+    }     // end of testnormalizeString
+
+    @isTest
+    static void testnormalizeStringWithFalse() {
+        final string val = ' 123 ';
+        string result = accc_ApexUtilities.normalizeString(val, false);
+        system.assertEquals(val, result);
+    }     // end of testnormalizeStringWithFalse
+
+    @isTest
+    static void testnormalizeStringWithTrue() {
+        final string val = ' 123 ';
+        final string expected = '123';
+        string result = accc_ApexUtilities.normalizeString(val, true);
+        system.assertEquals(expected, result);
+    }     // end of testnormalizeStringWithTrue
+
+    @isTest
+    static void testnormalizeStringValidString() {
+        final string expected = 'hello';
+        string result = accc_ApexUtilities.normalizeString(expected);
+        system.assertEquals(true, expected == result);
+    }     // end of testnormalizeStringValidString
+
+    @isTest
+    static void testnormalizeStringValidStringWithSize() {
+        final string expected = 'hello';
+        string result = accc_ApexUtilities.normalizeString(expected, 1);
+        system.assertEquals(true, 'h' == result);
+    }     // end of testnormalizeStringValidStringWithSize
+
+    @isTest
+    static void testnormalizeStringWithTrim() {
+        String data = '  1221  ';
+        String expected = '1221';
+        String maxString = '';
+        String result = accc_ApexUtilities.normalizeString(data, true,expected.length() );
+        System.assertEquals( expected,result);
+        result = accc_ApexUtilities.normalizeString(data, false, '  12'.length());
+        System.assertEquals('  12',result);
+        for (integer inx = 0; inx < accc_ApexConstants.MAX_STRING_SIZE + 2; inx++) {
+            maxString += 'a';
+        }
+        result = accc_ApexUtilities.normalizeString(maxString, true,accc_ApexConstants.MAX_STRING_SIZE);
+        System.assertEquals(result.length(), accc_ApexConstants.MAX_STRING_SIZE);
+    }     // end of testnormalizeStringWithTrim
+
+
+    /**
+     * @description test toString
+     */
+    @isTest static void testtoString() {
+        //assign
+        Boolean expected = true;
+        // act
+        Boolean result = accc_ApexUtilities.toString(new accc_ApexUtilities()).contains('accc_ApexUtilities');
+        // assert
+        System.assertEquals(expected, result);
+    }     // end of testtoString
+    /**
+     * @description test empty toString
+     */
+    @isTest static void testtoStringNull() {
+        //assign
+        String expected =  accc_ApexConstants.EmptyString;
+        // act
+        String result = accc_ApexUtilities.toString(null, expected);
+        // assert
+        System.assertEquals(expected, result);
+    } // end of testtoStringNull
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+ END
+// These tests above will be deprecated once the delegated fuctionality is moved out of
+// accc_ApexUtilities and rest completely in accc_ApexUtilities
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 } // end of accc_ApexUtilitiesTest

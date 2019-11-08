@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2018, Bill anderson.  All rights reserved.
+ * Copyright (c) 2016-2019, Bill anderson.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -32,6 +32,8 @@
  * @author Bill anderson
  * @description common environment utilities.
  * TBD: Needs to be revisited; consider use of a factory!!
+ * 
+ * Modification : BJA , Added ensureEnviromentIsCorrectOtherwiseDebug to allow specification of environment
  * @group Miscellaneous
  */
 public without sharing class accc_ApexEnvironment {
@@ -40,6 +42,14 @@ public without sharing class accc_ApexEnvironment {
 	/// Data Members
 	////////////////////////////////////////////////////////////////////////////////
 
+	/*
+	 * Known environments
+	 */
+	public static final Set<String> KNOWN_ENVIRONMENTS = new Set<String> {
+		accc_ApexConstants.DEBUG_CATEGORY
+		, accc_ApexConstants.PRODUCTION_CATEGORY
+		, accc_ApexConstants.TEST_CATEGORY
+	}; // end of KNOWN_ENVIRONMENTS
 	@TestVisible
 	private static accc_IApexRunEnvironment runtimeEnvironment =  null;
 	@TestVisible
@@ -66,7 +76,7 @@ public without sharing class accc_ApexEnvironment {
 	public static string getEnvironment() {
 		string environment = accc_ApexConstants.PRODUCTION_CATEGORY;
 
-		if ( Test.isRunningTest()  ) {
+		if ( accc_ApexConstants.UNIT_TEST_RUNNING  ) {
 			environment = accc_ApexConstants.TEST_CATEGORY;
 		} else if (accc_ApexUtilities.isSandbox() ) {
 			environment = accc_ApexConstants.DEBUG_CATEGORY;
@@ -74,6 +84,19 @@ public without sharing class accc_ApexEnvironment {
 
 		return environment;
 	} // end of getEnvironment
+	/**
+	 * @description just ensuring correct environment
+	 *
+	 * @param currentEnv user wants a particular environment
+	 * @return environment, otherwise , 'accc_ApexConstants.DEBUG_CATEGORY'
+	 */
+	public static string ensureEnviromentIsCorrectOtherwiseDebug(string currentEnv) {
+		String env = currentEnv == null ? accc_ApexConstants.DEBUG_CATEGORY : currentEnv;
+		if ( !accc_ApexEnvironment.KNOWN_ENVIRONMENTS.contains(env.toLowerCase()) ) {
+			env = accc_ApexConstants.DEBUG_CATEGORY;
+		}
+		return env;
+	} // end of ensureEnviromentIsCorrectOtherwiseDebug
 	/**
 	* @description get the runtime environment based on sandbox or test running.
 	* If there is a need for more control, then perhaps a custom setting/type [tbd]
@@ -99,7 +122,7 @@ public without sharing class accc_ApexEnvironment {
 	public static accc_IFallbackResources getRuntimeFallbackResources() {
 		if ( accc_ApexEnvironment.runtimeFallback == null ) {
 
-			if ( Test.isRunningTest() ) {
+			if ( accc_ApexConstants.UNIT_TEST_RUNNING ) {
 				accc_ApexEnvironment.runtimeFallback = new accc_ApexTestJSONDataFallback();
 			} else {
 				accc_ApexEnvironment.runtimeFallback = new accc_ApexKnownCCConcernsFallback();

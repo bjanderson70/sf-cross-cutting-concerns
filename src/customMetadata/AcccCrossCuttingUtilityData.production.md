@@ -8,7 +8,7 @@
     </values>
     <values>
         <field>logLevelForTrace__c</field>
-        <value xsi:type="xsd:string">Info</value>
+        <value xsi:type="xsd:string">Fine</value>
     </values>
     <values>
         <field>maxNumberOfItemsInChunks__c</field>
@@ -24,7 +24,7 @@
     </values>
     <values>
         <field>traceFlagOn__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>triggersEnable__c</field>
