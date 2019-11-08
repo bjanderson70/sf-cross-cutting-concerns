@@ -52,7 +52,7 @@ Use the button below to install the **ALL version** (i.e. with Platform Events +
 
 Use the button below to install the **Platform Events version** (i.e. plus Platform Events)
 
-<a href="https://githubsfdeploy.herokuapp.com?owner=bjanderson70&repo=sf-cross-cutting-concerns&ref=merge-pe">
+<a href="https://githubsfdeploy.herokuapp.com?owner=bjanderson70&repo=sf-cross-cutting-concerns&ref=master">
   <img alt="Deploy to Salesforce"
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
