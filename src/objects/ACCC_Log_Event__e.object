@@ -16,6 +16,19 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
+     <fields>
+        <fullName>Environment__c</fullName>
+        <description>Environment should correlate to : Test, Debug or Production</description>
+        <externalId>false</externalId>
+        <isFilteringDisabled>false</isFilteringDisabled>
+        <isNameField>false</isNameField>
+        <isSortingDisabled>false</isSortingDisabled>
+        <label>Environment</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
     <fields>
         <fullName>DateTime__c</fullName>
         <defaultValue>now()</defaultValue>
