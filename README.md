@@ -1,7 +1,7 @@
 
 ![logo](https://github.com/bjanderson70/sf-cross-cutting-concerns/blob/master/imgs/logo.png)
 # sf-cross-cutting-concerns
-Cross cutting concerns for apex code. This is the most up-to-date code.
+Cross cutting concerns for apex code. However, going found I will upkeep via the DX project; which can be found :star2: [here](https://github.com/bjanderson70/sf-accc-dx) :star2:
 
 See this highlevel [blog](https://developer.salesforce.com/blogs/2018/10/configuration-first-replacing-code-at-runtime.html) on this framework.
 
